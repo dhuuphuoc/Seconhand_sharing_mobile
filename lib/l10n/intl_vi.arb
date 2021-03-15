@@ -2,5 +2,11 @@
   "login": "Đăng nhập",
   "loginHint": "Đăng nhập để chia sẻ món đồ của bạn",
   "registerForFree": "Đăng ký miễn phí",
-  "forgotPassword": "Quên mật khẩu"
+  "forgotPassword": "Quên mật khẩu",
+  "register": "Đăng ký",
+  "REGISTER": "ĐĂNG KÝ",
+  "registerHint:": "Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký",
+  "name": "Họ tên",
+  "password": "Mật khẩu",
+  "confirmPassword": "Xác nhận mật khẩu"
 }
