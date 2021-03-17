@@ -74,6 +74,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Register`
+  String get register {
+    return Intl.message(
+      'Register',
+      name: 'register',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `REGISTER`
+  String get REGISTER {
+    return Intl.message(
+      'REGISTER',
+      name: 'REGISTER',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the required information below to proceed with the registration`
+  String get registerHint {
+    return Intl.message(
+      'Please enter the required information below to proceed with the registration',
+      name: 'registerHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full name`
+  String get name {
+    return Intl.message(
+      'Full name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password`
+  String get confirmPassword {
+    return Intl.message(
+      'Confirm password',
+      name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -2,5 +2,11 @@
   "login": "Login",
   "loginHint": "Login to share your items",
   "registerForFree": "Register for free",
-  "forgotPassword": "Forgot password"
+  "forgotPassword": "Forgot password",
+  "register": "Register",
+  "REGISTER": "REGISTER",
+  "registerHint": "Please enter the required information below to proceed with the registration",
+  "name": "Full name",
+  "password": "Password",
+  "confirmPassword": "Confirm password"
 }

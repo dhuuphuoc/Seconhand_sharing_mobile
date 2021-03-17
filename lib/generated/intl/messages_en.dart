@@ -21,9 +21,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "REGISTER" : MessageLookupByLibrary.simpleMessage("REGISTER"),
+    "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm password"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),
     "login" : MessageLookupByLibrary.simpleMessage("Login"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Login to share your items"),
-    "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free")
+    "name" : MessageLookupByLibrary.simpleMessage("Full name"),
+    "password" : MessageLookupByLibrary.simpleMessage("Password"),
+    "register" : MessageLookupByLibrary.simpleMessage("Register"),
+    "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
+    "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration")
   };
 }

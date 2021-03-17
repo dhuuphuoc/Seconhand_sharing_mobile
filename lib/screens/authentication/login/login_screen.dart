@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      hintText: "Password", suffixIcon: Icon(Icons.lock)),
+                      hintText: S.of(context).password, suffixIcon: Icon(Icons.lock)),
                 ),
                 SizedBox(
                   height: 10,

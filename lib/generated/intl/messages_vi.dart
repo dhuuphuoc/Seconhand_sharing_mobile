@@ -21,9 +21,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "REGISTER" : MessageLookupByLibrary.simpleMessage("ĐĂNG KÝ"),
+    "confirmPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),
     "login" : MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Đăng nhập để chia sẻ món đồ của bạn"),
-    "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí")
+    "name" : MessageLookupByLibrary.simpleMessage("Họ tên"),
+    "password" : MessageLookupByLibrary.simpleMessage("Mật khẩu"),
+    "register" : MessageLookupByLibrary.simpleMessage("Đăng ký"),
+    "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
+    "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký")
   };
 }
