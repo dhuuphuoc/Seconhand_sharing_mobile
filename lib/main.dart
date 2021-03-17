@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/views/LoginScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:secondhand_sharing/views/SignUpScreen.dart';
+import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
+import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 
 void main() => runApp(TwoHandShareApp());
 
@@ -10,6 +10,17 @@ class TwoHandShareApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color(0xFF0E88FA),
+        textTheme: TextTheme(
+          headline1: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodyText2: TextStyle(fontSize: 16, color: Color(0xFF494949)),
+          subtitle2: TextStyle(fontSize: 16, color: Color(0xAA494949)),
+        ),
+      ),
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

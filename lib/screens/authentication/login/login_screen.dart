@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,21 +21,30 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: 35),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 30,
+                ),
                 Align(child: Image.asset("assets/images/login_icon.png")),
                 Text(
                   S.of(context).login,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Text(
                   S.of(context).loginHint,
-                  style: TextStyle(fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -61,28 +71,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         S.of(context).registerForFree,
-                        style: TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                     InkWell(
                       onTap: () {},
                       child: Text(
                         "${S.of(context).forgotPassword}?",
-                        style: TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 25,
+                ),
                 Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(S.of(context).login),
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(10),
-                    ),
-                  ),
-                )
+                    width: double.infinity,
+                    child: GradientButton(() {}, S.of(context).login))
               ],
             ),
           ),
