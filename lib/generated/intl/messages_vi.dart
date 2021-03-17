@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name" : MessageLookupByLibrary.simpleMessage("Họ tên"),
     "password" : MessageLookupByLibrary.simpleMessage("Mật khẩu"),
     "register" : MessageLookupByLibrary.simpleMessage("Đăng ký"),
-    "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí")
+    "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
+    "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký")
   };
 }

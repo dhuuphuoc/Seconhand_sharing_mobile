@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -32,14 +33,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Align(child: Image.asset("assets/images/login_icon.png")),
                 Text(
                   S.of(context).REGISTER,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
                   S.of(context).registerHint,
-                  style: TextStyle(fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
@@ -48,9 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: S.of(context).name,
                     suffixIcon: Icon(
                       Icons.account_circle,
-                      color: Colors.blueAccent,
                     ),
-                    hintStyle: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
                 TextFormField(
@@ -60,9 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: "Email",
                     suffixIcon: Icon(
                       Icons.email,
-                      color: Colors.blueAccent,
                     ),
-                    hintStyle: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
                 TextFormField(
@@ -73,9 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: S.of(context).password,
                     suffixIcon: Icon(
                       Icons.lock,
-                      color: Colors.blueAccent,
                     ),
-                    hintStyle: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
                 TextFormField(
@@ -86,9 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: S.of(context).confirmPassword,
                     suffixIcon: Icon(
                       Icons.lock,
-                      color: Colors.blueAccent,
                     ),
-                    hintStyle: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
                 SizedBox(
@@ -96,13 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(S.of(context).register),
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(10),
-                    ),
-                  ),
+                  child: GradientButton(() {}, S.of(context).register),
                 )
               ],
             ),
