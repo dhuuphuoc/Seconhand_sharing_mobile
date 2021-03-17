@@ -29,9 +29,13 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
-                Align(child: Image.asset("assets/images/login_icon.png")),
+                Align(
+                    child: Image.asset(
+                  "assets/images/login_icon.png",
+                  isAntiAlias: true,
+                )),
                 Text(
                   S.of(context).login,
                   style: Theme.of(context).textTheme.headline6,
@@ -57,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      hintText: S.of(context).password, suffixIcon: Icon(Icons.lock)),
+                      hintText: S.of(context).password,
+                      suffixIcon: Icon(Icons.lock)),
                 ),
                 SizedBox(
                   height: 10,
