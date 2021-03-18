@@ -8,5 +8,6 @@
   "registerHint": "Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký",
   "name": "Họ tên",
   "password": "Mật khẩu",
-  "confirmPassword": "Xác nhận mật khẩu"
+  "confirmPassword": "Xác nhận mật khẩu",
+  "brand": "2Hand - Sharing"
 }

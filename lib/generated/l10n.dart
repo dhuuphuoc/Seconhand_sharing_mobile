@@ -134,6 +134,16 @@ class S {
       args: [],
     );
   }
+
+  /// `2Hand - Sharing`
+  String get brand {
+    return Intl.message(
+      '2Hand - Sharing',
+      name: 'brand',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

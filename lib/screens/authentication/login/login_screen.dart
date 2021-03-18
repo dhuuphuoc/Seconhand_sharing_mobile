@@ -89,11 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Container(
                     width: double.infinity,
-                    child: GradientButton(() {}, S.of(context).login))
+                    child: GradientButton(() {
+                      Navigator.pushNamed(context, "/home");
+                    }, S.of(context).login))
               ],
             ),
           ),

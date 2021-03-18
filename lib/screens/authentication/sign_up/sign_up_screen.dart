@@ -30,17 +30,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 40,
+                ),
                 Align(child: Image.asset("assets/images/login_icon.png")),
                 Text(
                   S.of(context).REGISTER,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
                 Text(
                   S.of(context).registerHint,
                   style: Theme.of(context).textTheme.bodyText2,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,

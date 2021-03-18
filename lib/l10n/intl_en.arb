@@ -8,5 +8,6 @@
   "registerHint": "Please enter the required information below to proceed with the registration",
   "name": "Full name",
   "password": "Password",
-  "confirmPassword": "Confirm password"
+  "confirmPassword": "Confirm password",
+  "brand": "2Hand - Sharing"
 }
