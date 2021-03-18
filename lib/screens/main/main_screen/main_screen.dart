@@ -14,12 +14,15 @@ class _MainScreenState extends State<MainScreen> {
       length: 6,
       child: Scaffold(
         appBar: AppBar(
-          leading: Image.asset(
-            "assets/images/login_icon.png",
-            fit: BoxFit.cover,
+          leading: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Image.asset(
+              "assets/images/login_icon.png",
+              fit: BoxFit.cover,
+            ),
           ),
-          leadingWidth: 125,
-          toolbarHeight: 125,
+          leadingWidth: 135,
+          toolbarHeight: 115,
           bottom: TabBar(
             tabs: [
               Tab(
@@ -29,7 +32,10 @@ class _MainScreenState extends State<MainScreen> {
                 icon: Icon(Icons.group),
               ),
               Tab(
-                icon: Icon(CustomIcons.honors),
+                icon: Icon(
+                  CustomIcons.hands,
+                  size: 18,
+                ),
               ),
               Tab(
                 icon: Icon(Icons.stars),
