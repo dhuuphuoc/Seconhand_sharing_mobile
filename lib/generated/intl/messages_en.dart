@@ -21,16 +21,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "REGISTER" : MessageLookupByLibrary.simpleMessage("REGISTER"),
+    "anotherEmail" : MessageLookupByLibrary.simpleMessage("Use another Email"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm password"),
+    "continueButton" : MessageLookupByLibrary.simpleMessage("Continue"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),
+    "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Please give us email address access your account"),
     "login" : MessageLookupByLibrary.simpleMessage("Login"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Login to share your items"),
     "name" : MessageLookupByLibrary.simpleMessage("Full name"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "register" : MessageLookupByLibrary.simpleMessage("Register"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
-    "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration")
+    "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration"),
+    "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Note: Do not share your authentication code and password with anyone to avoid unexpected events"),
+    "sendCode" : MessageLookupByLibrary.simpleMessage("Send Code"),
+    "verifyCode" : MessageLookupByLibrary.simpleMessage("Enter verify code"),
+    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email")
   };
 }

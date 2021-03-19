@@ -4,10 +4,17 @@
   "registerForFree": "Register for free",
   "forgotPassword": "Forgot password",
   "register": "Register",
-  "REGISTER": "REGISTER",
   "registerHint": "Please enter the required information below to proceed with the registration",
   "name": "Full name",
   "password": "Password",
   "confirmPassword": "Confirm password",
-  "brand": "2Hand - Sharing"
+  "brand": "2Hand - Sharing",
+  "forgotPasswordHint": "Please give us email address access your account",
+  "continueButton": "Continue",
+  "verifyCode": "Enter verify code",
+  "verifyCodeHint": "Enter the 4-digit verification code sent to your email",
+  "confirm": "Confirm",
+  "sendCode": "Send Code",
+  "anotherEmail": "Use another Email",
+  "resetPasswordNote": "Note: Do not share your authentication code and password with anyone to avoid unexpected events"
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
+import 'package:secondhand_sharing/screens/authentication/resetPassword/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 
@@ -44,6 +46,8 @@ class TwoHandShareApp extends StatelessWidget {
       routes: {
         "/": (context) => LoginScreen(),
         "/register": (context) => SignUpScreen(),
+        "/forgotPassword": (context) => ForgotPasswordScreen(),
+        "/resetPassword": (context) => ResetPasswordScreen(),
         "/home": (context) => MainScreen(),
       },
     );

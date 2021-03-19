@@ -35,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Align(child: Image.asset("assets/images/login_icon.png")),
                 Text(
-                  S.of(context).REGISTER,
+                  S.of(context).register,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(

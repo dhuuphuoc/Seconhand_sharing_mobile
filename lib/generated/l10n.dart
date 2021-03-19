@@ -85,16 +85,6 @@ class S {
     );
   }
 
-  /// `REGISTER`
-  String get REGISTER {
-    return Intl.message(
-      'REGISTER',
-      name: 'REGISTER',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Please enter the required information below to proceed with the registration`
   String get registerHint {
     return Intl.message(
@@ -140,6 +130,86 @@ class S {
     return Intl.message(
       '2Hand - Sharing',
       name: 'brand',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please give us email address access your account`
+  String get forgotPasswordHint {
+    return Intl.message(
+      'Please give us email address access your account',
+      name: 'forgotPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continueButton {
+    return Intl.message(
+      'Continue',
+      name: 'continueButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter verify code`
+  String get verifyCode {
+    return Intl.message(
+      'Enter verify code',
+      name: 'verifyCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the 4-digit verification code sent to your email`
+  String get verifyCodeHint {
+    return Intl.message(
+      'Enter the 4-digit verification code sent to your email',
+      name: 'verifyCodeHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Code`
+  String get sendCode {
+    return Intl.message(
+      'Send Code',
+      name: 'sendCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use another Email`
+  String get anotherEmail {
+    return Intl.message(
+      'Use another Email',
+      name: 'anotherEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note: Do not share your authentication code and password with anyone to avoid unexpected events`
+  String get resetPasswordNote {
+    return Intl.message(
+      'Note: Do not share your authentication code and password with anyone to avoid unexpected events',
+      name: 'resetPasswordNote',
       desc: '',
       args: [],
     );

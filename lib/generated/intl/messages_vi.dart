@@ -21,16 +21,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "REGISTER" : MessageLookupByLibrary.simpleMessage("ĐĂNG KÝ"),
+    "anotherEmail" : MessageLookupByLibrary.simpleMessage("Dùng địa chỉ Email khác"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("Xác nhận"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
+    "continueButton" : MessageLookupByLibrary.simpleMessage("Tiếp tục"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),
+    "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Hãy đưa chúng tôi thông tin truy cập tài khoản của bạn"),
     "login" : MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Đăng nhập để chia sẻ món đồ của bạn"),
     "name" : MessageLookupByLibrary.simpleMessage("Họ tên"),
     "password" : MessageLookupByLibrary.simpleMessage("Mật khẩu"),
     "register" : MessageLookupByLibrary.simpleMessage("Đăng ký"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
-    "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký")
+    "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký"),
+    "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"),
+    "sendCode" : MessageLookupByLibrary.simpleMessage("Gửi lại mã"),
+    "verifyCode" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực"),
+    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email")
   };
 }

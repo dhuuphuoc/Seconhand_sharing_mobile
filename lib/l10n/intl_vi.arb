@@ -4,10 +4,17 @@
   "registerForFree": "Đăng ký miễn phí",
   "forgotPassword": "Quên mật khẩu",
   "register": "Đăng ký",
-  "REGISTER": "ĐĂNG KÝ",
   "registerHint": "Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký",
   "name": "Họ tên",
   "password": "Mật khẩu",
   "confirmPassword": "Xác nhận mật khẩu",
-  "brand": "2Hand - Sharing"
+  "brand": "2Hand - Sharing",
+  "forgotPasswordHint": "Hãy đưa chúng tôi thông tin truy cập tài khoản của bạn",
+  "continueButton": "Tiếp tục",
+  "verifyCode": "Nhập mã xác thực",
+  "verifyCodeHint": "Nhập mã xác thực bao gồm 4 số được gửi về email",
+  "confirm": "Xác nhận",
+  "sendCode": "Gửi lại mã",
+  "anotherEmail": "Dùng địa chỉ Email khác",
+  "resetPasswordNote": "Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"
 }
