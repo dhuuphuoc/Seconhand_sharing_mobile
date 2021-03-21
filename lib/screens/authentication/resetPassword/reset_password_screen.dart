@@ -16,6 +16,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  void onChanged(String input) {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +58,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     border: new OutlineInputBorder(
                         borderSide: new BorderSide(color: Colors.grey)),
                   ),
+                  onChanged: onChanged,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(4),
