@@ -14,6 +14,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     super.initState();
   }
 
+  void onChange(String input){
+
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   void onChanged(String input) {
@@ -57,9 +61,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   decoration: InputDecoration(
                     border: new OutlineInputBorder(
                         borderSide: new BorderSide(color: Colors.grey)),
+                    hintText: "-   -   -   -",
+                    filled: true,
                   ),
                   onChanged: onChanged,
+                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
+                  // maxLength: 4,
                   inputFormatters: <TextInputFormatter>[
                     LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.digitsOnly
@@ -81,10 +89,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Text(
                         S.of(context).sendCode,
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: TextStyle(
+                            color: Color(0xFF0E88FA),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -96,10 +106,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Text(
                         S.of(context).anotherEmail,
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: TextStyle(color: Color(0xFF0E88FA)),
                       ),
                     ),
                   ],
