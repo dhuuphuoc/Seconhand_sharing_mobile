@@ -13,15 +13,32 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   void initState() {
     super.initState();
   }
+  String _digit = "-   -   -   -";
+  final FocusNode _focusNode = FocusNode();
+  final _formKey = GlobalKey<FormState>();
+  final _textEditingController = TextEditingController();
 
-  void onChange(String input){
-
+  void onSubmit(String input) {
+    input = input.replaceAll(" ", "");
   }
 
-  final _formKey = GlobalKey<FormState>();
-
-  void onChanged(String input) {
-
+  void onChanged(RawKeyEvent input) {
+    if(input.isKeyPressed(LogicalKeyboardKey.backspace)) {
+      for(int i = _digit.length - 1; i >= 0; i--) {
+        print(_digit[i]);
+        if(int.tryParse(_digit[i]) != null) {
+          print(_digit[i]);
+          _digit = _digit.replaceFirst(_digit[i], "-", i);
+          setState(() {
+            _textEditingController.text = _digit;
+          });
+          return;
+        }
+      }
+    }
+    if(input.character != null) {
+      _digit = _digit.replaceFirst("-", input.character);
+    }
   }
 
   @override
@@ -57,21 +74,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: new OutlineInputBorder(
-                        borderSide: new BorderSide(color: Colors.grey)),
-                    hintText: "-   -   -   -",
-                    filled: true,
+                RawKeyboardListener(
+                  focusNode: _focusNode,
+                  onKey: onChanged,
+                  child: TextFormField(
+                    controller: _textEditingController,
+                    decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.grey)),
+                      hintText: "-   -   -   -",
+                      counterText: "",
+                      filled: true,
+                    ),
+                    showCursor: false,
+                    onChanged: (digit) {
+                      setState(() {
+                        _textEditingController.text = _digit;
+                      });
+                    },
+                    onFieldSubmitted: onSubmit,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
                   ),
-                  onChanged: onChanged,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  // maxLength: 4,
-                  inputFormatters: <TextInputFormatter>[
-                    LengthLimitingTextInputFormatter(4),
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
                 ),
                 SizedBox(
                   height: 20,
@@ -79,7 +103,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 Container(
                   width: double.infinity,
                   child: GradientButton(() {
-                    Navigator.of(context).pushNamed("/");
                   }, S.of(context).confirm),
                 ),
                 SizedBox(

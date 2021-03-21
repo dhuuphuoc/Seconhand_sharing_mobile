@@ -16,5 +16,7 @@
   "confirm": "Xác nhận",
   "sendCode": "Gửi lại mã",
   "anotherEmail": "Dùng địa chỉ Email khác",
-  "resetPasswordNote": "Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"
+  "resetPasswordNote": "Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra",
+  "emptyEmailError": "Email không được bỏ trống",
+  "invalidEmail": "Email không hợp lệ"
 }

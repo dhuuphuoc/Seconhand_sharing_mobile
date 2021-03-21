@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/ultils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  validator: Validator.validateEmail,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       hintText: "Email", suffixIcon: Icon(Icons.email)),
@@ -96,7 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                     width: double.infinity,
                     child: GradientButton(() {
-                      Navigator.pushNamed(context, "/home");
+                      _formKey.currentState.validate();
+                      // Navigator.pushNamed(context, "/home");
                     }, S.of(context).login))
               ],
             ),

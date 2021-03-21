@@ -214,6 +214,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Email can't be empty`
+  String get emptyEmailError {
+    return Intl.message(
+      'Email can\'t be empty',
+      name: 'emptyEmailError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid email`
+  String get invalidEmail {
+    return Intl.message(
+      'Invalid email',
+      name: 'invalidEmail',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

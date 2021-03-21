@@ -16,5 +16,7 @@
   "confirm": "Confirm",
   "sendCode": "Send Code",
   "anotherEmail": "Use another Email",
-  "resetPasswordNote": "Note: Do not share your authentication code and password with anyone to avoid unexpected events"
+  "resetPasswordNote": "Note: Do not share your authentication code and password with anyone to avoid unexpected events",
+  "emptyEmailError": "Email can't be empty",
+  "invalidEmail": "Invalid email"
 }
