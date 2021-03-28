@@ -234,6 +234,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Password can't be empty`
+  String get emptyPasswordError {
+    return Intl.message(
+      'Password can\'t be empty',
+      name: 'emptyPasswordError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must contain at least eight characters, at least one letter and one number`
+  String get validatePassword {
+    return Intl.message(
+      'Password must contain at least eight characters, at least one letter and one number',
+      name: 'validatePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password must match with password`
+  String get matchPassword {
+    return Intl.message(
+      'Confirm password must match with password',
+      name: 'matchPassword',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

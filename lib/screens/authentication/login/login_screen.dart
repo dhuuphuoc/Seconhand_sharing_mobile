@@ -60,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
+                  validator: Validator.validatePassword,
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(

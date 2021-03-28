@@ -18,5 +18,8 @@
   "anotherEmail": "Dùng địa chỉ Email khác",
   "resetPasswordNote": "Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra",
   "emptyEmailError": "Email không được bỏ trống",
-  "invalidEmail": "Email không hợp lệ"
+  "invalidEmail": "Email không hợp lệ",
+  "emptyPasswordError": "Mật khẩu không được bỏ trống",
+  "validatePassword": "Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số",
+  "matchPassword": "Xác nhận mật khẩu phải khớp với mật khẩu"
 }

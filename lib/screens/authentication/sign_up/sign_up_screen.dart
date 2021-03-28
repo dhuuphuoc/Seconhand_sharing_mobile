@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/ultils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -60,6 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  validator: Validator.validateEmail,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: "Email",
@@ -70,6 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
+                  validator: Validator.validatePassword,
                   obscureText: true,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
@@ -95,7 +98,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: GradientButton(() {}, S.of(context).register),
+                  child: GradientButton(() {
+                    _formKey.currentState.validate();
+                  }, S.of(context).register),
                 )
               ],
             ),

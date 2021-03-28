@@ -10,4 +10,12 @@ class Validator {
         ? null
         : S.current.invalidEmail;
   }
+  static String validatePassword(String password) {
+    RegExp regExp = new RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
+    return password.isEmpty
+        ? S.current.emptyPasswordError
+        : regExp.hasMatch(password)
+        ? null
+        : S.current.validatePassword;
+  }
 }

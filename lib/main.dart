@@ -4,8 +4,9 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
-import 'package:secondhand_sharing/screens/authentication/resetPassword/reset_password_screen.dart';
+import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
+import 'package:secondhand_sharing/screens/item/post_item.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 
 void main() => runApp(TwoHandShareApp());
@@ -49,6 +50,7 @@ class TwoHandShareApp extends StatelessWidget {
         "/forgotPassword": (context) => ForgotPasswordScreen(),
         "/resetPassword": (context) => ResetPasswordScreen(),
         "/home": (context) => MainScreen(),
+        "/postItem": (context) => PostItemScreen(),
       },
     );
   }
