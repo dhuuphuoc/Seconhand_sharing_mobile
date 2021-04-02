@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm password"),
     "continueButton" : MessageLookupByLibrary.simpleMessage("Continue"),
+    "donate" : MessageLookupByLibrary.simpleMessage("Donate"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email can\'t be empty"),
     "emptyPasswordError" : MessageLookupByLibrary.simpleMessage("Password can\'t be empty"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),

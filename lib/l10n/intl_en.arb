@@ -23,5 +23,6 @@
   "invalidUsername": "Username must be at least 6 characters",
   "emptyPasswordError": "Password can't be empty",
   "validatePassword": "Password must contain at least eight characters, at least one letter and one number",
-  "matchPassword": "Confirm password must match with password"
+  "matchPassword": "Confirm password must match with password",
+  "donate": "Donate"
 }
