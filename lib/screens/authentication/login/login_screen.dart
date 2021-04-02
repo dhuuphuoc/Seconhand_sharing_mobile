@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   bool _isLoading = false;
+
   void _loginSubmit() async {
     if (!_formKey.currentState.validate()) return;
     setState(() {
@@ -122,9 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 _isLoading
                     ? Align(child: CircularProgressIndicator())
-                    : SizedBox(
-                        height: 0,
-                      ),
+                    : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),
