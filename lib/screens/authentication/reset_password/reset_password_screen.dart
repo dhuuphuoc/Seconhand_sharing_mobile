@@ -102,8 +102,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: GradientButton(() {
-                  }, S.of(context).confirm),
+                  child: GradientButton(onPress: () {
+                  },text: S.of(context).confirm),
                 ),
                 SizedBox(
                   height: 10,

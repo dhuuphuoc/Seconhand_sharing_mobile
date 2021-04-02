@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),
     "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Please give us email address access your account"),
     "invalidEmail" : MessageLookupByLibrary.simpleMessage("Invalid email"),
+    "invalidUsername" : MessageLookupByLibrary.simpleMessage("Username must be at least 6 characters"),
     "login" : MessageLookupByLibrary.simpleMessage("Login"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Login to share your items"),
     "matchPassword" : MessageLookupByLibrary.simpleMessage("Confirm password must match with password"),
@@ -41,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Note: Do not share your authentication code and password with anyone to avoid unexpected events"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Send Code"),
+    "username" : MessageLookupByLibrary.simpleMessage("Username"),
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Password must contain at least eight characters, at least one letter and one number"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Enter verify code"),
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email")

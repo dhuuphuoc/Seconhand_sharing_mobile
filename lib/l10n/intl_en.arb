@@ -6,6 +6,7 @@
   "register": "Register",
   "registerHint": "Please enter the required information below to proceed with the registration",
   "name": "Full name",
+  "username": "Username",
   "password": "Password",
   "confirmPassword": "Confirm password",
   "brand": "2Hand - Sharing",
@@ -19,6 +20,7 @@
   "resetPasswordNote": "Note: Do not share your authentication code and password with anyone to avoid unexpected events",
   "emptyEmailError": "Email can't be empty",
   "invalidEmail": "Invalid email",
+  "invalidUsername": "Username must be at least 6 characters",
   "emptyPasswordError": "Password can't be empty",
   "validatePassword": "Password must contain at least eight characters, at least one letter and one number",
   "matchPassword": "Confirm password must match with password"

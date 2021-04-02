@@ -14,6 +14,7 @@ class _MainScreenState extends State<MainScreen> {
       length: 6,
       child: Scaffold(
         appBar: AppBar(
+          title: Text("Donate"),
           leading: Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Image.asset(

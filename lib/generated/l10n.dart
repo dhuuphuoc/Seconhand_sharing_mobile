@@ -105,6 +105,16 @@ class S {
     );
   }
 
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
@@ -230,6 +240,16 @@ class S {
     return Intl.message(
       'Invalid email',
       name: 'invalidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username must be at least 6 characters`
+  String get invalidUsername {
+    return Intl.message(
+      'Username must be at least 6 characters',
+      name: 'invalidUsername',
       desc: '',
       args: [],
     );

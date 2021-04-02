@@ -21,9 +21,12 @@ class TwoHandShareApp extends StatelessWidget {
             unselectedLabelColor: Color(0xFF494949),
             labelColor: Color(0xFF0E88FA)),
         appBarTheme: AppBarTheme(
+            brightness: Brightness.light,
             iconTheme: IconThemeData(color: Color(0xFF0E88FA)),
             backgroundColor: Colors.white,
-            foregroundColor: Color(0xFF0E88FA)),
+            foregroundColor: Color(0xFF0E88FA),
+
+        ),
         primaryColor: Color(0xFF0E88FA),
         textTheme: TextTheme(
           headline1: TextStyle(

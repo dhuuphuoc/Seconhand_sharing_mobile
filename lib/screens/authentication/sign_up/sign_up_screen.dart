@@ -98,9 +98,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: GradientButton(() {
+                  child: GradientButton(onPress:  () {
                     _formKey.currentState.validate();
-                  }, S.of(context).register),
+                  },text: S.of(context).register),
                 )
               ],
             ),

@@ -62,10 +62,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   Container(
                     width: double.infinity,
-                    child: GradientButton(
+                    child: GradientButton(onPress:
                             () {
                               Navigator.of(context).pushNamed("/resetPassword");
-                            },
+                            }, text:
                         S.of(context).continueButton),
                   )
                 ],

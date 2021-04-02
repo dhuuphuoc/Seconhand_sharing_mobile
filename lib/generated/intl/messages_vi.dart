@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),
     "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Hãy đưa chúng tôi thông tin truy cập tài khoản của bạn"),
     "invalidEmail" : MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
+    "invalidUsername" : MessageLookupByLibrary.simpleMessage("Tên tài khoản phải chứa ít nhất 6 ký tự"),
     "login" : MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Đăng nhập để chia sẻ món đồ của bạn"),
     "matchPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu phải khớp với mật khẩu"),
@@ -41,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Gửi lại mã"),
+    "username" : MessageLookupByLibrary.simpleMessage("Tên tài khoản"),
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực"),
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email")

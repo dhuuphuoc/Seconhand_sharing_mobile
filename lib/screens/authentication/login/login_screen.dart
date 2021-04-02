@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/ultils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
@@ -16,6 +17,26 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  final _usernameTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  bool _isLoading = false;
+  void _loginSubmit() async {
+    if (!_formKey.currentState.validate()) return;
+    setState(() {
+      _isLoading = true;
+    });
+    int statusCode = await AuthenticationService.login(
+        LoginForm(_usernameTextController.text, _passwordTextController.text));
+    if (statusCode == 200) {
+      Navigator.pop(context);
+      Navigator.pushNamed(context, "/home");
+    }
+    setState(() {
+      _isLoading = false;
+    });
+    // Navigator.pushNamed(context, "/home");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,13 +74,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  validator: Validator.validateEmail,
+                  controller: _usernameTextController,
+                  validator: Validator.validateUsername,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                      hintText: "Email", suffixIcon: Icon(Icons.email)),
+                      hintText: S.of(context).username,
+                      suffixIcon: Icon(Icons.email)),
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
+                  controller: _passwordTextController,
                   validator: Validator.validatePassword,
                   obscureText: true,
                   textInputAction: TextInputAction.done,
@@ -94,14 +118,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
+                ),
+                _isLoading
+                    ? Align(child: CircularProgressIndicator())
+                    : SizedBox(
+                        height: 0,
+                      ),
+                SizedBox(
+                  height: 15,
                 ),
                 Container(
                     width: double.infinity,
-                    child: GradientButton(() {
-                      _formKey.currentState.validate();
-                      // Navigator.pushNamed(context, "/home");
-                    }, S.of(context).login))
+                    child: GradientButton(
+                      text: S.of(context).login,
+                      onPress: _loginSubmit,
+                      disabled: _isLoading,
+                    ))
               ],
             ),
           ),
