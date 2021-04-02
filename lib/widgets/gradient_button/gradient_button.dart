@@ -5,7 +5,8 @@ class GradientButton extends StatefulWidget {
   final String text;
   final bool disabled;
 
-  GradientButton({@required this.onPress, this.text, this.disabled = false});
+  GradientButton(
+      {@required this.onPress, @required this.text, this.disabled = false});
 
   @override
   _GradientButtonState createState() => _GradientButtonState();

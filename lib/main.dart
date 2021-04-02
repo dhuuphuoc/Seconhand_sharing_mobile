@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgot_password_screen.dart';
-import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:secondhand_sharing/screens/item/post_item.dart';
@@ -17,16 +16,17 @@ class TwoHandShareApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       theme: ThemeData(
+        backgroundColor: Colors.white,
         tabBarTheme: TabBarTheme(
             unselectedLabelColor: Color(0xFF494949),
             labelColor: Color(0xFF0E88FA)),
         appBarTheme: AppBarTheme(
-            brightness: Brightness.light,
-            iconTheme: IconThemeData(color: Color(0xFF0E88FA)),
-            backgroundColor: Colors.white,
-            foregroundColor: Color(0xFF0E88FA),
-
+          brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Color(0xFF0E88FA)),
+          backgroundColor: Colors.white,
+          foregroundColor: Color(0xFF0E88FA),
         ),
+        scaffoldBackgroundColor: Color(0xFFF2F2F2),
         primaryColor: Color(0xFF0E88FA),
         textTheme: TextTheme(
           headline1: TextStyle(
@@ -48,7 +48,7 @@ class TwoHandShareApp extends StatelessWidget {
         const Locale('vi', ''),
       ],
       routes: {
-        "/": (context) => LoginScreen(),
+        "/": (context) => PostItemScreen(),
         "/register": (context) => SignUpScreen(),
         "/forgotPassword": (context) => ForgotPasswordScreen(),
         "/resetPassword": (context) => ResetPasswordScreen(),

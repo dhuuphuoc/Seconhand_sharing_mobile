@@ -1,9 +1,11 @@
 import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class PostItemScreen extends StatefulWidget {
   @override
@@ -35,43 +37,143 @@ class _PostItemScreenState extends State<PostItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFCFD8DC),
       appBar: AppBar(
           title: Text(S.of(context).donate,
-              style: TextStyle(color: Color(0xFF528FEB)))),
+              style: Theme.of(context).textTheme.headline1)),
       body: Container(
         width: double.infinity,
         height: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: SingleChildScrollView(
           child: Form(
             child: Column(children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+              Card(
+                margin: EdgeInsets.zero,
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    foregroundImage: AssetImage("assets/images/person.png"),
+                  ),
+                  title: Text("Name"),
+                  subtitle: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.pink,
+                      ),
+                      Text("Address")
+                    ],
+                  ),
+                  trailing: IconButton(
+                    color: Theme.of(context).primaryColor,
+                    icon: Icon(Icons.map_outlined),
+                    onPressed: () {},
+                  ),
                 ),
-                margin: new EdgeInsets.all(10),
-                child: new Row(
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).title}...",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.circular(10)),
+                height: 150,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: [
-                    new Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/person.png",
-                          fit: BoxFit.fill,
-                          width: 50,
-                        )
-                      ],
+                    Container(
+                      constraints: BoxConstraints(minWidth: 120),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Theme.of(context).primaryColor),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_photo_alternate_outlined),
+                          Text("Add photo"),
+                        ],
+                      ),
                     ),
-                    new Column(
-                      children: [new Text('Name'), new Text("Address")],
-                    ),
-                    new Column(
-                      children: [
-                        Icon(Icons.location_on_outlined)
-                      ],
-                    )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.circular(10)),
+                height: 120,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(minWidth: 70),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Icon(Icons.color_lens_outlined),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("Clothes"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).phoneNumber}",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                minLines: 8,
+                maxLines: 10,
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).description}...",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+              GradientButton(
+                onPress: () {},
+                text: S.of(context).post,
+              ),
+              SizedBox(
+                height: 20,
               )
             ]),
           ),
