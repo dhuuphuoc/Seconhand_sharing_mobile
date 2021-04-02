@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm" : MessageLookupByLibrary.simpleMessage("Xác nhận"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
     "continueButton" : MessageLookupByLibrary.simpleMessage("Tiếp tục"),
+    "donate" : MessageLookupByLibrary.simpleMessage("Quyên tặng"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email không được bỏ trống"),
     "emptyPasswordError" : MessageLookupByLibrary.simpleMessage("Mật khẩu không được bỏ trống"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),
