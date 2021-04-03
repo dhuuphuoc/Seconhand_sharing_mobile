@@ -25,6 +25,10 @@
   "validatePassword": "Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số",
   "matchPassword": "Xác nhận mật khẩu phải khớp với mật khẩu",
   "donate": "Quyên tặng",
+  "title": "Tiêu đề",
+  "phoneNumber": "Số điện thoại",
+  "description": "Mô tả",
+  "post": "Đăng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng."
