@@ -24,5 +24,8 @@
   "emptyPasswordError": "Password can't be empty",
   "validatePassword": "Password must contain at least eight characters, at least one letter and one number",
   "matchPassword": "Confirm password must match with password",
-  "donate": "Donate"
+  "donate": "Donate",
+  "tryAgain" : "Try again",
+  "failed" : "Failed",
+  "loginFailedNotification" : "Username or password is incorrect."
 }

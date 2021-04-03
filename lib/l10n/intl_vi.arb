@@ -24,5 +24,8 @@
   "emptyPasswordError": "Mật khẩu không được bỏ trống",
   "validatePassword": "Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số",
   "matchPassword": "Xác nhận mật khẩu phải khớp với mật khẩu",
-  "donate": "Quyên tặng"
+  "donate": "Quyên tặng",
+  "tryAgain" : "Thử lại",
+  "failed" : "Thất bại",
+  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng."
 }
