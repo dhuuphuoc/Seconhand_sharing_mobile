@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/ultils/validator/validator.dart';
+import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -98,9 +98,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: GradientButton(onPress:  () {
-                    _formKey.currentState.validate();
-                  },text: S.of(context).register),
+                  child: GradientButton(
+                      onPress: () {
+                        _formKey.currentState.validate();
+                      },
+                      text: S.of(context).register),
                 )
               ],
             ),
