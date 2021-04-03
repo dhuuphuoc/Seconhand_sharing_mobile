@@ -28,5 +28,8 @@
   "title": "Title",
   "phoneNumber": "Phone number",
   "description": "Description",
-  "post": "Post"
+  "post": "Post",
+  "tryAgain" : "Try again",
+  "failed" : "Failed",
+  "loginFailedNotification" : "Username or password is incorrect."
 }

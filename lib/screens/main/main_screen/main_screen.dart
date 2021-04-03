@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/custom_icons/custom_icons.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -49,6 +50,16 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ],
           ),
+        ),
+        body: TabBarView(
+          children: [
+            HomeTab(),
+            Container(),
+            Container(),
+            Container(),
+            Container(),
+            Container(),
+          ],
         ),
       ),
     );
