@@ -116,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: Validator.validatePassword,
                   obscureText: true,
                   textInputAction: TextInputAction.done,
+                  onEditingComplete: _loginSubmit,
                   decoration: InputDecoration(
                       hintText: S.of(context).password,
                       suffixIcon: Icon(Icons.lock)),

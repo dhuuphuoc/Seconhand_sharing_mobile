@@ -14,8 +14,23 @@ class _HomeTabState extends State<HomeTab> {
       height: double.infinity,
       child: ListView(
         children: [
+          SizedBox(
+            height: 10,
+          ),
           Card(
-            child: ListTile(),
+            child: ListTile(
+              leading: CircleAvatar(
+                foregroundImage: AssetImage(
+                  "assets/images/person.png",
+                ),
+              ),
+              title: Container(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Share your item"),
+                ),
+              ),
+            ),
           )
         ],
       ),
