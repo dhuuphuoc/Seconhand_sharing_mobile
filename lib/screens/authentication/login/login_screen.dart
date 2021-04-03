@@ -28,9 +28,37 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     int statusCode = await AuthenticationService.login(
         LoginForm(_usernameTextController.text, _passwordTextController.text));
+    print(statusCode);
     if (statusCode == 200) {
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
+    } else {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            title: Text(S.of(context).failed),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(S.of(context).loginFailedNotification),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(S.of(context).tryAgain),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
     setState(() {
       _isLoading = false;
