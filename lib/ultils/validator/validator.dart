@@ -23,4 +23,10 @@ class Validator {
             ? null
             : S.current.validatePassword;
   }
+
+  static String matchPassword(String confirmPassword, String password) {
+    return  (confirmPassword == password)
+        ? null
+        : S.current.matchPassword;
+  }
 }
