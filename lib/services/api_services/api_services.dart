@@ -1,3 +1,3 @@
 class APIService {
-  static String apiUrl = "https://twohandsharing.appspot.com";
+  static String apiUrl = "twohandsharing.appspot.com";
 }

@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm" : MessageLookupByLibrary.simpleMessage("Xác nhận"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu"),
     "continueButton" : MessageLookupByLibrary.simpleMessage("Tiếp tục"),
+    "day" : MessageLookupByLibrary.simpleMessage("ngày"),
     "description" : MessageLookupByLibrary.simpleMessage("Mô tả"),
     "donate" : MessageLookupByLibrary.simpleMessage("Quyên tặng"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Điện tử"),
@@ -37,13 +38,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),
     "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Hãy đưa chúng tôi thông tin truy cập tài khoản của bạn"),
     "furniture" : MessageLookupByLibrary.simpleMessage("Nội thất"),
-    "houseware" : MessageLookupByLibrary.simpleMessage("Đồ gia dụng"),
+    "hour" : MessageLookupByLibrary.simpleMessage("giờ"),
+    "houseware" : MessageLookupByLibrary.simpleMessage("Đồ\n gia dụng"),
     "invalidEmail" : MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
     "invalidUsername" : MessageLookupByLibrary.simpleMessage("Tên tài khoản phải chứa ít nhất 6 ký tự"),
     "login" : MessageLookupByLibrary.simpleMessage("Đăng nhập"),
     "loginFailedNotification" : MessageLookupByLibrary.simpleMessage("Tên tài khoản hoặc mật khẩu không đúng."),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Đăng nhập để chia sẻ món đồ của bạn"),
     "matchPassword" : MessageLookupByLibrary.simpleMessage("Xác nhận mật khẩu phải khớp với mật khẩu"),
+    "minute" : MessageLookupByLibrary.simpleMessage("phút"),
+    "month" : MessageLookupByLibrary.simpleMessage("tháng"),
     "name" : MessageLookupByLibrary.simpleMessage("Họ tên"),
     "other" : MessageLookupByLibrary.simpleMessage("Khác"),
     "password" : MessageLookupByLibrary.simpleMessage("Mật khẩu"),
@@ -54,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"),
+    "second" : MessageLookupByLibrary.simpleMessage("giây"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Gửi lại mã"),
     "sport" : MessageLookupByLibrary.simpleMessage("Thể thao"),
     "stationery" : MessageLookupByLibrary.simpleMessage("Văn phòng phẩm"),
@@ -62,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "username" : MessageLookupByLibrary.simpleMessage("Tên tài khoản"),
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực"),
-    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email")
+    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email"),
+    "year" : MessageLookupByLibrary.simpleMessage("năm")
   };
 }

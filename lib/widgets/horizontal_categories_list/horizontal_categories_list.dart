@@ -5,6 +5,10 @@ import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 
 class HorizontalCategoriesList extends StatefulWidget {
+  final CategoryModel _categoryModel;
+
+  HorizontalCategoriesList(this._categoryModel);
+
   @override
   _HorizontalCategoriesListState createState() =>
       _HorizontalCategoriesListState();
@@ -13,39 +17,38 @@ class HorizontalCategoriesList extends StatefulWidget {
 class _HorizontalCategoriesListState extends State<HorizontalCategoriesList> {
   @override
   Widget build(BuildContext context) {
-    CategoryModel categoryModel = Provider.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.circular(10)),
-      height: 150,
+      height: 130,
       child: ListView.builder(
+        itemExtent: 90,
         scrollDirection: Axis.horizontal,
-        itemCount: categoryModel.categories.length,
+        itemCount: widget._categoryModel.categories.length,
         itemBuilder: (BuildContext context, int index) {
-          Category category = categoryModel.categories[index];
+          Category category = widget._categoryModel.categories[index];
           return InkWell(
             onTap: () {
               setState(() {
-                categoryModel.selectedId = category.id;
+                widget._categoryModel.selectedId = category.id;
               });
             },
             child: Container(
-              width: 80,
               child: Column(
                 children: [
                   SizedBox(
                     height: 20,
                   ),
                   CircleAvatar(
-                    backgroundColor: categoryModel.selectedId == category.id
-                        ? Theme.of(context).selectedRowColor
-                        : Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor:
+                        widget._categoryModel.selectedId == category.id
+                            ? Theme.of(context).selectedRowColor
+                            : Theme.of(context).scaffoldBackgroundColor,
                     child: Icon(
                       category.icon,
                       size: 20,
-                      color: categoryModel.selectedId == category.id
+                      color: widget._categoryModel.selectedId == category.id
                           ? Theme.of(context).primaryColor
                           : Theme.of(context).unselectedWidgetColor,
                     ),
@@ -58,7 +61,7 @@ class _HorizontalCategoriesListState extends State<HorizontalCategoriesList> {
                     textAlign: TextAlign.center,
                     softWrap: true,
                     style: TextStyle(
-                        color: categoryModel.selectedId == category.id
+                        color: widget._categoryModel.selectedId == category.id
                             ? Theme.of(context).primaryColor
                             : Theme.of(context).unselectedWidgetColor),
                   ),

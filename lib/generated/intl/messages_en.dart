@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm password"),
     "continueButton" : MessageLookupByLibrary.simpleMessage("Continue"),
+    "day" : MessageLookupByLibrary.simpleMessage("day"),
     "description" : MessageLookupByLibrary.simpleMessage("Description"),
     "donate" : MessageLookupByLibrary.simpleMessage("Donate"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Electronic"),
@@ -37,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),
     "forgotPasswordHint" : MessageLookupByLibrary.simpleMessage("Please give us email address access your account"),
     "furniture" : MessageLookupByLibrary.simpleMessage("Furniture"),
+    "hour" : MessageLookupByLibrary.simpleMessage("hour"),
     "houseware" : MessageLookupByLibrary.simpleMessage("Houseware"),
     "invalidEmail" : MessageLookupByLibrary.simpleMessage("Invalid email"),
     "invalidUsername" : MessageLookupByLibrary.simpleMessage("Username must be at least 6 characters"),
@@ -44,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginFailedNotification" : MessageLookupByLibrary.simpleMessage("Username or password is incorrect."),
     "loginHint" : MessageLookupByLibrary.simpleMessage("Login to share your items"),
     "matchPassword" : MessageLookupByLibrary.simpleMessage("Confirm password must match with password"),
+    "minute" : MessageLookupByLibrary.simpleMessage("minute"),
+    "month" : MessageLookupByLibrary.simpleMessage("month"),
     "name" : MessageLookupByLibrary.simpleMessage("Full name"),
     "other" : MessageLookupByLibrary.simpleMessage("Other"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
@@ -54,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Note: Do not share your authentication code and password with anyone to avoid unexpected events"),
+    "second" : MessageLookupByLibrary.simpleMessage("second"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Send Code"),
     "sport" : MessageLookupByLibrary.simpleMessage("Sport"),
     "stationery" : MessageLookupByLibrary.simpleMessage("Stationery"),
@@ -62,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "username" : MessageLookupByLibrary.simpleMessage("Username"),
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Password must contain at least eight characters, at least one letter and one number"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Enter verify code"),
-    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email")
+    "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email"),
+    "year" : MessageLookupByLibrary.simpleMessage("year")
   };
 }

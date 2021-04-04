@@ -132,10 +132,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
                 height: 10,
               ),
               //Categories
-              Provider(
-                create: (_) => _categoryModel,
-                child: HorizontalCategoriesList(),
-              ),
+              HorizontalCategoriesList(_categoryModel),
               SizedBox(
                 height: 10,
               ),

@@ -40,6 +40,13 @@
   "houseware": "Houseware",
   "electronic": "Electronic",
   "furniture": "Furniture",
-  "other" : "Other"
+  "other" : "Other",
+  "day" : "day",
+  "month" : "month",
+  "year" : "year",
+  "hour" : "hour",
+  "minute" : "minute",
+  "second" : "second"
+
 
 }

@@ -31,11 +31,21 @@ class TwoHandShareApp extends StatelessWidget {
           foregroundColor: Color(0xFF0E88FA),
         ),
         primaryColor: Color(0xFF0E88FA),
+        dividerColor: Color(0xFF494949),
         textTheme: TextTheme(
           headline1: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
+          headline2: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Color(0xFF494949),
+          ),
+          bodyText1: TextStyle(
+              fontSize: 14,
+              color: Color(0xFFA9A9A9),
+              fontWeight: FontWeight.w700),
           bodyText2: TextStyle(fontSize: 16, color: Color(0xFF494949)),
           subtitle2: TextStyle(fontSize: 16, color: Color(0xFFA9A9A9)),
         ),

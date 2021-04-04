@@ -37,9 +37,15 @@
   "clothes": "Quần áo",
   "sport" : "Thể thao",
   "stationery" : "Văn phòng phẩm",
-  "houseware": "Đồ gia dụng",
+  "houseware": "Đồ\n gia dụng",
   "electronic": "Điện tử",
   "furniture": "Nội thất",
-  "other" : "Khác"
+  "other" : "Khác",
+  "day" : "ngày",
+  "month" : "tháng",
+  "year" : "năm",
+  "hour" : "giờ",
+  "minute" : "phút",
+  "second" : "giây"
 
 }
