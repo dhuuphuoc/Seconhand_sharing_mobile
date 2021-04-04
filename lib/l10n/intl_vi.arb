@@ -31,5 +31,15 @@
   "post": "Đăng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
-  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng."
+  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
+  "postItem" : "Đăng bài viết",
+  "all" : "Tất cả",
+  "clothes": "Quần áo",
+  "sport" : "Thể thao",
+  "stationery" : "Văn phòng phẩm",
+  "houseware": "Đồ gia dụng",
+  "electronic": "Điện tử",
+  "furniture": "Nội thất",
+  "other" : "Khác"
+
 }

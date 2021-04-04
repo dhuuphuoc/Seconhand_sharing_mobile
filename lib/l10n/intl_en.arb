@@ -31,5 +31,15 @@
   "post": "Post",
   "tryAgain" : "Try again",
   "failed" : "Failed",
-  "loginFailedNotification" : "Username or password is incorrect."
+  "loginFailedNotification" : "Username or password is incorrect.",
+  "postItem" : "Post",
+  "all" : "All",
+  "clothes": "Clothes",
+  "sport" : "Sport",
+  "stationery" : "Stationery",
+  "houseware": "Houseware",
+  "electronic": "Electronic",
+  "furniture": "Furniture",
+  "other" : "Other"
+
 }

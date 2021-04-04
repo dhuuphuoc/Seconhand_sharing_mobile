@@ -12,10 +12,6 @@
 ///       - asset: fonts/CustomIcons.ttf
 ///
 ///
-/// * Font Awesome 5, Copyright (C) 2016 by Dave Gandy
-///         Author:    Dave Gandy
-///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
-///         Homepage:  http://fortawesome.github.com/Font-Awesome/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -24,5 +20,10 @@ class CustomIcons {
 
   static const _kFontFam = 'CustomIcons';
 
-  static const IconData hands = IconData(0xf4c2, fontFamily: _kFontFam);
+  static const IconData clothes = IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData houseware = IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData stationery = IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData furniture = IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData electronic = IconData(0xe804, fontFamily: _kFontFam);
+  static const IconData other = IconData(0xe805, fontFamily: _kFontFam);
 }

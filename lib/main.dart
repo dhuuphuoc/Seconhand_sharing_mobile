@@ -19,6 +19,8 @@ class TwoHandShareApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFF2F2F2),
         backgroundColor: Colors.white,
+        unselectedWidgetColor: Color(0xFF494949),
+        selectedRowColor: Color(0xFF9DD0FF),
         tabBarTheme: TabBarTheme(
             unselectedLabelColor: Color(0xFF494949),
             labelColor: Color(0xFF0E88FA)),

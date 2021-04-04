@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
-import 'package:secondhand_sharing/widgets/custom_icons/custom_icons.dart';
+import 'package:secondhand_sharing/widgets/icons/awesome5_icons.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Tab(
                 icon: Icon(
-                  CustomIcons.hands,
+                  Awesome5Icons.hands,
                   size: 18,
                 ),
               ),
