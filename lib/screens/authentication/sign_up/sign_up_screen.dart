@@ -25,13 +25,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _confirmPasswordTextController = TextEditingController();
   bool _isLoading = false;
 
-  void _registerSubmit() async{
+  void _registerSubmit() async {
     if (!_formKey.currentState.validate()) return;
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.register(
-        RegisterForm(_usernameTextController.text, _passwordTextController.text,_confirmPasswordTextController.text, _fullNameTextController.text, _emailTextController.text));
+    int statusCode = await AuthenticationService.register(RegisterForm(
+        _fullNameTextController.text,
+        _emailTextController.text,
+        _passwordTextController.text));
+    print(statusCode);
     if (statusCode == 200) {
       _showDialog();
     }
@@ -87,25 +90,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Align(child: Image.asset("assets/images/login_icon.png")),
                 Text(
-                  S
-                      .of(context)
-                      .register,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline6,
+                  S.of(context).register,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 Text(
-                  S
-                      .of(context)
-                      .registerHint,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyText2,
+                  S.of(context).registerHint,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 SizedBox(
                   height: 10,
@@ -115,9 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _usernameTextController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    hintText: S
-                        .of(context)
-                        .name,
+                    hintText: S.of(context).name,
                     suffixIcon: Icon(
                       Icons.account_circle,
                     ),
@@ -142,9 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    hintText: S
-                        .of(context)
-                        .password,
+                    hintText: S.of(context).password,
                     suffixIcon: Icon(
                       Icons.lock,
                     ),
@@ -157,9 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    hintText: S
-                        .of(context)
-                        .confirmPassword,
+                    hintText: S.of(context).confirmPassword,
                     suffixIcon: Icon(
                       Icons.lock,
                     ),
