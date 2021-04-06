@@ -51,6 +51,7 @@ class AuthenticationService {
     var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    print(jsonEncode(loginForm.toJson()));
     return response.statusCode;
   }
 
