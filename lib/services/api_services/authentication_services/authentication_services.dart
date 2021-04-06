@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class AuthenticationService {
   static Future<int> login(LoginForm loginForm) async {
     var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
-        headers: {"Content-Type": "application/json"});
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
     return response.statusCode;
   }
 }
