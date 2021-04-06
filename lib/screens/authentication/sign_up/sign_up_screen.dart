@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-
-import 'package:secondhand_sharing/utils/validator/validator.dart';
-
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
-
+import 'package:secondhand_sharing/ultils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -34,11 +31,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
     int statusCode = await AuthenticationService.register(RegisterForm(
-        _usernameTextController.text,
-        _passwordTextController.text,
-        _confirmPasswordTextController.text,
         _fullNameTextController.text,
-        _emailTextController.text));
+        _emailTextController.text,
+        _passwordTextController.text));
+    print(statusCode);
     if (statusCode == 200) {
       _showDialog();
     }
