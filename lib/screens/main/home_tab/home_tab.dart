@@ -18,15 +18,41 @@ class _HomeTabState extends State<HomeTab> {
   List<Item> _items = [];
   int _pageNumber = 1;
   bool _isLoading = true;
+  bool _isEnd = false;
+  ScrollController _postsScrollController = ScrollController();
   @override
   void initState() {
-    ItemServices.getItems(_pageNumber).then((value) {
-      setState(() {
-        _items.addAll(value);
-        _isLoading = false;
-      });
+    fetchItems();
+    _postsScrollController.addListener(() {
+      if (_postsScrollController.position.maxScrollExtent ==
+          _postsScrollController.offset) {
+        _pageNumber++;
+        fetchItems();
+      }
     });
     super.initState();
+  }
+
+  void fetchItems() {
+    if (!_isEnd) {
+      setState(() {
+        _isLoading = true;
+      });
+      ItemServices.getItems(_pageNumber).then((value) {
+        setState(() {
+          _items.addAll(value);
+          _isLoading = false;
+          if (value.isEmpty) {
+            _isEnd = true;
+            _postsScrollController.animateTo(
+              _postsScrollController.position.maxScrollExtent,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 800),
+            );
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -37,12 +63,7 @@ class _HomeTabState extends State<HomeTab> {
           margin: EdgeInsets.all(10),
           child: HorizontalCategoriesList(_categoryModel)),
     ];
-    if (_isLoading) {
-      listViewWidgets.add(Center(
-        heightFactor: 8,
-        child: CircularProgressIndicator(),
-      ));
-    }
+
     _items.forEach((item) {
       listViewWidgets.add(Card(
         elevation: 10,
@@ -90,11 +111,39 @@ class _HomeTabState extends State<HomeTab> {
         ),
       ));
     });
+    if (_isLoading) {
+      listViewWidgets.add(Center(
+        heightFactor: 8,
+        child: CircularProgressIndicator(),
+      ));
+    }
+    if (_isEnd) {
+      listViewWidgets.add(Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Icon(
+              Icons.check_circle_outline,
+              color: Colors.green,
+            ),
+            SizedBox(height: 10),
+            Text("Bạn đã coi tất cả các bài viết"),
+            SizedBox(height: 10),
+          ],
+        ),
+      ));
+    }
     return Container(
       color: Colors.transparent,
       width: double.infinity,
       height: double.infinity,
       child: ListView(
+        controller: _postsScrollController,
         children: listViewWidgets,
       ),
     );
