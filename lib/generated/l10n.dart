@@ -405,11 +405,11 @@ class S {
     );
   }
 
-  /// `Stationery`
-  String get stationery {
+  /// `Study`
+  String get study {
     return Intl.message(
-      'Stationery',
-      name: 'stationery',
+      'Study',
+      name: 'study',
       desc: '',
       args: [],
     );
