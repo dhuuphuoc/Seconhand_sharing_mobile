@@ -45,3 +45,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /pubspec.lock
+/lib/generated/intl/
+/lib/generated/intl/I10n.dart
