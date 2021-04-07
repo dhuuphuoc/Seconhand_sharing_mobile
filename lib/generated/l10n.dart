@@ -324,6 +324,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Name can't be empty`
+  String get emptyFullNameError {
+    return Intl.message(
+      'Name can\'t be empty',
+      name: 'emptyFullNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Successful`
+  String get registerSuccess {
+    return Intl.message(
+      'Register Successful',
+      name: 'registerSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register information is incorrect.`
+  String get registerFailedNotification {
+    return Intl.message(
+      'Register information is incorrect.',
+      name: 'registerFailedNotification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

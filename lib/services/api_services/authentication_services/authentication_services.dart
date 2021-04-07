@@ -27,18 +27,21 @@ class RegisterForm {
   RegisterForm(this._fullName, this._email, this._password);
 
   String get fullName => _fullName;
+
   String get email => _email;
+
   String get password => _password;
 
   Map<String, dynamic> toJson() => {
+        "fullName": _fullName,
         "email": _email,
         "password": _password,
-        "fullName": _fullName,
       };
 }
 
 class AuthenticationService {
   static Uri loginUri = Uri.parse(APIService.apiUrl + "/Identity/authenticate");
+
   static Future<int> login(LoginForm loginForm) async {
     var response = await http.post(loginUri,
         body: jsonEncode(loginForm.toJson()),
@@ -46,7 +49,8 @@ class AuthenticationService {
     return response.statusCode;
   }
 
-  static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");
+  static Uri registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
+
   static Future<int> register(RegisterForm registerForm) async {
     var response = await http.post(registerUri,
         body: jsonEncode(registerForm.toJson()),

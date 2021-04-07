@@ -27,5 +27,9 @@
   "donate": "Quyên tặng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
-  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng."
+  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
+  "emptyFullNameError": "Tên không được bỏ trống",
+  "registerSuccess": "Đăng ký thành công",
+  "success": "Thành công",
+  "registerFailedNotification" : "Thông tin đăng ký không chính xác"
 }
