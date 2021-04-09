@@ -31,5 +31,6 @@
   "post": "Đăng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
-  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng."
+  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
+  "addPhoto": "Thêm ảnh"
 }

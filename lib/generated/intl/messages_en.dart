@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addPhoto" : MessageLookupByLibrary.simpleMessage("Add photo"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Use another Email"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),
     "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),

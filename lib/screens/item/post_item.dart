@@ -107,7 +107,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.add_photo_alternate_outlined),
-                          Text("Add photo"),
+                          Text(S.of(context).addPhoto),
                         ],
                       ),
                     ),

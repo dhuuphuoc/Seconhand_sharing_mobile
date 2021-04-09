@@ -31,5 +31,6 @@
   "post": "Post",
   "tryAgain" : "Try again",
   "failed" : "Failed",
-  "loginFailedNotification" : "Username or password is incorrect."
+  "loginFailedNotification" : "Username or password is incorrect.",
+  "addPhoto": "Add photo"
 }
