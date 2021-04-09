@@ -62,7 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "second" : MessageLookupByLibrary.simpleMessage("second"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Send Code"),
     "sport" : MessageLookupByLibrary.simpleMessage("Sport"),
-    "stationery" : MessageLookupByLibrary.simpleMessage("Stationery"),
+    "study" : MessageLookupByLibrary.simpleMessage("Study"),
     "title" : MessageLookupByLibrary.simpleMessage("Title"),
     "tryAgain" : MessageLookupByLibrary.simpleMessage("Try again"),
     "username" : MessageLookupByLibrary.simpleMessage("Username"),

@@ -146,7 +146,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _confirmPasswordTextController,
-                  // validator: Validator.matchPassword(),
+                  // validator: (String text) {
+                  // },
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(

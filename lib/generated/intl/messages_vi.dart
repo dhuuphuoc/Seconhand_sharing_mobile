@@ -62,7 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "second" : MessageLookupByLibrary.simpleMessage("giây"),
     "sendCode" : MessageLookupByLibrary.simpleMessage("Gửi lại mã"),
     "sport" : MessageLookupByLibrary.simpleMessage("Thể thao"),
-    "stationery" : MessageLookupByLibrary.simpleMessage("Văn phòng phẩm"),
+    "study" : MessageLookupByLibrary.simpleMessage("Học tập"),
     "title" : MessageLookupByLibrary.simpleMessage("Tiêu đề"),
     "tryAgain" : MessageLookupByLibrary.simpleMessage("Thử lại"),
     "username" : MessageLookupByLibrary.simpleMessage("Tên tài khoản"),

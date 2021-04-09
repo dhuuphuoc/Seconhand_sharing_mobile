@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
-import 'package:secondhand_sharing/widgets/icons/awesome5_icons.dart';
+import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class _MainScreenState extends State<MainScreen> {
       length: 6,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Donate"),
           leading: Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Image.asset(
@@ -35,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Tab(
                 icon: Icon(
-                  Awesome5Icons.hands,
+                  AppIcons.hands_helping,
                   size: 18,
                 ),
               ),

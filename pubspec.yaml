@@ -68,15 +68,12 @@ flutter:
   # example:
 
   fonts:
-    - family:  Awesome5Icons
+    - family:  CategoryIcons
       fonts:
-        - asset: fonts/Awesome5Icons.ttf
-    - family:  Linecons
+        - asset: fonts/CategoryIcons.ttf
+    - family:  AppIcons
       fonts:
-        - asset: fonts/Linecons.ttf
-    - family:  CustomIcons
-      fonts:
-        - asset: fonts/CustomIcons.ttf
+        - asset: fonts/AppIcons.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
