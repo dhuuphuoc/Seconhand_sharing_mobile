@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,12 +48,13 @@ class RegisterForm {
 
 class AuthenticationService {
   static Uri _loginUri = Uri.https(APIService.apiUrl, "/Identity/authenticate");
-  static Future<int> login(LoginForm loginForm) async {
+  static Future<LoginModel> login(LoginForm loginForm) async {
     var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
     print(jsonEncode(loginForm.toJson()));
-    return response.statusCode;
+    LoginModel loginModel = LoginModel.fromJson(jsonDecode(response.body));
+    return loginModel;
   }
 
   static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");

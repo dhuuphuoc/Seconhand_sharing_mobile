@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
+import 'package:secondhand_sharing/user_singleton/user_singleton.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,10 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.login(
+    LoginModel loginModel = await AuthenticationService.login(
         LoginForm(_usernameTextController.text, _passwordTextController.text));
-    print(statusCode);
-    if (statusCode == 200) {
+    if (loginModel.succeeded) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("token", loginModel.data.jwToken);
+      UserSingleton().token = loginModel.data.jwToken;
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     } else {

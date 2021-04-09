@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/screens/authentication/reset_password/reset_p
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:secondhand_sharing/screens/item/post_item.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
+import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 
 void main() => runApp(TwoHandShareApp());
 
@@ -61,7 +62,8 @@ class TwoHandShareApp extends StatelessWidget {
         const Locale('vi', ''),
       ],
       routes: {
-        "/": (context) => LoginScreen(),
+        "/": (context) => SplashScreen(),
+        "/login": (context) => LoginScreen(),
         "/register": (context) => SignUpScreen(),
         "/forgotPassword": (context) => ForgotPasswordScreen(),
         "/resetPassword": (context) => ResetPasswordScreen(),
