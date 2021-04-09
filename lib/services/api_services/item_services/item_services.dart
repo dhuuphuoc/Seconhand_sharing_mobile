@@ -22,4 +22,6 @@ class ItemServices {
     var itemModel = ItemModel.fromJson(jsonDecode(response.body));
     return itemModel.items;
   }
+
+  static void postItem() {}
 }

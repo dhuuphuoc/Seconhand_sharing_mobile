@@ -2,6 +2,7 @@
     package="com.example.secondhand_sharing">
    <application
         android:label="secondhand_sharing"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

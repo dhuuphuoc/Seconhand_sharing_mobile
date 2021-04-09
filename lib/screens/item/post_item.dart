@@ -4,8 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
+import 'package:secondhand_sharing/screens/item/local_widget/add_photo/add_photo.dart';
+import 'package:secondhand_sharing/screens/item/local_widget/image_view/image_view.dart';
+import 'package:secondhand_sharing/screens/item/local_widget/selective_image_view/selective_image_view.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
 
@@ -22,21 +26,120 @@ class _PostItemScreenState extends State<PostItemScreen> {
     setState(() {
       _isLoading = false;
     });
+
     super.initState();
   }
 
-  File _image;
+  List<File> _imagesInGallery;
+  var _images = <File>[];
   final picker = ImagePicker();
+
+  Future<void> getImages() async {
+    _imagesInGallery = [];
+    var result = await PhotoManager.requestPermission();
+    if (result) {
+      var albums = await PhotoManager.getAssetPathList(
+        type: RequestType.image,
+        onlyAll: true,
+      );
+      print(albums);
+      for (var album in albums) {
+        var assetList = await album.assetList;
+        for (var asset in assetList) {
+          File image = await asset.file;
+          _imagesInGallery.add(image);
+        }
+      }
+    } else {
+      PhotoManager.openSetting();
+    }
+  }
+
+  void submitImage() {
+    setState(() {});
+    Navigator.pop(context);
+  }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
+
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        File image = File(pickedFile.path);
+        setState(() {
+          _imagesInGallery.insert(0, image);
+        });
       } else {
-        print("No image selected");
+        print('No image selected.');
       }
     });
+  }
+
+  void pickImages() {
+    showModalBottomSheet(
+        builder: (BuildContext context) {
+          return FutureBuilder(
+            future: getImages(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return StatefulBuilder(builder: (BuildContext context,
+                  StateSetter setModalState /*You can rename this!*/) {
+                return Container(
+                    height: 300,
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: IconButton(
+                            onPressed: getImage,
+                            icon: Icon(Icons.camera_alt_rounded),
+                          ),
+                          title: Text(
+                            S.of(context).addPhoto,
+                            textAlign: TextAlign.center,
+                          ),
+                          trailing: IconButton(
+                            onPressed: _images.length == 0 ? null : submitImage,
+                            icon: Icon(Icons.check),
+                            color: _images.length == 0
+                                ? Theme.of(context).iconTheme.color
+                                : Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        Expanded(
+                          child: GridView.count(
+                            mainAxisSpacing: 10,
+                            crossAxisCount: 3,
+                            children: _imagesInGallery.map((image) {
+                              return SelectiveImageView(
+                                onPress: () {
+                                  setModalState(() {
+                                    if (_images.any((selectedImage) {
+                                      return selectedImage.path == image.path;
+                                    })) {
+                                      _images.removeWhere((selectedImage) {
+                                        return selectedImage.path == image.path;
+                                      });
+                                    } else {
+                                      _images.add(image);
+                                    }
+                                  });
+                                },
+                                image: image,
+                                isSelected: _images.any((selectedImage) {
+                                  return selectedImage.path == image.path;
+                                }),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ));
+              });
+            },
+          );
+        },
+        backgroundColor: Theme.of(context).backgroundColor,
+        context: context);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -60,21 +163,17 @@ class _PostItemScreenState extends State<PostItemScreen> {
                     borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
                   leading: CircleAvatar(
-                    maxRadius: 25,
-                    child: Image.asset(
-                      "assets/images/person.png",
-                      height: 50,
-                      fit: BoxFit.fill,
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
+                      maxRadius: 25,
+                      child: Image.asset(
+                        "assets/images/person.png",
+                        height: 50,
+                        fit: BoxFit.fill,
+                      ),
+                      backgroundColor: Colors.transparent),
                   title: Text("Name"),
                   subtitle: Row(
                     children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: Colors.pink,
-                      ),
+                      Icon(Icons.location_on_outlined, color: Colors.pink),
                       Text("Address")
                     ],
                   ),
@@ -107,24 +206,17 @@ class _PostItemScreenState extends State<PostItemScreen> {
                     color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(10)),
                 height: 150,
-                child: ListView(
+                child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(minWidth: 120),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Theme.of(context).primaryColor),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_photo_alternate_outlined),
-                          Text(S.of(context).addPhoto),
-                        ],
-                      ),
-                    ),
-                  ],
+                  itemCount: _images.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return AddPhoto(onPress: pickImages);
+                    } else {
+                      File image = _images[index - 1];
+                      return ImageView(image: image);
+                    }
+                  },
                 ),
               ),
               SizedBox(
