@@ -32,5 +32,21 @@
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
-  "addPhoto": "Thêm ảnh"
+  "addPhoto": "Thêm ảnh",
+  "postItem" : "Đăng bài viết",
+  "all" : "Tất cả",
+  "clothes": "Quần áo",
+  "sport" : "Thể thao",
+  "stationery" : "Văn phòng phẩm",
+  "houseware": "Đồ\n gia dụng",
+  "electronic": "Điện tử",
+  "furniture": "Nội thất",
+  "other" : "Khác",
+  "day" : "ngày",
+  "month" : "tháng",
+  "year" : "năm",
+  "hour" : "giờ",
+  "minute" : "phút",
+  "second" : "giây"
+
 }

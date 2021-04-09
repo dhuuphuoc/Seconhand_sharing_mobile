@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
 
 class PostItemScreen extends StatefulWidget {
   @override
@@ -13,8 +15,13 @@ class PostItemScreen extends StatefulWidget {
 }
 
 class _PostItemScreenState extends State<PostItemScreen> {
+  CategoryModel _categoryModel = CategoryModel();
+  bool _isLoading = true;
   @override
   void initState() {
+    setState(() {
+      _isLoading = false;
+    });
     super.initState();
   }
 
@@ -40,13 +47,12 @@ class _PostItemScreenState extends State<PostItemScreen> {
       appBar: AppBar(
           title: Text(S.of(context).donate,
               style: Theme.of(context).textTheme.headline1)),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        child: SingleChildScrollView(
-          child: Form(
+      body: SingleChildScrollView(
+        child: Form(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(children: [
+              //Avatar address
               Card(
                 margin: EdgeInsets.zero,
                 elevation: 10,
@@ -54,8 +60,13 @@ class _PostItemScreenState extends State<PostItemScreen> {
                     borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
                   leading: CircleAvatar(
-                    radius: 30,
-                    foregroundImage: AssetImage("assets/images/person.png"),
+                    maxRadius: 25,
+                    child: Image.asset(
+                      "assets/images/person.png",
+                      height: 50,
+                      fit: BoxFit.fill,
+                    ),
+                    backgroundColor: Colors.transparent,
                   ),
                   title: Text("Name"),
                   subtitle: Row(
@@ -77,6 +88,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               SizedBox(
                 height: 10,
               ),
+              //Title
               TextFormField(
                 decoration: InputDecoration(
                     hintText: "${S.of(context).title}...",
@@ -88,6 +100,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               SizedBox(
                 height: 10,
               ),
+              //Add photo
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
@@ -117,36 +130,12 @@ class _PostItemScreenState extends State<PostItemScreen> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(10)),
-                height: 120,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(minWidth: 70),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Icon(Icons.color_lens_outlined),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text("Clothes"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              //Categories
+              HorizontalCategoriesList(_categoryModel),
               SizedBox(
                 height: 10,
               ),
+              //Phone number
               TextFormField(
                 decoration: InputDecoration(
                     hintText: "${S.of(context).phoneNumber}",
@@ -158,6 +147,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               SizedBox(
                 height: 10,
               ),
+              //Description
               TextFormField(
                 minLines: 8,
                 maxLines: 10,

@@ -374,6 +374,156 @@ class S {
       args: [],
     );
   }
+
+  /// `Post`
+  String get postItem {
+    return Intl.message(
+      'Post',
+      name: 'postItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clothes`
+  String get clothes {
+    return Intl.message(
+      'Clothes',
+      name: 'clothes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sport`
+  String get sport {
+    return Intl.message(
+      'Sport',
+      name: 'sport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stationery`
+  String get stationery {
+    return Intl.message(
+      'Stationery',
+      name: 'stationery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Houseware`
+  String get houseware {
+    return Intl.message(
+      'Houseware',
+      name: 'houseware',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Electronic`
+  String get electronic {
+    return Intl.message(
+      'Electronic',
+      name: 'electronic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Furniture`
+  String get furniture {
+    return Intl.message(
+      'Furniture',
+      name: 'furniture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `day`
+  String get day {
+    return Intl.message(
+      'day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `month`
+  String get month {
+    return Intl.message(
+      'month',
+      name: 'month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `year`
+  String get year {
+    return Intl.message(
+      'year',
+      name: 'year',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hour`
+  String get hour {
+    return Intl.message(
+      'hour',
+      name: 'hour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `minute`
+  String get minute {
+    return Intl.message(
+      'minute',
+      name: 'minute',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `second`
+  String get second {
+    return Intl.message(
+      'second',
+      name: 'second',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
