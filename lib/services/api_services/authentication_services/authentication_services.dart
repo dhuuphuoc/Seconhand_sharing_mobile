@@ -46,11 +46,12 @@ class AuthenticationService {
     return response.statusCode;
   }
 
-  static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");
+  static Uri registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
   static Future<int> register(RegisterForm registerForm) async {
     var response = await http.post(registerUri,
         body: jsonEncode(registerForm.toJson()),
         headers: {"Content-Type": "application/json"});
+    print(response.body);
     return response.statusCode;
   }
 }

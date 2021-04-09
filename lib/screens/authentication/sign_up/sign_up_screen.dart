@@ -18,7 +18,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final _usernameTextController = TextEditingController();
   final _fullNameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -105,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
-                  controller: _usernameTextController,
+                  controller: _fullNameTextController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: S.of(context).name,
