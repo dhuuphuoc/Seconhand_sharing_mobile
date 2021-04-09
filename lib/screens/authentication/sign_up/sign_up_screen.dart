@@ -35,34 +35,67 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _passwordTextController.text));
     print(statusCode);
     if (statusCode == 200) {
-      _showDialog();
+      _showDialogSuccess();
+    } else {
+      _showDialogFail();
     }
     setState(() {
       _isLoading = false;
     });
   }
 
-  Future<void> _showDialog() async {
+  Future<void> _showDialogSuccess() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Register Success'),
+          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          title: Text(S.of(context).success),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Successful'),
+                Text(S.of(context).registerSuccess),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pop(context);
-                // Navigator.pushNamed(context, "/");
+                Navigator.pushNamed(context, "/");
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showDialogFail() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          title: Text(S.of(context).failed),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(S.of(context).registerFailedNotification),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).tryAgain),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -105,6 +138,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _fullNameTextController,
+                  validator: (value) {
+                    return value.isEmpty
+                        ? S.of(context).emptyFullNameError
+                        : null;
+                  },
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: S.of(context).name,
@@ -141,8 +179,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _confirmPasswordTextController,
-                  // validator: Validator.matchPassword(),
+                  validator: (value) {
+                    return value.isEmpty
+                        ? S.of(context).emptyPasswordError
+                        : value == _passwordTextController.text
+                            ? null
+                            : S.of(context).matchPassword;
+                  },
                   obscureText: true,
+                  onEditingComplete: _registerSubmit,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     hintText: S.of(context).confirmPassword,
