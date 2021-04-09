@@ -170,11 +170,11 @@ class _PostItemScreenState extends State<PostItemScreen> {
                         fit: BoxFit.fill,
                       ),
                       backgroundColor: Colors.transparent),
-                  title: Text("Name"),
+                  title: Text("Hữu Dũng"),
                   subtitle: Row(
                     children: [
                       Icon(Icons.location_on_outlined, color: Colors.pink),
-                      Text("Address")
+                      Text("67 Dã tượng")
                     ],
                   ),
                   trailing: IconButton(
