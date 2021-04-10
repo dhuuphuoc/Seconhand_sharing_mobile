@@ -33,7 +33,7 @@
   "failed" : "Failed",
   "loginFailedNotification" : "Username or password is incorrect.",
   "success": "Success",
-  "registerSuccess": "Register Successful",
+  "registerSuccess": "Register Successful. Check your confirm email",
   "registerFailedNotification": "Register information is incorrect",
   "emptyFullNameError": "Full Name can't be empty",
   "addPhoto": "Add photo",
@@ -51,7 +51,9 @@
   "year" : "year",
   "hour" : "hour",
   "minute" : "minute",
-  "second" : "second"
+  "second" : "second",
+  "checkMailForgotPassword": "Check your email",
+  "unexistEmail": "Your email does not exist"
 
 
 }

@@ -33,7 +33,7 @@
   "failed" : "Thất bại",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
   "success": "Thành công",
-  "registerSuccess": "Đăng ký thành ",
+  "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
   "registerFailedNotification": "Thông tin đăng ký không ",
   "emptyFullNameError": "Tên không được bỏ trống ",
   "addPhoto": "Thêm ảnh",
@@ -51,6 +51,8 @@
   "year" : "năm",
   "hour" : "giờ",
   "minute" : "phút",
-  "second" : "giây"
+  "second" : "giây",
+  "checkMailForgotPassword": "Kiểm tra email của bạn",
+  "unexistEmail": "Email của bạn không tồn tại"
 
 }

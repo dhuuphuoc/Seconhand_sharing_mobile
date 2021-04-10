@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -29,12 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.register(RegisterForm(
-        _fullNameTextController.text,
-        _emailTextController.text,
-        _passwordTextController.text));
-    print(statusCode);
-    if (statusCode == 200) {
+
+    RegisterModel registerModel = await AuthenticationService.register(
+        RegisterForm(_fullNameTextController.text, _emailTextController.text,
+            _passwordTextController.text));
+    if (registerModel.succeeded == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       _showDialogSuccess();
     } else {
       _showDialogFail();

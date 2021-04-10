@@ -375,10 +375,10 @@ class S {
     );
   }
 
-  /// `Register Successful`
+  /// `Register Successful. Check your confirm email`
   String get registerSuccess {
     return Intl.message(
-      'Register Successful',
+      'Register Successful. Check your confirm email',
       name: 'registerSuccess',
       desc: '',
       args: [],
@@ -560,6 +560,26 @@ class S {
     return Intl.message(
       'second',
       name: 'second',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email`
+  String get checkMailForgotPassword {
+    return Intl.message(
+      'Check your email',
+      name: 'checkMailForgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your email does not exist`
+  String get unexistEmail {
+    return Intl.message(
+      'Your email does not exist',
+      name: 'unexistEmail',
       desc: '',
       args: [],
     );
