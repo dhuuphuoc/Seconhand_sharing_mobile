@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addPhoto" : MessageLookupByLibrary.simpleMessage("Thêm ảnh"),
     "all" : MessageLookupByLibrary.simpleMessage("Tất cả"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Dùng địa chỉ Email khác"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),

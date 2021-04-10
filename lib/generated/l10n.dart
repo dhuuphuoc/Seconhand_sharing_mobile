@@ -365,6 +365,16 @@ class S {
     );
   }
 
+  /// `Add photo`
+  String get addPhoto {
+    return Intl.message(
+      'Add photo',
+      name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Post`
   String get postItem {
     return Intl.message(

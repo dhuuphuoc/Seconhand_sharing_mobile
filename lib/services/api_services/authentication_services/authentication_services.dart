@@ -1,61 +1,67 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
 class LoginForm {
-  String _username;
-  String _password;
-
-  LoginForm(this._username, this._password);
-
-  String get password => _password;
-
-  String get username => _username;
-
-  Map<String, dynamic> toJson() => {
-        "username": _username,
-        "password": _password,
-      };
-}
-
-class RegisterForm {
-  String _fullName;
   String _email;
   String _password;
 
-  RegisterForm(this._fullName, this._email, this._password);
-
-  String get fullName => _fullName;
-
-  String get email => _email;
+  LoginForm(this._email, this._password);
 
   String get password => _password;
 
+  String get email => _email;
+
   Map<String, dynamic> toJson() => {
-        "fullName": _fullName,
         "email": _email,
         "password": _password,
       };
 }
 
-class AuthenticationService {
-  static Uri loginUri = Uri.parse(APIService.apiUrl + "/Identity/authenticate");
+class RegisterForm {
+  String _username;
+  String _password;
+  String _confirmPassword;
+  String _fullName;
+  String _email;
 
-  static Future<int> login(LoginForm loginForm) async {
-    var response = await http.post(loginUri,
+  RegisterForm(this._username, this._password, this._confirmPassword,
+      this._fullName, this._email);
+
+  String get username => _username;
+  String get password => _password;
+  String get confirmPassword => _confirmPassword;
+  String get fullName => _fullName;
+  String get email => _email;
+
+  Map<String, dynamic> toJson() => {
+        "username": _username,
+        "password": _password,
+        "confirmPassword": _confirmPassword,
+        "fullName": _fullName,
+        "email": _email,
+      };
+}
+
+class AuthenticationService {
+  static Uri _loginUri = Uri.https(APIService.apiUrl, "/Identity/authenticate");
+  static Future<LoginModel> login(LoginForm loginForm) async {
+    var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
-        headers: {"Content-Type": "application/json"});
-    return response.statusCode;
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    print(jsonEncode(loginForm.toJson()));
+    LoginModel loginModel = LoginModel.fromJson(jsonDecode(response.body));
+    return loginModel;
   }
 
-  static Uri registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
-
+  static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");
   static Future<int> register(RegisterForm registerForm) async {
     var response = await http.post(registerUri,
         body: jsonEncode(registerForm.toJson()),
         headers: {"Content-Type": "application/json"});
-    print(response.body);
     return response.statusCode;
   }
 }
