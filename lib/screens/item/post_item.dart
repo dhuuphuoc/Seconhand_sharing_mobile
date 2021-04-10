@@ -15,7 +15,6 @@ import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal
 import "package:ext_storage/ext_storage.dart";
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:mime/mime.dart' as mime;
-import 'package:watcher/watcher.dart';
 
 class PostItemScreen extends StatefulWidget {
   @override
