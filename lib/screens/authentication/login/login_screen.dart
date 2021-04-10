@@ -4,7 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/user_singleton/user_singleton.dart';
-import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/ultils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

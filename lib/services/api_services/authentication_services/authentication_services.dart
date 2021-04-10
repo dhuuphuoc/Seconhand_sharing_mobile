@@ -22,27 +22,20 @@ class LoginForm {
 }
 
 class RegisterForm {
-  String _username;
-  String _password;
-  String _confirmPassword;
   String _fullName;
   String _email;
+  String _password;
 
-  RegisterForm(this._username, this._password, this._confirmPassword,
-      this._fullName, this._email);
+  RegisterForm(this._fullName, this._email, this._password);
 
-  String get username => _username;
-  String get password => _password;
-  String get confirmPassword => _confirmPassword;
   String get fullName => _fullName;
   String get email => _email;
+  String get password => _password;
 
   Map<String, dynamic> toJson() => {
-        "username": _username,
-        "password": _password,
-        "confirmPassword": _confirmPassword,
         "fullName": _fullName,
         "email": _email,
+        "password": _password,
       };
 }
 
@@ -57,7 +50,7 @@ class AuthenticationService {
     return loginModel;
   }
 
-  static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");
+  static Uri registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
   static Future<int> register(RegisterForm registerForm) async {
     var response = await http.post(registerUri,
         body: jsonEncode(registerForm.toJson()),

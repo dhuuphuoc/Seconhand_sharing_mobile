@@ -365,6 +365,46 @@ class S {
     );
   }
 
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Successful`
+  String get registerSuccess {
+    return Intl.message(
+      'Register Successful',
+      name: 'registerSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register information is incorrect`
+  String get registerFailedNotification {
+    return Intl.message(
+      'Register information is incorrect',
+      name: 'registerFailedNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Name can't be empty`
+  String get emptyFullNameError {
+    return Intl.message(
+      'Full Name can\'t be empty',
+      name: 'emptyFullNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add photo`
   String get addPhoto {
     return Intl.message(
