@@ -4,7 +4,7 @@ import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
-import 'package:secondhand_sharing/ultils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
 
 class HomeTab extends StatefulWidget {
