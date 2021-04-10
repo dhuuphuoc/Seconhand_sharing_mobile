@@ -23,7 +23,7 @@ class CategoryIcons {
   CategoryIcons._();
 
   static const _kFontFam = 'CategoryIcons';
-  static const IconData hands = IconData(0xf4c2, fontFamily: _kFontFam);
+
   static const IconData clothes = IconData(0xe800, fontFamily: _kFontFam);
   static const IconData houseware = IconData(0xe801, fontFamily: _kFontFam);
   static const IconData furniture = IconData(0xe803, fontFamily: _kFontFam);
