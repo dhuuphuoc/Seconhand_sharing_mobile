@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addPhoto" : MessageLookupByLibrary.simpleMessage("Add photo"),
+    "address" : MessageLookupByLibrary.simpleMessage("Address"),
+    "addressHint" : MessageLookupByLibrary.simpleMessage("Number, street"),
     "all" : MessageLookupByLibrary.simpleMessage("All"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Use another Email"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),
@@ -31,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueButton" : MessageLookupByLibrary.simpleMessage("Continue"),
     "day" : MessageLookupByLibrary.simpleMessage("day"),
     "description" : MessageLookupByLibrary.simpleMessage("Description"),
+    "district" : MessageLookupByLibrary.simpleMessage("District"),
     "donate" : MessageLookupByLibrary.simpleMessage("Donate"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Electronic"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email can\'t be empty"),
@@ -55,6 +58,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "phoneNumber" : MessageLookupByLibrary.simpleMessage("Phone number"),
     "post" : MessageLookupByLibrary.simpleMessage("Post"),
     "postItem" : MessageLookupByLibrary.simpleMessage("Post"),
+    "province" : MessageLookupByLibrary.simpleMessage("Province"),
+    "receiveAddress" : MessageLookupByLibrary.simpleMessage("Receive address"),
     "register" : MessageLookupByLibrary.simpleMessage("Register"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration"),
@@ -69,6 +74,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Password must contain at least eight characters, at least one letter and one number"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Enter verify code"),
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email"),
+    "vietNam" : MessageLookupByLibrary.simpleMessage("Viet Nam"),
+    "ward" : MessageLookupByLibrary.simpleMessage("Ward"),
     "year" : MessageLookupByLibrary.simpleMessage("year")
   };
 }

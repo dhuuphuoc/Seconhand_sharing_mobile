@@ -47,6 +47,13 @@
   "year" : "năm",
   "hour" : "giờ",
   "minute" : "phút",
-  "second" : "giây"
+  "second" : "giây",
+  "address" : "Địa chỉ",
+  "addressHint" : "Số nhà, tên đường",
+  "ward" : "Phường xã",
+  "district" : "Quận huyện",
+  "province" : "Tỉnh thành",
+  "vietNam" : "Việt Nam",
+  "receiveAddress" : "Địa chỉ nhận"
 
 }

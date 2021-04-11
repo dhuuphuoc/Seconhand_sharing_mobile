@@ -12,7 +12,7 @@ class AddPhoto extends StatelessWidget {
       onTap: onPress,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        constraints: BoxConstraints(minWidth: 120),
+        width: 130,
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10)),

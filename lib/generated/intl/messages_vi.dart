@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "addPhoto" : MessageLookupByLibrary.simpleMessage("Thêm ảnh"),
+    "address" : MessageLookupByLibrary.simpleMessage("Địa chỉ"),
+    "addressHint" : MessageLookupByLibrary.simpleMessage("Số nhà, tên đường"),
     "all" : MessageLookupByLibrary.simpleMessage("Tất cả"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Dùng địa chỉ Email khác"),
     "brand" : MessageLookupByLibrary.simpleMessage("2Hand - Sharing"),
@@ -31,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueButton" : MessageLookupByLibrary.simpleMessage("Tiếp tục"),
     "day" : MessageLookupByLibrary.simpleMessage("ngày"),
     "description" : MessageLookupByLibrary.simpleMessage("Mô tả"),
+    "district" : MessageLookupByLibrary.simpleMessage("Quận huyện"),
     "donate" : MessageLookupByLibrary.simpleMessage("Quyên tặng"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Điện tử"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email không được bỏ trống"),
@@ -55,6 +58,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "phoneNumber" : MessageLookupByLibrary.simpleMessage("Số điện thoại"),
     "post" : MessageLookupByLibrary.simpleMessage("Đăng"),
     "postItem" : MessageLookupByLibrary.simpleMessage("Đăng bài viết"),
+    "province" : MessageLookupByLibrary.simpleMessage("Tỉnh thành"),
+    "receiveAddress" : MessageLookupByLibrary.simpleMessage("Địa chỉ nhận"),
     "register" : MessageLookupByLibrary.simpleMessage("Đăng ký"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký"),
@@ -69,6 +74,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "validatePassword" : MessageLookupByLibrary.simpleMessage("Mật khẩu phải chứa ít nhất 8 kí tự, ít nhất 1 chữ và 1 số"),
     "verifyCode" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực"),
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email"),
+    "vietNam" : MessageLookupByLibrary.simpleMessage("Việt Nam"),
+    "ward" : MessageLookupByLibrary.simpleMessage("Phường xã"),
     "year" : MessageLookupByLibrary.simpleMessage("năm")
   };
 }

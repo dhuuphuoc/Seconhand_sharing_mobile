@@ -6,7 +6,8 @@ import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgo
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
-import 'package:secondhand_sharing/screens/item/post_item.dart';
+import 'package:secondhand_sharing/screens/item/address_screen/address_screen.dart';
+import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 
@@ -43,12 +44,17 @@ class TwoHandShareApp extends StatelessWidget {
             fontSize: 20,
             color: Color(0xFF494949),
           ),
+          headline3: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            color: Color(0xFF494949),
+          ),
           bodyText1: TextStyle(
               fontSize: 14,
               color: Color(0xFFA9A9A9),
               fontWeight: FontWeight.w700),
           bodyText2: TextStyle(fontSize: 16, color: Color(0xFF494949)),
-          subtitle2: TextStyle(fontSize: 16, color: Color(0xFFA9A9A9)),
+          subtitle2: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
         ),
       ),
       localizationsDelegates: [
@@ -69,6 +75,7 @@ class TwoHandShareApp extends StatelessWidget {
         "/resetPassword": (context) => ResetPasswordScreen(),
         "/home": (context) => MainScreen(),
         "/postItem": (context) => PostItemScreen(),
+        "/item/address": (context) => AddressScreen(),
       },
     );
   }

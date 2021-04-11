@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/models/item_model/item_model.dart';
+import 'package:secondhand_sharing/models/user_model/user_singleton/access_token.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
-import 'package:secondhand_sharing/user_singleton/user_singleton.dart';
 
 class ItemServices {
   static final int _pageSize = 5;
@@ -16,9 +16,10 @@ class ItemServices {
       "PageSize": _pageSize.toString()
     });
     var response = await http.get(getItemsUrl, headers: {
-      HttpHeaders.authorizationHeader: "Bearer ${UserSingleton().token}",
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: "application/json",
     });
+    print(response.body);
     var itemModel = ItemModel.fromJson(jsonDecode(response.body));
     return itemModel.items;
   }

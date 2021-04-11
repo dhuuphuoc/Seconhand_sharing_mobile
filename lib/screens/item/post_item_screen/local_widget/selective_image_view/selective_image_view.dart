@@ -16,7 +16,6 @@ class SelectiveImageView extends StatelessWidget {
       onTap: onPress,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        constraints: BoxConstraints(minWidth: 120),
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10)),

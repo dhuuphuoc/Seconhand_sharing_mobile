@@ -47,7 +47,12 @@
   "year" : "year",
   "hour" : "hour",
   "minute" : "minute",
-  "second" : "second"
-
-
+  "second" : "second",
+  "address" : "Address",
+  "addressHint" : "Number, street",
+  "ward" : "Ward",
+  "district" : "District",
+  "province" : "Province",
+  "vietNam" : "Viet Nam",
+  "receiveAddress" : "Receive address"
 }

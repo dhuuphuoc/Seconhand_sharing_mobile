@@ -524,6 +524,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number, street`
+  String get addressHint {
+    return Intl.message(
+      'Number, street',
+      name: 'addressHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ward`
+  String get ward {
+    return Intl.message(
+      'Ward',
+      name: 'ward',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `District`
+  String get district {
+    return Intl.message(
+      'District',
+      name: 'district',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Province`
+  String get province {
+    return Intl.message(
+      'Province',
+      name: 'province',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Viet Nam`
+  String get vietNam {
+    return Intl.message(
+      'Viet Nam',
+      name: 'vietNam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receive address`
+  String get receiveAddress {
+    return Intl.message(
+      'Receive address',
+      name: 'receiveAddress',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
