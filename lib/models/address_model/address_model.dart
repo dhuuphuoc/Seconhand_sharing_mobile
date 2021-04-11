@@ -12,9 +12,12 @@ class AddressModel {
   String toString() {
     StringBuffer stringBuffer = StringBuffer();
     stringBuffer.write(address == null ? "" : address.trim());
-    stringBuffer.write(address == null ? "" : ", ");
-    stringBuffer
-        .write(ward == null ? "" : ward.name.replaceFirst("Phường ", "P."));
+    stringBuffer.write(address == null || address == "" ? "" : ", ");
+    stringBuffer.write(ward == null
+        ? ""
+        : ward.name
+            .replaceFirst("Phường ", "P.")
+            .replaceFirst("Thị trấn", "TT."));
     stringBuffer.write(ward == null ? "" : ", ");
     stringBuffer.write(district == null
         ? ""

@@ -54,5 +54,10 @@
   "district" : "District",
   "province" : "Province",
   "vietNam" : "Viet Nam",
-  "receiveAddress" : "Receive address"
+  "receiveAddress" : "Receive address",
+  "provinceError" : "Province can't be empty!",
+  "districtError" : "District can't be empty!",
+  "wardError" : "Ward can't be empty!",
+  "addressError" : "Address can't be empty!"
+
 }

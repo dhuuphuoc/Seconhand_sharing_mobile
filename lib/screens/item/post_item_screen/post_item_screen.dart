@@ -11,6 +11,7 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/ad
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
+import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
@@ -56,6 +57,9 @@ class _PostItemScreenState extends State<PostItemScreen> {
     });
   }
 
+  final _titleController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -66,6 +70,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               style: Theme.of(context).textTheme.headline1)),
       body: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(children: [
@@ -76,6 +81,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               ),
               //Title
               TextFormField(
+                controller: _titleController,
                 decoration: InputDecoration(
                     hintText: "${S.of(context).title}...",
                     labelText: "${S.of(context).title}",
@@ -118,6 +124,8 @@ class _PostItemScreenState extends State<PostItemScreen> {
               ),
               //Phone number
               TextFormField(
+                controller: _phoneNumberController,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                     hintText: "0912345678",
                     labelText: "${S.of(context).phoneNumber}",
@@ -133,6 +141,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
               TextFormField(
                 minLines: 8,
                 maxLines: 20,
+                controller: _descriptionController,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
                     hintText: "${S.of(context).description}...",
@@ -144,10 +153,13 @@ class _PostItemScreenState extends State<PostItemScreen> {
               SizedBox(
                 height: 10,
               ),
-              GradientButton(
-                onPress: () {},
-                text: S.of(context).post,
-              ),
+              Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        PostItemForm postItemForm = PostItemForm();
+                      },
+                      child: Text(S.of(context).post))),
               SizedBox(
                 height: 10,
               )

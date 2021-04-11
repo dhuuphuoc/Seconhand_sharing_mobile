@@ -22,6 +22,9 @@ List<Province> parseData(String data) {
     int provinceId = int.tryParse(row[6]);
     String provinceName = row[7].replaceFirst("Tỉnh ", "");
     if (provinceId != currentProvince.id) {
+      currentProvince.districts.sort((district1, district2) {
+        return district1.name.compareTo(district2.name);
+      });
       Province provinceNode = Province(provinceId, provinceName);
       provinces.add(provinceNode);
       currentProvince = provinceNode;
@@ -30,6 +33,9 @@ List<Province> parseData(String data) {
     int districtId = int.tryParse(row[4]);
     String districtName = row[5];
     if (districtId != currentDistrict.id) {
+      currentDistrict.wards.sort((ward1, ward2) {
+        return ward1.name.compareTo(ward2.name);
+      });
       District districtNode = District(districtId, districtName);
       currentProvince.districts.add(districtNode);
       currentDistrict = districtNode;
@@ -40,6 +46,9 @@ List<Province> parseData(String data) {
     Ward wardNode = Ward(wardId, wardName);
     currentDistrict.wards.add(wardNode);
   }
+  provinces.sort((province1, province2) {
+    return province1.name.compareTo(province2.name);
+  });
   return provinces;
 }
 

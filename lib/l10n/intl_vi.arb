@@ -54,6 +54,10 @@
   "district" : "Quận huyện",
   "province" : "Tỉnh thành",
   "vietNam" : "Việt Nam",
-  "receiveAddress" : "Địa chỉ nhận"
+  "receiveAddress" : "Địa chỉ nhận",
+  "provinceError" : "Tỉnh thành không được trống!",
+  "districtError" : "Quận huyện không được trống!",
+  "wardError" : "Phường xã không được trống!",
+  "addressError" : "Số nhà, tên đường không được bỏ trống"
 
 }

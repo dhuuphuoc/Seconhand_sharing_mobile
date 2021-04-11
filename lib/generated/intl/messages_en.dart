@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "addPhoto" : MessageLookupByLibrary.simpleMessage("Add photo"),
     "address" : MessageLookupByLibrary.simpleMessage("Address"),
+    "addressError" : MessageLookupByLibrary.simpleMessage("Address can\'t be empty!"),
     "addressHint" : MessageLookupByLibrary.simpleMessage("Number, street"),
     "all" : MessageLookupByLibrary.simpleMessage("All"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Use another Email"),
@@ -34,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "day" : MessageLookupByLibrary.simpleMessage("day"),
     "description" : MessageLookupByLibrary.simpleMessage("Description"),
     "district" : MessageLookupByLibrary.simpleMessage("District"),
+    "districtError" : MessageLookupByLibrary.simpleMessage("District can\'t be empty!"),
     "donate" : MessageLookupByLibrary.simpleMessage("Donate"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Electronic"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email can\'t be empty"),
@@ -59,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "post" : MessageLookupByLibrary.simpleMessage("Post"),
     "postItem" : MessageLookupByLibrary.simpleMessage("Post"),
     "province" : MessageLookupByLibrary.simpleMessage("Province"),
+    "provinceError" : MessageLookupByLibrary.simpleMessage("Province can\'t be empty!"),
     "receiveAddress" : MessageLookupByLibrary.simpleMessage("Receive address"),
     "register" : MessageLookupByLibrary.simpleMessage("Register"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
@@ -76,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Enter the 4-digit verification code sent to your email"),
     "vietNam" : MessageLookupByLibrary.simpleMessage("Viet Nam"),
     "ward" : MessageLookupByLibrary.simpleMessage("Ward"),
+    "wardError" : MessageLookupByLibrary.simpleMessage("Ward can\'t be empty!"),
     "year" : MessageLookupByLibrary.simpleMessage("year")
   };
 }

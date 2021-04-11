@@ -594,6 +594,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Province can't be empty!`
+  String get provinceError {
+    return Intl.message(
+      'Province can\'t be empty!',
+      name: 'provinceError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `District can't be empty!`
+  String get districtError {
+    return Intl.message(
+      'District can\'t be empty!',
+      name: 'districtError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ward can't be empty!`
+  String get wardError {
+    return Intl.message(
+      'Ward can\'t be empty!',
+      name: 'wardError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address can't be empty!`
+  String get addressError {
+    return Intl.message(
+      'Address can\'t be empty!',
+      name: 'addressError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

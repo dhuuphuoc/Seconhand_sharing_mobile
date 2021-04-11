@@ -37,6 +37,9 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
   }
 
   Future<void> loadImages() async {
+    setState(() {
+      _isLoading = true;
+    });
     var capture = await path.getExternalStorageDirectory();
 
     var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(
@@ -52,6 +55,9 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
 
     var picture = Directory(picturePath);
     await collectImagesFromDirectory(picture);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> collectImagesFromDirectory(FileSystemEntity entity) async {
@@ -74,13 +80,8 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
 
   @override
   void initState() {
-    setState(() {
-      _isLoading = true;
-    });
     loadImages();
-    setState(() {
-      _isLoading = false;
-    });
+
     super.initState();
   }
 

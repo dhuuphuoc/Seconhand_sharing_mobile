@@ -1,8 +1,27 @@
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/address_model/district/district.dart';
+import 'package:secondhand_sharing/models/address_model/province/province.dart';
+import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
 
 class Validator {
   static String validateUsername(String username) {
     return username.length < 6 ? S.current.invalidUsername : null;
+  }
+
+  static String validateProvince(Province province) {
+    return province == null ? S.current.provinceError : null;
+  }
+
+  static String validateDistrict(District district) {
+    return district == null ? S.current.districtError : null;
+  }
+
+  static String validateWard(Ward ward) {
+    return ward == null ? S.current.wardError : null;
+  }
+
+  static String validateAddress(String address) {
+    return address.length == 0 ? S.current.addressError : null;
   }
 
   static String validateEmail(String email) {
@@ -25,8 +44,6 @@ class Validator {
   }
 
   static String matchPassword(String confirmPassword, String password) {
-    return  (confirmPassword == password)
-        ? null
-        : S.current.matchPassword;
+    return (confirmPassword == password) ? null : S.current.matchPassword;
   }
 }

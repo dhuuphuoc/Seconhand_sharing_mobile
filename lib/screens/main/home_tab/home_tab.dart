@@ -72,21 +72,28 @@ class _HomeTabState extends State<HomeTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  item.imageUrl,
+              ListTile(
+                leading: CircleAvatar(
+                  child: Image.asset("assets/images/person.png"),
+                  backgroundColor: Theme.of(context).backgroundColor,
+                ),
+                title: Text(
+                  item.donateAccountName,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
+              Image.network(
+                item.imageUrl,
+              ),
               Container(
-                padding: EdgeInsets.only(top: 10, left: 5),
+                padding: EdgeInsets.only(top: 10, left: 15),
                 child: Text(
                   item.itemName,
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Text(
                   "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)} - ${item.receiveAddress}",
                   overflow: TextOverflow.ellipsis,
@@ -97,7 +104,7 @@ class _HomeTabState extends State<HomeTab> {
                 height: 3,
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Text(
                   item.description,
                   overflow: TextOverflow.ellipsis,

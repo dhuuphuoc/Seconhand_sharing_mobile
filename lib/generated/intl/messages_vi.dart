@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "addPhoto" : MessageLookupByLibrary.simpleMessage("Thêm ảnh"),
     "address" : MessageLookupByLibrary.simpleMessage("Địa chỉ"),
+    "addressError" : MessageLookupByLibrary.simpleMessage("Số nhà, tên đường không được bỏ trống"),
     "addressHint" : MessageLookupByLibrary.simpleMessage("Số nhà, tên đường"),
     "all" : MessageLookupByLibrary.simpleMessage("Tất cả"),
     "anotherEmail" : MessageLookupByLibrary.simpleMessage("Dùng địa chỉ Email khác"),
@@ -34,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "day" : MessageLookupByLibrary.simpleMessage("ngày"),
     "description" : MessageLookupByLibrary.simpleMessage("Mô tả"),
     "district" : MessageLookupByLibrary.simpleMessage("Quận huyện"),
+    "districtError" : MessageLookupByLibrary.simpleMessage("Quận huyện không được trống!"),
     "donate" : MessageLookupByLibrary.simpleMessage("Quyên tặng"),
     "electronic" : MessageLookupByLibrary.simpleMessage("Điện tử"),
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email không được bỏ trống"),
@@ -59,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "post" : MessageLookupByLibrary.simpleMessage("Đăng"),
     "postItem" : MessageLookupByLibrary.simpleMessage("Đăng bài viết"),
     "province" : MessageLookupByLibrary.simpleMessage("Tỉnh thành"),
+    "provinceError" : MessageLookupByLibrary.simpleMessage("Tỉnh thành không được trống!"),
     "receiveAddress" : MessageLookupByLibrary.simpleMessage("Địa chỉ nhận"),
     "register" : MessageLookupByLibrary.simpleMessage("Đăng ký"),
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
@@ -76,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "verifyCodeHint" : MessageLookupByLibrary.simpleMessage("Nhập mã xác thực bao gồm 4 số được gửi về email"),
     "vietNam" : MessageLookupByLibrary.simpleMessage("Việt Nam"),
     "ward" : MessageLookupByLibrary.simpleMessage("Phường xã"),
+    "wardError" : MessageLookupByLibrary.simpleMessage("Phường xã không được trống!"),
     "year" : MessageLookupByLibrary.simpleMessage("năm")
   };
 }

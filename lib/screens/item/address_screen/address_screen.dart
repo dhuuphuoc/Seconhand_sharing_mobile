@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country_da
 import 'package:secondhand_sharing/models/address_model/district/district.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
+import 'package:secondhand_sharing/utils/validator/validator.dart';
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -32,90 +33,97 @@ class _AddressScreenState extends State<AddressScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DropdownButton<Province>(
-                  value: _addressModel.province,
-                  hint: Text(S.of(context).province),
-                  onChanged: (province) {
-                    setState(() {
-                      _addressModel.province = province;
-                      _addressModel.district = null;
-                      _addressModel.ward = null;
-                    });
-                  },
-                  items: _vn.provinces
-                      .map<DropdownMenuItem<Province>>(
-                          (province) => DropdownMenuItem<Province>(
-                                value: province,
-                                child: Text(province.name),
-                              ))
-                      .toList(),
-                ),
-                SizedBox(height: 10),
-                DropdownButton<District>(
-                  value: _addressModel.district,
-                  elevation: 16,
-                  hint: Text(S.of(context).district),
-                  onChanged: (district) {
-                    setState(() {
-                      _addressModel.district = district;
-                      _addressModel.ward = null;
-                    });
-                  },
-                  items: _addressModel.province != null
-                      ? _addressModel.province.districts
-                          .map<DropdownMenuItem<District>>(
-                              (district) => DropdownMenuItem<District>(
-                                    value: district,
-                                    child: Text(district.name),
-                                  ))
-                          .toList()
-                      : [],
-                ),
-                SizedBox(height: 10),
-                DropdownButton<Ward>(
-                  value: _addressModel.ward,
-                  hint: Text(S.of(context).ward),
-                  onChanged: (ward) {
-                    setState(() {
-                      _addressModel.ward = ward;
-                    });
-                  },
-                  items: _addressModel.district != null
-                      ? _addressModel.district.wards
-                          .map<DropdownMenuItem<Ward>>(
-                              (ward) => DropdownMenuItem<Ward>(
-                                    value: ward,
-                                    child: Text(ward.name),
-                                  ))
-                          .toList()
-                      : [],
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                      hintText: S.of(context).addressHint,
-                      labelText: S.of(context).address),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _addressModel.address = _addressController.text;
-                        Navigator.pop(context, _addressModel);
-                      },
-                      child: Text(S.of(context).confirm)),
-                )
-              ],
+        child: Card(
+          child: Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DropdownButtonFormField<Province>(
+                    validator: Validator.validateProvince,
+                    value: _addressModel.province,
+                    hint: Text(S.of(context).province),
+                    onChanged: (province) {
+                      setState(() {
+                        _addressModel.province = province;
+                        _addressModel.district = null;
+                        _addressModel.ward = null;
+                      });
+                    },
+                    items: _vn.provinces
+                        .map<DropdownMenuItem<Province>>(
+                            (province) => DropdownMenuItem<Province>(
+                                  value: province,
+                                  child: Text(province.name),
+                                ))
+                        .toList(),
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButtonFormField<District>(
+                    validator: Validator.validateDistrict,
+                    value: _addressModel.district,
+                    elevation: 16,
+                    hint: Text(S.of(context).district),
+                    onChanged: (district) {
+                      setState(() {
+                        _addressModel.district = district;
+                        _addressModel.ward = null;
+                      });
+                    },
+                    items: _addressModel.province != null
+                        ? _addressModel.province.districts
+                            .map<DropdownMenuItem<District>>(
+                                (district) => DropdownMenuItem<District>(
+                                      value: district,
+                                      child: Text(district.name),
+                                    ))
+                            .toList()
+                        : [],
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButtonFormField<Ward>(
+                    validator: Validator.validateWard,
+                    value: _addressModel.ward,
+                    hint: Text(S.of(context).ward),
+                    onChanged: (ward) {
+                      setState(() {
+                        _addressModel.ward = ward;
+                      });
+                    },
+                    items: _addressModel.district != null
+                        ? _addressModel.district.wards
+                            .map<DropdownMenuItem<Ward>>(
+                                (ward) => DropdownMenuItem<Ward>(
+                                      value: ward,
+                                      child: Text(ward.name),
+                                    ))
+                            .toList()
+                        : [],
+                  ),
+                  TextFormField(
+                    validator: Validator.validateAddress,
+                    controller: _addressController,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                        hintText: S.of(context).addressHint,
+                        labelText: S.of(context).address),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if (!_formKey.currentState.validate()) return;
+                          _addressModel.address = _addressController.text;
+                          Navigator.pop(context, _addressModel);
+                        },
+                        child: Text(S.of(context).confirm)),
+                  )
+                ],
+              ),
             ),
           ),
         ),
