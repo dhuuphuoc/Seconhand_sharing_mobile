@@ -365,11 +365,11 @@ class S {
     );
   }
 
-  /// `Add photo`
-  String get addPhoto {
+  /// `Select photos`
+  String get selectPhotos {
     return Intl.message(
-      'Add photo',
-      name: 'addPhoto',
+      'Select photos',
+      name: 'selectPhotos',
       desc: '',
       args: [],
     );
@@ -596,40 +596,90 @@ class S {
   }
 
   /// `Province can't be empty!`
-  String get provinceError {
+  String get provinceEmptyError {
     return Intl.message(
       'Province can\'t be empty!',
-      name: 'provinceError',
+      name: 'provinceEmptyError',
       desc: '',
       args: [],
     );
   }
 
   /// `District can't be empty!`
-  String get districtError {
+  String get districtEmptyError {
     return Intl.message(
       'District can\'t be empty!',
-      name: 'districtError',
+      name: 'districtEmptyError',
       desc: '',
       args: [],
     );
   }
 
   /// `Ward can't be empty!`
-  String get wardError {
+  String get wardEmptyError {
     return Intl.message(
       'Ward can\'t be empty!',
-      name: 'wardError',
+      name: 'wardEmptyError',
       desc: '',
       args: [],
     );
   }
 
   /// `Address can't be empty!`
-  String get addressError {
+  String get addressEmptyError {
     return Intl.message(
       'Address can\'t be empty!',
-      name: 'addressError',
+      name: 'addressEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid phone number!`
+  String get invalidPhoneNumber {
+    return Intl.message(
+      'Invalid phone number!',
+      name: 'invalidPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title can't be empty!`
+  String get titleEmptyError {
+    return Intl.message(
+      'Title can\'t be empty!',
+      name: 'titleEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description can't be empty!`
+  String get descriptionEmptyError {
+    return Intl.message(
+      'Description can\'t be empty!',
+      name: 'descriptionEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item must have at least one images!`
+  String get notEnoughImages {
+    return Intl.message(
+      'Item must have at least one images!',
+      name: 'notEnoughImages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Images`
+  String get images {
+    return Intl.message(
+      'Images',
+      name: 'images',
       desc: '',
       args: [],
     );

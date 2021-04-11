@@ -32,7 +32,7 @@
   "tryAgain" : "Try again",
   "failed" : "Failed",
   "loginFailedNotification" : "Username or password is incorrect.",
-  "addPhoto": "Add photo",
+  "selectPhotos": "Select photos",
   "postItem" : "Post",
   "all" : "All",
   "clothes": "Clothes",
@@ -55,9 +55,14 @@
   "province" : "Province",
   "vietNam" : "Viet Nam",
   "receiveAddress" : "Receive address",
-  "provinceError" : "Province can't be empty!",
-  "districtError" : "District can't be empty!",
-  "wardError" : "Ward can't be empty!",
-  "addressError" : "Address can't be empty!"
+  "provinceEmptyError" : "Province can't be empty!",
+  "districtEmptyError" : "District can't be empty!",
+  "wardEmptyError" : "Ward can't be empty!",
+  "addressEmptyError" : "Address can't be empty!",
+  "invalidPhoneNumber" : "Invalid phone number!",
+  "titleEmptyError" : "Title can't be empty!",
+  "descriptionEmptyError" : "Description can't be empty!",
+  "notEnoughImages" : "Item must have at least one images!",
+  "images" : "Images"
 
 }

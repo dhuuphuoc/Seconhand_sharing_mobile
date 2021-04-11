@@ -95,7 +95,8 @@ class _HomeTabState extends State<HomeTab> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Text(
-                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)} - ${item.receiveAddress}",
+                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}\n${item.receiveAddress}",
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),

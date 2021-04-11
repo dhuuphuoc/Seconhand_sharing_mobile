@@ -20,7 +20,8 @@ class AddPhoto extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.add_photo_alternate_outlined),
-            Text(S.of(context).addPhoto),
+            SizedBox(height: 5),
+            Text(S.of(context).selectPhotos),
           ],
         ),
       ),

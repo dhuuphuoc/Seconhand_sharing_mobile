@@ -57,6 +57,16 @@ class ItemServices {
     return itemModel.items;
   }
 
+  static Future<int> uploadImage(File image, String url) async {
+    Uri uploadUrl = Uri.parse(url);
+    print(uploadUrl.toString());
+    var response = await http.put(uploadUrl,
+        body: image.readAsBytesSync(),
+        headers: {HttpHeaders.contentTypeHeader: "image/png"});
+    print(response.body);
+    return response.statusCode;
+  }
+
   static Future<PostItemModel> postItem(PostItemForm postItemForm) async {
     Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Item");
     var response = await http.post(postItemsUrl,
@@ -66,6 +76,10 @@ class ItemServices {
         },
         body: jsonEncode(postItemForm.toJson()));
     print(response.body);
-    return PostItemModel.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      return PostItemModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
   }
 }
