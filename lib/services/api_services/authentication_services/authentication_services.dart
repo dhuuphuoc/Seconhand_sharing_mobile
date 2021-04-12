@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
+import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,28 +23,33 @@ class LoginForm {
 }
 
 class RegisterForm {
-  String _username;
-  String _password;
-  String _confirmPassword;
   String _fullName;
   String _email;
+  String _password;
 
-  RegisterForm(this._username, this._password, this._confirmPassword,
-      this._fullName, this._email);
+  RegisterForm(this._fullName, this._email, this._password);
 
-  String get username => _username;
-  String get password => _password;
-  String get confirmPassword => _confirmPassword;
   String get fullName => _fullName;
+  String get email => _email;
+  String get password => _password;
+
+  Map<String, dynamic> toJson() => {
+        "fullName": _fullName,
+        "email": _email,
+        "password": _password,
+      };
+}
+
+class ForgotPasswordForm {
+  String _email;
+
+  ForgotPasswordForm(this._email);
+
   String get email => _email;
 
   Map<String, dynamic> toJson() => {
-        "username": _username,
-        "password": _password,
-        "confirmPassword": _confirmPassword,
-        "fullName": _fullName,
-        "email": _email,
-      };
+    "email": _email,
+  };
 }
 
 class AuthenticationService {
@@ -57,11 +63,19 @@ class AuthenticationService {
     return loginModel;
   }
 
-  static Uri registerUri = Uri.parse(APIService.apiUrl + "/Identity/register");
-  static Future<int> register(RegisterForm registerForm) async {
-    var response = await http.post(registerUri,
+  static Uri _registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
+  static Future<RegisterModel> register(RegisterForm registerForm) async {
+    var response = await http.post(_registerUri,
         body: jsonEncode(registerForm.toJson()),
-        headers: {"Content-Type": "application/json"});
+        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    RegisterModel registerModel = RegisterModel.fromJson(jsonDecode(response.body));
+    return registerModel;
+  }
+
+  static Uri _forgotPasswordUri = Uri.https(APIService.apiUrl, "/Identity/forgot-password");
+  static Future<int> forgotPassword(ForgotPasswordForm forgotPasswordForm) async {
+    var response = await http.post(_forgotPasswordUri,
+      headers: {HttpHeaders.contentTypeHeader: "application/json"});
     return response.statusCode;
   }
 }

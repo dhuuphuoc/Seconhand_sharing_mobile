@@ -33,6 +33,11 @@
   "failed" : "Failed",
   "loginFailedNotification" : "Username or password is incorrect.",
   "selectPhotos": "Select photos",
+  "success": "Success",
+  "registerSuccess": "Register Successful. Check your confirm email",
+  "registerFailedNotification": "Register information is incorrect",
+  "emptyFullNameError": "Full Name can't be empty",
+  "addPhoto": "Add photo",
   "postItem" : "Post",
   "all" : "All",
   "clothes": "Clothes",
@@ -67,6 +72,8 @@
   "posted" : "Posted",
   "postedNotification" : "Your item is posted! Thank you so much!",
   "postError" : "An error occurred while posting",
+  "checkMailForgotPassword": "Check your email",
+  "notExistEmail": "Your email does not exist",
 
   "error" : "Error"
 

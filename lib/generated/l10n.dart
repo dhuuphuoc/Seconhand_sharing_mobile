@@ -375,6 +375,56 @@ class S {
     );
   }
 
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Successful. Check your confirm email`
+  String get registerSuccess {
+    return Intl.message(
+      'Register Successful. Check your confirm email',
+      name: 'registerSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register information is incorrect`
+  String get registerFailedNotification {
+    return Intl.message(
+      'Register information is incorrect',
+      name: 'registerFailedNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Name can't be empty`
+  String get emptyFullNameError {
+    return Intl.message(
+      'Full Name can\'t be empty',
+      name: 'emptyFullNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add photo`
+  String get addPhoto {
+    return Intl.message(
+      'Add photo',
+      name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Post`
   String get postItem {
     return Intl.message(
@@ -710,6 +760,26 @@ class S {
     return Intl.message(
       'An error occurred while posting',
       name: 'postError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email`
+  String get checkMailForgotPassword {
+    return Intl.message(
+      'Check your email',
+      name: 'checkMailForgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your email does not exist`
+  String get notExistEmail {
+    return Intl.message(
+      'Your email does not exist',
+      name: 'notExistEmail',
       desc: '',
       args: [],
     );

@@ -33,6 +33,11 @@
   "failed" : "Thất bại",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
   "selectPhotos": "Chọn ảnh",
+  "success": "Thành công",
+  "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
+  "registerFailedNotification": "Thông tin đăng ký không ",
+  "emptyFullNameError": "Tên không được bỏ trống ",
+  "addPhoto": "Thêm ảnh",
   "postItem" : "Đăng bài viết",
   "all" : "Tất cả",
   "clothes": "Quần áo",
@@ -67,5 +72,8 @@
   "posted" : "Đã đăng",
   "postedNotification" : "Vật dụng của bạn đã được đăng! Cảm ơn bạn rất nhiều!",
   "postError" : "Có lỗi trong quá trình đăng bài",
-  "error" : "Lỗi"
+  "error" : "Lỗi",
+  "checkMailForgotPassword": "Kiểm tra email của bạn",
+  "notExistEmail": "Email của bạn không tồn tại"
+
 }

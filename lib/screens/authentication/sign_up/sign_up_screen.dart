@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-
-import 'package:secondhand_sharing/utils/validator/validator.dart';
-
+import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
-
+import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -21,7 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final _usernameTextController = TextEditingController();
   final _fullNameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -33,41 +31,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.register(RegisterForm(
-        _usernameTextController.text,
-        _passwordTextController.text,
-        _confirmPasswordTextController.text,
-        _fullNameTextController.text,
-        _emailTextController.text));
-    if (statusCode == 200) {
-      _showDialog();
+
+    RegisterModel registerModel = await AuthenticationService.register(
+        RegisterForm(_fullNameTextController.text, _emailTextController.text,
+            _passwordTextController.text));
+    if (registerModel.succeeded == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      _showDialogSuccess();
+    } else {
+      _showDialogFail();
     }
     setState(() {
       _isLoading = false;
     });
   }
 
-  Future<void> _showDialog() async {
+  Future<void> _showDialogSuccess() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Register Success'),
+          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          title: Text(S.of(context).success),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Successful'),
+                Text(S.of(context).registerSuccess),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pop(context);
-                // Navigator.pushNamed(context, "/");
+                Navigator.pushNamed(context, "/");
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showDialogFail() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          title: Text(S.of(context).failed),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(S.of(context).registerFailedNotification),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).tryAgain),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -109,7 +139,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
-                  controller: _usernameTextController,
+                  controller: _fullNameTextController,
+                  validator: (value) {
+                    return value.isEmpty
+                        ? S.of(context).emptyFullNameError
+                        : null;
+                  },
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: S.of(context).name,
@@ -146,9 +181,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _confirmPasswordTextController,
-                  // validator: (String text) {
-                  // },
+                  validator: (value) {
+                    return value.isEmpty
+                        ? S.of(context).emptyPasswordError
+                        : value == _passwordTextController.text
+                            ? null
+                            : S.of(context).matchPassword;
+                  },
                   obscureText: true,
+                  onEditingComplete: _registerSubmit,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     hintText: S.of(context).confirmPassword,

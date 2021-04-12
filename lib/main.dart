@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
@@ -19,10 +19,6 @@ class TwoHandShareApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFF2F2F2),
-        backgroundColor: Colors.white,
-        unselectedWidgetColor: Color(0xFF494949),
-        selectedRowColor: Color(0xFF9DD0FF),
         tabBarTheme: TabBarTheme(
             unselectedLabelColor: Color(0xFF494949),
             labelColor: Color(0xFF0E88FA)),
@@ -33,7 +29,6 @@ class TwoHandShareApp extends StatelessWidget {
           foregroundColor: Color(0xFF0E88FA),
         ),
         primaryColor: Color(0xFF0E88FA),
-        dividerColor: Color(0xFF494949),
         textTheme: TextTheme(
           headline1: TextStyle(
             fontWeight: FontWeight.bold,
