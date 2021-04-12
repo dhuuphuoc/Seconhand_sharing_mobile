@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
@@ -19,18 +20,39 @@ class _HomeTabState extends State<HomeTab> {
   int _pageNumber = 1;
   bool _isLoading = true;
   bool _isEnd = false;
-  ScrollController _postsScrollController = ScrollController();
+  ScrollController _postsScrollController;
   @override
   void initState() {
     fetchItems();
-    _postsScrollController.addListener(() {
-      if (_postsScrollController.position.maxScrollExtent ==
-          _postsScrollController.offset) {
-        _pageNumber++;
-        fetchItems();
-      }
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _postsScrollController.addListener(() {
+        if (_postsScrollController.position.maxScrollExtent ==
+            _postsScrollController.offset) {
+          if (!_isEnd) {
+            _pageNumber++;
+            fetchItems();
+            _postsScrollController.animateTo(
+              _postsScrollController.position.maxScrollExtent - 2,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 800),
+            );
+          }
+        }
+      });
     });
     super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void fetchItems() {
@@ -57,6 +79,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    _postsScrollController = PrimaryScrollController.of(context);
+
     var listViewWidgets = <Widget>[
       Container(margin: EdgeInsets.all(10), child: PostCard()),
       Container(
@@ -94,14 +118,23 @@ class _HomeTabState extends State<HomeTab> {
         ),
       ));
     }
-    return Container(
-      color: Colors.transparent,
-      width: double.infinity,
-      height: double.infinity,
-      child: ListView(
-        controller: _postsScrollController,
-        children: listViewWidgets,
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverOverlapInjector(
+          // This is the flip side of the SliverOverlapAbsorber
+          // above.
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          sliver:
+              SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+        )
+      ],
+      // ListView(
+      //   controller: _postsScrollController,
+      //   children: listViewWidgets,
+      // ),
     );
   }
 }

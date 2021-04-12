@@ -8,6 +8,8 @@ class AddressModel {
   District district;
   Province province;
 
+  AddressModel({this.address, this.ward, this.district, this.province});
+
   Map<String, dynamic> toJson() => {
         "streetNumber": 1,
         "street": address,
@@ -15,6 +17,12 @@ class AddressModel {
         "districtId": district.id,
         "cityId": province.id,
       };
+  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
+        address: json["street"],
+        ward: Ward(json["wardId"], ""),
+        district: District(json["districtId"], ""),
+        province: Province(json["cityId"], ""),
+      );
 
   @override
   String toString() {

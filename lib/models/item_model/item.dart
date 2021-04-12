@@ -1,3 +1,5 @@
+import 'package:secondhand_sharing/models/address_model/address_model.dart';
+
 class Item {
   Item(
       {this.id,
@@ -10,7 +12,7 @@ class Item {
 
   int id;
   String itemName;
-  String receiveAddress;
+  AddressModel receiveAddress;
   DateTime postTime;
   String description;
   String imageUrl;
@@ -19,7 +21,7 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       id: json["id"],
       itemName: json["itemName"],
-      receiveAddress: json["receiveAddress"],
+      receiveAddress: AddressModel.fromJson(json["receiveAddress"]),
       postTime: DateTime.parse(json["postTime"]),
       description: json["description"],
       imageUrl: json["imageUrl"],
