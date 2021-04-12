@@ -5,13 +5,13 @@ import 'package:secondhand_sharing/models/address_model/district/district.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
 
-Future<List<Province>> loadProvinceData(String filePath) async {
+Future<Map<int, Province>> loadProvinceData(String filePath) async {
   var data = await rootBundle.loadString(filePath, cache: true);
   return compute(parseData, data);
 }
 
-List<Province> parseData(String data) {
-  List<Province> provinces = [];
+Map<int, Province> parseData(String data) {
+  Map<int, Province> provinces = {};
   var lines = data.split("\n");
   Province currentProvince = Province(0, "");
   District currentDistrict = District(0, "");
@@ -20,35 +20,27 @@ List<Province> parseData(String data) {
     var row = lines[i].split(",");
     // create province
     int provinceId = int.tryParse(row[6]);
-    String provinceName = row[7].replaceFirst("Tỉnh ", "");
+    String provinceName =
+        row[7].replaceFirst("Tỉnh ", "").replaceFirst("Thành phố ", "");
     if (provinceId != currentProvince.id) {
-      currentProvince.districts.sort((district1, district2) {
-        return district1.name.compareTo(district2.name);
-      });
-      Province provinceNode = Province(provinceId, provinceName);
-      provinces.add(provinceNode);
-      currentProvince = provinceNode;
+      Province province = Province(provinceId, provinceName);
+      provinces[provinceId] = province;
+      currentProvince = province;
     }
     //create district
     int districtId = int.tryParse(row[4]);
     String districtName = row[5];
     if (districtId != currentDistrict.id) {
-      currentDistrict.wards.sort((ward1, ward2) {
-        return ward1.name.compareTo(ward2.name);
-      });
-      District districtNode = District(districtId, districtName);
-      currentProvince.districts.add(districtNode);
-      currentDistrict = districtNode;
+      District district = District(districtId, districtName);
+      currentProvince.districts[districtId] = district;
+      currentDistrict = district;
     }
     //create ward
     int wardId = int.tryParse(row[0]);
     String wardName = row[1];
-    Ward wardNode = Ward(wardId, wardName);
-    currentDistrict.wards.add(wardNode);
+    Ward ward = Ward(wardId, wardName);
+    currentDistrict.wards[wardId] = ward;
   }
-  provinces.sort((province1, province2) {
-    return province1.name.compareTo(province2.name);
-  });
   return provinces;
 }
 

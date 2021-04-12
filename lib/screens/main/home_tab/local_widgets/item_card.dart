@@ -56,7 +56,7 @@ class ItemCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
               child: Text(
                 "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}\n${item.receiveAddress}",
-                maxLines: 2,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyText1,
               ),

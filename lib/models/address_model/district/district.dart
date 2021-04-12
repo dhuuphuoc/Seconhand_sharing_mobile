@@ -3,7 +3,7 @@ import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
 class District {
   int _id;
   String _name;
-  List<Ward> wards = [];
+  Map<int, Ward> wards = {};
 
   int get id => _id;
 

@@ -3,7 +3,7 @@ import 'package:secondhand_sharing/models/address_model/district/district.dart';
 class Province {
   int _id;
   String _name;
-  List<District> districts = [];
+  Map<int, District> districts = {};
 
   int get id => _id;
 

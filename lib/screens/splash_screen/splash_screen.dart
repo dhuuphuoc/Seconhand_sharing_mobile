@@ -16,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> loadToken(BuildContext context) async {
     print("start");
-    List<Province> provinces =
+    Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
     Country vn = Country(84, S.of(context).vietNam, provinces);
     CountryData().vn = vn;

@@ -19,12 +19,37 @@ class _AddressScreenState extends State<AddressScreen> {
   Country _vn = CountryData().vn;
   AddressModel _addressModel;
 
+  int compareProvinces(Province p1, Province p2) {
+    return p1.name.compareTo(p2.name);
+  }
+
+  int compareWards(ward1, ward2) {
+    return ward1.name.compareTo(ward2.name);
+  }
+
+  int compareDistricts(district1, district2) {
+    return district1.name.compareTo(district2.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_addressModel == null) {
       _addressModel = ModalRoute.of(context).settings.arguments as AddressModel;
       _addressController.text = _addressModel.address;
     }
+    List<Province> provinces = _vn.provinces.values.toList();
+    provinces.sort(compareProvinces);
+
+    List<District> districts = _addressModel.province == null
+        ? []
+        : _addressModel.province.districts.values.toList();
+    districts.sort(compareDistricts);
+
+    List<Ward> wards = _addressModel.district == null
+        ? []
+        : _addressModel.district.wards.values.toList();
+    wards.sort(compareWards);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -56,7 +81,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         _addressModel.ward = null;
                       });
                     },
-                    items: _vn.provinces
+                    items: provinces
                         .map<DropdownMenuItem<Province>>(
                             (province) => DropdownMenuItem<Province>(
                                   value: province,
@@ -76,15 +101,13 @@ class _AddressScreenState extends State<AddressScreen> {
                         _addressModel.ward = null;
                       });
                     },
-                    items: _addressModel.province != null
-                        ? _addressModel.province.districts
-                            .map<DropdownMenuItem<District>>(
-                                (district) => DropdownMenuItem<District>(
-                                      value: district,
-                                      child: Text(district.name),
-                                    ))
-                            .toList()
-                        : [],
+                    items: districts
+                        .map<DropdownMenuItem<District>>(
+                            (district) => DropdownMenuItem<District>(
+                                  value: district,
+                                  child: Text(district.name),
+                                ))
+                        .toList(),
                   ),
                   SizedBox(height: 10),
                   DropdownButtonFormField<Ward>(
@@ -96,15 +119,13 @@ class _AddressScreenState extends State<AddressScreen> {
                         _addressModel.ward = ward;
                       });
                     },
-                    items: _addressModel.district != null
-                        ? _addressModel.district.wards
-                            .map<DropdownMenuItem<Ward>>(
-                                (ward) => DropdownMenuItem<Ward>(
-                                      value: ward,
-                                      child: Text(ward.name),
-                                    ))
-                            .toList()
-                        : [],
+                    items: wards
+                        .map<DropdownMenuItem<Ward>>(
+                            (ward) => DropdownMenuItem<Ward>(
+                                  value: ward,
+                                  child: Text(ward.name),
+                                ))
+                        .toList(),
                   ),
                   TextFormField(
                     validator: Validator.validateAddress,
