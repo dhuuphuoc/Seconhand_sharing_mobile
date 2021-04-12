@@ -8,6 +8,14 @@ class AddressModel {
   District district;
   Province province;
 
+  Map<String, dynamic> toJson() => {
+        "streetNumber": 1,
+        "street": address,
+        "wardId": ward.id,
+        "districtId": district.id,
+        "cityId": province.id,
+      };
+
   @override
   String toString() {
     StringBuffer stringBuffer = StringBuffer();

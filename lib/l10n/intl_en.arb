@@ -63,6 +63,11 @@
   "titleEmptyError" : "Title can't be empty!",
   "descriptionEmptyError" : "Description can't be empty!",
   "notEnoughImages" : "Item must have at least one images!",
-  "images" : "Images"
+  "images" : "Images",
+  "posted" : "Posted",
+  "postedNotification" : "Your item is posted! Thank you so much!",
+  "postError" : "An error occurred while posting",
+
+  "error" : "Error"
 
 }

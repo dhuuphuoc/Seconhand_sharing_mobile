@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/models/item_model/item_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
@@ -18,7 +19,7 @@ class PostItemForm {
   });
 
   String itemName;
-  String receiveAddress;
+  AddressModel receiveAddress;
   int categoryId;
   String description;
   int imageNumber;
@@ -33,7 +34,7 @@ class PostItemForm {
 
   Map<String, dynamic> toJson() => {
         "itemName": itemName,
-        "receiveAddress": receiveAddress,
+        "receiveAddress": receiveAddress.toJson(),
         "categoryId": categoryId,
         "description": description,
         "imageNumber": imageNumber,
@@ -75,6 +76,7 @@ class ItemServices {
           HttpHeaders.contentTypeHeader: "application/json",
         },
         body: jsonEncode(postItemForm.toJson()));
+    print(postItemForm.toJson());
     print(response.body);
     if (response.statusCode == 200) {
       return PostItemModel.fromJson(jsonDecode(response.body));

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:mime/mime.dart' as mime;
@@ -40,6 +41,11 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
     setState(() {
       _isLoading = true;
     });
+    if (await Permission.storage.isDenied) {
+      if (await Permission.storage.request().isDenied) {
+        Navigator.pop(context);
+      }
+    }
     var capture = await path.getExternalStorageDirectory();
 
     var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(
@@ -108,11 +114,9 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                 textAlign: TextAlign.center,
               ),
               trailing: IconButton(
-                onPressed: widget.images.length == 0 ? null : widget.onSubmit,
+                onPressed: widget.onSubmit,
                 icon: Icon(Icons.check),
-                color: widget.images.length == 0
-                    ? Theme.of(context).iconTheme.color
-                    : Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             Expanded(

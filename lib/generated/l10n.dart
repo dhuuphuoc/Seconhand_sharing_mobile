@@ -684,6 +684,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Posted`
+  String get posted {
+    return Intl.message(
+      'Posted',
+      name: 'posted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your item is posted! Thank you so much!`
+  String get postedNotification {
+    return Intl.message(
+      'Your item is posted! Thank you so much!',
+      name: 'postedNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while posting`
+  String get postError {
+    return Intl.message(
+      'An error occurred while posting',
+      name: 'postError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

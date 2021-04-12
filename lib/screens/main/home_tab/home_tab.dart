@@ -65,12 +65,12 @@ class _HomeTabState extends State<HomeTab> {
 
     _items.forEach((item) {
       listViewWidgets.add(Card(
-        elevation: 10,
+        elevation: 8,
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
                 leading: CircleAvatar(
@@ -82,8 +82,11 @@ class _HomeTabState extends State<HomeTab> {
                   style: Theme.of(context).textTheme.headline3,
                 ),
               ),
-              Image.network(
-                item.imageUrl,
+              Container(
+                child: Image.network(
+                  item.imageUrl,
+                  fit: BoxFit.fill,
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(top: 10, left: 15),

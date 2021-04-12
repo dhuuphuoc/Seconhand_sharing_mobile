@@ -28,7 +28,6 @@ class _PostItemScreenState extends State<PostItemScreen> {
 
   List<File> _imagesInGallery = [];
   var _images = <String, File>{};
-  bool _isPosting = false;
 
   AddressModel _addressModel = AddressModel();
 
@@ -51,7 +50,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
         context: context);
   }
 
-  void showErrorDialog(String title, String message) {
+  void showNotifyDialog(String title, String message) {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -84,11 +83,13 @@ class _PostItemScreenState extends State<PostItemScreen> {
     String addressValidateMessage =
         Validator.validateAddressModel(_addressModel);
     if (addressValidateMessage != null) {
-      showErrorDialog(S.of(context).address, addressValidateMessage);
+      showNotifyDialog(S.of(context).address, addressValidateMessage);
+      return;
     }
     String imagesValidateMessage = Validator.validateImages(_images);
     if (imagesValidateMessage != null) {
-      showErrorDialog(S.of(context).images, imagesValidateMessage);
+      showNotifyDialog(S.of(context).images, imagesValidateMessage);
+      return;
     }
     if (!_formKey.currentState.validate()) return;
     showDialog<void>(
@@ -113,7 +114,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
         itemName: _titleController.text,
         categoryId: _categoryModel.selectedId,
         description: _descriptionController.text,
-        receiveAddress: _addressModel.toString());
+        receiveAddress: _addressModel);
     PostItemModel postItemModel = await ItemServices.postItem(postItemForm);
     if (postItemModel != null) {
       for (int i = 0; i < _images.length; i++) {
@@ -121,8 +122,17 @@ class _PostItemScreenState extends State<PostItemScreen> {
             _images.values.elementAt(i),
             postItemModel.data.imageUploads[i].presignUrl);
       }
+      // showNotifyDialog(S.of(context).posted, S.of(context).postedNotification);
+    } else {
+      // showNotifyDialog(S.of(context).error, S.of(context).postError);
     }
     Navigator.pop(context);
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).postedNotification),
+      ),
+    );
   }
 
   void onMapPress() async {
