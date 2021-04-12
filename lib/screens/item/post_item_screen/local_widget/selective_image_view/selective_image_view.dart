@@ -39,15 +39,20 @@ class SelectiveImageView extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          Container(
-            child: Align(
-              alignment: Alignment.topRight,
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
               child: Icon(isSelected ? Icons.check_circle : Icons.circle,
                   color: isSelected
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).backgroundColor),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                      width: 1.5, color: Theme.of(context).primaryColor)),
             ),
-            margin: EdgeInsets.all(5),
           ),
         ]),
       ),
