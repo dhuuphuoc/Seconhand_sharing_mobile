@@ -19,6 +19,8 @@ class TwoHandShareApp extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       theme: ThemeData(
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xFFF2F2F2),
         tabBarTheme: TabBarTheme(
             unselectedLabelColor: Color(0xFF494949),
             labelColor: Color(0xFF0E88FA)),
