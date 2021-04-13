@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/models/item_model/item_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
-import 'package:secondhand_sharing/models/user_model/user_singleton/access_token.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -58,11 +59,11 @@ class ItemServices {
     return itemModel.items;
   }
 
-  static Future<int> uploadImage(File image, String url) async {
+  static Future<int> uploadImage(ImageData image, String url) async {
     Uri uploadUrl = Uri.parse(url);
     print(uploadUrl.toString());
     var response = await http.put(uploadUrl,
-        body: image.readAsBytesSync(),
+        body: image.data,
         headers: {HttpHeaders.contentTypeHeader: "image/png"});
     print(response.body);
     return response.statusCode;

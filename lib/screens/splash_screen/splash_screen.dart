@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
 
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
+import 'package:secondhand_sharing/models/image_model/image_model.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 
-import 'package:secondhand_sharing/models/user_model/user_singleton/access_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,12 +16,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<void> loadToken(BuildContext context) async {
-    print("start");
+  Future<void> loadAddress(BuildContext context) async {
     Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
     Country vn = Country(84, S.of(context).vietNam, provinces);
     CountryData().vn = vn;
+  }
+
+  Future<void> loadImages(BuildContext context) async {
+    if (await Permission.storage.isDenied) {
+      if (await Permission.storage.request().isDenied) {
+        return;
+      }
+    }
+    ImageModel().loadImages();
+  }
+
+  Future<void> loadToken(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     if (token == null) {
@@ -33,9 +46,15 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  Future<void> loadData(BuildContext context) async {
+    await loadAddress(context);
+    await loadImages(context);
+    await loadToken(context);
+  }
+
   @override
   void initState() {
-    loadToken(context);
+    loadData(context);
     super.initState();
   }
 
