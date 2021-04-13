@@ -82,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Register for free"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Please enter the required information below to proceed with the registration"),
     "registerSuccess" : MessageLookupByLibrary.simpleMessage("Register Successful. Check your confirm email"),
+    "resetPassword" : MessageLookupByLibrary.simpleMessage("Reset password"),
+    "resetPasswordHint" : MessageLookupByLibrary.simpleMessage("Insert your new password to change"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Note: Do not share your authentication code and password with anyone to avoid unexpected events"),
     "second" : MessageLookupByLibrary.simpleMessage("second"),
     "selectPhotos" : MessageLookupByLibrary.simpleMessage("Select photos"),

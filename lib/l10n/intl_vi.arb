@@ -77,5 +77,8 @@
   "notExistEmail": "Email của bạn không tồn tại",
   "grantStoragePermission" : "Cho phép 2Hand-Sharing truy cập vào bộ nhớ",
   "grantStoragePermissionHint" : "Cấp quyền truy cập trong cài đặt để gửi hình ảnh đồ vật bạn muốn cho",
-  "allowAccess" : "Cho phép truy cập"
+  "allowAccess" : "Cho phép truy cập",
+  "resetPassword": "Thay đổi mật khẩu",
+  "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
+  "notExistEmail": "Email của bạn không tồn tại"
 }

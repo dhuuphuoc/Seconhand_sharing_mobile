@@ -82,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "registerForFree" : MessageLookupByLibrary.simpleMessage("Đăng ký miễn phí"),
     "registerHint" : MessageLookupByLibrary.simpleMessage("Vui lòng nhập thông tin theo yêu cầu bên dưới để thực hiện đăng ký"),
     "registerSuccess" : MessageLookupByLibrary.simpleMessage("Đăng ký thành công. Kiểm tra email xác nhận của bạn"),
+    "resetPassword" : MessageLookupByLibrary.simpleMessage("Thay đổi mật khẩu"),
+    "resetPasswordHint" : MessageLookupByLibrary.simpleMessage("Nhập vào mật khẩu mới của bạn để thay đổi"),
     "resetPasswordNote" : MessageLookupByLibrary.simpleMessage("Lưu ý: Không chia sẻ mã xác thực và mật khẩu cho bất kì ai để tránh trường hợp không mong muốn xảy ra"),
     "second" : MessageLookupByLibrary.simpleMessage("giây"),
     "selectPhotos" : MessageLookupByLibrary.simpleMessage("Chọn ảnh"),

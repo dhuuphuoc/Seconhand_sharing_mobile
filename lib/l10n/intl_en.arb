@@ -73,6 +73,8 @@
   "postedNotification" : "Your item is posted! Thank you so much!",
   "postError" : "An error occurred while posting",
   "checkMailForgotPassword": "Check your email",
+  "resetPassword": "Reset password",
+  "resetPasswordHint": "Insert your new password to change",
   "notExistEmail": "Your email does not exist",
 
   "error" : "Error",

@@ -28,9 +28,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
     int statusCode = await AuthenticationService.forgotPassword(
         ForgotPasswordForm(_emailTextController.text));
-    print(statusCode);
+
     if (statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       _showDialogSuccess();
     } else {
       _showDialogFail();
@@ -160,7 +159,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       text: S.of(context).continueButton,
                       disabled: _isLoading,
                     ),
-                  )
+                  ),
                 ],
               )),
         ),

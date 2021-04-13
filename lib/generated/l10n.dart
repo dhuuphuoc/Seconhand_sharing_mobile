@@ -775,6 +775,26 @@ class S {
     );
   }
 
+  /// `Reset password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insert your new password to change`
+  String get resetPasswordHint {
+    return Intl.message(
+      'Insert your new password to change',
+      name: 'resetPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your email does not exist`
   String get notExistEmail {
     return Intl.message(
