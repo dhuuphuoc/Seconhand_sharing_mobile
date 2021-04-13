@@ -16,7 +16,6 @@ class SelectiveImageView extends StatelessWidget {
       onTap: onPress,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        constraints: BoxConstraints(minWidth: 120),
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10)),
@@ -24,19 +23,36 @@ class SelectiveImageView extends StatelessWidget {
           ClipRRect(
             child: Image.file(
               image,
+              frameBuilder: (BuildContext context, Widget child, int frame,
+                  bool wasSynchronouslyLoaded) {
+                if (wasSynchronouslyLoaded ?? false) {
+                  return child;
+                }
+                return AnimatedOpacity(
+                  child: child,
+                  opacity: frame == null ? 0 : 1,
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeOut,
+                );
+              },
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
-          Container(
-            child: Align(
-              alignment: Alignment.topRight,
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
               child: Icon(isSelected ? Icons.check_circle : Icons.circle,
                   color: isSelected
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).backgroundColor),
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                      width: 1.5, color: Theme.of(context).primaryColor)),
             ),
-            margin: EdgeInsets.all(5),
           ),
         ]),
       ),

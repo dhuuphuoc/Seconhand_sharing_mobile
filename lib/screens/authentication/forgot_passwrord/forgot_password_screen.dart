@@ -82,7 +82,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(S.of(context).unexistEmail),
+                Text(S.of(context).notExistEmail),
               ],
             ),
           ),
@@ -155,9 +155,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Container(
                     width: double.infinity,
                     child: GradientButton(
-                        onPress: _forgotPasswordSubmit,
-                        text: S.of(context).continueButton,
-                        disabled: _isLoading,
+                      onPress: _forgotPasswordSubmit,
+                      text: S.of(context).continueButton,
+                      disabled: _isLoading,
                     ),
                   ),
                 ],

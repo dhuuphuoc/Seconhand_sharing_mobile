@@ -12,7 +12,7 @@ class AddPhoto extends StatelessWidget {
       onTap: onPress,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
-        constraints: BoxConstraints(minWidth: 120),
+        width: 130,
         decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10)),
@@ -20,7 +20,8 @@ class AddPhoto extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.add_photo_alternate_outlined),
-            Text(S.of(context).addPhoto),
+            SizedBox(height: 5),
+            Text(S.of(context).selectPhotos),
           ],
         ),
       ),

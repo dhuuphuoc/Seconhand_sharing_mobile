@@ -365,6 +365,16 @@ class S {
     );
   }
 
+  /// `Select photos`
+  String get selectPhotos {
+    return Intl.message(
+      'Select photos',
+      name: 'selectPhotos',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Success`
   String get success {
     return Intl.message(
@@ -565,6 +575,196 @@ class S {
     );
   }
 
+  /// `Address`
+  String get address {
+    return Intl.message(
+      'Address',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number, street`
+  String get addressHint {
+    return Intl.message(
+      'Number, street',
+      name: 'addressHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ward`
+  String get ward {
+    return Intl.message(
+      'Ward',
+      name: 'ward',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `District`
+  String get district {
+    return Intl.message(
+      'District',
+      name: 'district',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Province`
+  String get province {
+    return Intl.message(
+      'Province',
+      name: 'province',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Viet Nam`
+  String get vietNam {
+    return Intl.message(
+      'Viet Nam',
+      name: 'vietNam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Receive address`
+  String get receiveAddress {
+    return Intl.message(
+      'Receive address',
+      name: 'receiveAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Province can't be empty!`
+  String get provinceEmptyError {
+    return Intl.message(
+      'Province can\'t be empty!',
+      name: 'provinceEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `District can't be empty!`
+  String get districtEmptyError {
+    return Intl.message(
+      'District can\'t be empty!',
+      name: 'districtEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ward can't be empty!`
+  String get wardEmptyError {
+    return Intl.message(
+      'Ward can\'t be empty!',
+      name: 'wardEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address can't be empty!`
+  String get addressEmptyError {
+    return Intl.message(
+      'Address can\'t be empty!',
+      name: 'addressEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid phone number!`
+  String get invalidPhoneNumber {
+    return Intl.message(
+      'Invalid phone number!',
+      name: 'invalidPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title can't be empty!`
+  String get titleEmptyError {
+    return Intl.message(
+      'Title can\'t be empty!',
+      name: 'titleEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description can't be empty!`
+  String get descriptionEmptyError {
+    return Intl.message(
+      'Description can\'t be empty!',
+      name: 'descriptionEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item must have at least one images!`
+  String get notEnoughImages {
+    return Intl.message(
+      'Item must have at least one images!',
+      name: 'notEnoughImages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Images`
+  String get images {
+    return Intl.message(
+      'Images',
+      name: 'images',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Posted`
+  String get posted {
+    return Intl.message(
+      'Posted',
+      name: 'posted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your item is posted! Thank you so much!`
+  String get postedNotification {
+    return Intl.message(
+      'Your item is posted! Thank you so much!',
+      name: 'postedNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while posting`
+  String get postError {
+    return Intl.message(
+      'An error occurred while posting',
+      name: 'postError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Check your email`
   String get checkMailForgotPassword {
     return Intl.message(
@@ -576,10 +776,20 @@ class S {
   }
 
   /// `Your email does not exist`
-  String get unexistEmail {
+  String get notExistEmail {
     return Intl.message(
       'Your email does not exist',
-      name: 'unexistEmail',
+      name: 'notExistEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
       desc: '',
       args: [],
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
@@ -18,18 +20,39 @@ class _HomeTabState extends State<HomeTab> {
   int _pageNumber = 1;
   bool _isLoading = true;
   bool _isEnd = false;
-  ScrollController _postsScrollController = ScrollController();
+  ScrollController _postsScrollController;
   @override
   void initState() {
     fetchItems();
-    _postsScrollController.addListener(() {
-      if (_postsScrollController.position.maxScrollExtent ==
-          _postsScrollController.offset) {
-        _pageNumber++;
-        fetchItems();
-      }
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _postsScrollController.addListener(() {
+        if (_postsScrollController.position.maxScrollExtent ==
+            _postsScrollController.offset) {
+          if (!_isEnd) {
+            _pageNumber++;
+            fetchItems();
+            _postsScrollController.animateTo(
+              _postsScrollController.position.maxScrollExtent - 2,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 800),
+            );
+          }
+        }
+      });
     });
     super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void fetchItems() {
@@ -56,6 +79,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    _postsScrollController = PrimaryScrollController.of(context);
+
     var listViewWidgets = <Widget>[
       Container(margin: EdgeInsets.all(10), child: PostCard()),
       Container(
@@ -64,51 +89,7 @@ class _HomeTabState extends State<HomeTab> {
     ];
 
     _items.forEach((item) {
-      listViewWidgets.add(Card(
-        elevation: 10,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  item.imageUrl,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 10, left: 5),
-                child: Text(
-                  item.itemName,
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                child: Text(
-                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)} - ${item.receiveAddress}",
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Divider(
-                height: 3,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                child: Text(
-                  item.description,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  maxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ));
+      listViewWidgets.add(ItemCard(item));
     });
     if (_isLoading) {
       listViewWidgets.add(Center(
@@ -137,14 +118,23 @@ class _HomeTabState extends State<HomeTab> {
         ),
       ));
     }
-    return Container(
-      color: Colors.transparent,
-      width: double.infinity,
-      height: double.infinity,
-      child: ListView(
-        controller: _postsScrollController,
-        children: listViewWidgets,
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverOverlapInjector(
+          // This is the flip side of the SliverOverlapAbsorber
+          // above.
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          sliver:
+              SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+        )
+      ],
+      // ListView(
+      //   controller: _postsScrollController,
+      //   children: listViewWidgets,
+      // ),
     );
   }
 }

@@ -5,7 +5,6 @@ class TimeAgo {
   static String parse(DateTime dateTime, {String locale = "en"}) {
     DateTime now = DateTime.now();
     Duration diff = now.difference(dateTime);
-    print(locale);
     if (locale == "vi") {
       int year = diff.inDays ~/ 365.25;
       if (year > 0) {
