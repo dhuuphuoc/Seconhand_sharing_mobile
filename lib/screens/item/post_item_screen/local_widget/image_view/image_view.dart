@@ -18,7 +18,7 @@ class ImageView extends StatelessWidget {
       child: ClipRRect(
         child: Image.file(
           image,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(10),
       ),

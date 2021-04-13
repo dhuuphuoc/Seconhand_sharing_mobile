@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -22,7 +23,7 @@ class ImagesPickerBottomSheet extends StatefulWidget {
 }
 
 class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   Future<File> getImage() async {
     final picker = ImagePicker();
@@ -37,114 +38,63 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
     }
   }
 
-  Future<void> loadImages() async {
-    setState(() {
-      _isLoading = true;
-    });
-    if (await Permission.storage.isDenied) {
-      if (await Permission.storage.request().isDenied) {
-        Navigator.pop(context);
-      }
-    }
-    var capture = await path.getExternalStorageDirectory();
-
-    var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DCIM);
-
-    var picturePath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_PICTURES);
-
-    await collectImagesFromDirectory(capture);
-
-    var dcim = Directory(dcimPath);
-    await collectImagesFromDirectory(dcim);
-
-    var picture = Directory(picturePath);
-    await collectImagesFromDirectory(picture);
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  Future<void> collectImagesFromDirectory(FileSystemEntity entity) async {
-    if (entity is File) {
-      File file = entity;
-      if (mime.lookupMimeType(file.path).startsWith("image/")) {
-        setState(() {
-          widget.imagesInGallery.add(file);
-        });
-      }
-      return;
-    }
-    if (entity is Directory) {
-      Directory dir = entity;
-      await dir.list().forEach((element) async {
-        await collectImagesFromDirectory(element);
-      });
-    }
-  }
-
   @override
   void initState() {
-    loadImages();
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 300,
-        padding: EdgeInsets.only(bottom: 10),
-        child: Column(
-          children: [
-            ListTile(
-              leading: IconButton(
-                onPressed: () {
-                  getImage().then((image) {
-                    setState(() {
-                      widget.imagesInGallery.insert(0, image);
-                    });
-                  });
-                },
-                icon: Icon(Icons.camera_alt_rounded),
-              ),
-              title: Text(
-                S.of(context).selectPhotos,
-                textAlign: TextAlign.center,
-              ),
-              trailing: IconButton(
-                onPressed: widget.onSubmit,
-                icon: Icon(Icons.check),
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            Expanded(
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : GridView.count(
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 3,
-                      cacheExtent: 10000,
-                      children: widget.imagesInGallery.map((image) {
-                        return SelectiveImageView(
-                            onPress: () {
-                              setState(() {
-                                if (widget.images.containsKey(image.path)) {
-                                  widget.images.remove(image.path);
-                                } else {
-                                  widget.images[image.path] = image;
-                                }
-                              });
-                            },
-                            image: image,
-                            isSelected: widget.images.containsKey(image.path));
-                      }).toList(),
-                    ),
-            ),
-          ],
-        ));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          leading: IconButton(
+            onPressed: () {
+              getImage().then((image) {
+                setState(() {
+                  widget.imagesInGallery.insert(0, image);
+                });
+              });
+            },
+            icon: Icon(Icons.camera_alt_rounded),
+          ),
+          title: Text(
+            S.of(context).selectPhotos,
+            textAlign: TextAlign.center,
+          ),
+          trailing: IconButton(
+            onPressed: widget.onSubmit,
+            icon: Icon(Icons.check),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        Expanded(
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : GridView.count(
+                  mainAxisSpacing: 10,
+                  crossAxisCount: 3,
+                  cacheExtent: 5000,
+                  children: widget.imagesInGallery.map((image) {
+                    return SelectiveImageView(
+                        onPress: () {
+                          setState(() {
+                            if (widget.images.containsKey(image.path)) {
+                              widget.images.remove(image.path);
+                            } else {
+                              widget.images[image.path] = image;
+                            }
+                          });
+                        },
+                        image: image,
+                        isSelected: widget.images.containsKey(image.path));
+                  }).toList(),
+                ),
+        ),
+      ],
+    );
   }
 }
