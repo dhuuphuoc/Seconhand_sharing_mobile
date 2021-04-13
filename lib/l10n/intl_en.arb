@@ -75,6 +75,9 @@
   "checkMailForgotPassword": "Check your email",
   "notExistEmail": "Your email does not exist",
 
-  "error" : "Error"
+  "error" : "Error",
+  "grantStoragePermission" : "Allow 2Hand-Sharing access device's storage",
+  "grantStoragePermissionHint" : "Grant access permission in settings to upload your item's images",
+  "allowAccess" : "Allow access"
 
 }

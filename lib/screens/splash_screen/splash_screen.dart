@@ -23,15 +23,6 @@ class _SplashScreenState extends State<SplashScreen> {
     CountryData().vn = vn;
   }
 
-  Future<void> loadImages(BuildContext context) async {
-    if (await Permission.storage.isDenied) {
-      if (await Permission.storage.request().isDenied) {
-        return;
-      }
-    }
-    ImageModel().loadImages();
-  }
-
   Future<void> loadToken(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
@@ -48,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadData(BuildContext context) async {
     await loadAddress(context);
-    await loadImages(context);
     await loadToken(context);
   }
 

@@ -35,7 +35,6 @@ class _PostItemScreenState extends State<PostItemScreen>
     with TickerProviderStateMixin {
   CategoryModel _categoryModel = CategoryModel();
 
-  List<ImageData> _imagesInGallery = ImageModel().imagesData;
   var _images = <String, ImageData>{};
 
   @override
@@ -48,7 +47,7 @@ class _PostItemScreenState extends State<PostItemScreen>
     showModalBottomSheet(
             context: context,
             builder: (context) {
-              return ImagesPickerBottomSheet(_imagesInGallery);
+              return ImagesPickerBottomSheet();
             },
             routeSettings: RouteSettings(arguments: _images))
         .then((value) {

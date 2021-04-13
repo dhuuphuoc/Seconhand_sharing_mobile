@@ -794,6 +794,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Allow 2Hand-Sharing access device's storage`
+  String get grantStoragePermission {
+    return Intl.message(
+      'Allow 2Hand-Sharing access device\'s storage',
+      name: 'grantStoragePermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grant access permission in settings to upload your item's images`
+  String get grantStoragePermissionHint {
+    return Intl.message(
+      'Grant access permission in settings to upload your item\'s images',
+      name: 'grantStoragePermissionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow access`
+  String get allowAccess {
+    return Intl.message(
+      'Allow access',
+      name: 'allowAccess',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

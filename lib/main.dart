@@ -48,6 +48,11 @@ class TwoHandShareApp extends StatelessWidget {
             fontSize: 16,
             color: Color(0xFF494949),
           ),
+          headline4: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: Color(0xFF494949),
+          ),
           bodyText1: TextStyle(
               fontSize: 14,
               color: Color(0xFFA9A9A9),
