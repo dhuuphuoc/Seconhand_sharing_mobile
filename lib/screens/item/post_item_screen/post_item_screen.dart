@@ -37,8 +37,17 @@ class _PostItemScreenState extends State<PostItemScreen>
 
   var _images = <String, ImageData>{};
 
+  Future<void> requestStoragePermission() async {
+    if (await Permission.storage.isDenied) {
+      if (await Permission.storage.request().isGranted) {
+        await ImageModel().loadImages();
+      }
+    }
+  }
+
   @override
   void initState() {
+    requestStoragePermission();
     super.initState();
   }
 
