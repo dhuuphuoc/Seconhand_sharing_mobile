@@ -53,7 +53,8 @@
   "minute" : "minute",
   "second" : "second",
   "checkMailForgotPassword": "Check your email",
-  "unexistEmail": "Your email does not exist"
-
+  "unexistEmail": "Your email does not exist",
+  "resetPassword": "Reset password",
+  "resetPasswordHint": "Insert your new password to change"
 
 }

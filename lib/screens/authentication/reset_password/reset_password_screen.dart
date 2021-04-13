@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
+import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
+import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -13,32 +17,35 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   void initState() {
     super.initState();
   }
-  String _digit = "-   -   -   -";
-  final FocusNode _focusNode = FocusNode();
+
   final _formKey = GlobalKey<FormState>();
-  final _textEditingController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _confirmPasswordTextController = TextEditingController();
+  bool _isLoading = false;
 
-  void onSubmit(String input) {
-    input = input.replaceAll(" ", "");
-  }
+  void _resetPasswordSubmit() async {
+    if (!_formKey.currentState.validate()) return;
+    setState(() {
+      _isLoading = true;
+    });
 
-  void onChanged(RawKeyEvent input) {
-    if(input.isKeyPressed(LogicalKeyboardKey.backspace)) {
-      for(int i = _digit.length - 1; i >= 0; i--) {
-        print(_digit[i]);
-        if(int.tryParse(_digit[i]) != null) {
-          print(_digit[i]);
-          _digit = _digit.replaceFirst(_digit[i], "-", i);
-          setState(() {
-            _textEditingController.text = _digit;
-          });
-          return;
-        }
-      }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String code = prefs.getString("message");
+    print(code);
+
+    ResetPasswordModel resetPasswordModel = await AuthenticationService.resetPassword(
+        ResetPasswordForm(_emailTextController.text, code, _passwordTextController.text, _confirmPasswordTextController.text));
+    print(resetPasswordModel.message);
+    if(resetPasswordModel.succeeded){
+      Navigator.pop(context);
+      Navigator.pushNamed(context, "/login");
+    } else {
+      Navigator.pop(context);
     }
-    if(input.character != null) {
-      _digit = _digit.replaceFirst("-", input.character);
-    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -61,81 +68,78 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   child: Image.asset("assets/images/login_icon.png"),
                 ),
                 Text(
-                  S.of(context).verifyCode,
+                  S.of(context).resetPassword,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 Text(
-                  S.of(context).verifyCodeHint,
+                  S.of(context).resetPasswordHint,
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                RawKeyboardListener(
-                  focusNode: _focusNode,
-                  onKey: onChanged,
-                  child: TextFormField(
-                    controller: _textEditingController,
-                    decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.grey)),
-                      hintText: "-   -   -   -",
-                      counterText: "",
-                      filled: true,
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: _emailTextController,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                    suffixIcon: Icon(
+                      Icons.email,
                     ),
-                    showCursor: false,
-                    onChanged: (digit) {
-                      setState(() {
-                        _textEditingController.text = _digit;
-                      });
-                    },
-                    onFieldSubmitted: onSubmit,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: _passwordTextController,
+                  validator: Validator.validatePassword,
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).password,
+                    suffixIcon: Icon(
+                      Icons.lock,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: _confirmPasswordTextController,
+                  validator: (value) {
+                    return value.isEmpty
+                        ? S.of(context).emptyPasswordError
+                        : value == _passwordTextController.text
+                        ? null
+                        : S.of(context).matchPassword;
+                  },
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).confirmPassword,
+                    suffixIcon: Icon(
+                      Icons.lock,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
+                ),
+                _isLoading
+                    ? Align(child: CircularProgressIndicator())
+                    : SizedBox(),
+                SizedBox(
+                  height: 15,
                 ),
                 Container(
                   width: double.infinity,
-                  child: GradientButton(onPress: () {
-                  },text: S.of(context).confirm),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        S.of(context).sendCode,
-                        style: TextStyle(
-                            color: Color(0xFF0E88FA),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        S.of(context).anotherEmail,
-                        style: TextStyle(color: Color(0xFF0E88FA)),
-                      ),
-                    ),
-                  ],
+                  child: GradientButton(
+                      onPress: _resetPasswordSubmit,
+                      text: S.of(context).confirm,
+                      disabled: _isLoading,
+                  ),
                 ),
               ],
             ),

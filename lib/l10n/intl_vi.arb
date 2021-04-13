@@ -53,6 +53,7 @@
   "minute" : "phút",
   "second" : "giây",
   "checkMailForgotPassword": "Kiểm tra email của bạn",
-  "unexistEmail": "Email của bạn không tồn tại"
-
+  "unexistEmail": "Email của bạn không tồn tại",
+  "resetPassword": "Thay đổi mật khẩu",
+  "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi"
 }
