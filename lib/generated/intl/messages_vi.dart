@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email không được bỏ trống"),
     "emptyFullNameError" : MessageLookupByLibrary.simpleMessage("Tên không được bỏ trống "),
     "emptyPasswordError" : MessageLookupByLibrary.simpleMessage("Mật khẩu không được bỏ trống"),
+    "endNotifyMessage" : MessageLookupByLibrary.simpleMessage("Bạn đã coi tất cả các bài viết"),
     "error" : MessageLookupByLibrary.simpleMessage("Lỗi"),
     "failed" : MessageLookupByLibrary.simpleMessage("Thất bại"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Quên mật khẩu"),

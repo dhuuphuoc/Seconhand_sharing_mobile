@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyEmailError" : MessageLookupByLibrary.simpleMessage("Email can\'t be empty"),
     "emptyFullNameError" : MessageLookupByLibrary.simpleMessage("Full Name can\'t be empty"),
     "emptyPasswordError" : MessageLookupByLibrary.simpleMessage("Password can\'t be empty"),
+    "endNotifyMessage" : MessageLookupByLibrary.simpleMessage("Your have seen all posts"),
     "error" : MessageLookupByLibrary.simpleMessage("Error"),
     "failed" : MessageLookupByLibrary.simpleMessage("Failed"),
     "forgotPassword" : MessageLookupByLibrary.simpleMessage("Forgot password"),

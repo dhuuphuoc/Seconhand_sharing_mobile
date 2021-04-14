@@ -76,7 +76,7 @@
   "resetPassword": "Reset password",
   "resetPasswordHint": "Insert your new password to change",
   "notExistEmail": "Your email does not exist",
-
+  "endNotifyMessage" : "Your have seen all posts",
   "error" : "Error",
   "grantStoragePermission" : "Allow 2Hand-Sharing access device's storage",
   "grantStoragePermissionHint" : "Grant access permission in settings to upload your item's images",

@@ -45,11 +45,13 @@ class PostItemForm {
 class ItemServices {
   static final int _pageSize = 5;
 
-  static Future<List<Item>> getItems(int pageNumber) async {
+  static Future<List<Item>> getItems(int pageNumber, int categoryId) async {
     Uri getItemsUrl = Uri.https(APIService.apiUrl, "/Item", {
       "PageNumber": pageNumber.toString(),
-      "PageSize": _pageSize.toString()
+      "PageSize": _pageSize.toString(),
+      "categoryId": categoryId.toString()
     });
+
     var response = await http.get(getItemsUrl, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: "application/json",

@@ -805,6 +805,16 @@ class S {
     );
   }
 
+  /// `Your have seen all posts`
+  String get endNotifyMessage {
+    return Intl.message(
+      'Your have seen all posts',
+      name: 'endNotifyMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Error`
   String get error {
     return Intl.message(
