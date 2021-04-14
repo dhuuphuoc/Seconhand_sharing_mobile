@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -48,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadData(BuildContext context) async {
     await loadAddress(context);
-    await loadImages(context);
+    if (!kIsWeb) await loadImages(context);
     await loadToken(context);
   }
 

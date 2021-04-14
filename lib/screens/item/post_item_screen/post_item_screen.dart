@@ -1,11 +1,6 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:ext_storage/ext_storage.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -21,9 +16,8 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/im
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:mime/mime.dart' as mime;
-import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
+
 import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
 
 class PostItemScreen extends StatefulWidget {
@@ -68,45 +62,26 @@ class _PostItemScreenState extends State<PostItemScreen>
     });
   }
 
-  void showNotifyDialog(String title, String message) {
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          contentPadding: EdgeInsets.only(left: 24, top: 10, right: 24),
-          buttonPadding: EdgeInsets.zero,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void onSubmit() async {
     String addressValidateMessage =
         Validator.validateAddressModel(_addressModel);
     if (addressValidateMessage != null) {
-      showNotifyDialog(S.of(context).address, addressValidateMessage);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(
+                S.of(context).address, addressValidateMessage, "OK");
+          });
       return;
     }
     String imagesValidateMessage = Validator.validateImages(_images);
     if (imagesValidateMessage != null) {
-      showNotifyDialog(S.of(context).images, imagesValidateMessage);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(
+                S.of(context).images, imagesValidateMessage, "OK");
+          });
       return;
     }
     if (!_formKey.currentState.validate()) return;
@@ -116,12 +91,10 @@ class _PostItemScreenState extends State<PostItemScreen>
       builder: (BuildContext context) {
         return AlertDialog(
           buttonPadding: EdgeInsets.zero,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Center(child: CircularProgressIndicator()),
-              ],
-            ),
+          content: ListBody(
+            children: <Widget>[
+              Center(child: CircularProgressIndicator()),
+            ],
           ),
           actions: <Widget>[],
         );
@@ -169,7 +142,6 @@ class _PostItemScreenState extends State<PostItemScreen>
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
           title: Text(S.of(context).donate,

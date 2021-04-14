@@ -5,6 +5,7 @@ import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     LoginModel loginModel = await AuthenticationService.login(
         LoginForm(_usernameTextController.text, _passwordTextController.text));
-    if (loginModel.succeeded) {
+    if (loginModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("token", loginModel.data.jwToken);
       AccessInfo().token = loginModel.data.jwToken;
@@ -42,26 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            title: Text(S.of(context).failed),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(S.of(context).loginFailedNotification),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).tryAgain),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
+          return NotifyDialog(S.of(context).failed,
+              S.of(context).loginFailedNotification, S.of(context).tryAgain);
         },
       );
     }

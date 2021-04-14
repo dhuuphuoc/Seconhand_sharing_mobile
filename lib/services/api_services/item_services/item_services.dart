@@ -55,8 +55,10 @@ class ItemServices {
       HttpHeaders.contentTypeHeader: "application/json",
     });
     print(response.body);
-    var itemModel = ItemModel.fromJson(jsonDecode(response.body));
-    return itemModel.items;
+    if (response.statusCode == 200) {
+      return ItemModel.fromJson(jsonDecode(response.body)).items;
+    }
+    return null;
   }
 
   static Future<int> uploadImage(ImageData image, String url) async {
