@@ -12,7 +12,7 @@ class NotifyDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(title),
       contentPadding: EdgeInsets.only(left: 24, top: 10, right: 24),
-      buttonPadding: EdgeInsets.zero,
+      buttonPadding: EdgeInsets.symmetric(horizontal: 20),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
