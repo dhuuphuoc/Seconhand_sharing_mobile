@@ -43,14 +43,20 @@ class PostItemForm {
 }
 
 class ItemServices {
-  static final int _pageSize = 5;
+  static final int _pageSize = 8;
 
   static Future<List<Item>> getItems(int pageNumber, int categoryId) async {
-    Uri getItemsUrl = Uri.https(APIService.apiUrl, "/Item", {
+    String path = "Item";
+    // if (categoryId != -1) {
+    //   path = "Category/$categoryId";
+    // } else {
+    //   path = "Item";
+    // }
+    Uri getItemsUrl = Uri.https(APIService.apiUrl, path, {
       "PageNumber": pageNumber.toString(),
       "PageSize": _pageSize.toString(),
-      "categoryId": categoryId.toString()
     });
+    print(getItemsUrl);
 
     var response = await http.get(getItemsUrl, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",

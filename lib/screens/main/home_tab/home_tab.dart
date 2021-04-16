@@ -22,6 +22,7 @@ class _HomeTabState extends State<HomeTab> {
   int _pageNumber = 1;
   bool _isLoading = true;
   bool _isEnd = false;
+  int _runningTasks = 0;
   ScrollController _postsScrollController;
   @override
   void initState() {
@@ -52,26 +53,29 @@ class _HomeTabState extends State<HomeTab> {
     super.dispose();
   }
 
-  void fetchItems() {
+  Future<void> fetchItems() async {
     if (!_isEnd) {
       setState(() {
         _isLoading = true;
       });
-      ItemServices.getItems(_pageNumber, _categoryModel.selectedId)
-          .then((value) {
+      var items =
+          await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+      if (items.isEmpty) {
         setState(() {
-          _items.addAll(value);
+          _isEnd = true;
           _isLoading = false;
-          if (value.isEmpty) {
-            _isEnd = true;
-            _postsScrollController.animateTo(
-              _postsScrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 800),
-            );
-          }
         });
-      });
+        _postsScrollController.animateTo(
+          _postsScrollController.position.maxScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 800),
+        );
+      } else {
+        setState(() {
+          _items.addAll(items);
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -94,30 +98,43 @@ class _HomeTabState extends State<HomeTab> {
           itemBuilder: (BuildContext context, int index) {
             Category category = _categoryModel.categories[index];
             return CategoryTab(
-                category.id == _categoryModel.selectedId, category, () {
+                category.id == _categoryModel.selectedId, category, () async {
+              print(_runningTasks);
               setState(() {
+                _runningTasks++;
                 _categoryModel.selectedId = category.id;
                 _isEnd = false;
+                _isLoading = true;
                 _items = [];
               });
               _pageNumber = 1;
-              fetchItems();
+              var items = await ItemServices.getItems(
+                  _pageNumber, _categoryModel.selectedId);
+              setState(() {
+                _items = items;
+                _runningTasks--;
+                print(_runningTasks);
+                if (_runningTasks == 0) {
+                  _isLoading = false;
+                }
+              });
             });
           },
         ),
       ),
     ];
 
-    _items.forEach((item) {
-      listViewWidgets.add(ItemCard(item));
-    });
+    if (_runningTasks == 0)
+      _items.forEach((item) {
+        listViewWidgets.add(ItemCard(item));
+      });
     listViewWidgets.add(_isLoading
         ? Center(
             heightFactor: 8,
             child: CircularProgressIndicator(),
           )
         : Container(
-            height: _isEnd ? 0 : 300,
+            height: _isEnd ? 0 : 250,
           ));
     if (_isEnd) {
       listViewWidgets.add(Card(
