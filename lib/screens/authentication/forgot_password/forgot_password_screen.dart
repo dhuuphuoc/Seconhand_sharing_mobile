@@ -39,7 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         },
       ).whenComplete(() {
         Navigator.pop(context);
-        Navigator.pushNamed(context, "/resetPassword");
+        Navigator.pushNamed(context, "/reset-password");
       });
     } else {
       showDialog<void>(

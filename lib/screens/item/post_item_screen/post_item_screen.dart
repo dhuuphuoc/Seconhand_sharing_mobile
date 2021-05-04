@@ -17,10 +17,8 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/im
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
-import 'package:secondhand_sharing/widgets/category_tab.dart';
+import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
-
-import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
 
 class PostItemScreen extends StatefulWidget {
   @override
@@ -200,7 +198,6 @@ class _PostItemScreenState extends State<PostItemScreen>
               ),
               //Categories
               Container(
-                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
                     borderRadius: BorderRadius.circular(10)),

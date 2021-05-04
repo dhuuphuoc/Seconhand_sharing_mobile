@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pushNamed("/forgotPassword");
+                        Navigator.of(context).pushNamed("/forgot-password");
                       },
                       child: Text(
                         "${S.of(context).forgotPassword}?",

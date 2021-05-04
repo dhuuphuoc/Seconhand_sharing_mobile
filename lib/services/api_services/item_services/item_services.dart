@@ -27,7 +27,7 @@ class PostItemForm {
 
   factory PostItemForm.fromJson(Map<String, dynamic> json) => PostItemForm(
         itemName: json["itemName"],
-        receiveAddress: json["receiveAddress"],
+        receiveAddress: json["address"],
         categoryId: json["categoryId"],
         description: json["description"],
         imageNumber: json["imageNumber"],

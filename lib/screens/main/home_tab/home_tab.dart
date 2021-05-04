@@ -7,9 +7,7 @@ import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
-import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
-import 'package:secondhand_sharing/widgets/category_tab.dart';
-import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
+import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -99,7 +97,6 @@ class _HomeTabState extends State<HomeTab> {
             Category category = _categoryModel.categories[index];
             return CategoryTab(
                 category.id == _categoryModel.selectedId, category, () async {
-              print(_runningTasks);
               setState(() {
                 _runningTasks++;
                 _categoryModel.selectedId = category.id;
@@ -113,7 +110,6 @@ class _HomeTabState extends State<HomeTab> {
               setState(() {
                 _items = items;
                 _runningTasks--;
-                print(_runningTasks);
                 if (_runningTasks == 0) {
                   _isLoading = false;
                 }
