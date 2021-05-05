@@ -144,8 +144,10 @@ class _PostItemScreenState extends State<PostItemScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).donate,
-              style: Theme.of(context).textTheme.headline1)),
+        title: Text(S.of(context).donate,
+            style: Theme.of(context).textTheme.headline2),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

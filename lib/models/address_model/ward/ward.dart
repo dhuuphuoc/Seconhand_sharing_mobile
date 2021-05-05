@@ -7,4 +7,9 @@ class Ward {
   String get name => _name;
 
   Ward(this._id, this._name);
+
+  @override
+  String toString() {
+    return _name;
+  }
 }

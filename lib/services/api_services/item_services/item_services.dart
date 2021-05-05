@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
+import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
+import 'package:secondhand_sharing/models/item_detail_model/item_detail_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/models/item_model/item_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
@@ -67,6 +69,20 @@ class ItemServices {
       return ItemModel.fromJson(jsonDecode(response.body)).items;
     }
     return null;
+  }
+
+  static Future<ItemDetail> getItemDetail(int id) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Item/$id");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return ItemDetailModel.fromJson(jsonDecode(response.body)).data;
+    } else {
+      return null;
+    }
   }
 
   static Future<int> uploadImage(ImageData image, String url) async {

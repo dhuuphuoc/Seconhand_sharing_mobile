@@ -21,9 +21,17 @@ class AddressModel {
       };
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
-    Province province = CountryData().vn.provinces[json["cityId"]];
-    District district = province.districts[json["districtId"]];
-    Ward ward = district.wards[json["wardId"]];
+    Province province;
+    District district;
+    Ward ward;
+    province = CountryData().vn.provinces[json["cityId"]];
+    if (province != null) {
+      district = province.districts[json["districtId"]];
+      if (district != null) {
+        ward = district.wards[json["wardId"]];
+      }
+    }
+
     return AddressModel(
       address: json["street"],
       ward: ward,
