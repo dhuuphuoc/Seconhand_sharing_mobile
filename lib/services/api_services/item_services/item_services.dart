@@ -49,11 +49,9 @@ class ItemServices {
 
   static Future<List<Item>> getItems(int pageNumber, int categoryId) async {
     String path = "Item";
-    // if (categoryId != -1) {
-    //   path = "Category/$categoryId";
-    // } else {
-    //   path = "Item";
-    // }
+    if (categoryId != -1) {
+      path = "Category/$categoryId";
+    }
     Uri getItemsUrl = Uri.https(APIService.apiUrl, path, {
       "PageNumber": pageNumber.toString(),
       "PageSize": _pageSize.toString(),

@@ -109,6 +109,9 @@ class _HomeTabState extends State<HomeTab> {
                   _pageNumber, _categoryModel.selectedId);
               setState(() {
                 _items = items;
+                if (_items.isEmpty) {
+                  _isEnd = true;
+                }
                 _runningTasks--;
                 if (_runningTasks == 0) {
                   _isLoading = false;

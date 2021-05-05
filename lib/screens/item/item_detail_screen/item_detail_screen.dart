@@ -64,6 +64,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     SizedBox(height: 10),
                     Card(
                       margin: EdgeInsets.symmetric(horizontal: 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       elevation: 5,
                       child: Container(
                         padding: EdgeInsets.all(10),
