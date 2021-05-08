@@ -60,9 +60,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
           ),
           bodyText2: TextStyle(fontSize: 15),
           subtitle2: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-              fontWeight: FontWeight.normal),
+              fontSize: 14, color: Colors.black45, fontWeight: FontWeight.bold),
         ),
       ),
       localizationsDelegates: [
