@@ -117,7 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushNamed("/register");
                       },
                       style: ButtonStyle(
-                          padding: MaterialStateProperty.all(EdgeInsets.zero)),
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
                       child: Text(
                         S.of(context).registerForFree,
                         textAlign: TextAlign.start,
@@ -129,7 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushNamed("/forgot-password");
                       },
                       style: ButtonStyle(
-                          padding: MaterialStateProperty.all(EdgeInsets.zero)),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          alignment: Alignment.centerRight),
                       child: Text(
                         "${S.of(context).forgotPassword}?",
                         textAlign: TextAlign.end,
