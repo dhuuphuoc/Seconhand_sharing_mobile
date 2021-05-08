@@ -64,6 +64,7 @@
   "districtEmptyError" : "District can't be empty!",
   "wardEmptyError" : "Ward can't be empty!",
   "addressEmptyError" : "Address can't be empty!",
+  "addressError" : "Address must be filled completely!",
   "invalidPhoneNumber" : "Invalid phone number!",
   "titleEmptyError" : "Title can't be empty!",
   "descriptionEmptyError" : "Description can't be empty!",

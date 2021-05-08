@@ -28,7 +28,7 @@ class PostItemScreen extends StatefulWidget {
 class _PostItemScreenState extends State<PostItemScreen>
     with TickerProviderStateMixin {
   CategoryModel _categoryModel = CategoryModel();
-
+  bool _isPosting = false;
   var _images = <String, ImageData>{};
 
   Future<void> requestStoragePermission() async {
@@ -85,18 +85,21 @@ class _PostItemScreenState extends State<PostItemScreen>
       return;
     }
     if (!_formKey.currentState.validate()) return;
+    _isPosting = true;
     showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          buttonPadding: EdgeInsets.zero,
-          content: ListBody(
-            children: <Widget>[
-              Center(child: CircularProgressIndicator()),
-            ],
+        return WillPopScope(
+          onWillPop: onPop,
+          child: AlertDialog(
+            buttonPadding: EdgeInsets.zero,
+            content: Container(
+                height: 100,
+                width: 100,
+                child: Center(child: CircularProgressIndicator())),
+            actions: <Widget>[],
           ),
-          actions: <Widget>[],
         );
       },
     );
@@ -126,12 +129,17 @@ class _PostItemScreenState extends State<PostItemScreen>
     );
   }
 
+  Future<bool> onPop() async {
+    if (_isPosting) return false;
+    return true;
+  }
+
   void onMapPress() async {
     Navigator.pushNamed(context, "/item/address", arguments: _addressModel)
         .then((value) {
-      setState(() {
-        if (value != null) _addressModel = value;
-      });
+      // setState(() {
+      //   if (value != null) _addressModel = value;
+      // });
     });
   }
 
@@ -139,7 +147,6 @@ class _PostItemScreenState extends State<PostItemScreen>
   final _phoneNumberController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

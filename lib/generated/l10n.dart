@@ -685,6 +685,16 @@ class S {
     );
   }
 
+  /// `Address must be filled completely!`
+  String get addressError {
+    return Intl.message(
+      'Address must be filled completely!',
+      name: 'addressError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Invalid phone number!`
   String get invalidPhoneNumber {
     return Intl.message(

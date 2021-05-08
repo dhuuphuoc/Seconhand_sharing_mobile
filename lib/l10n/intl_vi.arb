@@ -64,6 +64,7 @@
   "districtEmptyError" : "Quận huyện không được trống!",
   "wardEmptyError" : "Phường xã không được trống!",
   "addressEmptyError" : "Số nhà, tên đường không được bỏ trống",
+  "addressError" : "Địa chỉ cần phải điền hoàn chỉnh",
   "invalidPhoneNumber" : "Số điện thoại không hợp lệ!",
   "titleEmptyError" : "Tiêu đề không được bỏ trống!",
   "descriptionEmptyError" : "Phần mô tả không được bỏ trống!",

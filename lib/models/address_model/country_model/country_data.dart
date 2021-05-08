@@ -37,6 +37,7 @@ Map<int, Province> parseData(String data) {
     }
     //create ward
     int wardId = int.tryParse(row[0]);
+    if (wardId == null) continue;
     String wardName = row[1];
     Ward ward = Ward(wardId, wardName);
     currentDistrict.wards[wardId] = ward;

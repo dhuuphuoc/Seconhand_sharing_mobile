@@ -71,8 +71,28 @@ class _AddressScreenState extends State<AddressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  TextFormField(
+                    validator: (String address) {
+                      return address.length == 0
+                          ? S.current.addressEmptyError
+                          : null;
+                    },
+                    onChanged: (text) {
+                      _addressModel.address = text;
+                    },
+                    controller: _addressController,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                        hintText: S.of(context).addressHint,
+                        labelText: S.of(context).address),
+                  ),
+                  SizedBox(height: 10),
                   DropdownButtonFormField<Province>(
-                    validator: Validator.validateProvince,
+                    validator: (Province province) {
+                      return province == null
+                          ? S.current.provinceEmptyError
+                          : null;
+                    },
                     value: _addressModel.province,
                     hint: Text(S.of(context).province),
                     onChanged: (province) {
@@ -92,7 +112,11 @@ class _AddressScreenState extends State<AddressScreen> {
                   ),
                   SizedBox(height: 10),
                   DropdownButtonFormField<District>(
-                    validator: Validator.validateDistrict,
+                    validator: (District district) {
+                      return district == null
+                          ? S.current.districtEmptyError
+                          : null;
+                    },
                     value: _addressModel.district,
                     elevation: 16,
                     hint: Text(S.of(context).district),
@@ -112,12 +136,16 @@ class _AddressScreenState extends State<AddressScreen> {
                   ),
                   SizedBox(height: 10),
                   DropdownButtonFormField<Ward>(
-                    validator: Validator.validateWard,
+                    validator: (Ward ward) {
+                      if (_addressModel.district.wards.length == 0) return null;
+                      return ward == null ? S.current.wardEmptyError : null;
+                    },
                     value: _addressModel.ward,
                     hint: Text(S.of(context).ward),
                     onChanged: (ward) {
                       setState(() {
                         _addressModel.ward = ward;
+                        print(ward);
                       });
                     },
                     items: wards
@@ -128,21 +156,12 @@ class _AddressScreenState extends State<AddressScreen> {
                                 ))
                         .toList(),
                   ),
-                  TextFormField(
-                    validator: Validator.validateAddress,
-                    controller: _addressController,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                        hintText: S.of(context).addressHint,
-                        labelText: S.of(context).address),
-                  ),
                   SizedBox(height: 10),
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
                           if (!_formKey.currentState.validate()) return;
-                          _addressModel.address = _addressController.text;
                           Navigator.pop(context, _addressModel);
                         },
                         child: Text(S.of(context).confirm)),

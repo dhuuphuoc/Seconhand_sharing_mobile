@@ -15,7 +15,7 @@ class AddressModel {
   Map<String, dynamic> toJson() => {
         "streetNumber": 1,
         "street": address,
-        "wardId": ward.id,
+        "wardId": ward?.id,
         "districtId": district.id,
         "cityId": province.id,
       };
