@@ -48,8 +48,8 @@ class ForgotPasswordForm {
   String get email => _email;
 
   Map<String, dynamic> toJson() => {
-    "email": _email,
-  };
+        "email": _email,
+      };
 }
 
 class AuthenticationService {
@@ -68,14 +68,18 @@ class AuthenticationService {
     var response = await http.post(_registerUri,
         body: jsonEncode(registerForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
-    RegisterModel registerModel = RegisterModel.fromJson(jsonDecode(response.body));
+    RegisterModel registerModel =
+        RegisterModel.fromJson(jsonDecode(response.body));
     return registerModel;
   }
 
-  static Uri _forgotPasswordUri = Uri.https(APIService.apiUrl, "/Identity/forgot-password");
-  static Future<int> forgotPassword(ForgotPasswordForm forgotPasswordForm) async {
+  static Uri _forgotPasswordUri =
+      Uri.https(APIService.apiUrl, "/Identity/forgot-password");
+  static Future<int> forgotPassword(
+      ForgotPasswordForm forgotPasswordForm) async {
     var response = await http.post(_forgotPasswordUri,
-      headers: {HttpHeaders.contentTypeHeader: "application/json"});
+        headers: {HttpHeaders.contentTypeHeader: "application/json"},
+        body: jsonEncode(forgotPasswordForm.toJson()));
     return response.statusCode;
   }
 }

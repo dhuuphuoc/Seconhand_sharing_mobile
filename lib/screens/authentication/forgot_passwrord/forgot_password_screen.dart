@@ -30,7 +30,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ForgotPasswordForm(_emailTextController.text));
     print(statusCode);
     if (statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       _showDialogSuccess();
     } else {
       _showDialogFail();
@@ -156,11 +155,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Container(
                     width: double.infinity,
                     child: GradientButton(
-                        onPress: _forgotPasswordSubmit,
-                        text: S.of(context).continueButton,
-                        disabled: _isLoading,
+                      onPress: _forgotPasswordSubmit,
+                      text: S.of(context).continueButton,
+                      disabled: _isLoading,
                     ),
-
                   )
                 ],
               )),
