@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country_da
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,12 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
     handleUniLink();
   }
 
-  Future<void> loadData() async {
-    await loadAddress();
-    if (!kIsWeb) await loadImages(context);
-    await loadToken();
-  }
-
   Future<void> handleUniLink() async {
     String link = await getInitialLink();
     if (link != null) {
@@ -68,7 +63,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void processUniLink(Uri url) {
     print(url);
     String code = url.queryParameters["code"].replaceAll(" ", "+");
-    Navigator.pushNamed(context, "/reset-password", arguments: code);
+    Keys.navigatorKey.currentState
+        .pushNamed("/reset-password", arguments: code);
+  }
+
+  Future<void> loadData() async {
+    await loadAddress();
+    if (!kIsWeb) await loadImages(context);
+    await loadToken();
   }
 
   @override
