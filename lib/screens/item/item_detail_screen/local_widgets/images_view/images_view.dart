@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class ImagesView extends StatefulWidget {
   final List<String> images;
   final String itemName;
+  final String description;
 
-  ImagesView({this.images, this.itemName});
+  ImagesView({this.images, this.itemName, this.description});
 
   @override
   _ImagesViewState createState() => _ImagesViewState();
@@ -21,6 +22,7 @@ class _ImagesViewState extends State<ImagesView> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Card(
       elevation: 5,
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -35,6 +37,7 @@ class _ImagesViewState extends State<ImagesView> {
               widget.itemName,
               style: Theme.of(context).textTheme.headline3,
             ),
+            Text(widget.description),
             SizedBox(
               height: 10,
             ),
@@ -42,7 +45,7 @@ class _ImagesViewState extends State<ImagesView> {
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 selectedImage,
-                height: 400,
+                height: screenSize.height * 0.6,
                 fit: BoxFit.contain,
               ),
             ),

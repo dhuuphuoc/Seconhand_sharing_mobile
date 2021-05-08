@@ -60,26 +60,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     ImagesView(
                       images: _itemDetail.imageUrl,
                       itemName: _itemDetail.itemName,
-                    ),
-                    SizedBox(height: 10),
-                    Card(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${S.of(context).description}:",
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                            Text(_itemDetail.description),
-                          ],
-                        ),
-                      ),
+                      description: _itemDetail.description,
                     ),
                     Container(
                       margin: EdgeInsets.all(10),
