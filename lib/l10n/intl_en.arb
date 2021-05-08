@@ -1,5 +1,7 @@
 {
   "login": "Login",
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?",
   "loginHint": "Login to share your items",
   "registerForFree": "Register for free",
   "forgotPassword": "Forgot password",
@@ -83,6 +85,8 @@
   "grantStoragePermissionHint" : "Grant access permission in settings to upload your item's images",
   "allowAccess" : "Allow access",
   "detail" : "Detail",
-  "request": "Request"
+  "request": "Request",
+  "yes" : "Yes",
+  "no": "No"
 
 }

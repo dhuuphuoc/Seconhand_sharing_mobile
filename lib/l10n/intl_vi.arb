@@ -1,5 +1,7 @@
 {
   "login": "Đăng nhập",
+  "logout": "Đăng xuất",
+  "logoutConfirmation": "Bạn có muốn đăng xuất không?",
   "loginHint": "Đăng nhập để chia sẻ món đồ của bạn",
   "registerForFree": "Đăng ký miễn phí",
   "forgotPassword": "Quên mật khẩu",
@@ -83,5 +85,7 @@
   "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
   "endNotifyMessage" : "Bạn đã coi tất cả các bài viết",
   "detail" : "Thông tin chi tiết",
-  "request": "Đăng ký nhận"
+  "request": "Đăng ký nhận",
+  "yes" : "Có",
+  "no": "Không"
 }
