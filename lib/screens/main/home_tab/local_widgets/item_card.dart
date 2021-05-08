@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
@@ -30,6 +31,23 @@ class ItemCard extends StatelessWidget {
                   item.donateAccountName,
                   style: Theme.of(context).textTheme.headline3,
                 ),
+                subtitle: Text(
+                    "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}"),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15),
+                child: Text(
+                  item.itemName,
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, bottom: 10),
+                child: Text(
+                  item.description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
               ),
               Container(
                 child: Image.network(
@@ -49,22 +67,6 @@ class ItemCard extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 10, left: 15),
-                child: Text(
-                  item.itemName,
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                child: Text(
-                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}\n${item.receiveAddress}",
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
               Divider(
                 height: 3,
                 thickness: 2,
@@ -72,9 +74,10 @@ class ItemCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Text(
-                  item.description,
+                  "${S.of(context).receiveAddress}:\n${item.receiveAddress}",
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
             ],
