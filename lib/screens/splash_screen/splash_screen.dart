@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
 
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
-
-import 'package:secondhand_sharing/models/user_model/user_singleton/access_token.dart';
+import 'package:secondhand_sharing/models/image_model/image_model.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,12 +17,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<void> loadToken(BuildContext context) async {
-    print("start");
+  Future<void> loadAddress() async {
     Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
     Country vn = Country(84, S.of(context).vietNam, provinces);
     CountryData().vn = vn;
+  }
+
+  Future<void> loadImages(BuildContext context) async {
+    if (await Permission.storage.isDenied) {
+      if (await Permission.storage.request().isDenied) {
+        return;
+      }
+    }
+    ImageModel().loadImages();
+  }
+
+  Future<void> loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     if (token == null) {
@@ -31,11 +45,35 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
+    handleUniLink();
+  }
+
+  Future<void> loadData() async {
+    await loadAddress();
+    if (!kIsWeb) await loadImages(context);
+    await loadToken();
+  }
+
+  Future<void> handleUniLink() async {
+    String link = await getInitialLink();
+    if (link != null) {
+      Uri url = Uri.parse(link);
+      processUniLink(url);
+    }
+    uriLinkStream.listen((url) {
+      processUniLink(url);
+    });
+  }
+
+  void processUniLink(Uri url) {
+    print(url);
+    String code = url.queryParameters["code"].replaceAll(" ", "+");
+    Navigator.pushNamed(context, "/reset-password", arguments: code);
   }
 
   @override
   void initState() {
-    loadToken(context);
+    loadData();
     super.initState();
   }
 

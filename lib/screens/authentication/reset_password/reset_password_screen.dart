@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,25 +24,36 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
   bool _isLoading = false;
+  String _code = "";
 
   void _resetPasswordSubmit() async {
     if (!_formKey.currentState.validate()) return;
     setState(() {
       _isLoading = true;
     });
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String code = prefs.getString("message");
-    print(code);
-
-    ResetPasswordModel resetPasswordModel = await AuthenticationService.resetPassword(
-        ResetPasswordForm(_emailTextController.text, code, _passwordTextController.text, _confirmPasswordTextController.text));
-    print(resetPasswordModel.message);
-    if(resetPasswordModel.succeeded){
-      Navigator.pop(context);
-      Navigator.pushNamed(context, "/login");
+    print(_code);
+    ResetPasswordModel resetPasswordModel =
+        await AuthenticationService.resetPassword(ResetPasswordForm(
+            _emailTextController.text,
+            _code,
+            _passwordTextController.text,
+            _confirmPasswordTextController.text));
+    if (resetPasswordModel != null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(S.of(context).success,
+                S.of(context).resetPasswordSuccess, "OK");
+          }).whenComplete(() {
+        Navigator.pop(context);
+      });
     } else {
-      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(
+                S.of(context).failed, S.of(context).resetPasswordFailed, "OK");
+          });
     }
     setState(() {
       _isLoading = false;
@@ -50,6 +62,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_code != null) {
+      _code = ModalRoute.of(context).settings.arguments;
+    }
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -112,8 +127,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     return value.isEmpty
                         ? S.of(context).emptyPasswordError
                         : value == _passwordTextController.text
-                        ? null
-                        : S.of(context).matchPassword;
+                            ? null
+                            : S.of(context).matchPassword;
                   },
                   obscureText: true,
                   textInputAction: TextInputAction.done,
@@ -136,9 +151,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 Container(
                   width: double.infinity,
                   child: GradientButton(
-                      onPress: _resetPasswordSubmit,
-                      text: S.of(context).confirm,
-                      disabled: _isLoading,
+                    onPress: _resetPasswordSubmit,
+                    text: S.of(context).confirm,
+                    disabled: _isLoading,
                   ),
                 ),
               ],

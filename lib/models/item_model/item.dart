@@ -21,7 +21,7 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       id: json["id"],
       itemName: json["itemName"],
-      receiveAddress: AddressModel.fromJson(json["receiveAddress"]),
+      receiveAddress: AddressModel.fromJson(json["address"]),
       postTime: DateTime.parse(json["postTime"]),
       description: json["description"],
       imageUrl: json["imageUrl"],

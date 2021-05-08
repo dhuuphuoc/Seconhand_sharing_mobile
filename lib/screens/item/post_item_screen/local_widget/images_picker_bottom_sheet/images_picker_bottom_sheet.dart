@@ -1,29 +1,29 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:mime/mime.dart' as mime;
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
+import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/selective_image_view/selective_image_view.dart';
 
 class ImagesPickerBottomSheet extends StatefulWidget {
-  final List<File> imagesInGallery;
-  final Map<String, File> images;
-  final Function onSubmit;
-
-  ImagesPickerBottomSheet(this.imagesInGallery, this.images, this.onSubmit);
-
   @override
   _ImagesPickerBottomSheetState createState() =>
       _ImagesPickerBottomSheetState();
 }
 
 class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
-  bool _isLoading = true;
-
+  bool _isLoading = false;
+  Map<String, ImageData> _images = {};
+  List<ImageData> _imagesInGallery = ImageModel().imagesData;
+  bool _isPermissionGrant = false;
   Future<File> getImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -37,114 +37,110 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
     }
   }
 
-  Future<void> loadImages() async {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<void> requestStoragePermission() async {
     if (await Permission.storage.isDenied) {
       if (await Permission.storage.request().isDenied) {
-        Navigator.pop(context);
+        return;
       }
+      await ImageModel().loadImages();
     }
-    var capture = await path.getExternalStorageDirectory();
-
-    var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DCIM);
-
-    var picturePath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_PICTURES);
-
-    await collectImagesFromDirectory(capture);
-
-    var dcim = Directory(dcimPath);
-    await collectImagesFromDirectory(dcim);
-
-    var picture = Directory(picturePath);
-    await collectImagesFromDirectory(picture);
     setState(() {
-      _isLoading = false;
+      _isPermissionGrant = true;
     });
-  }
-
-  Future<void> collectImagesFromDirectory(FileSystemEntity entity) async {
-    if (entity is File) {
-      File file = entity;
-      if (mime.lookupMimeType(file.path).startsWith("image/")) {
-        setState(() {
-          widget.imagesInGallery.add(file);
-        });
-      }
-      return;
-    }
-    if (entity is Directory) {
-      Directory dir = entity;
-      await dir.list().forEach((element) async {
-        await collectImagesFromDirectory(element);
-      });
-    }
   }
 
   @override
   void initState() {
-    loadImages();
-
+    requestStoragePermission();
     super.initState();
+  }
+
+  void onSubmit() {
+    Navigator.pop(context, _images);
   }
 
   @override
   Widget build(BuildContext context) {
+    _images.addAll(ModalRoute.of(context).settings.arguments);
     return Container(
-        height: 300,
-        padding: EdgeInsets.only(bottom: 10),
-        child: Column(
-          children: [
-            ListTile(
-              leading: IconButton(
-                onPressed: () {
-                  getImage().then((image) {
-                    setState(() {
-                      widget.imagesInGallery.insert(0, image);
-                    });
-                  });
-                },
-                icon: Icon(Icons.camera_alt_rounded),
-              ),
-              title: Text(
-                S.of(context).selectPhotos,
-                textAlign: TextAlign.center,
-              ),
-              trailing: IconButton(
-                onPressed: widget.onSubmit,
-                icon: Icon(Icons.check),
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            Expanded(
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : GridView.count(
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 3,
-                      cacheExtent: 10000,
-                      children: widget.imagesInGallery.map((image) {
-                        return SelectiveImageView(
-                            onPress: () {
-                              setState(() {
-                                if (widget.images.containsKey(image.path)) {
-                                  widget.images.remove(image.path);
-                                } else {
-                                  widget.images[image.path] = image;
-                                }
-                              });
-                            },
-                            image: image,
-                            isSelected: widget.images.containsKey(image.path));
-                      }).toList(),
+      height: 300,
+      child: _isPermissionGrant
+          ? Column(
+              children: [
+                ListTile(
+                  leading: IconButton(
+                    onPressed: () {
+                      getImage().then((image) {
+                        setState(() {
+                          _imagesInGallery.insert(0,
+                              ImageData(image.readAsBytesSync(), image.path));
+                        });
+                      });
+                    },
+                    icon: Icon(Icons.camera_alt_rounded),
+                  ),
+                  title: Text(
+                    S.of(context).selectPhotos,
+                    textAlign: TextAlign.center,
+                  ),
+                  trailing: IconButton(
+                    onPressed: onSubmit,
+                    icon: Icon(Icons.check),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                Expanded(
+                  child: _isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : GridView.count(
+                          primary: true,
+                          mainAxisSpacing: 10,
+                          crossAxisCount: 3,
+                          cacheExtent: 2000,
+                          children: _imagesInGallery.map((image) {
+                            return SelectiveImageView(
+                                onPress: () {
+                                  setState(() {
+                                    if (_images.containsKey(image.path)) {
+                                      _images.remove(image.path);
+                                    } else {
+                                      _images[image.path] = image;
+                                    }
+                                  });
+                                },
+                                image: image,
+                                isSelected: _images.containsKey(image.path));
+                          }).toList(),
+                        ),
+                ),
+              ],
+            )
+          : Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      S.of(context).grantStoragePermission,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
+                    SizedBox(height: 10),
+                    Text(
+                      S.of(context).grantStoragePermissionHint,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                        onPressed: requestStoragePermission,
+                        child: Text(S.of(context).allowAccess))
+                  ],
+                ),
+              ),
             ),
-          ],
-        ));
+    );
   }
 }

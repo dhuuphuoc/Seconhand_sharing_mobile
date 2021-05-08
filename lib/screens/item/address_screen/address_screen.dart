@@ -54,8 +54,9 @@ class _AddressScreenState extends State<AddressScreen> {
       appBar: AppBar(
         title: Text(
           S.of(context).receiveAddress,
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.headline2,
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Card(

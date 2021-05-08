@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
 
 class SelectiveImageView extends StatelessWidget {
   final Function onPress;
   final bool isSelected;
-  final File image;
+  final ImageData image;
 
   SelectiveImageView(
       {@required this.onPress, this.isSelected = false, @required this.image});
@@ -21,20 +23,8 @@ class SelectiveImageView extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: Stack(fit: StackFit.expand, children: [
           ClipRRect(
-            child: Image.file(
-              image,
-              frameBuilder: (BuildContext context, Widget child, int frame,
-                  bool wasSynchronouslyLoaded) {
-                if (wasSynchronouslyLoaded ?? false) {
-                  return child;
-                }
-                return AnimatedOpacity(
-                  child: child,
-                  opacity: frame == null ? 0 : 1,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeOut,
-                );
-              },
+            child: Image.memory(
+              image.data,
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(10),

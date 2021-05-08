@@ -5,6 +5,7 @@ import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/address_model/district/district.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
 
 class Validator {
   static String validateUsername(String username) {
@@ -31,7 +32,7 @@ class Validator {
     return addressModel.ward == null ? S.current.addressEmptyError : null;
   }
 
-  static String validateImages(Map<String, File> images) {
+  static String validateImages(Map<String, ImageData> images) {
     return images.length > 0 ? null : S.current.notEnoughImages;
   }
 

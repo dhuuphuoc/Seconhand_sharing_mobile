@@ -30,7 +30,7 @@ class PostCard extends StatelessWidget {
               height: 38,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/postItem");
+                  Navigator.pushNamed(context, "/post-item");
                 },
                 child: Text(
                   S.of(context).postItem,

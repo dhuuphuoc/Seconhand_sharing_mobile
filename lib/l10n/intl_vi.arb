@@ -74,7 +74,15 @@
   "postError" : "Có lỗi trong quá trình đăng bài",
   "error" : "Lỗi",
   "checkMailForgotPassword": "Kiểm tra email của bạn",
+  "notExistEmail": "Email của bạn không tồn tại",
+  "grantStoragePermission" : "Cho phép 2Hand-Sharing truy cập vào bộ nhớ",
+  "grantStoragePermissionHint" : "Cấp quyền truy cập trong cài đặt để gửi hình ảnh đồ vật bạn muốn cho",
+  "allowAccess" : "Cho phép truy cập",
   "resetPassword": "Thay đổi mật khẩu",
   "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
-  "notExistEmail": "Email của bạn không tồn tại"
+  "endNotifyMessage" : "Bạn đã coi tất cả các bài viết",
+  "detail" : "Thông tin chi tiết",
+  "request": "Đăng ký nhận",
+  "resetPasswordSuccess" : "Mật khẩu của bạn đã được đặt lại",
+  "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn"
 }

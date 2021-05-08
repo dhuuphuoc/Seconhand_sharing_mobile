@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
-import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
-import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
+import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -20,27 +20,23 @@ class _HomeTabState extends State<HomeTab> {
   int _pageNumber = 1;
   bool _isLoading = true;
   bool _isEnd = false;
+  int _runningTasks = 0;
   ScrollController _postsScrollController;
   @override
   void initState() {
     fetchItems();
+    super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _postsScrollController.addListener(() {
         if (_postsScrollController.position.maxScrollExtent ==
             _postsScrollController.offset) {
-          if (!_isEnd) {
+          if (!_isEnd && !_isLoading) {
             _pageNumber++;
             fetchItems();
-            _postsScrollController.animateTo(
-              _postsScrollController.position.maxScrollExtent - 2,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 800),
-            );
           }
         }
       });
     });
-    super.initState();
   }
 
   @override
@@ -55,25 +51,29 @@ class _HomeTabState extends State<HomeTab> {
     super.dispose();
   }
 
-  void fetchItems() {
+  Future<void> fetchItems() async {
     if (!_isEnd) {
       setState(() {
         _isLoading = true;
       });
-      ItemServices.getItems(_pageNumber).then((value) {
+      var items =
+          await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+      if (items.isEmpty) {
         setState(() {
-          _items.addAll(value);
+          _isEnd = true;
           _isLoading = false;
-          if (value.isEmpty) {
-            _isEnd = true;
-            _postsScrollController.animateTo(
-              _postsScrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 800),
-            );
-          }
         });
-      });
+        _postsScrollController.animateTo(
+          _postsScrollController.position.maxScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 800),
+        );
+      } else {
+        setState(() {
+          _items.addAll(items);
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -84,19 +84,57 @@ class _HomeTabState extends State<HomeTab> {
     var listViewWidgets = <Widget>[
       Container(margin: EdgeInsets.all(10), child: PostCard()),
       Container(
-          margin: EdgeInsets.all(10),
-          child: HorizontalCategoriesList(_categoryModel)),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            borderRadius: BorderRadius.circular(10)),
+        height: 130,
+        child: ListView.builder(
+          itemExtent: 90,
+          scrollDirection: Axis.horizontal,
+          itemCount: _categoryModel.categories.length,
+          itemBuilder: (BuildContext context, int index) {
+            Category category = _categoryModel.categories[index];
+            return CategoryTab(
+                category.id == _categoryModel.selectedId, category, () async {
+              setState(() {
+                _runningTasks++;
+                _categoryModel.selectedId = category.id;
+                _isEnd = false;
+                _isLoading = true;
+                _items = [];
+              });
+              _pageNumber = 1;
+              var items = await ItemServices.getItems(
+                  _pageNumber, _categoryModel.selectedId);
+              setState(() {
+                _items = items;
+                if (_items.isEmpty) {
+                  _isEnd = true;
+                }
+                _runningTasks--;
+                if (_runningTasks == 0) {
+                  _isLoading = false;
+                }
+              });
+            });
+          },
+        ),
+      ),
     ];
 
-    _items.forEach((item) {
-      listViewWidgets.add(ItemCard(item));
-    });
-    if (_isLoading) {
-      listViewWidgets.add(Center(
-        heightFactor: 8,
-        child: CircularProgressIndicator(),
-      ));
-    }
+    if (_runningTasks == 0)
+      _items.forEach((item) {
+        listViewWidgets.add(ItemCard(item));
+      });
+    listViewWidgets.add(_isLoading
+        ? Center(
+            heightFactor: 8,
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            height: _isEnd ? 0 : 250,
+          ));
     if (_isEnd) {
       listViewWidgets.add(Card(
         elevation: 10,
@@ -112,7 +150,7 @@ class _HomeTabState extends State<HomeTab> {
               color: Colors.green,
             ),
             SizedBox(height: 10),
-            Text("Bạn đã coi tất cả các bài viết"),
+            Text(S.of(context).endNotifyMessage),
             SizedBox(height: 10),
           ],
         ),

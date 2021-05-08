@@ -775,26 +775,6 @@ class S {
     );
   }
 
-  /// `Your email does not exist`
-  String get notExistEmail {
-    return Intl.message(
-      'Your email does not exist',
-      name: 'notExistEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Error`
-  String get error {
-    return Intl.message(
-      'Error',
-      name: 'error',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Reset password`
   String get resetPassword {
     return Intl.message(
@@ -810,6 +790,106 @@ class S {
     return Intl.message(
       'Insert your new password to change',
       name: 'resetPasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your email does not exist`
+  String get notExistEmail {
+    return Intl.message(
+      'Your email does not exist',
+      name: 'notExistEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your have seen all posts`
+  String get endNotifyMessage {
+    return Intl.message(
+      'Your have seen all posts',
+      name: 'endNotifyMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow 2Hand-Sharing access device's storage`
+  String get grantStoragePermission {
+    return Intl.message(
+      'Allow 2Hand-Sharing access device\'s storage',
+      name: 'grantStoragePermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grant access permission in settings to upload your item's images`
+  String get grantStoragePermissionHint {
+    return Intl.message(
+      'Grant access permission in settings to upload your item\'s images',
+      name: 'grantStoragePermissionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow access`
+  String get allowAccess {
+    return Intl.message(
+      'Allow access',
+      name: 'allowAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Detail`
+  String get detail {
+    return Intl.message(
+      'Detail',
+      name: 'detail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request`
+  String get request {
+    return Intl.message(
+      'Request',
+      name: 'request',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password was reset`
+  String get resetPasswordSuccess {
+    return Intl.message(
+      'Your password was reset',
+      name: 'resetPasswordSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recovery link is expired`
+  String get resetPasswordFailed {
+    return Intl.message(
+      'Recovery link is expired',
+      name: 'resetPasswordFailed',
       desc: '',
       args: [],
     );

@@ -1,12 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
+import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
@@ -14,81 +17,71 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/im
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
-
-import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
-import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
+import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
 class PostItemScreen extends StatefulWidget {
   @override
   _PostItemScreenState createState() => _PostItemScreenState();
 }
 
-class _PostItemScreenState extends State<PostItemScreen> {
+class _PostItemScreenState extends State<PostItemScreen>
+    with TickerProviderStateMixin {
   CategoryModel _categoryModel = CategoryModel();
 
-  List<File> _imagesInGallery = [];
-  var _images = <String, File>{};
+  var _images = <String, ImageData>{};
+
+  Future<void> requestStoragePermission() async {
+    if (await Permission.storage.isDenied) {
+      if (await Permission.storage.request().isGranted) {
+        await ImageModel().loadImages();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    requestStoragePermission();
+    super.initState();
+  }
 
   AddressModel _addressModel = AddressModel();
-
-  void submitImage() {
-    setState(() {});
-    Navigator.pop(context);
-  }
-
   void pickImages() {
-    _imagesInGallery = [];
     showModalBottomSheet(
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setModalState) {
-            return ImagesPickerBottomSheet(
-                _imagesInGallery, _images, submitImage);
-          });
-        },
-        backgroundColor: Theme.of(context).backgroundColor,
-        context: context);
-  }
-
-  void showNotifyDialog(String title, String message) {
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          contentPadding: EdgeInsets.only(left: 24, top: 10, right: 24),
-          buttonPadding: EdgeInsets.zero,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+            context: context,
+            builder: (context) {
+              return ImagesPickerBottomSheet();
+            },
+            routeSettings: RouteSettings(arguments: _images))
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          _images = value;
+        });
+      }
+    });
   }
 
   void onSubmit() async {
     String addressValidateMessage =
         Validator.validateAddressModel(_addressModel);
     if (addressValidateMessage != null) {
-      showNotifyDialog(S.of(context).address, addressValidateMessage);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(
+                S.of(context).address, addressValidateMessage, "OK");
+          });
       return;
     }
     String imagesValidateMessage = Validator.validateImages(_images);
     if (imagesValidateMessage != null) {
-      showNotifyDialog(S.of(context).images, imagesValidateMessage);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(
+                S.of(context).images, imagesValidateMessage, "OK");
+          });
       return;
     }
     if (!_formKey.currentState.validate()) return;
@@ -98,12 +91,10 @@ class _PostItemScreenState extends State<PostItemScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           buttonPadding: EdgeInsets.zero,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Center(child: CircularProgressIndicator()),
-              ],
-            ),
+          content: ListBody(
+            children: <Widget>[
+              Center(child: CircularProgressIndicator()),
+            ],
           ),
           actions: <Widget>[],
         );
@@ -153,8 +144,10 @@ class _PostItemScreenState extends State<PostItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).donate,
-              style: Theme.of(context).textTheme.headline1)),
+        title: Text(S.of(context).donate,
+            style: Theme.of(context).textTheme.headline2),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -196,7 +189,7 @@ class _PostItemScreenState extends State<PostItemScreen> {
                     if (index == 0) {
                       return AddPhoto(onPress: pickImages);
                     } else {
-                      File image = _images.values.toList()[index - 1];
+                      ImageData image = _images.values.toList()[index - 1];
                       return ImageView(image: image);
                     }
                   },
@@ -206,7 +199,26 @@ class _PostItemScreenState extends State<PostItemScreen> {
                 height: 10,
               ),
               //Categories
-              HorizontalCategoriesList(_categoryModel),
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.circular(10)),
+                height: 130,
+                child: ListView.builder(
+                  itemExtent: 90,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _categoryModel.categories.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Category category = _categoryModel.categories[index];
+                    return CategoryTab(
+                        category.id == _categoryModel.selectedId, category, () {
+                      setState(() {
+                        _categoryModel.selectedId = category.id;
+                      });
+                    });
+                  },
+                ),
+              ),
               SizedBox(
                 height: 15,
               ),

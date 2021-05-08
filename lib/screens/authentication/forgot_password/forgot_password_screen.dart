@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -30,73 +30,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ForgotPasswordForm(_emailTextController.text));
 
     if (statusCode == 200) {
-      _showDialogSuccess();
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return NotifyDialog(S.of(context).success,
+              S.of(context).checkMailForgotPassword, "OK");
+        },
+      ).whenComplete(() {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, "/reset-password");
+      });
     } else {
-      _showDialogFail();
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
+              S.of(context).tryAgain);
+        },
+      );
     }
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Future<void> _showDialogSuccess() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: Text(S.of(context).success),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(S.of(context).checkMailForgotPassword),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/resetPassword");
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showDialogFail() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: Text(S.of(context).failed),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(S.of(context).notExistEmail),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(S.of(context).tryAgain),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override

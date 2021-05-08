@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:secondhand_sharing/screens/authentication/forgot_passwrord/forgot_password_screen.dart';
+import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:secondhand_sharing/screens/item/address_screen/address_screen.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/item_detail_screen.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
@@ -34,26 +35,25 @@ class TwoHandShareApp extends StatelessWidget {
         ),
         primaryColor: Color(0xFF0E88FA),
         textTheme: TextTheme(
-          headline1: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
           headline2: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
-            color: Color(0xFF494949),
+            color: Colors.black87,
           ),
           headline3: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: Color(0xFF494949),
+            color: Colors.black87,
           ),
-          bodyText1: TextStyle(
+          headline4: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+          bodyText2: TextStyle(fontSize: 15),
+          subtitle2: TextStyle(
               fontSize: 14,
-              color: Color(0xFFA9A9A9),
-              fontWeight: FontWeight.w700),
-          bodyText2: TextStyle(fontSize: 16, color: Color(0xFF494949)),
-          subtitle2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              color: Colors.black87,
+              fontWeight: FontWeight.normal),
         ),
       ),
       localizationsDelegates: [
@@ -70,11 +70,12 @@ class TwoHandShareApp extends StatelessWidget {
         "/": (context) => SplashScreen(),
         "/login": (context) => LoginScreen(),
         "/register": (context) => SignUpScreen(),
-        "/forgotPassword": (context) => ForgotPasswordScreen(),
-        "/resetPassword": (context) => ResetPasswordScreen(),
+        "/forgot-password": (context) => ForgotPasswordScreen(),
+        "/reset-password": (context) => ResetPasswordScreen(),
         "/home": (context) => MainScreen(),
-        "/postItem": (context) => PostItemScreen(),
+        "/post-item": (context) => PostItemScreen(),
         "/item/address": (context) => AddressScreen(),
+        "/item/detail": (context) => ItemDetailScreen(),
       },
     );
   }

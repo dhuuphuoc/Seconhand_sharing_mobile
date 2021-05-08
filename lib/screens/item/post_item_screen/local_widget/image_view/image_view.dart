@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
 
 class ImageView extends StatelessWidget {
-  final File image;
+  final ImageData image;
 
   ImageView({this.image});
 
@@ -16,9 +18,9 @@ class ImageView extends StatelessWidget {
           border: Border.all(color: Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(10)),
       child: ClipRRect(
-        child: Image.file(
-          image,
-          fit: BoxFit.fill,
+        child: Image.memory(
+          image.data,
+          fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(10),
       ),

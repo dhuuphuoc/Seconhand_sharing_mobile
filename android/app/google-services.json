@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "139868751580",
+    "project_id": "twohandsharing",
+    "storage_bucket": "twohandsharing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139868751580:android:ea79a00bfffba18942d619",
+        "android_client_info": {
+          "package_name": "com.graduation.twohandsharing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139868751580-i42qtbhpf9achdm04kij7aanmqjmjh6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPmQV1SBr80dhVgFgoFtKva0XXhcl01hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139868751580-i42qtbhpf9achdm04kij7aanmqjmjh6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
