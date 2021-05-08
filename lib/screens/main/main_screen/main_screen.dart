@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
+import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
@@ -89,7 +90,7 @@ class _MainScreenState extends State<MainScreen>
             Container(),
             Container(),
             Container(),
-            Container(),
+            MenuTab(),
           ],
         ),
         // Next, create a SliverList

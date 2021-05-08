@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/address_model/country_model/country.dart';
+import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
 import 'package:secondhand_sharing/models/address_model/district/district.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
@@ -12,24 +14,13 @@ class Validator {
     return username.length < 6 ? S.current.invalidUsername : null;
   }
 
-  static String validateProvince(Province province) {
-    return province == null ? S.current.provinceEmptyError : null;
-  }
-
-  static String validateDistrict(District district) {
-    return district == null ? S.current.districtEmptyError : null;
-  }
-
-  static String validateWard(Ward ward) {
-    return ward == null ? S.current.wardEmptyError : null;
-  }
-
-  static String validateAddress(String address) {
-    return address.length == 0 ? S.current.addressEmptyError : null;
-  }
-
   static String validateAddressModel(AddressModel addressModel) {
-    return addressModel.ward == null ? S.current.addressEmptyError : null;
+    if (addressModel.province == null || addressModel.district == null)
+      return S.current.addressError;
+    if (addressModel.ward == null) {
+      if (addressModel.district.wards.length == 0) return null;
+      return S.current.addressError;
+    }
   }
 
   static String validateImages(Map<String, ImageData> images) {

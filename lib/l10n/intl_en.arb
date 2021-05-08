@@ -1,5 +1,7 @@
 {
   "login": "Login",
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?",
   "loginHint": "Login to share your items",
   "registerForFree": "Register for free",
   "forgotPassword": "Forgot password",
@@ -64,6 +66,7 @@
   "districtEmptyError" : "District can't be empty!",
   "wardEmptyError" : "Ward can't be empty!",
   "addressEmptyError" : "Address can't be empty!",
+  "addressError" : "Address must be filled completely!",
   "invalidPhoneNumber" : "Invalid phone number!",
   "titleEmptyError" : "Title can't be empty!",
   "descriptionEmptyError" : "Description can't be empty!",
@@ -84,5 +87,8 @@
   "detail" : "Detail",
   "request": "Request",
   "resetPasswordSuccess" : "Your password was reset",
-  "resetPasswordFailed" : "Recovery link is expired"
+  "resetPasswordFailed" : "Recovery link is expired",
+  "yes" : "Yes",
+  "no": "No"
+
 }

@@ -1,5 +1,7 @@
 {
   "login": "Đăng nhập",
+  "logout": "Đăng xuất",
+  "logoutConfirmation": "Bạn có muốn đăng xuất không?",
   "loginHint": "Đăng nhập để chia sẻ món đồ của bạn",
   "registerForFree": "Đăng ký miễn phí",
   "forgotPassword": "Quên mật khẩu",
@@ -64,6 +66,7 @@
   "districtEmptyError" : "Quận huyện không được trống!",
   "wardEmptyError" : "Phường xã không được trống!",
   "addressEmptyError" : "Số nhà, tên đường không được bỏ trống",
+  "addressError" : "Địa chỉ cần phải điền hoàn chỉnh",
   "invalidPhoneNumber" : "Số điện thoại không hợp lệ!",
   "titleEmptyError" : "Tiêu đề không được bỏ trống!",
   "descriptionEmptyError" : "Phần mô tả không được bỏ trống!",
@@ -84,5 +87,7 @@
   "detail" : "Thông tin chi tiết",
   "request": "Đăng ký nhận",
   "resetPasswordSuccess" : "Mật khẩu của bạn đã được đặt lại",
-  "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn"
+  "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn",
+  "yes" : "Có",
+  "no": "Không"
 }

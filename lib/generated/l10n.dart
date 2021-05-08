@@ -45,6 +45,26 @@ class S {
     );
   }
 
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to logout?`
+  String get logoutConfirmation {
+    return Intl.message(
+      'Are you sure you want to logout?',
+      name: 'logoutConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login to share your items`
   String get loginHint {
     return Intl.message(
@@ -685,6 +705,16 @@ class S {
     );
   }
 
+  /// `Address must be filled completely!`
+  String get addressError {
+    return Intl.message(
+      'Address must be filled completely!',
+      name: 'addressError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Invalid phone number!`
   String get invalidPhoneNumber {
     return Intl.message(
@@ -890,6 +920,26 @@ class S {
     return Intl.message(
       'Recovery link is expired',
       name: 'resetPasswordFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
       desc: '',
       args: [],
     );
