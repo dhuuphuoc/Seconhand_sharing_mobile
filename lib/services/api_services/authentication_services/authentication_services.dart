@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
-import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -54,21 +54,21 @@ class ForgotPasswordForm {
 }
 
 class ResetPasswordForm {
-  String _email;
+  String _userId;
   String _token;
   String _password;
   String _confirmPassword;
 
   ResetPasswordForm(
-      this._email, this._token, this._password, this._confirmPassword);
+      this._userId, this._token, this._password, this._confirmPassword);
 
-  String get email => _email;
+  String get userId => _userId;
   String get token => _token;
   String get password => _password;
   String get confirmPassword => _confirmPassword;
 
   Map<String, dynamic> toJson() => {
-        "email": _email,
+        "userId": _userId,
         "token": _token,
         "password": _password,
         "confirmPassword": _confirmPassword,
