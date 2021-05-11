@@ -22,24 +22,3 @@ class ResetPasswordModel {
         "data": data,
       };
 }
-
-class CodeResetPassword {
-  CodeResetPassword({
-    this.userId,
-    this.code,
-  });
-
-  String userId;
-  String code;
-
-  factory CodeResetPassword.fromJson(Map<String, dynamic> json) =>
-      CodeResetPassword(
-        userId: json["userId"],
-        code: json["code"],
-      );
-
-  Map<String, dynamic> toJson() => {
-    "userId": userId,
-    "code": code,
-  };
-}
