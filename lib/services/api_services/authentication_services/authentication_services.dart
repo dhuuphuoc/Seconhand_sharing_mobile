@@ -54,21 +54,21 @@ class ForgotPasswordForm {
 }
 
 class ResetPasswordForm {
-  String _email;
+  String _userId;
   String _token;
   String _password;
   String _confirmPassword;
 
   ResetPasswordForm(
-      this._email, this._token, this._password, this._confirmPassword);
+      this._userId, this._token, this._password, this._confirmPassword);
 
-  String get email => _email;
+  String get userId => _userId;
   String get token => _token;
   String get password => _password;
   String get confirmPassword => _confirmPassword;
 
   Map<String, dynamic> toJson() => {
-        "email": _email,
+        "userId": _userId,
         "token": _token,
         "password": _password,
         "confirmPassword": _confirmPassword,

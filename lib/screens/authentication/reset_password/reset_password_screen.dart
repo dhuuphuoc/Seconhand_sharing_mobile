@@ -19,25 +19,27 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
   bool _isLoading = false;
-  String _code = "";
+  String _userId;
+  String _code;
 
   void _resetPasswordSubmit() async {
     if (!_formKey.currentState.validate()) return;
     setState(() {
       _isLoading = true;
     });
-    print(_code);
+
     ResetPasswordModel resetPasswordModel =
         await AuthenticationService.resetPassword(ResetPasswordForm(
-            _emailTextController.text,
+            _userId,
             _code,
             _passwordTextController.text,
             _confirmPasswordTextController.text));
-    if (resetPasswordModel != null) {
+
+    print(resetPasswordModel);
+    if (resetPasswordModel.succeeded) {
       showDialog(
           context: context,
           builder: (context) {
@@ -61,9 +63,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_code != null) {
-      _code = ModalRoute.of(context).settings.arguments;
-    }
+    var data = ModalRoute.of(context).settings.arguments as Map;
+    _userId = data["userId"];
+    _code = data["code"];
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -94,17 +96,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 SizedBox(
                   height: 10,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: _emailTextController,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                    suffixIcon: Icon(
-                      Icons.email,
-                    ),
-                  ),
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,

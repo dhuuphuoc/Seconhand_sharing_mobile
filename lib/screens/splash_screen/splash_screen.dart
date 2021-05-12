@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country_da
 
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:uni_links/uni_links.dart';
@@ -62,9 +63,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void processUniLink(Uri url) {
     print(url);
+    String userId = url.queryParameters["userid"];
     String code = url.queryParameters["code"].replaceAll(" ", "+");
     Keys.navigatorKey.currentState
-        .pushNamed("/reset-password", arguments: code);
+        .pushNamed("/reset-password", arguments: {"userId": userId, "code": code});
   }
 
   Future<void> loadData() async {

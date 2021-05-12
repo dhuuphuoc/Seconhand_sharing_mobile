@@ -4,6 +4,7 @@ class ResetPasswordModel {
     this.message,
     this.data,
   });
+
   bool succeeded;
   String message;
   String data;
