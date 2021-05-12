@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override

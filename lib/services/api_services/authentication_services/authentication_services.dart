@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
-import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
