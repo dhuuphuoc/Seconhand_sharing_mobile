@@ -52,35 +52,38 @@ class _ImagesViewState extends State<ImagesView> {
             SizedBox(
               height: 10,
             ),
-            Row(
-              children: widget.images
-                  .map((image) => InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedImage = image;
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: widget.images
+                    .map((image) => InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedImage = image;
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: selectedImage == image
+                                    ? Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 2)
+                                    : null),
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              border: selectedImage == image
-                                  ? Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 2)
-                                  : null),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              image,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
+                              child: Image.network(
+                                image,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                      ))
-                  .toList(),
+                        ))
+                    .toList(),
+              ),
             )
           ],
         ),

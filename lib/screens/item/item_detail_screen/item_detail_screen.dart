@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
+import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
+import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   @override
@@ -13,7 +16,10 @@ class ItemDetailScreen extends StatefulWidget {
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   ItemDetail _itemDetail = ItemDetail();
+  RequestStatus _requestStatus;
   bool _isLoading = true;
+  bool _requested = false;
+  bool _isCanceling = false;
 
   @override
   void initState() {
@@ -22,13 +28,66 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         if (value != null) {
           setState(() {
             _itemDetail = value;
-
-            _isLoading = false;
+            if (_itemDetail.userRequestId != 0) {
+              _requested = true;
+            }
           });
+          if (_itemDetail.userRequestId == 0) {
+            setState(() {
+              _requestStatus = RequestStatus.cancel;
+              _isLoading = false;
+            });
+          } else
+            ReceiveServices.getRequestDetail(_itemDetail.userRequestId)
+                .then((value) {
+              if (value != null) {
+                setState(() {
+                  _requestStatus = value.receiveStatus;
+                });
+              }
+              setState(() {
+                _isLoading = false;
+              });
+            });
         }
       });
     });
     super.initState();
+  }
+
+  void _onRegisterToReceive() {
+    showDialog(
+            context: context,
+            builder: (context) {
+              return RegisterForm();
+            },
+            routeSettings: RouteSettings(arguments: _itemDetail.id))
+        .then((value) {
+      setState(() {
+        if (value != null) {
+          _requested = value;
+          if (_requested) {
+            _requestStatus = RequestStatus.pending;
+          }
+        }
+      });
+    });
+  }
+
+  Future<void> _onCancelRegistration() async {
+    setState(() {
+      _isCanceling = true;
+    });
+    var result =
+        await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
+    if (result) {
+      setState(() {
+        _requested = false;
+      });
+    }
+    setState(() {
+      _isCanceling = false;
+    });
   }
 
   @override
@@ -43,7 +102,28 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           S.of(context).detail,
           style: Theme.of(context).textTheme.headline2,
         ),
-        centerTitle: true,
+        actions: [
+          Center(
+            widthFactor: 1.4,
+            child: Text(
+              _requestStatus == null
+                  ? ""
+                  : _requestStatus == RequestStatus.cancel
+                      ? S.of(context).unregistered
+                      : _requestStatus == RequestStatus.pending
+                          ? S.of(context).pending
+                          : _requestStatus == RequestStatus.receiving
+                              ? S.of(context).accepted
+                              : S.of(context).success,
+              style: TextStyle(
+                  color: _requestStatus == RequestStatus.cancel
+                      ? Theme.of(context).disabledColor
+                      : _requestStatus == RequestStatus.pending
+                          ? Theme.of(context).primaryColor
+                          : Colors.green),
+            ),
+          ),
+        ],
       ),
       body: _isLoading
           ? Center(
@@ -52,20 +132,40 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           : Container(
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 10),
-                    UserInfoCard(_itemDetail.receiveAddress, () {}),
+                    UserInfoCard(_itemDetail.donateAccountName,
+                        _itemDetail.receiveAddress, () {}),
                     SizedBox(height: 10),
                     ImagesView(
                       images: _itemDetail.imageUrl,
                       itemName: _itemDetail.itemName,
                       description: _itemDetail.description,
                     ),
+                    if (_isCanceling)
+                      SizedBox(
+                        height: 15,
+                      ),
+                    if (_isCanceling)
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                        ),
+                      ),
                     Container(
+                      width: double.infinity,
                       margin: EdgeInsets.all(10),
                       child: ElevatedButton(
-                          onPressed: () {}, child: Text(S.of(context).request)),
+                          onPressed: _requested
+                              ? _isCanceling
+                                  ? null
+                                  : _onCancelRegistration
+                              : _onRegisterToReceive,
+                          child: Text(_requested
+                              ? S.of(context).cancelRegister
+                              : S.of(context).registerToReceive)),
                     ),
                   ],
                 ),

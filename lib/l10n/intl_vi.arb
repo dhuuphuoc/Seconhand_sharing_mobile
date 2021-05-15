@@ -83,11 +83,17 @@
   "allowAccess" : "Cho phép truy cập",
   "resetPassword": "Thay đổi mật khẩu",
   "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
-  "endNotifyMessage" : "Bạn đã coi tất cả các bài viết",
+  "endNotifyMessage" : "Bạn đã xem tất cả các bài viết",
   "detail" : "Thông tin chi tiết",
-  "request": "Đăng ký nhận",
+  "registerToReceive": "Đăng ký nhận",
   "resetPasswordSuccess" : "Mật khẩu của bạn đã được đặt lại",
   "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn",
   "yes" : "Có",
-  "no": "Không"
+  "no": "Không",
+  "message" : "Lời nhắn",
+  "registered" : "Đã đăng ký",
+  "cancelRegister": "Hủy đăng ký",
+  "pending": "Đã đăng ký",
+  "accepted" : "Đã được chấp nhận",
+  "unregistered" : "Chưa đăng ký"
 }

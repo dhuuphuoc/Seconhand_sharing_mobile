@@ -27,8 +27,10 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       navigatorKey: Keys.navigatorKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         backgroundColor: Colors.white,
+        disabledColor: Colors.black45,
         scaffoldBackgroundColor: Color(0xFFF2F2F2),
         selectedRowColor: Color(0xFF9DD0FF),
         errorColor: Colors.red,

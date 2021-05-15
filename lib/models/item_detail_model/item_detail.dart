@@ -1,15 +1,16 @@
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 
 class ItemDetail {
-  ItemDetail({
-    this.id,
-    this.itemName,
-    this.receiveAddress,
-    this.postTime,
-    this.description,
-    this.imageUrl,
-    this.donateAccountName,
-  });
+  ItemDetail(
+      {this.id,
+      this.itemName,
+      this.receiveAddress,
+      this.postTime,
+      this.description,
+      this.imageUrl,
+      this.donateAccountId,
+      this.donateAccountName,
+      this.userRequestId});
 
   int id;
   String itemName;
@@ -17,7 +18,9 @@ class ItemDetail {
   DateTime postTime;
   String description;
   List<String> imageUrl;
+  int donateAccountId;
   String donateAccountName;
+  int userRequestId;
 
   factory ItemDetail.fromJson(Map<String, dynamic> json) => ItemDetail(
         id: json["id"],
@@ -26,7 +29,9 @@ class ItemDetail {
         postTime: DateTime.parse(json["postTime"]),
         description: json["description"],
         imageUrl: List<String>.from(json["imageUrl"].map((x) => x)),
+        donateAccountId: json["donateAccountId"],
         donateAccountName: json["donateAccountName"],
+        userRequestId: json["userRequestId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +42,7 @@ class ItemDetail {
         "description": description,
         "imageUrl": List<dynamic>.from(imageUrl.map((x) => x)),
         "donateAccountName": donateAccountName,
+        "donateAccountId": donateAccountId,
+        "userRequestId": userRequestId
       };
 }
