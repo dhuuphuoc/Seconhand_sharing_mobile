@@ -81,7 +81,7 @@ class AuthenticationService {
     var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
-    print(jsonEncode(loginForm.toJson()));
+    print(response.body);
     if (response.statusCode == 200) {
       return LoginModel.fromJson(jsonDecode(response.body));
     } else {

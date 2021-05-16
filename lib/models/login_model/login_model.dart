@@ -47,7 +47,7 @@ class AccessData {
         roles: json["roles"],
         isVerified: json["isVerified"],
         refreshToken: json["refreshToken"],
-        userInfo: json["userInfo"],
+        userInfo: UserInfo.fromJson(json["userInfo"]),
       );
 
   Map<String, dynamic> toJson() => {

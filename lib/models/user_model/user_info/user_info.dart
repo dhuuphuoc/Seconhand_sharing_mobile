@@ -25,7 +25,9 @@ class UserInfo {
         dob: DateTime.parse(json["dob"]),
         phoneNumber: json["phoneNumber"],
         avatar: json["avatar"],
-        address: AddressModel.fromJson(json["address"]),
+        address: json["address"] == null
+            ? null
+            : AddressModel.fromJson(json["address"]),
       );
 
   Map<String, dynamic> toJson() => {

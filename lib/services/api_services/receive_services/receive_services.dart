@@ -49,7 +49,6 @@ class ReceiveServices {
         HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
       },
     );
-    print(response.body);
     if (response.statusCode == 200)
       return RequestDetailModel.fromJson(jsonDecode(response.body))
           .requestDetail;
