@@ -75,7 +75,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: IconButton(
                   color: Theme.of(context).primaryColor,
-                  icon: Icon(Icons.map_outlined),
+                  icon: Icon(Icons.contact_phone_outlined),
                   onPressed: widget._onMapPress,
                 ),
               ),

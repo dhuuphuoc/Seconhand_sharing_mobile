@@ -95,6 +95,10 @@
   "cancelRegister": "Cancel registration",
   "pending": "Pending",
   "accepted" : "Accepted",
-  "unregistered" : "Unregistered"
+  "unregistered" : "Unregistered",
+  "registrations" : "Registrations",
+  "accept" : "Accept",
+  "cancel" : "Cancel",
+  "confirmSent": "Confirm sent"
 
 }

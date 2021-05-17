@@ -95,5 +95,9 @@
   "cancelRegister": "Hủy đăng ký",
   "pending": "Đã đăng ký",
   "accepted" : "Đã được chấp nhận",
-  "unregistered" : "Chưa đăng ký"
+  "unregistered" : "Chưa đăng ký",
+  "registrations" : "Lượt đăng ký",
+  "accept" : "Chấp nhận",
+  "cancel" : "Cancel",
+  "confirmSent": "Xác nhận đã cho"
 }

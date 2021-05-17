@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
+import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
+import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
@@ -16,46 +21,51 @@ class ItemDetailScreen extends StatefulWidget {
 
 class _ItemDetailScreenState extends State<ItemDetailScreen> {
   ItemDetail _itemDetail = ItemDetail();
+  bool _isOwn = false;
   RequestStatus _requestStatus;
+  ReceiveRequestsModel _receiveRequestsModel =
+      ReceiveRequestsModel(requests: []);
   bool _isLoading = true;
-  bool _requested = false;
   bool _isCanceling = false;
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      ItemServices.getItemDetail(_itemDetail.id).then((value) {
-        if (value != null) {
-          setState(() {
-            _itemDetail = value;
-            if (_itemDetail.userRequestId != 0) {
-              _requested = true;
-            }
-          });
-          if (_itemDetail.userRequestId == 0) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      ItemDetail itemDetail = await ItemServices.getItemDetail(_itemDetail.id);
+      if (itemDetail != null) {
+        setState(() {
+          _isOwn = AccessInfo().userInfo.id == itemDetail.donateAccountId;
+          _itemDetail = itemDetail;
+        });
+        if (_isOwn) {
+          var requests = await ReceiveServices.getItemRequests(itemDetail.id);
+          if (requests != null) {
             setState(() {
-              _requestStatus = RequestStatus.cancel;
-              _isLoading = false;
+              _receiveRequestsModel.requests = requests;
+              _receiveRequestsModel.acceptedRequest =
+                  _receiveRequestsModel.requests.firstWhere((element) =>
+                      element.requestStatus == RequestStatus.receiving);
             });
-          } else
-            ReceiveServices.getRequestDetail(_itemDetail.userRequestId)
-                .then((value) {
-              if (value != null) {
-                setState(() {
-                  _requestStatus = value.receiveStatus;
-                });
-              }
-              setState(() {
-                _isLoading = false;
-              });
+          }
+        } else if (_itemDetail.userRequestId != 0) {
+          var requestDetail =
+              await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
+          if (requestDetail != null) {
+            setState(() {
+              _requestStatus = requestDetail.receiveStatus;
             });
+          }
         }
-      });
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
+
     super.initState();
   }
 
-  void _onRegisterToReceive() {
+  void _registerToReceive() {
     showDialog(
             context: context,
             builder: (context) {
@@ -64,17 +74,15 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             routeSettings: RouteSettings(arguments: _itemDetail.id))
         .then((value) {
       setState(() {
-        if (value != null) {
-          _requested = value;
-          if (_requested) {
-            _requestStatus = RequestStatus.pending;
-          }
+        if (value != 0) {
+          _requestStatus = RequestStatus.pending;
+          _itemDetail.userRequestId = value;
         }
       });
     });
   }
 
-  Future<void> _onCancelRegistration() async {
+  Future<void> _cancelRegistration() async {
     setState(() {
       _isCanceling = true;
     });
@@ -82,11 +90,19 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
     if (result) {
       setState(() {
-        _requested = false;
+        _itemDetail.userRequestId = 0;
       });
     }
     setState(() {
       _isCanceling = false;
+    });
+  }
+
+  void _confirmSent() {
+    ReceiveServices.confirmSent(_itemDetail.id).then((value) {
+      if (value) {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -103,26 +119,31 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           style: Theme.of(context).textTheme.headline2,
         ),
         actions: [
-          Center(
-            widthFactor: 1.4,
-            child: Text(
-              _requestStatus == null
-                  ? ""
-                  : _requestStatus == RequestStatus.cancel
-                      ? S.of(context).unregistered
-                      : _requestStatus == RequestStatus.pending
-                          ? S.of(context).pending
-                          : _requestStatus == RequestStatus.receiving
-                              ? S.of(context).accepted
-                              : S.of(context).success,
-              style: TextStyle(
-                  color: _requestStatus == RequestStatus.cancel
-                      ? Theme.of(context).disabledColor
-                      : _requestStatus == RequestStatus.pending
-                          ? Theme.of(context).primaryColor
-                          : Colors.green),
+          if (!_isLoading)
+            Center(
+              widthFactor: 1.4,
+              child: Text(
+                _isOwn
+                    ? "${_receiveRequestsModel.requests.length} ${S.of(context).registrations}"
+                    : _itemDetail.userRequestId == 0
+                        ? S.of(context).unregistered
+                        : _requestStatus == null
+                            ? ""
+                            : _requestStatus == RequestStatus.pending
+                                ? S.of(context).pending
+                                : _requestStatus == RequestStatus.receiving
+                                    ? S.of(context).accepted
+                                    : S.of(context).success,
+                style: TextStyle(
+                    color: _isOwn
+                        ? Theme.of(context).primaryColor
+                        : _itemDetail.userRequestId == 0
+                            ? Theme.of(context).disabledColor
+                            : _requestStatus == RequestStatus.pending
+                                ? Theme.of(context).primaryColor
+                                : Colors.green),
+              ),
             ),
-          ),
         ],
       ),
       body: _isLoading
@@ -131,43 +152,60 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             )
           : Container(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    UserInfoCard(_itemDetail.donateAccountName,
-                        _itemDetail.receiveAddress, () {}),
-                    SizedBox(height: 10),
-                    ImagesView(
-                      images: _itemDetail.imageUrl,
-                      itemName: _itemDetail.itemName,
-                      description: _itemDetail.description,
-                    ),
-                    if (_isCanceling)
-                      SizedBox(
-                        height: 15,
+                child: ChangeNotifierProvider(
+                  create: (context) => _receiveRequestsModel,
+                  builder: (context, widget) => Column(
+                    children: [
+                      SizedBox(height: 10),
+                      UserInfoCard(_itemDetail.donateAccountName,
+                          _itemDetail.receiveAddress, () {}),
+                      SizedBox(height: 10),
+                      ImagesView(
+                        images: _itemDetail.imageUrl,
+                        itemName: _itemDetail.itemName,
+                        description: _itemDetail.description,
                       ),
-                    if (_isCanceling)
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
+                      if (_isCanceling)
+                        SizedBox(
+                          height: 15,
                         ),
+                      if (_isCanceling)
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                          ),
+                        ),
+                      if (_isOwn)
+                        SizedBox(
+                          height: 15,
+                        ),
+                      if (_isOwn) RequestsExpansionPanel(),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.all(10),
+                        child: _isOwn
+                            ? ElevatedButton(
+                                onPressed: context
+                                            .watch<ReceiveRequestsModel>()
+                                            .acceptedRequest !=
+                                        null
+                                    ? _confirmSent
+                                    : null,
+                                child: Text(S.of(context).confirmSent))
+                            : ElevatedButton(
+                                onPressed: _itemDetail.userRequestId != 0
+                                    ? _isCanceling
+                                        ? null
+                                        : _cancelRegistration
+                                    : _registerToReceive,
+                                child: Text(_itemDetail.userRequestId != 0
+                                    ? S.of(context).cancelRegister
+                                    : S.of(context).registerToReceive)),
                       ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: _requested
-                              ? _isCanceling
-                                  ? null
-                                  : _onCancelRegistration
-                              : _onRegisterToReceive,
-                          child: Text(_requested
-                              ? S.of(context).cancelRegister
-                              : S.of(context).registerToReceive)),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

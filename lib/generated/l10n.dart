@@ -1004,6 +1004,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Registrations`
+  String get registrations {
+    return Intl.message(
+      'Registrations',
+      name: 'registrations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get accept {
+    return Intl.message(
+      'Accept',
+      name: 'accept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm sent`
+  String get confirmSent {
+    return Intl.message(
+      'Confirm sent',
+      name: 'confirmSent',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

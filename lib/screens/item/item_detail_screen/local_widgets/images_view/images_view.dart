@@ -16,7 +16,10 @@ class _ImagesViewState extends State<ImagesView> {
 
   @override
   void initState() {
-    selectedImage = widget.images[0];
+    if (widget.images.isNotEmpty)
+      selectedImage = widget.images[0];
+    else
+      selectedImage = "";
     super.initState();
   }
 

@@ -12,7 +12,7 @@ class UserInfo {
     this.address,
   });
 
-  String id;
+  int id;
   String fullName;
   DateTime dob;
   String phoneNumber;

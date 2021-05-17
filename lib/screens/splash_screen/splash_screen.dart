@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
+      userSingleton.userInfo = await UserServices.getUserInfo();
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }

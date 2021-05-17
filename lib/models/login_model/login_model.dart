@@ -1,4 +1,4 @@
-import 'package:secondhand_sharing/models/user_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 
 class LoginModel {
   LoginModel({
