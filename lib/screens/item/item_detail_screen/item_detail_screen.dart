@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/models/receive_requests_model/receive_request
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_dialog.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
@@ -112,6 +113,16 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
   }
 
+  void showContactInfo() {
+    String email = "meokg456@gmail.com";
+    String phoneNumber = "0812322922";
+    showDialog(
+        context: context,
+        builder: (context) {
+          return ContactDialog(email, phoneNumber);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_itemDetail.id == null) {
@@ -168,7 +179,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     children: [
                       SizedBox(height: 10),
                       UserInfoCard(_itemDetail.donateAccountName,
-                          _itemDetail.receiveAddress, () {}),
+                          _itemDetail.receiveAddress, showContactInfo),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,

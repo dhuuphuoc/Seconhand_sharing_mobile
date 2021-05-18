@@ -101,5 +101,6 @@
   "cancel" : "Cancel",
   "confirmSent": "Xác nhận đã cho",
   "complete" : "Hoàn thành",
-  "messageEmptyError" : "Lời nhắn không thể bỏ trống"
+  "messageEmptyError" : "Lời nhắn không thể bỏ trống",
+  "contact" : "Liên hệ"
 }

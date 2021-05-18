@@ -101,6 +101,7 @@
   "cancel" : "Cancel",
   "confirmSent": "Confirm sent",
   "complete" : "Complete",
-  "messageEmptyError" : "Message can't be empty"
+  "messageEmptyError" : "Message can't be empty",
+  "contact" : "Contact"
 
 }
