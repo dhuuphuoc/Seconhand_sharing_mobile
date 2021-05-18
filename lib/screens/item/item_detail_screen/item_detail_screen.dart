@@ -114,12 +114,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void showContactInfo() {
-    String email = "meokg456@gmail.com";
-    String phoneNumber = "0812322922";
     showDialog(
         context: context,
         builder: (context) {
-          return ContactDialog(email, phoneNumber);
+          return ContactDialog(_itemDetail.id);
         });
   }
 

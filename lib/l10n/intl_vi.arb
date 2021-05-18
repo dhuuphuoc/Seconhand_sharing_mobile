@@ -102,5 +102,7 @@
   "confirmSent": "Xác nhận đã cho",
   "complete" : "Hoàn thành",
   "messageEmptyError" : "Lời nhắn không thể bỏ trống",
-  "contact" : "Liên hệ"
+  "contact" : "Liên hệ",
+  "contactDenied" : "Đăng ký nhận của bạn chưa được chấp nhận",
+  "close" : "Đóng"
 }

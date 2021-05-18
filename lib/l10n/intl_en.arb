@@ -102,6 +102,8 @@
   "confirmSent": "Confirm sent",
   "complete" : "Complete",
   "messageEmptyError" : "Message can't be empty",
-  "contact" : "Contact"
+  "contact" : "Contact",
+  "contactDenied" : "Your registration isn't accepted",
+  "close" : "Close"
 
 }

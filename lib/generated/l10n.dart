@@ -1074,6 +1074,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Your registration isn't accepted`
+  String get contactDenied {
+    return Intl.message(
+      'Your registration isn\'t accepted',
+      name: 'contactDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
