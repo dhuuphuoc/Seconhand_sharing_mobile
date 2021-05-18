@@ -1054,6 +1054,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Message can't be empty`
+  String get messageEmptyError {
+    return Intl.message(
+      'Message can\'t be empty',
+      name: 'messageEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

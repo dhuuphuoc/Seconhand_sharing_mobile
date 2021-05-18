@@ -10,7 +10,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  var textController = TextEditingController();
+  var _textController = TextEditingController();
+  String _errorText;
   bool _isLoading = false;
 
   @override
@@ -28,11 +29,12 @@ class _RegisterFormState extends State<RegisterForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: textController,
+              controller: _textController,
               maxLines: 3,
               decoration: InputDecoration(
                   hintText: "${S.of(context).message}...",
-                  labelText: S.of(context).message),
+                  labelText: S.of(context).message,
+                  errorText: _errorText),
             ),
             SizedBox(
               height: 20,
@@ -56,8 +58,15 @@ class _RegisterFormState extends State<RegisterForm> {
                     setState(() {
                       _isLoading = true;
                     });
+                    if (_textController.text == "") {
+                      setState(() {
+                        _errorText = S.of(context).messageEmptyError;
+                        _isLoading = false;
+                      });
+                      return;
+                    }
                     var result = await ReceiveServices.registerToReceive(
-                        itemId, textController.text);
+                        itemId, _textController.text);
                     Navigator.pop(context, result);
                     setState(() {
                       _isLoading = false;

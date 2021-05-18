@@ -96,6 +96,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     if (result) {
       setState(() {
         _itemDetail.userRequestId = 0;
+        _requestStatus = null;
       });
     }
     setState(() {

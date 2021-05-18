@@ -100,5 +100,6 @@
   "accept" : "Chấp nhận",
   "cancel" : "Cancel",
   "confirmSent": "Xác nhận đã cho",
-  "complete" : "Hoàn thành"
+  "complete" : "Hoàn thành",
+  "messageEmptyError" : "Lời nhắn không thể bỏ trống"
 }
