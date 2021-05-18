@@ -108,6 +108,7 @@
   "sendThanks" : "Send thanks",
   "thanks" : "Thank you so much!",
   "send" : "Send",
-  "thanksMessage" : "Thanks message"
+  "thanksMessage" : "Thanks message",
+  "thanksSent" : "Thanks sent!"
 
 }

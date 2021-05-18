@@ -108,5 +108,6 @@
   "sendThanks" : "Gửi lời cảm ơn",
   "thanks" : "Cảm ơn bạn rất nhiều!",
   "send" : "Gửi",
-  "thanksMessage" : "Lời cảm ơn"
+  "thanksMessage" : "Lời cảm ơn",
+  "thanksSent": "Lời cảm ơn của bạn đã được gửi đi"
 }

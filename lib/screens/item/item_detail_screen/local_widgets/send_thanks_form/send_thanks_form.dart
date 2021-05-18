@@ -34,6 +34,7 @@ class _SendThanksFormState extends State<SendThanksForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
+              autofocus: true,
               controller: _textController,
               maxLines: 3,
               decoration: InputDecoration(
@@ -66,7 +67,7 @@ class _SendThanksFormState extends State<SendThanksForm> {
                     var result = await ReceiveServices.sendThanks(
                         requestId, _textController.text);
                     print(result);
-                    Navigator.pop(context);
+                    Navigator.pop(context, result);
                     setState(() {
                       _isLoading = false;
                     });

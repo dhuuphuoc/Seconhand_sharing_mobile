@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   @override
@@ -129,7 +130,20 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         return SendThanksForm();
       },
       routeSettings: RouteSettings(arguments: _itemDetail.userRequestId),
-    );
+    ).then((value) => {
+          if (value != null)
+            {
+              if (value)
+                {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NotifyDialog(S.of(context).success,
+                            S.of(context).thanksSent, "Ok");
+                      })
+                }
+            }
+        });
   }
 
   @override
