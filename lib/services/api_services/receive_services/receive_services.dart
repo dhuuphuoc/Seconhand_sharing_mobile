@@ -104,12 +104,15 @@ class ReceiveServices {
     }
   }
 
-  static Future<bool> confirmSent(int itemId) async {
-    Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/confirm-send");
-    var response = await http.put(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
-      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
-    });
+  static Future<bool> sendThanks(int requestId, String message) async {
+    Uri url =
+        Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/send-thanks");
+    var response = await http.put(url,
+        headers: {
+          HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
+        },
+        body: jsonEncode({"thanks": message}));
     print(response.body);
     if (response.statusCode == 200) {
       return true;

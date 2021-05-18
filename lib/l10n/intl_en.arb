@@ -104,6 +104,10 @@
   "messageEmptyError" : "Message can't be empty",
   "contact" : "Contact",
   "contactDenied" : "Your registration isn't accepted",
-  "close" : "Close"
+  "close" : "Close",
+  "sendThanks" : "Send thanks",
+  "thanks" : "Thank you so much!",
+  "send" : "Send",
+  "thanksMessage" : "Thanks message"
 
 }

@@ -112,6 +112,20 @@ class ItemServices {
     }
   }
 
+  static Future<bool> confirmSent(int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/confirm-send");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static Future<Contact> getOwnerContact(int itemId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/owner-contact");
     var response = await http.get(url, headers: {

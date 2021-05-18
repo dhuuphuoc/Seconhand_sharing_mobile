@@ -104,5 +104,9 @@
   "messageEmptyError" : "Lời nhắn không thể bỏ trống",
   "contact" : "Liên hệ",
   "contactDenied" : "Đăng ký nhận của bạn chưa được chấp nhận",
-  "close" : "Đóng"
+  "close" : "Đóng",
+  "sendThanks" : "Gửi lời cảm ơn",
+  "thanks" : "Cảm ơn bạn rất nhiều!",
+  "send" : "Gửi",
+  "thanksMessage" : "Lời cảm ơn"
 }

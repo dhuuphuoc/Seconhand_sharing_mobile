@@ -12,6 +12,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/send_thanks_form/send_thanks_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
@@ -106,7 +107,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void _confirmSent() {
-    ReceiveServices.confirmSent(_itemDetail.id).then((value) {
+    ItemServices.confirmSent(_itemDetail.id).then((value) {
       if (value) {
         Navigator.pop(context);
       }
@@ -119,6 +120,16 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         builder: (context) {
           return ContactDialog(_itemDetail.id);
         });
+  }
+
+  void sendThanks() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SendThanksForm();
+      },
+      routeSettings: RouteSettings(arguments: _itemDetail.userRequestId),
+    );
   }
 
   @override
@@ -202,7 +213,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         ),
                       if (_isOwn && _itemDetail.status != ItemStatus.success)
                         RequestsExpansionPanel(),
-                      if (_itemDetail.status != ItemStatus.success)
+                      if (_itemDetail.status != ItemStatus.success || !_isOwn)
                         Container(
                           width: double.infinity,
                           margin: EdgeInsets.all(10),
@@ -215,15 +226,21 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                       ? _confirmSent
                                       : null,
                                   child: Text(S.of(context).confirmSent))
-                              : ElevatedButton(
-                                  onPressed: _itemDetail.userRequestId != 0
-                                      ? _isCanceling
-                                          ? null
-                                          : _cancelRegistration
-                                      : _registerToReceive,
-                                  child: Text(_itemDetail.userRequestId != 0
-                                      ? S.of(context).cancelRegister
-                                      : S.of(context).registerToReceive)),
+                              : _itemDetail.status == ItemStatus.success
+                                  ? ElevatedButton(
+                                      onPressed: _itemDetail.userRequestId != 0
+                                          ? sendThanks
+                                          : null,
+                                      child: Text(S.of(context).sendThanks))
+                                  : ElevatedButton(
+                                      onPressed: _itemDetail.userRequestId != 0
+                                          ? _isCanceling
+                                              ? null
+                                              : _cancelRegistration
+                                          : _registerToReceive,
+                                      child: Text(_itemDetail.userRequestId != 0
+                                          ? S.of(context).cancelRegister
+                                          : S.of(context).registerToReceive)),
                         ),
                     ],
                   ),

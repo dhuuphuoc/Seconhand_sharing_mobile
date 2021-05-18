@@ -1094,6 +1094,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Send thanks`
+  String get sendThanks {
+    return Intl.message(
+      'Send thanks',
+      name: 'sendThanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you so much!`
+  String get thanks {
+    return Intl.message(
+      'Thank you so much!',
+      name: 'thanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message(
+      'Send',
+      name: 'send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks message`
+  String get thanksMessage {
+    return Intl.message(
+      'Thanks message',
+      name: 'thanksMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
