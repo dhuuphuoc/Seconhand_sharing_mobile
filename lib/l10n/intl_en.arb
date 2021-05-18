@@ -99,6 +99,7 @@
   "registrations" : "Registrations",
   "accept" : "Accept",
   "cancel" : "Cancel",
-  "confirmSent": "Confirm sent"
+  "confirmSent": "Confirm sent",
+  "complete" : "Complete"
 
 }

@@ -65,6 +65,10 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
           ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
+                  leading: Icon(
+                    Icons.app_registration,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   title: Text(S.of(context).registrations),
                 );
               },

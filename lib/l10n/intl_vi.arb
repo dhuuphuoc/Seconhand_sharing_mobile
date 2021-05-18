@@ -99,5 +99,6 @@
   "registrations" : "Lượt đăng ký",
   "accept" : "Chấp nhận",
   "cancel" : "Cancel",
-  "confirmSent": "Xác nhận đã cho"
+  "confirmSent": "Xác nhận đã cho",
+  "complete" : "Hoàn thành"
 }

@@ -1,4 +1,5 @@
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/item_detail_model/item_status.dart';
 
 class ItemDetail {
   ItemDetail(
@@ -10,7 +11,8 @@ class ItemDetail {
       this.imageUrl,
       this.donateAccountId,
       this.donateAccountName,
-      this.userRequestId});
+      this.userRequestId,
+      this.status});
 
   int id;
   String itemName;
@@ -21,6 +23,7 @@ class ItemDetail {
   int donateAccountId;
   String donateAccountName;
   int userRequestId;
+  ItemStatus status;
 
   factory ItemDetail.fromJson(Map<String, dynamic> json) => ItemDetail(
         id: json["id"],
@@ -32,6 +35,7 @@ class ItemDetail {
         donateAccountId: json["donateAccountId"],
         donateAccountName: json["donateAccountName"],
         userRequestId: json["userRequestId"],
+        status: ItemStatus.values[json["status"]],
       );
 
   Map<String, dynamic> toJson() => {
