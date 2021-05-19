@@ -14,6 +14,10 @@ class UserServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: "application/json",
     });
-    return UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    if (response.statusCode == 200) {
+      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    } else {
+      return null;
+    }
   }
 }

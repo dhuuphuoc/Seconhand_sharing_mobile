@@ -53,7 +53,7 @@ class _AddressScreenState extends State<AddressScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          S.of(context).receiveAddress,
+          S.of(context).address,
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
