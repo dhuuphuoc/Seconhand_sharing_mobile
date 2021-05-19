@@ -27,17 +27,23 @@ class RegisterForm {
   String _fullName;
   String _email;
   String _password;
+  String _dateOfBirth;
+  String _phoneNumber;
 
-  RegisterForm(this._fullName, this._email, this._password);
+  RegisterForm(this._fullName, this._email, this._password, this._dateOfBirth, this._phoneNumber);
 
   String get fullName => _fullName;
   String get email => _email;
   String get password => _password;
+  String get dateOfBirth => _dateOfBirth;
+  String get phoneNumber => _phoneNumber;
 
   Map<String, dynamic> toJson() => {
         "fullName": _fullName,
         "email": _email,
         "password": _password,
+        "dob": _dateOfBirth,
+        "phoneNumber": _phoneNumber
       };
 }
 

@@ -1075,6 +1075,26 @@ class S {
     );
   }
 
+  /// `Date of Birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateOfBirth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number can't be empty`
+  String get emptyPhoneError {
+    return Intl.message(
+      'Phone number can\'t be empty',
+      name: 'emptyPhoneError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your registration isn't accepted`
   String get contactDenied {
     return Intl.message(

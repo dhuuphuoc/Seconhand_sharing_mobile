@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
@@ -25,7 +28,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
+  final _dateOfBirthController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   bool _isLoading = false;
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1900,8), lastDate: DateTime(2100));
+    if(picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        _dateOfBirthController.value = TextEditingValue(text: DateFormat("yyyy-MM-dd").format(picked).toString());
+      });
+  }
 
   void _registerSubmit() async {
     if (!_formKey.currentState.validate()) return;
@@ -35,7 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     RegisterModel registerModel = await AuthenticationService.register(
         RegisterForm(_fullNameTextController.text, _emailTextController.text,
-            _passwordTextController.text));
+            _passwordTextController.text, _dateOfBirthController.text, _phoneNumberController.text));
+    print(_dateOfBirthController.text);
     if (registerModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       showDialog<void>(
@@ -148,11 +165,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   obscureText: true,
                   onEditingComplete: _registerSubmit,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: S.of(context).confirmPassword,
                     suffixIcon: Icon(
                       Icons.lock,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: _dateOfBirthController,
+                      keyboardType: TextInputType.datetime,
+                      decoration: InputDecoration(
+                        hintText: S.of(context).dateOfBirth,
+                        suffixIcon: Icon(
+                          Icons.date_range_rounded,
+                        )
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: _phoneNumberController,
+                  validator: Validator.validatePhoneNumber,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).phoneNumber,
+                    suffixIcon: Icon(
+                      Icons.phone,
                     ),
                   ),
                 ),

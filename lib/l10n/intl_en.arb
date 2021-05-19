@@ -103,6 +103,8 @@
   "complete" : "Complete",
   "messageEmptyError" : "Message can't be empty",
   "contact" : "Contact",
+  "dateOfBirth": "Date of Birth",
+  "emptyPhoneError": "Phone number can't be empty",
   "contactDenied" : "Your registration isn't accepted",
   "close" : "Close",
   "sendThanks" : "Send thanks",
