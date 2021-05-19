@@ -109,5 +109,8 @@
   "thanks" : "Cảm ơn bạn rất nhiều!",
   "send" : "Gửi",
   "thanksMessage" : "Lời cảm ơn",
-  "thanksSent": "Lời cảm ơn của bạn đã được gửi đi"
+  "thanksSent": "Lời cảm ơn của bạn đã được gửi đi",
+  "profile" : "Thông tin cá nhân",
+  "donation": "Quyên góp",
+  "save" : "Lưu"
 }

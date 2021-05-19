@@ -8,7 +8,7 @@ import 'package:secondhand_sharing/models/receive_requests_model/receive_request
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_dialog.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_dialog/contact_dialog.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';

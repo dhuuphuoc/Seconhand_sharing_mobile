@@ -13,6 +13,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/item_detail_s
 import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
+import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -92,6 +93,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
       routes: {
         "/": (context) => SplashScreen(),
         "/login": (context) => LoginScreen(),
+        "/profile": (context) => ProfileScreen(),
         "/register": (context) => SignUpScreen(),
         "/forgot-password": (context) => ForgotPasswordScreen(),
         "/reset-password": (context) => ResetPasswordScreen(),

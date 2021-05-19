@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
@@ -45,6 +46,24 @@ class _MainScreenState extends State<MainScreen>
                   "assets/images/login_icon.png",
                   height: 100,
                 ),
+                actions: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      Navigator.pushNamed(context, "/profile");
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                      child: CircleAvatar(
+                        radius: 20,
+                        foregroundImage: AssetImage(
+                          "assets/images/person.png",
+                        ),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  ),
+                ],
                 // Allows the user to reveal the app bar if they begin scrolling
                 // back up the list of items.
                 floating: true,
@@ -94,6 +113,19 @@ class _MainScreenState extends State<MainScreen>
           ],
         ),
         // Next, create a SliverList
+      ),
+      floatingActionButton: Container(
+        height: 70,
+        width: 70,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, "/post-item");
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Icon(Icons.post_add), Text(S.of(context).post)],
+          ),
+        ),
       ),
       // appBar: AppBar(
       //   leading: Container(

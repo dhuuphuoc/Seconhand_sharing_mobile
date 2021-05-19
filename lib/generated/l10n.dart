@@ -1144,6 +1144,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donation`
+  String get donation {
+    return Intl.message(
+      'Donation',
+      name: 'donation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

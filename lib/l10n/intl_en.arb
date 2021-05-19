@@ -109,6 +109,9 @@
   "thanks" : "Thank you so much!",
   "send" : "Send",
   "thanksMessage" : "Thanks message",
-  "thanksSent" : "Thanks sent!"
+  "thanksSent" : "Thanks sent!",
+  "profile" : "Profile",
+  "donation": "Donation",
+  "save" : "Save"
 
 }

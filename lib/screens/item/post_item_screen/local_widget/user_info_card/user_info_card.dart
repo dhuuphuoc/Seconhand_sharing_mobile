@@ -27,10 +27,8 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: CircleAvatar(
                     maxRadius: 25,
-                    child: Image.asset(
+                    foregroundImage: AssetImage(
                       "assets/images/person.png",
-                      height: 50,
-                      fit: BoxFit.fill,
                     ),
                     backgroundColor: Colors.transparent),
               ),
