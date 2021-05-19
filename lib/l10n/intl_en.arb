@@ -85,10 +85,23 @@
   "grantStoragePermissionHint" : "Grant access permission in settings to upload your item's images",
   "allowAccess" : "Allow access",
   "detail" : "Detail",
-  "request": "Request",
+  "registerToReceive": "Register to receive",
   "resetPasswordSuccess" : "Your password was reset",
   "resetPasswordFailed" : "Recovery link is expired",
   "yes" : "Yes",
-  "no": "No"
+  "no": "No",
+  "message" : "Message",
+  "registered" : "Registered",
+  "cancelRegister": "Cancel registration",
+  "pending": "Pending",
+  "accepted" : "Accepted",
+  "unregistered" : "Unregistered",
+  "registrations" : "Registrations",
+  "accept" : "Accept",
+  "cancel" : "Cancel",
+  "confirmSent": "Confirm sent",
+  "complete" : "Complete",
+  "messageEmptyError" : "Message can't be empty",
+  "contact" : "Contact"
 
 }

@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     RegisterModel registerModel = await AuthenticationService.register(
         RegisterForm(_fullNameTextController.text, _emailTextController.text,
             _passwordTextController.text));
-    if (registerModel.succeeded == true) {
+    if (registerModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       showDialog<void>(
         context: context,

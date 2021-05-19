@@ -895,11 +895,11 @@ class S {
     );
   }
 
-  /// `Request`
-  String get request {
+  /// `Register to receive`
+  String get registerToReceive {
     return Intl.message(
-      'Request',
-      name: 'request',
+      'Register to receive',
+      name: 'registerToReceive',
       desc: '',
       args: [],
     );
@@ -940,6 +940,136 @@ class S {
     return Intl.message(
       'No',
       name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get message {
+    return Intl.message(
+      'Message',
+      name: 'message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registered`
+  String get registered {
+    return Intl.message(
+      'Registered',
+      name: 'registered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel registration`
+  String get cancelRegister {
+    return Intl.message(
+      'Cancel registration',
+      name: 'cancelRegister',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending`
+  String get pending {
+    return Intl.message(
+      'Pending',
+      name: 'pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accepted`
+  String get accepted {
+    return Intl.message(
+      'Accepted',
+      name: 'accepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unregistered`
+  String get unregistered {
+    return Intl.message(
+      'Unregistered',
+      name: 'unregistered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registrations`
+  String get registrations {
+    return Intl.message(
+      'Registrations',
+      name: 'registrations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get accept {
+    return Intl.message(
+      'Accept',
+      name: 'accept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm sent`
+  String get confirmSent {
+    return Intl.message(
+      'Confirm sent',
+      name: 'confirmSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get complete {
+    return Intl.message(
+      'Complete',
+      name: 'complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message can't be empty`
+  String get messageEmptyError {
+    return Intl.message(
+      'Message can\'t be empty',
+      name: 'messageEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get contact {
+    return Intl.message(
+      'Contact',
+      name: 'contact',
       desc: '',
       args: [],
     );

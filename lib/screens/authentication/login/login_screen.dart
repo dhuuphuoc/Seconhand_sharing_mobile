@@ -34,8 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
         LoginForm(_usernameTextController.text, _passwordTextController.text));
     if (loginModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", loginModel.data.jwToken);
-      AccessInfo().token = loginModel.data.jwToken;
+      prefs.setString("token", loginModel.accessData.jwToken);
+      AccessInfo().token = loginModel.accessData.jwToken;
+      AccessInfo().userInfo = loginModel.accessData.userInfo;
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     } else {
