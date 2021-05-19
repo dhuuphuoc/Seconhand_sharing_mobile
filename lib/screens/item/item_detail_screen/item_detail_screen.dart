@@ -201,8 +201,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   builder: (context, widget) => Column(
                     children: [
                       SizedBox(height: 10),
-                      UserInfoCard(_itemDetail.donateAccountName,
-                          _itemDetail.receiveAddress, showContactInfo),
+                      UserInfoCard(
+                          _itemDetail.donateAccountName,
+                          _itemDetail.receiveAddress,
+                          _requestStatus == RequestStatus.receiving
+                              ? showContactInfo
+                              : null),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,
