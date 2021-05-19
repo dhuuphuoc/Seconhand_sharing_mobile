@@ -196,10 +196,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                       onPressed: () async {
                                         await canLaunch(
-                                                "mailto:${_userInfo.phoneNumber}?subject=&body=")
+                                                "mailto:${_userInfo.email}?subject=&body=")
                                             ? await launch(
-                                                "mailto:${_userInfo.phoneNumber}?subject=&body=")
-                                            : throw 'Could not launch mailto:${_userInfo.phoneNumber}?subject=&body=';
+                                                "mailto:${_userInfo.email}?subject=&body=")
+                                            : throw 'Could not launch mailto:${_userInfo.email}?subject=&body=';
                                       },
                                     ),
                             ),
