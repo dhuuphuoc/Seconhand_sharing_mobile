@@ -67,9 +67,8 @@ class _SplashScreenState extends State<SplashScreen> {
     print(url);
     String userId = url.queryParameters["userid"];
     String code = url.queryParameters["code"].replaceAll(" ", "+");
-    CodeResetPassword _code = CodeResetPassword(userId: userId, code: code);
     Keys.navigatorKey.currentState
-        .pushNamed("/reset-password", arguments: _code);
+        .pushNamed("/reset-password", arguments: {"userId": userId, "code": code});
   }
 
   Future<void> loadData() async {

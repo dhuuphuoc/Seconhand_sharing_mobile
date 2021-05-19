@@ -6,7 +6,6 @@ import 'package:secondhand_sharing/services/api_services/authentication_services
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -23,17 +22,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
   bool _isLoading = false;
-  String _userId = "";
-  String _code = "";
+  String _userId;
+  String _code;
 
   void _resetPasswordSubmit() async {
     if (!_formKey.currentState.validate()) return;
     setState(() {
       _isLoading = true;
     });
-
-    final _args = ModalRoute.of(context).settings.arguments;
-    print(_args);
 
     ResetPasswordModel resetPasswordModel =
         await AuthenticationService.resetPassword(ResetPasswordForm(
@@ -67,6 +63,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var data = ModalRoute.of(context).settings.arguments as Map;
+    _userId = data["userId"];
+    _code = data["code"];
     return Scaffold(
       body: Container(
         width: double.infinity,
