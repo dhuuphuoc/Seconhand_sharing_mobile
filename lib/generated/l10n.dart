@@ -325,10 +325,10 @@ class S {
     );
   }
 
-  /// `Phone Number`
+  /// `Phone number`
   String get phoneNumber {
     return Intl.message(
-      'Phone Number',
+      'Phone number',
       name: 'phoneNumber',
       desc: '',
       args: [],
@@ -1090,6 +1090,106 @@ class S {
     return Intl.message(
       'Phone number can\'t be empty',
       name: 'emptyPhoneError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your registration isn't accepted`
+  String get contactDenied {
+    return Intl.message(
+      'Your registration isn\'t accepted',
+      name: 'contactDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send thanks`
+  String get sendThanks {
+    return Intl.message(
+      'Send thanks',
+      name: 'sendThanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you so much!`
+  String get thanks {
+    return Intl.message(
+      'Thank you so much!',
+      name: 'thanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message(
+      'Send',
+      name: 'send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks message`
+  String get thanksMessage {
+    return Intl.message(
+      'Thanks message',
+      name: 'thanksMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks sent!`
+  String get thanksSent {
+    return Intl.message(
+      'Thanks sent!',
+      name: 'thanksSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donation`
+  String get donation {
+    return Intl.message(
+      'Donation',
+      name: 'donation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
       desc: '',
       args: [],
     );

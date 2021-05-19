@@ -104,8 +104,16 @@
   "messageEmptyError" : "Message can't be empty",
   "contact" : "Contact",
   "dateOfBirth": "Date of Birth",
-  "phoneNumber": "Phone Number",
-  "emptyPhoneError": "Phone number can't be empty"
-
+  "emptyPhoneError": "Phone number can't be empty",
+  "contactDenied" : "Your registration isn't accepted",
+  "close" : "Close",
+  "sendThanks" : "Send thanks",
+  "thanks" : "Thank you so much!",
+  "send" : "Send",
+  "thanksMessage" : "Thanks message",
+  "thanksSent" : "Thanks sent!",
+  "profile" : "Profile",
+  "donation": "Donation",
+  "save" : "Save"
 
 }

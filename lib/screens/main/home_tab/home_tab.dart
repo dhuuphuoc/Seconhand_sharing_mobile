@@ -82,7 +82,7 @@ class _HomeTabState extends State<HomeTab> {
     _postsScrollController = PrimaryScrollController.of(context);
 
     var listViewWidgets = <Widget>[
-      Container(margin: EdgeInsets.all(10), child: PostCard()),
+      // Container(margin: EdgeInsets.all(10), child: PostCard()),
       Container(
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(

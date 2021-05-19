@@ -9,14 +9,22 @@ class NotifyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return AlertDialog(
       title: Text(title),
-      contentPadding: EdgeInsets.only(left: 24, top: 10, right: 24),
-      buttonPadding: EdgeInsets.symmetric(horizontal: 20),
-      content: SingleChildScrollView(
-        child: ListBody(
+      contentPadding: EdgeInsets.only(left: 24, top: 10, right: 24, bottom: 0),
+      buttonPadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.only(right: 10, bottom: 10),
+      insetPadding: EdgeInsets.all(25),
+      content: Container(
+        width: screenSize.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(message),
+            Text(
+              message,
+            ),
           ],
         ),
       ),

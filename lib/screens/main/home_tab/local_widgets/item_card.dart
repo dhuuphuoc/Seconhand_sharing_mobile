@@ -24,7 +24,7 @@ class ItemCard extends StatelessWidget {
             children: [
               ListTile(
                 leading: CircleAvatar(
-                  child: Image.asset("assets/images/person.png"),
+                  foregroundImage: AssetImage("assets/images/person.png"),
                   backgroundColor: Theme.of(context).backgroundColor,
                 ),
                 title: Text(

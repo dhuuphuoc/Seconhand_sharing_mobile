@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "139868751580",
-    "project_id": "twohandsharing",
-    "storage_bucket": "twohandsharing.appspot.com"
+    "project_number": "897208395495",
+    "project_id": "two-hand-sharing",
+    "storage_bucket": "two-hand-sharing.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:139868751580:android:ea79a00bfffba18942d619",
+        "mobilesdk_app_id": "1:897208395495:android:b8e4f41a16c7e7c34ca442",
         "android_client_info": {
-          "package_name": "com.graduation.twohandsharing"
+          "package_name": "com.example.secondhand_sharing"
         }
       },
       "oauth_client": [
         {
-          "client_id": "139868751580-i42qtbhpf9achdm04kij7aanmqjmjh6n.apps.googleusercontent.com",
+          "client_id": "897208395495-kbvsk3qkspdcbtb7ve1r5ffoo2nvensg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.secondhand_sharing",
+            "certificate_hash": "0b426cb7f6980691665fcfe05577e2a110702cf9"
+          }
+        },
+        {
+          "client_id": "897208395495-ev19ohv59mkeb60o98gftbln8ae8cj8b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPmQV1SBr80dhVgFgoFtKva0XXhcl01hU"
+          "current_key": "AIzaSyB_txukOaIcQBQikq5BvVFhrx6BTrj5Ebg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "139868751580-i42qtbhpf9achdm04kij7aanmqjmjh6n.apps.googleusercontent.com",
+              "client_id": "897208395495-ev19ohv59mkeb60o98gftbln8ae8cj8b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

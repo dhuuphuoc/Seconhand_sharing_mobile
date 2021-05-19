@@ -135,11 +135,16 @@ class _PostItemScreenState extends State<PostItemScreen>
   }
 
   void onMapPress() async {
+    AddressModel backup = AddressModel.clone(_addressModel);
     Navigator.pushNamed(context, "/item/address", arguments: _addressModel)
         .then((value) {
-      // setState(() {
-      //   if (value != null) _addressModel = value;
-      // });
+      setState(() {
+        if (value != null)
+          _addressModel = value;
+        else {
+          _addressModel = backup;
+        }
+      });
     });
   }
 

@@ -8,7 +8,6 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
-import 'package:secondhand_sharing/widgets/date_picker/date_picker.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';

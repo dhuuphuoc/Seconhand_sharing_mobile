@@ -104,7 +104,15 @@
   "messageEmptyError" : "Lời nhắn không thể bỏ trống",
   "contact" : "Liên hệ",
   "dateOfBirth": "Ngày sinh",
-  "phoneNumber": "Số điện thoại",
-  "emptyPhoneError": "Số điện thoại không được bỏ trống"
-
+  "emptyPhoneError": "Số điện thoại không được bỏ trống",
+  "contactDenied" : "Đăng ký nhận của bạn chưa được chấp nhận",
+  "close" : "Đóng",
+  "sendThanks" : "Gửi lời cảm ơn",
+  "thanks" : "Cảm ơn bạn rất nhiều!",
+  "send" : "Gửi",
+  "thanksMessage" : "Lời cảm ơn",
+  "thanksSent": "Lời cảm ơn của bạn đã được gửi đi",
+  "profile" : "Thông tin cá nhân",
+  "donation": "Quyên góp",
+  "save" : "Lưu"
 }
