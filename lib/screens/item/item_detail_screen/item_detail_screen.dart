@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
 class ItemDetailScreen extends StatefulWidget {
@@ -146,6 +147,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         });
   }
 
+  void showUserProfile() {
+    UserServices.getUserInfo().whenComplete(() {
+      Navigator.pushNamed(context, '/profile',
+          arguments: AccessInfo().userInfo);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_itemDetail.id == null) {
@@ -206,7 +214,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           _itemDetail.receiveAddress,
                           _requestStatus == RequestStatus.receiving
                               ? showContactInfo
-                              : null),
+                              : _isOwn
+                                  ? showUserProfile
+                                  : null),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,
