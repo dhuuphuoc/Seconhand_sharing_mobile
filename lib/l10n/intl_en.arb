@@ -102,6 +102,10 @@
   "confirmSent": "Confirm sent",
   "complete" : "Complete",
   "messageEmptyError" : "Message can't be empty",
-  "contact" : "Contact"
+  "contact" : "Contact",
+  "dateOfBirth": "Date of Birth",
+  "phoneNumber": "Phone Number",
+  "emptyPhoneError": "Phone number can't be empty"
+
 
 }

@@ -325,10 +325,10 @@ class S {
     );
   }
 
-  /// `Phone number`
+  /// `Phone Number`
   String get phoneNumber {
     return Intl.message(
-      'Phone number',
+      'Phone Number',
       name: 'phoneNumber',
       desc: '',
       args: [],
@@ -1070,6 +1070,26 @@ class S {
     return Intl.message(
       'Contact',
       name: 'contact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of Birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateOfBirth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number can't be empty`
+  String get emptyPhoneError {
+    return Intl.message(
+      'Phone number can\'t be empty',
+      name: 'emptyPhoneError',
       desc: '',
       args: [],
     );

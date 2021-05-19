@@ -102,5 +102,9 @@
   "confirmSent": "Xác nhận đã cho",
   "complete" : "Hoàn thành",
   "messageEmptyError" : "Lời nhắn không thể bỏ trống",
-  "contact" : "Liên hệ"
+  "contact" : "Liên hệ",
+  "dateOfBirth": "Ngày sinh",
+  "phoneNumber": "Số điện thoại",
+  "emptyPhoneError": "Số điện thoại không được bỏ trống"
+
 }
