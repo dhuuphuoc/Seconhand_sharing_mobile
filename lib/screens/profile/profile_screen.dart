@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var dateFormat = DateFormat("dd/MM/yyyy");
-    _userInfo = ModalRoute.of(context).settings.arguments;
+    _userInfo = ModalRoute.of(context).settings.arguments as UserInfo;
     _isMe = _userInfo.id == AccessInfo().userInfo.id;
     return Scaffold(
       body: NestedScrollView(

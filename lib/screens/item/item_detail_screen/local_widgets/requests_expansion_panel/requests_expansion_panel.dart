@@ -76,6 +76,14 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
               body: Column(
                 children: _receiveRequestsModel.requests
                     .map((request) => ListTile(
+                          onTap: () {
+                            print(request.id);
+                            ReceiveServices.getReceiverInfo(request.id)
+                                .then((value) {
+                              Navigator.pushNamed(context, "/profile",
+                                  arguments: value);
+                            });
+                          },
                           leading: CircleAvatar(
                               maxRadius: 25,
                               child: Image.asset(

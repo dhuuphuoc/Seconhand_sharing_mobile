@@ -16,6 +16,7 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
+
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
@@ -51,14 +52,10 @@ class _MainScreenState extends State<MainScreen>
                 actions: [
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
-                    onTap: () {
-                      UserServices.getUserInfo().then((value) {
-                        if (value != null) {
-                          AccessInfo().userInfo = value;
-                          Navigator.pushNamed(context, "/profile",
-                              arguments: AccessInfo().userInfo);
-                        }
-                      });
+                    onTap: () async {
+                      await UserServices.getUserInfo();
+                      Navigator.pushNamed(context, "/profile",
+                          arguments: AccessInfo().userInfo);
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),

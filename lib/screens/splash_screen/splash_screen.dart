@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
-      userSingleton.userInfo = await UserServices.getUserInfo();
+      await UserServices.getUserInfo();
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
