@@ -119,19 +119,19 @@ class _MainScreenState extends State<MainScreen>
         ),
         // Next, create a SliverList
       ),
-      floatingActionButton: Container(
-        height: 70,
-        width: 70,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "/post-item");
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Icon(Icons.post_add), Text(S.of(context).post)],
-          ),
-        ),
-      ),
+      // floatingActionButton: Container(
+      //   height: 70,
+      //   width: 70,
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       Navigator.pushNamed(context, "/post-item");
+      //     },
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [Icon(Icons.post_add), Text(S.of(context).post)],
+      //     ),
+      //   ),
+      // ),
       // appBar: AppBar(
       //   leading: Container(
       //     padding: EdgeInsets.symmetric(horizontal: 10),
