@@ -299,6 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ? null
                                         : TextFormField(
                                             controller: _phoneTextController,
+                                            keyboardType: TextInputType.phone,
                                           )
                                     : Text(_userInfo.phoneNumber == null
                                         ? ""
