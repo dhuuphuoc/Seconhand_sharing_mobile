@@ -46,7 +46,7 @@ class _PostItemScreenState extends State<PostItemScreen>
     super.initState();
   }
 
-  AddressModel _addressModel = AddressModel();
+  AddressModel _addressModel = AccessInfo().userInfo.address;
   void pickImages() {
     showModalBottomSheet(
             context: context,
@@ -82,6 +82,15 @@ class _PostItemScreenState extends State<PostItemScreen>
           builder: (context) {
             return NotifyDialog(
                 S.of(context).images, imagesValidateMessage, "OK");
+          });
+      return;
+    }
+    if (_categoryModel.selectedId == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(S.of(context).category,
+                S.of(context).categoryUnselectedError, "OK");
           });
       return;
     }
