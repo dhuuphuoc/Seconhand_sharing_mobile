@@ -228,6 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   : TextFormField(
                                       controller: _nameTextController,
                                       readOnly: !_isNameEditing,
+                                      onEditingComplete: editName,
                                       decoration: InputDecoration(
                                         border: _isNameEditing
                                             ? UnderlineInputBorder()
@@ -299,6 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ? null
                                         : TextFormField(
                                             controller: _phoneTextController,
+                                            onEditingComplete: editPhoneNumber,
                                           )
                                     : Text(_userInfo.phoneNumber == null
                                         ? ""
