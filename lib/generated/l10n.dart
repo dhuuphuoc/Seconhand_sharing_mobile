@@ -1194,6 +1194,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Category`
+  String get category {
+    return Intl.message(
+      'Category',
+      name: 'category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You haven't selected category of your item yet!`
+  String get categoryUnselectedError {
+    return Intl.message(
+      'You haven\'t selected category of your item yet!',
+      name: 'categoryUnselectedError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
