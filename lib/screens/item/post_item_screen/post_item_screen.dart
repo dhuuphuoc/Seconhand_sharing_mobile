@@ -235,7 +235,6 @@ class _PostItemScreenState extends State<PostItemScreen>
                 controller: _phoneNumberController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                    hintText: "0912345678",
                     labelText: "${S.of(context).phoneNumber}",
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
