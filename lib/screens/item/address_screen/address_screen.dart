@@ -23,11 +23,11 @@ class _AddressScreenState extends State<AddressScreen> {
     return p1.name.compareTo(p2.name);
   }
 
-  int compareWards(ward1, ward2) {
+  int compareWards(Ward ward1, Ward ward2) {
     return ward1.name.compareTo(ward2.name);
   }
 
-  int compareDistricts(district1, district2) {
+  int compareDistricts(District district1, District district2) {
     return district1.name.compareTo(district2.name);
   }
 
@@ -53,7 +53,7 @@ class _AddressScreenState extends State<AddressScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          S.of(context).receiveAddress,
+          S.of(context).address,
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,

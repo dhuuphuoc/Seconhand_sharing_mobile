@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
+import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,6 +16,7 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
+
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
@@ -44,6 +49,26 @@ class _MainScreenState extends State<MainScreen>
                   "assets/images/login_icon.png",
                   height: 100,
                 ),
+                actions: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () async {
+                      await UserServices.getUserInfo();
+                      Navigator.pushNamed(context, "/profile",
+                          arguments: AccessInfo().userInfo);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                      child: CircleAvatar(
+                        radius: 20,
+                        foregroundImage: AssetImage(
+                          "assets/images/person.png",
+                        ),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  ),
+                ],
                 // Allows the user to reveal the app bar if they begin scrolling
                 // back up the list of items.
                 floating: true,
@@ -89,11 +114,24 @@ class _MainScreenState extends State<MainScreen>
             Container(),
             Container(),
             Container(),
-            Container(),
+            MenuTab(),
           ],
         ),
         // Next, create a SliverList
       ),
+      // floatingActionButton: Container(
+      //   height: 70,
+      //   width: 70,
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       Navigator.pushNamed(context, "/post-item");
+      //     },
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [Icon(Icons.post_add), Text(S.of(context).post)],
+      //     ),
+      //   ),
+      // ),
       // appBar: AppBar(
       //   leading: Container(
       //     padding: EdgeInsets.symmetric(horizontal: 10),

@@ -19,6 +19,12 @@ class AddressModel {
         "districtId": district.id,
         "cityId": province.id,
       };
+  factory AddressModel.clone(AddressModel addressModel) => AddressModel(
+        address: addressModel.address,
+        ward: addressModel.ward,
+        district: addressModel.district,
+        province: addressModel.province,
+      );
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     Province province;

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
-import 'package:secondhand_sharing/models/resetPassword_model/resetPassword_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -27,17 +27,23 @@ class RegisterForm {
   String _fullName;
   String _email;
   String _password;
+  String _dateOfBirth;
+  String _phoneNumber;
 
-  RegisterForm(this._fullName, this._email, this._password);
+  RegisterForm(this._fullName, this._email, this._password, this._dateOfBirth, this._phoneNumber);
 
   String get fullName => _fullName;
   String get email => _email;
   String get password => _password;
+  String get dateOfBirth => _dateOfBirth;
+  String get phoneNumber => _phoneNumber;
 
   Map<String, dynamic> toJson() => {
         "fullName": _fullName,
         "email": _email,
         "password": _password,
+        "dob": _dateOfBirth,
+        "phoneNumber": _phoneNumber
       };
 }
 
@@ -54,21 +60,21 @@ class ForgotPasswordForm {
 }
 
 class ResetPasswordForm {
-  String _email;
+  String _userId;
   String _token;
   String _password;
   String _confirmPassword;
 
   ResetPasswordForm(
-      this._email, this._token, this._password, this._confirmPassword);
+      this._userId, this._token, this._password, this._confirmPassword);
 
-  String get email => _email;
+  String get userId => _userId;
   String get token => _token;
   String get password => _password;
   String get confirmPassword => _confirmPassword;
 
   Map<String, dynamic> toJson() => {
-        "email": _email,
+        "userId": _userId,
         "token": _token,
         "password": _password,
         "confirmPassword": _confirmPassword,
@@ -81,7 +87,7 @@ class AuthenticationService {
     var response = await http.post(_loginUri,
         body: jsonEncode(loginForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
-    print(jsonEncode(loginForm.toJson()));
+    print(response.body);
     if (response.statusCode == 200) {
       return LoginModel.fromJson(jsonDecode(response.body));
     } else {
@@ -117,6 +123,7 @@ class AuthenticationService {
     var response = await http.post(_resetPasswordUri,
         body: jsonEncode(resetPasswordForm.toJson()),
         headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    print(response.body);
     if (response.statusCode == 200) {
       return ResetPasswordModel.fromJson(jsonDecode(response.body));
     }

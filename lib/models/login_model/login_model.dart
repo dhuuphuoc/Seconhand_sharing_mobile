@@ -1,34 +1,37 @@
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+
 class LoginModel {
   LoginModel({
     this.succeeded,
     this.message,
-    this.data,
+    this.accessData,
   });
 
   bool succeeded;
   String message;
-  Data data;
+  AccessData accessData;
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
         succeeded: json["succeeded"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        accessData: AccessData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
         "succeeded": succeeded,
         "message": message,
-        "data": data.toJson(),
+        "data": accessData.toJson(),
       };
 }
 
-class Data {
-  Data({
+class AccessData {
+  AccessData({
     this.jwToken,
     this.expiration,
     this.roles,
     this.isVerified,
     this.refreshToken,
+    this.userInfo,
   });
 
   String jwToken;
@@ -36,13 +39,15 @@ class Data {
   String roles;
   bool isVerified;
   String refreshToken;
+  UserInfo userInfo;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory AccessData.fromJson(Map<String, dynamic> json) => AccessData(
         jwToken: json["jwToken"],
         expiration: DateTime.parse(json["expiration"]),
         roles: json["roles"],
         isVerified: json["isVerified"],
         refreshToken: json["refreshToken"],
+        userInfo: UserInfo.fromJson(json["userInfo"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,5 +56,6 @@ class Data {
         "roles": roles,
         "isVerified": isVerified,
         "refreshToken": refreshToken,
+        "userInfo": userInfo
       };
 }

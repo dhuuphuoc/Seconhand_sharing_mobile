@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 
 class UserInfoCard extends StatefulWidget {
   final _addressModel;
@@ -25,10 +27,8 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: CircleAvatar(
                     maxRadius: 25,
-                    child: Image.asset(
+                    foregroundImage: AssetImage(
                       "assets/images/person.png",
-                      height: 50,
-                      fit: BoxFit.fill,
                     ),
                     backgroundColor: Colors.transparent),
               ),
@@ -41,7 +41,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
-                        "Hữu Dũng",
+                        AccessInfo().userInfo.fullName,
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     ),

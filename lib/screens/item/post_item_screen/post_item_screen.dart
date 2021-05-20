@@ -11,6 +11,7 @@ import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
@@ -135,16 +136,22 @@ class _PostItemScreenState extends State<PostItemScreen>
   }
 
   void onMapPress() async {
+    AddressModel backup = AddressModel.clone(_addressModel);
     Navigator.pushNamed(context, "/item/address", arguments: _addressModel)
         .then((value) {
-      // setState(() {
-      //   if (value != null) _addressModel = value;
-      // });
+      setState(() {
+        if (value != null)
+          _addressModel = value;
+        else {
+          _addressModel = backup;
+        }
+      });
     });
   }
 
   final _titleController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  final _phoneNumberController =
+      TextEditingController(text: AccessInfo().userInfo.phoneNumber);
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
@@ -234,8 +241,23 @@ class _PostItemScreenState extends State<PostItemScreen>
                 validator: Validator.validatePhoneNumber,
                 controller: _phoneNumberController,
                 keyboardType: TextInputType.phone,
+                readOnly: true,
                 decoration: InputDecoration(
                     labelText: "${S.of(context).phoneNumber}",
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed("/profile",
+                                arguments: AccessInfo().userInfo)
+                            .whenComplete(() {
+                          setState(() {
+                            _phoneNumberController.text =
+                                AccessInfo().userInfo.phoneNumber;
+                          });
+                        });
+                      },
+                    ),
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
                     border: OutlineInputBorder(

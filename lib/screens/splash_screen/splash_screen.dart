@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,8 +7,11 @@ import 'package:secondhand_sharing/models/address_model/country_model/country_da
 
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
+import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-
+import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<void> loadAddress(BuildContext context) async {
+  Future<void> loadAddress() async {
     Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
     Country vn = Country(84, S.of(context).vietNam, provinces);
@@ -35,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     ImageModel().loadImages();
   }
 
-  Future<void> loadToken(BuildContext context) async {
+  Future<void> loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     if (token == null) {
@@ -44,20 +45,41 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
+      await UserServices.getUserInfo();
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
+    handleUniLink();
   }
 
-  Future<void> loadData(BuildContext context) async {
-    await loadAddress(context);
+  Future<void> handleUniLink() async {
+    String link = await getInitialLink();
+    if (link != null) {
+      Uri url = Uri.parse(link);
+      processUniLink(url);
+    }
+    uriLinkStream.listen((url) {
+      processUniLink(url);
+    });
+  }
+
+  void processUniLink(Uri url) {
+    print(url);
+    String userId = url.queryParameters["userid"];
+    String code = url.queryParameters["code"].replaceAll(" ", "+");
+    Keys.navigatorKey.currentState
+        .pushNamed("/reset-password", arguments: {"userId": userId, "code": code});
+  }
+
+  Future<void> loadData() async {
+    await loadAddress();
     if (!kIsWeb) await loadImages(context);
-    await loadToken(context);
+    await loadToken();
   }
 
   @override
   void initState() {
-    loadData(context);
+    loadData();
     super.initState();
   }
 

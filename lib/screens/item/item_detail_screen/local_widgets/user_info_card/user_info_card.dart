@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/models/address_model/address_model.dart';
 
 class UserInfoCard extends StatefulWidget {
-  final _addressModel;
+  final String _name;
+  final AddressModel _addressModel;
   final Function _onMapPress;
 
-  UserInfoCard(this._addressModel, this._onMapPress);
+  UserInfoCard(this._name, this._addressModel, this._onMapPress);
 
   @override
   _UserInfoCardState createState() => _UserInfoCardState();
@@ -25,10 +27,8 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: CircleAvatar(
                     maxRadius: 25,
-                    child: Image.asset(
+                    foregroundImage: AssetImage(
                       "assets/images/person.png",
-                      height: 50,
-                      fit: BoxFit.fill,
                     ),
                     backgroundColor: Colors.transparent),
               ),
@@ -41,7 +41,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
-                        "Hữu Dũng",
+                        widget._name,
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     ),
@@ -73,7 +73,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: IconButton(
                   color: Theme.of(context).primaryColor,
-                  icon: Icon(Icons.map_outlined),
+                  icon: Icon(Icons.contact_phone_outlined),
                   onPressed: widget._onMapPress,
                 ),
               ),

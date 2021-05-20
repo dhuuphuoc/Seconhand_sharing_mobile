@@ -45,6 +45,26 @@ class S {
     );
   }
 
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to logout?`
+  String get logoutConfirmation {
+    return Intl.message(
+      'Are you sure you want to logout?',
+      name: 'logoutConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login to share your items`
   String get loginHint {
     return Intl.message(
@@ -875,11 +895,301 @@ class S {
     );
   }
 
-  /// `Request`
-  String get request {
+  /// `Register to receive`
+  String get registerToReceive {
     return Intl.message(
-      'Request',
-      name: 'request',
+      'Register to receive',
+      name: 'registerToReceive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password was reset`
+  String get resetPasswordSuccess {
+    return Intl.message(
+      'Your password was reset',
+      name: 'resetPasswordSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recovery link is expired`
+  String get resetPasswordFailed {
+    return Intl.message(
+      'Recovery link is expired',
+      name: 'resetPasswordFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get message {
+    return Intl.message(
+      'Message',
+      name: 'message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registered`
+  String get registered {
+    return Intl.message(
+      'Registered',
+      name: 'registered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel registration`
+  String get cancelRegister {
+    return Intl.message(
+      'Cancel registration',
+      name: 'cancelRegister',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending`
+  String get pending {
+    return Intl.message(
+      'Pending',
+      name: 'pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accepted`
+  String get accepted {
+    return Intl.message(
+      'Accepted',
+      name: 'accepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unregistered`
+  String get unregistered {
+    return Intl.message(
+      'Unregistered',
+      name: 'unregistered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registrations`
+  String get registrations {
+    return Intl.message(
+      'Registrations',
+      name: 'registrations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get accept {
+    return Intl.message(
+      'Accept',
+      name: 'accept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm sent`
+  String get confirmSent {
+    return Intl.message(
+      'Confirm sent',
+      name: 'confirmSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get complete {
+    return Intl.message(
+      'Complete',
+      name: 'complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message can't be empty`
+  String get messageEmptyError {
+    return Intl.message(
+      'Message can\'t be empty',
+      name: 'messageEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact`
+  String get contact {
+    return Intl.message(
+      'Contact',
+      name: 'contact',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of Birth`
+  String get dateOfBirth {
+    return Intl.message(
+      'Date of Birth',
+      name: 'dateOfBirth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number can't be empty`
+  String get emptyPhoneError {
+    return Intl.message(
+      'Phone number can\'t be empty',
+      name: 'emptyPhoneError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your registration isn't accepted`
+  String get contactDenied {
+    return Intl.message(
+      'Your registration isn\'t accepted',
+      name: 'contactDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send thanks`
+  String get sendThanks {
+    return Intl.message(
+      'Send thanks',
+      name: 'sendThanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you so much!`
+  String get thanks {
+    return Intl.message(
+      'Thank you so much!',
+      name: 'thanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message(
+      'Send',
+      name: 'send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks message`
+  String get thanksMessage {
+    return Intl.message(
+      'Thanks message',
+      name: 'thanksMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks sent!`
+  String get thanksSent {
+    return Intl.message(
+      'Thanks sent!',
+      name: 'thanksSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donation`
+  String get donation {
+    return Intl.message(
+      'Donation',
+      name: 'donation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
       desc: '',
       args: [],
     );

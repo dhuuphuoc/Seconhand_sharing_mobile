@@ -34,8 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
         LoginForm(_usernameTextController.text, _passwordTextController.text));
     if (loginModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", loginModel.data.jwToken);
-      AccessInfo().token = loginModel.data.jwToken;
+      prefs.setString("token", loginModel.accessData.jwToken);
+      AccessInfo().token = loginModel.accessData.jwToken;
+      AccessInfo().userInfo = loginModel.accessData.userInfo;
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     } else {
@@ -109,41 +110,48 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: S.of(context).password,
                       suffixIcon: Icon(Icons.lock)),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {
+                    TextButton(
+                      onPressed: () {
                         Navigator.of(context).pushNamed("/register");
                       },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
                       child: Text(
                         S.of(context).registerForFree,
+                        textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
+                    TextButton(
+                      onPressed: () {
                         Navigator.of(context).pushNamed("/forgot-password");
                       },
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          alignment: Alignment.centerRight),
                       child: Text(
                         "${S.of(context).forgotPassword}?",
+                        textAlign: TextAlign.end,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
                 _isLoading
                     ? Align(child: CircularProgressIndicator())
                     : SizedBox(),
-                SizedBox(
-                  height: 15,
-                ),
+                if (_isLoading)
+                  SizedBox(
+                    height: 15,
+                  ),
                 Container(
                     width: double.infinity,
                     child: GradientButton(
