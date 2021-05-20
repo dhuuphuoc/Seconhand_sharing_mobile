@@ -166,35 +166,32 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           S.of(context).detail,
           style: Theme.of(context).textTheme.headline2,
         ),
-        titleSpacing: 0,
+        centerTitle: true,
         actions: [
           if (!_isLoading)
             Center(
               child: Container(
-                margin: EdgeInsets.only(right: 15),
-                child: Text(
-                  _itemDetail.status == ItemStatus.success
-                      ? S.of(context).complete
-                      : _isOwn
-                          ? "${_receiveRequestsModel.requests.length} ${S.of(context).registrations}"
-                          : _itemDetail.userRequestId == 0
-                              ? S.of(context).unregistered
-                              : _requestStatus == null
-                                  ? ""
-                                  : _requestStatus == RequestStatus.pending
-                                      ? S.of(context).pending
-                                      : S.of(context).accepted,
-                  style: TextStyle(
-                      color: _itemDetail.status == ItemStatus.success ||
-                              _requestStatus == RequestStatus.receiving
-                          ? Colors.green
-                          : _isOwn || _itemDetail.userRequestId != 0
-                              ? Theme.of(context).primaryColor
-                              : _itemDetail.userRequestId == 0
-                                  ? Theme.of(context).disabledColor
-                                  : Colors.green),
-                ),
-              ),
+                  margin: EdgeInsets.only(right: 15),
+                  child: _itemDetail.status == ItemStatus.success
+                      ? Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.green,
+                        )
+                      : !_isOwn
+                          ? _itemDetail.userRequestId == 0
+                              ? Icon(
+                                  Icons.app_registration,
+                                  color: Colors.black54,
+                                )
+                              : _requestStatus == RequestStatus.pending
+                                  ? Icon(
+                                      Icons.app_registration,
+                                    )
+                                  : Icon(
+                                      Icons.fact_check_outlined,
+                                      color: Colors.green,
+                                    )
+                          : null),
             ),
         ],
       ),
