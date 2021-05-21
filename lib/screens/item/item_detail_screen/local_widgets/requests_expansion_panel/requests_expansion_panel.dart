@@ -5,6 +5,7 @@ import 'package:secondhand_sharing/models/receive_requests_model/receive_request
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:provider/provider.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 
 class RequestsExpansionPanel extends StatefulWidget {
   @override
@@ -78,7 +79,7 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                     .map((request) => ListTile(
                           onTap: () {
                             print(request.id);
-                            ReceiveServices.getReceiverInfo(request.id)
+                            UserServices.getUserInfoById(request.receiverId)
                                 .then((value) {
                               Navigator.pushNamed(context, "/profile",
                                   arguments: value);

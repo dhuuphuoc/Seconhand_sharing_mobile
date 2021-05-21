@@ -46,7 +46,9 @@ class _PostItemScreenState extends State<PostItemScreen>
     super.initState();
   }
 
-  AddressModel _addressModel = AccessInfo().userInfo.address;
+  AddressModel _addressModel = AccessInfo().userInfo.address == null
+      ? AddressModel()
+      : AccessInfo().userInfo.address;
   void pickImages() {
     showModalBottomSheet(
             context: context,

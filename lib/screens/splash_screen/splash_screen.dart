@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +23,32 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // Future<void> saveTokenToDatabase(int userId, String token) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(userId.toString())
+  //       .update({
+  //     'tokens': FieldValue.arrayUnion([token]),
+  //   });
+  // }
+  //
+  // Future<void> initFirebase() async {
+  //   await Firebase.initializeApp();
+  //
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  //   print(settings.authorizationStatus);
+  // }
+
   Future<void> loadAddress() async {
     Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
@@ -46,6 +75,12 @@ class _SplashScreenState extends State<SplashScreen> {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
       await UserServices.getUserInfo();
+      // String deviceToken = await FirebaseMessaging.instance.getToken();
+      // print(deviceToken);
+      // saveTokenToDatabase(userSingleton.userInfo.id, deviceToken);
+      // FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) {
+      //   saveTokenToDatabase(userSingleton.userInfo.id, deviceToken);
+      // });
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
@@ -67,12 +102,13 @@ class _SplashScreenState extends State<SplashScreen> {
     print(url);
     String userId = url.queryParameters["userid"];
     String code = url.queryParameters["code"].replaceAll(" ", "+");
-    Keys.navigatorKey.currentState
-        .pushNamed("/reset-password", arguments: {"userId": userId, "code": code});
+    Keys.navigatorKey.currentState.pushNamed("/reset-password",
+        arguments: {"userId": userId, "code": code});
   }
 
   Future<void> loadData() async {
     await loadAddress();
+    // await initFirebase();
     if (!kIsWeb) await loadImages(context);
     await loadToken();
   }

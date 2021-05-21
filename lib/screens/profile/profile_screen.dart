@@ -198,7 +198,15 @@ class _ProfileScreenState extends State<ProfileScreen>
               sliver: SliverAppBar(
                 // Provide a standard title.
                 expandedHeight: screenSize.height * 0.65,
-
+                actions: [
+                  if (!_isMe)
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed("/chat", arguments: _userInfo);
+                        },
+                        child: Text(S.of(context).sendMessage))
+                ],
                 title: Text(
                   S.of(context).profile,
                   style: Theme.of(context).textTheme.headline2,

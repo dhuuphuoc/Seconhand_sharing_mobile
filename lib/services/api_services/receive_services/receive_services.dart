@@ -17,7 +17,7 @@ class ReceiveServices {
     Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem");
     var response = await http.post(url,
         headers: {
-          HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
         },
         body: jsonEncode({"itemId": itemId, "receiveReason": message}));
@@ -35,7 +35,7 @@ class ReceiveServices {
     var response = await http.put(
       url,
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
         HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
       },
     );
@@ -51,7 +51,7 @@ class ReceiveServices {
     var response = await http.get(
       url,
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
         HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
       },
     );
@@ -66,7 +66,7 @@ class ReceiveServices {
   static Future<List<ReceiveRequest>> getItemRequests(int itemId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/receive-request");
     var response = await http.get(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
@@ -80,7 +80,7 @@ class ReceiveServices {
   static Future<bool> acceptRequest(int requestId) async {
     Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/accept");
     var response = await http.put(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
@@ -95,7 +95,7 @@ class ReceiveServices {
     Uri url =
         Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/cancel-receiver");
     var response = await http.put(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
@@ -111,7 +111,7 @@ class ReceiveServices {
         Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/send-thanks");
     var response = await http.put(url,
         headers: {
-          HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
         },
         body: jsonEncode({"thanks": message}));
@@ -129,7 +129,7 @@ class ReceiveServices {
     var response = await http.get(
       url,
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
         HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
       },
     );

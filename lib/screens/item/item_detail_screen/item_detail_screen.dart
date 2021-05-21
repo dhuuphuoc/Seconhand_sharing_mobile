@@ -4,11 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_status.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_dialog/contact_dialog.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
@@ -117,11 +115,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void showContactInfo() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return ContactDialog(_itemDetail.id);
-        });
+    UserServices.getUserInfoById(_itemDetail.donateAccountId).then((userInfo) {
+      Navigator.pushNamed(context, '/profile', arguments: userInfo);
+    });
   }
 
   void sendThanks() {
@@ -209,11 +205,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       UserInfoCard(
                           _itemDetail.donateAccountName,
                           _itemDetail.receiveAddress,
-                          _requestStatus == RequestStatus.receiving
-                              ? showContactInfo
-                              : _isOwn
-                                  ? showUserProfile
-                                  : null),
+                          _isOwn ? showUserProfile : showContactInfo),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,

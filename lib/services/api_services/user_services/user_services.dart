@@ -43,11 +43,24 @@ class UserServices {
     Uri url = Uri.https(APIService.apiUrl, "/User");
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     if (response.statusCode == 200) {
       AccessInfo().userInfo =
           UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    }
+  }
+
+  static Future<UserInfo> getUserInfoById(int userId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/User/$userId");
+    var response = await http.get(url, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    if (response.statusCode == 200) {
+      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    } else {
+      return null;
     }
   }
 
@@ -56,7 +69,7 @@ class UserServices {
     var response = await http.put(url,
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
         },
         body: jsonEncode(form.toJson()));
     print(response.body);

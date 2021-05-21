@@ -62,7 +62,7 @@ class ItemServices {
 
     var response = await http.get(getItemsUrl, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
     if (response.statusCode == 200) {
@@ -74,7 +74,7 @@ class ItemServices {
   static Future<ItemDetail> getItemDetail(int id) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$id");
     var response = await http.get(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
@@ -100,7 +100,7 @@ class ItemServices {
     var response = await http.post(postItemsUrl,
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
         },
         body: jsonEncode(postItemForm.toJson()));
     print(postItemForm.toJson());
@@ -115,7 +115,7 @@ class ItemServices {
   static Future<bool> confirmSent(int itemId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/confirm-send");
     var response = await http.put(url, headers: {
-      HttpHeaders.contentTypeHeader: ContentType.json.toString(),
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
@@ -130,7 +130,7 @@ class ItemServices {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/owner-contact");
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
     if (response.statusCode == 200) {

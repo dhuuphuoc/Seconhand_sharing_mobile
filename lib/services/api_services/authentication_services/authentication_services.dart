@@ -30,7 +30,8 @@ class RegisterForm {
   String _dateOfBirth;
   String _phoneNumber;
 
-  RegisterForm(this._fullName, this._email, this._password, this._dateOfBirth, this._phoneNumber);
+  RegisterForm(this._fullName, this._email, this._password, this._dateOfBirth,
+      this._phoneNumber);
 
   String get fullName => _fullName;
   String get email => _email;
@@ -82,11 +83,12 @@ class ResetPasswordForm {
 }
 
 class AuthenticationService {
-  static Uri _loginUri = Uri.https(APIService.apiUrl, "/Identity/authenticate");
   static Future<LoginModel> login(LoginForm loginForm) async {
-    var response = await http.post(_loginUri,
-        body: jsonEncode(loginForm.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    Uri url = Uri.https(APIService.apiUrl, "/Identity/authenticate");
+    var response =
+        await http.post(url, body: jsonEncode(loginForm.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
     print(response.body);
     if (response.statusCode == 200) {
       return LoginModel.fromJson(jsonDecode(response.body));
@@ -95,34 +97,35 @@ class AuthenticationService {
     }
   }
 
-  static Uri _registerUri = Uri.https(APIService.apiUrl, "/Identity/register");
   static Future<RegisterModel> register(RegisterForm registerForm) async {
-    var response = await http.post(_registerUri,
-        body: jsonEncode(registerForm.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    Uri url = Uri.https(APIService.apiUrl, "/Identity/register");
+    var response =
+        await http.post(url, body: jsonEncode(registerForm.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
     if (response.statusCode == 200) {
       return RegisterModel.fromJson(jsonDecode(response.body));
     }
     return null;
   }
 
-  static Uri _forgotPasswordUri =
-      Uri.https(APIService.apiUrl, "/Identity/forgot-password");
   static Future<int> forgotPassword(
       ForgotPasswordForm forgotPasswordForm) async {
-    var response = await http.post(_forgotPasswordUri,
-        body: jsonEncode(forgotPasswordForm.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    Uri url = Uri.https(APIService.apiUrl, "/Identity/forgot-password");
+    var response = await http
+        .post(url, body: jsonEncode(forgotPasswordForm.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
     return response.statusCode;
   }
 
-  static Uri _resetPasswordUri =
-      Uri.https(APIService.apiUrl, "/Identity/reset-password");
   static Future<ResetPasswordModel> resetPassword(
       ResetPasswordForm resetPasswordForm) async {
-    var response = await http.post(_resetPasswordUri,
-        body: jsonEncode(resetPasswordForm.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    Uri url = Uri.https(APIService.apiUrl, "/Identity/reset-password");
+    var response = await http
+        .post(url, body: jsonEncode(resetPasswordForm.toJson()), headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
     print(response.body);
     if (response.statusCode == 200) {
       return ResetPasswordModel.fromJson(jsonDecode(response.body));

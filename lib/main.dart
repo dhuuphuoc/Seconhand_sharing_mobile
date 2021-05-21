@@ -13,21 +13,22 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/item_detail_s
 import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
+import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:uni_links/uni_links.dart';
 
-// class MyHttpOverrides extends HttpOverrides {
-//   @override
-//   HttpClient createHttpClient(SecurityContext context) {
-//     return super.createHttpClient(context)
-//       ..badCertificateCallback =
-//           (X509Certificate cert, String host, int port) => true;
-//   }
-// }
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
-  // HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(TwoHandShareApp());
 }
 
@@ -101,6 +102,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/post-item": (context) => PostItemScreen(),
         "/item/address": (context) => AddressScreen(),
         "/item/detail": (context) => ItemDetailScreen(),
+        "/chat": (context) => ChatScreen(),
       },
     );
   }

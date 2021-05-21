@@ -116,6 +116,7 @@
   "donation": "Donation",
   "save" : "Save",
   "category" : "Category",
-  "categoryUnselectedError" : "You haven't selected category of your item yet!"
+  "categoryUnselectedError" : "You haven't selected category of your item yet!",
+  "sendMessage" : "Send message"
 
 }

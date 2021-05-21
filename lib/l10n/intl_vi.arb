@@ -116,5 +116,6 @@
   "donation": "Quyên góp",
   "save" : "Lưu",
   "category" : "Phân loại",
-  "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm"
+  "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm",
+  "sendMessage" : "Nhắn tin"
 }
