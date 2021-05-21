@@ -7,15 +7,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country.dart';
 import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
-
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
-import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_links/uni_links.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -23,32 +22,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // Future<void> saveTokenToDatabase(int userId, String token) async {
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(userId.toString())
-  //       .update({
-  //     'tokens': FieldValue.arrayUnion([token]),
-  //   });
-  // }
-  //
-  // Future<void> initFirebase() async {
-  //   await Firebase.initializeApp();
-  //
-  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  //
-  //   NotificationSettings settings = await messaging.requestPermission(
-  //     alert: true,
-  //     announcement: false,
-  //     badge: true,
-  //     carPlay: false,
-  //     criticalAlert: false,
-  //     provisional: false,
-  //     sound: true,
-  //   );
-  //   print(settings.authorizationStatus);
-  // }
-
   Future<void> loadAddress() async {
     Map<int, Province> provinces =
         await loadProvinceData("assets/data/viet_nam_address.csv");
@@ -75,12 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
       await UserServices.getUserInfo();
-      // String deviceToken = await FirebaseMessaging.instance.getToken();
-      // print(deviceToken);
-      // saveTokenToDatabase(userSingleton.userInfo.id, deviceToken);
-      // FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) {
-      //   saveTokenToDatabase(userSingleton.userInfo.id, deviceToken);
-      // });
+      String deviceToken = await FirebaseMessaging.instance.getToken();
+      FirebaseServices.saveTokenToDatabase(deviceToken);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
@@ -108,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadData() async {
     await loadAddress();
-    // await initFirebase();
+    await FirebaseServices.initFirebase();
     if (!kIsWeb) await loadImages(context);
     await loadToken();
   }

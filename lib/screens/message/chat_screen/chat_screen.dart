@@ -18,7 +18,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   var _textController = TextEditingController();
   var _scrollController = ScrollController();
-  bool _needScroll = false;
+  bool _isBottomStick = true;
   UserInfo _userInfo;
   List<Message> messages = [];
 
@@ -29,7 +29,6 @@ class _ChatScreenState extends State<ChatScreen> {
       MessageServices.getMessages(_userInfo.id).then((value) {
         setState(() {
           messages = value.reversed.toList();
-          _needScroll = true;
         });
       });
     });
@@ -47,12 +46,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     _userInfo = ModalRoute.of(context).settings.arguments;
     UserInfo me = AccessInfo().userInfo;
+    List<Widget> messageWidgets = [];
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (_needScroll) {
+      if (_isBottomStick) {
         scrollToEnd();
       }
     });
-    List<Widget> messageWidgets = [];
     if (messages.isNotEmpty) {
       bool havePrevious;
       bool haveNext;
@@ -135,7 +134,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
                         messages.add(value);
-                        _needScroll = true;
                       });
                     });
                     _textController.text = "";

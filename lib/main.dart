@@ -1,9 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
@@ -16,19 +23,53 @@ import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     int i = 0;
+//     while (true) {
+//       const AndroidNotificationDetails androidPlatformChannelSpecifics =
+//           AndroidNotificationDetails('TestId', 'Test Name', 'Test Description',
+//               importance: Importance.max,
+//               priority: Priority.high,
+//               showWhen: true);
+//       const NotificationDetails platformChannelSpecifics =
+//           NotificationDetails(android: androidPlatformChannelSpecifics);
+//       await flutterLocalNotificationsPlugin.show(
+//           0, 'plain title', 'plain body', platformChannelSpecifics,
+//           payload: 'item x');
+//       print("run");
+//       await Future.delayed(Duration(seconds: 5));
+//     }
+//   });
+// }
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  NotificationService().sendNotification(message);
 }
 
-void main() {
-  HttpOverrides.global = new MyHttpOverrides();
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (X509Certificate cert, String host, int port) => true;
+//   }
+// }
+Future<void> main() async {
+  // HttpOverrides.global = new MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await NotificationService().init();
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode:
+  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  //     );
+  // Workmanager()
+  //     .registerOneOffTask("listener", "event"); //Android only (see below)
+
   runApp(TwoHandShareApp());
 }
 
@@ -39,8 +80,17 @@ class TwoHandShareApp extends StatefulWidget {
 
 class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen(NotificationService().sendNotification);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    Timer.periodic(Duration(seconds: 4), (timer) {
+      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: Keys.navigatorKey,
       debugShowCheckedModeBanner: false,

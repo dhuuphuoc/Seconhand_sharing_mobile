@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +24,7 @@ class _MenuTabState extends State<MenuTab> {
       if (value == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.remove("token");
+        await FirebaseServices.removeTokenFromDatabase();
         Navigator.of(context).pop();
         Navigator.pushNamed(context, "/login");
       }

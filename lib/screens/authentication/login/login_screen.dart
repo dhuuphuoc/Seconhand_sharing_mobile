@@ -1,9 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
@@ -37,6 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString("token", loginModel.accessData.jwToken);
       AccessInfo().token = loginModel.accessData.jwToken;
       AccessInfo().userInfo = loginModel.accessData.userInfo;
+      String deviceToken = await FirebaseMessaging.instance.getToken();
+      await FirebaseServices.saveTokenToDatabase(deviceToken);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     } else {
