@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:secondhand_sharing/screens/authentication/confirm_email/confirm_email.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
@@ -97,6 +98,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/register": (context) => SignUpScreen(),
         "/forgot-password": (context) => ForgotPasswordScreen(),
         "/reset-password": (context) => ResetPasswordScreen(),
+        "/confirm-email": (context) => ConfirmEmailScreen(),
         "/home": (context) => MainScreen(),
         "/post-item": (context) => PostItemScreen(),
         "/item/address": (context) => AddressScreen(),

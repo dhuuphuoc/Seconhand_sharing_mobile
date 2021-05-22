@@ -114,6 +114,9 @@
   "thanksSent" : "Thanks sent!",
   "profile" : "Profile",
   "donation": "Donation",
-  "save" : "Save"
-
+  "save" : "Save",
+  "confirmEmail": "Confirm Email",
+  "confirmEmailSuccess": "Confirm email successful",
+  "confirmEmailFail": "Confirm email is not correct. Check your confirm email",
+  "confirmEmailHint": "Press button CONFIRM to complete process register account on our system"
 }

@@ -1194,6 +1194,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Confirm Email`
+  String get confirmEmail {
+    return Intl.message(
+      'Confirm Email',
+      name: 'confirmEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm email successful`
+  String get confirmEmailSuccess {
+    return Intl.message(
+      'Confirm email successful',
+      name: 'confirmEmailSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm email is not correct. Check your confirm email`
+  String get confirmEmailFail {
+    return Intl.message(
+      'Confirm email is not correct. Check your confirm email',
+      name: 'confirmEmailFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Press button CONFIRM to complete process register account on our system`
+  String get confirmEmailHint {
+    return Intl.message(
+      'Press button CONFIRM to complete process register account on our system',
+      name: 'confirmEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

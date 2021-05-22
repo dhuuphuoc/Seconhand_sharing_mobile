@@ -114,5 +114,8 @@
   "thanksSent": "Lời cảm ơn của bạn đã được gửi đi",
   "profile" : "Thông tin cá nhân",
   "donation": "Quyên góp",
-  "save" : "Lưu"
+  "save" : "Lưu",
+  "confirmEmail": "Xác nhận email",
+  "confirmEmailFail": "Xác nhận email của bạn không . Vui lòng kiểm tra lại email",
+  "confirmEmailHint": "Bấm nút XÁC NHẬN để hoàn tất quy trình đăng ký tài khoản trên hệ thống"
 }
