@@ -117,5 +117,17 @@
   "save" : "Lưu",
   "category" : "Phân loại",
   "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm",
-  "sendMessage" : "Nhắn tin"
+  "sendMessage" : "Nhắn tin",
+  "cancelAccept" : "Hủy chấp nhận",
+  "cancelAlert" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+  "@cancelAlert" :
+  {
+    "source_text" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+    "placeholders":  {
+    "fullName": {
+      "example": "Hữu Dũng"
+    }
+  }
+  },
+  "confirmationMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!"
 }

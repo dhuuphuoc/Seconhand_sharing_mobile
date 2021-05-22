@@ -15,6 +15,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
 class ItemDetailScreen extends StatefulWidget {
@@ -107,9 +108,19 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void _confirmSent() {
-    ItemServices.confirmSent(_itemDetail.id).then((value) {
+    showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+            S.of(context).confirmSent,
+            S.of(context).confirmationMessage,
+            S.of(context).yes,
+            S.of(context).cancel)).then((value) {
       if (value) {
-        Navigator.pop(context);
+        ItemServices.confirmSent(_itemDetail.id).then((value) {
+          if (value) {
+            Navigator.pop(context);
+          }
+        });
       }
     });
   }

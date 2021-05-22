@@ -23,6 +23,7 @@ import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 
 // void callbackDispatcher() {
@@ -47,6 +48,7 @@ import 'package:secondhand_sharing/services/notification_services/notification_s
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   NotificationService().sendNotification(message);
+  print(message);
 }
 
 // class MyHttpOverrides extends HttpOverrides {
@@ -57,11 +59,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //           (X509Certificate cert, String host, int port) => true;
 //   }
 // }
+
 Future<void> main() async {
   // HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FirebaseServices.initFirebase();
   await NotificationService().init();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // Workmanager().initialize(
   //     callbackDispatcher, // The top level function, aka callbackDispatcher
   //     isInDebugMode:

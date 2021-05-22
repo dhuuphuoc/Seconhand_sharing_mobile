@@ -15,7 +15,7 @@ class MessageBox extends StatelessWidget {
     return Align(
       alignment: _isMy ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
         margin: EdgeInsets.only(
             left: _isMy ? screenSize.width * 0.4 : 0,
             top: 3,

@@ -18,6 +18,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   var _textController = TextEditingController();
   var _scrollController = ScrollController();
+  int page = 1;
   bool _isBottomStick = true;
   UserInfo _userInfo;
   List<Message> messages = [];
@@ -26,17 +27,33 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      MessageServices.getMessages(_userInfo.id).then((value) {
+      MessageServices.getMessages(_userInfo.id, page).then((value) {
         setState(() {
           messages = value.reversed.toList();
         });
+      });
+    });
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.offset) {
+        loadMoreMessages();
+      }
+    });
+  }
+
+  void loadMoreMessages() {
+    page++;
+    MessageServices.getMessages(_userInfo.id, page).then((value) {
+      setState(() {
+        messages.insertAll(0, value.reversed.toList());
+        _isBottomStick = false;
       });
     });
   }
 
   void scrollToEnd() {
     _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
+      0,
       duration: Duration(milliseconds: 200),
       curve: Curves.easeOut,
     );
@@ -108,6 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
             width: double.infinity,
             color: Color(0xFFDDDDDD),
             child: SingleChildScrollView(
+                reverse: true,
                 controller: _scrollController,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -118,6 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
               controller: _textController,
               maxLines: 4,
               minLines: 1,
+              autofocus: true,
               decoration: InputDecoration(
                 hintText: "${S.of(context).message}...",
                 border: InputBorder.none,
@@ -134,6 +153,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
                         messages.add(value);
+                        _isBottomStick = true;
                       });
                     });
                     _textController.text = "";

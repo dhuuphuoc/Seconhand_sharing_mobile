@@ -1224,6 +1224,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Cancel accept`
+  String get cancelAccept {
+    return Intl.message(
+      'Cancel accept',
+      name: 'cancelAccept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to cancel {fullName}'s accept?`
+  String cancelAlert(Object fullName) {
+    return Intl.message(
+      'Do you want to cancel $fullName\'s accept?',
+      name: 'cancelAlert',
+      desc: '',
+      args: [fullName],
+    );
+  }
+
+  /// `Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!`
+  String get confirmationMessage {
+    return Intl.message(
+      'Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!',
+      name: 'confirmationMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> loadData() async {
     await loadAddress();
-    await FirebaseServices.initFirebase();
+
     if (!kIsWeb) await loadImages(context);
     await loadToken();
   }

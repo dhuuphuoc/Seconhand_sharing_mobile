@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/models/request_detail_model/request_status.da
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 
 class RequestsExpansionPanel extends StatefulWidget {
   @override
@@ -38,12 +39,21 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
     setState(() {
       _inProcessRequest = receiveRequest;
     });
-    _receiveRequestsModel.cancelAcceptRequest();
-    var success = await ReceiveServices.cancelReceiver(receiveRequest.id);
-    if (success) {
-      setState(() {
-        receiveRequest.requestStatus = RequestStatus.pending;
-      });
+    bool result = await showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+            S.of(context).cancelAccept,
+            S.of(context).cancelAlert(receiveRequest.receiverName),
+            S.of(context).yes,
+            S.of(context).cancel));
+    if (result) {
+      _receiveRequestsModel.cancelAcceptRequest();
+      var success = await ReceiveServices.cancelReceiver(receiveRequest.id);
+      if (success) {
+        setState(() {
+          receiveRequest.requestStatus = RequestStatus.pending;
+        });
+      }
     }
     setState(() {
       _inProcessRequest = null;
@@ -81,8 +91,10 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                             print(request.id);
                             UserServices.getUserInfoById(request.receiverId)
                                 .then((value) {
-                              Navigator.pushNamed(context, "/profile",
-                                  arguments: value);
+                              if (value != null) {
+                                Navigator.pushNamed(context, "/profile",
+                                    arguments: value);
+                              }
                             });
                           },
                           leading: CircleAvatar(

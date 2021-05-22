@@ -117,6 +117,18 @@
   "save" : "Save",
   "category" : "Category",
   "categoryUnselectedError" : "You haven't selected category of your item yet!",
-  "sendMessage" : "Send message"
+  "sendMessage" : "Send message",
+  "cancelAccept" : "Cancel accept",
+  "cancelAlert" :  "Do you want to cancel {fullName}'s accept?",
+  "@cancelAlert" :
+  {
+    "source_text" :  "Do you want to cancel {fullName}'s accept?",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "confirmationMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!"
 
 }

@@ -9,8 +9,12 @@ import 'package:secondhand_sharing/models/user_model/access_info/access_info.dar
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 
 class MessageServices {
-  static Future<List<Message>> getMessages(int userId) async {
-    Uri url = Uri.https(APIService.apiUrl, "/Message/$userId");
+  static Future<List<Message>> getMessages(int userId, int page) async {
+    int pageSize = 20;
+    Uri url = Uri.https(APIService.apiUrl, "/Message/$userId", {
+      "PageNumber": page.toString(),
+      "PageSize": pageSize.toString(),
+    });
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,

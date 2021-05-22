@@ -18,7 +18,7 @@ class NotificationService {
 
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("favicon");
 
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(

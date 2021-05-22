@@ -45,6 +45,7 @@ class UserServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
+    print(response.body);
     if (response.statusCode == 200) {
       AccessInfo().userInfo =
           UserInfoModel.fromJson(jsonDecode(response.body)).data;
@@ -57,6 +58,7 @@ class UserServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
+    print(response.body);
     if (response.statusCode == 200) {
       return UserInfoModel.fromJson(jsonDecode(response.body)).data;
     } else {
