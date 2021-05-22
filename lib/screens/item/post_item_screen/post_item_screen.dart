@@ -11,6 +11,7 @@ import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
@@ -45,7 +46,7 @@ class _PostItemScreenState extends State<PostItemScreen>
     super.initState();
   }
 
-  AddressModel _addressModel = AddressModel();
+  AddressModel _addressModel = AccessInfo().userInfo.address;
   void pickImages() {
     showModalBottomSheet(
             context: context,
@@ -81,6 +82,15 @@ class _PostItemScreenState extends State<PostItemScreen>
           builder: (context) {
             return NotifyDialog(
                 S.of(context).images, imagesValidateMessage, "OK");
+          });
+      return;
+    }
+    if (_categoryModel.selectedId == null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(S.of(context).category,
+                S.of(context).categoryUnselectedError, "OK");
           });
       return;
     }
@@ -149,7 +159,8 @@ class _PostItemScreenState extends State<PostItemScreen>
   }
 
   final _titleController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  final _phoneNumberController =
+      TextEditingController(text: AccessInfo().userInfo.phoneNumber);
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
@@ -239,9 +250,23 @@ class _PostItemScreenState extends State<PostItemScreen>
                 validator: Validator.validatePhoneNumber,
                 controller: _phoneNumberController,
                 keyboardType: TextInputType.phone,
+                readOnly: true,
                 decoration: InputDecoration(
-                    hintText: "0912345678",
                     labelText: "${S.of(context).phoneNumber}",
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed("/profile",
+                                arguments: AccessInfo().userInfo)
+                            .whenComplete(() {
+                          setState(() {
+                            _phoneNumberController.text =
+                                AccessInfo().userInfo.phoneNumber;
+                          });
+                        });
+                      },
+                    ),
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
                     border: OutlineInputBorder(

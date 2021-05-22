@@ -85,13 +85,11 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                             });
                           },
                           leading: CircleAvatar(
-                              maxRadius: 25,
-                              child: Image.asset(
-                                "assets/images/person.png",
-                                height: 50,
-                                fit: BoxFit.fill,
-                              ),
-                              backgroundColor: Colors.transparent),
+                            radius: 20,
+                            foregroundImage: AssetImage(
+                              "assets/images/person.png",
+                            ),
+                          ),
                           title: Text(request.receiverName),
                           subtitle: Text(request.receiveReason == null
                               ? "No reason"

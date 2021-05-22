@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,7 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   ScrollDirection _scrollDirection = ScrollDirection.idle;
   bool _isHideIcon = false;
   bool _isMe = true;
-  bool _isEditing = false;
+  bool _isNameEditing = false;
+  bool _isPhoneEditing = false;
+  bool _isUpdating = false;
   UserInfo _userInfo = UserInfo();
   var _nameTextController = TextEditingController();
   var _phoneTextController = TextEditingController();
@@ -43,6 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         _dob = _userInfo.dob;
+        _nameTextController.text = _userInfo.fullName;
+        _phoneTextController.text = _userInfo.phoneNumber;
       });
     });
     super.initState();
@@ -76,10 +81,45 @@ class _ProfileScreenState extends State<ProfileScreen>
             lastDate: DateTime.now())
         .then((value) {
       setState(() {
-        if (value != null) {
-          _dob = value;
-        }
+        _isUpdating = true;
       });
+      if (value != null) {
+        UserServices.updateUserInfo(UpdateProfileForm(dob: value))
+            .then((response) {
+          if (response != null) {
+            setState(() {
+              _dob = response.dob;
+            });
+          }
+          setState(() {
+            _isUpdating = false;
+          });
+        });
+      }
+    });
+  }
+
+  void editName() {
+    if (_isNameEditing) {
+      setState(() {
+        _isUpdating = true;
+      });
+      UpdateProfileForm form =
+          UpdateProfileForm(fullName: _nameTextController.text);
+      UserServices.updateUserInfo(form).then((value) {
+        if (value != null) {
+          _userInfo.fullName = value.fullName;
+          setState(() {
+            _nameTextController.text = value.fullName;
+          });
+        }
+        setState(() {
+          _isUpdating = false;
+        });
+      });
+    }
+    setState(() {
+      _isNameEditing = !_isNameEditing;
     });
   }
 
@@ -88,13 +128,56 @@ class _ProfileScreenState extends State<ProfileScreen>
     Navigator.pushNamed(context, "/item/address", arguments: _userInfo.address)
         .then((value) {
       setState(() {
-        if (value != null)
-          _userInfo.address = value;
-        else {
-          _userInfo.address = backup;
-        }
+        _isUpdating = true;
       });
+      if (value != null)
+        UserServices.updateUserInfo(UpdateProfileForm(address: value))
+            .then((response) {
+          if (response != null) {
+            setState(() {
+              _userInfo.address = response.address;
+            });
+          }
+          setState(() {
+            _isUpdating = false;
+          });
+        });
+      else {
+        setState(() {
+          _userInfo.address = backup;
+        });
+      }
     });
+  }
+
+  void editPhoneNumber() {
+    if (_isPhoneEditing) {
+      setState(() {
+        _isUpdating = true;
+      });
+      UpdateProfileForm form =
+          UpdateProfileForm(phoneNumber: _phoneTextController.text);
+      UserServices.updateUserInfo(form).then((value) {
+        if (value != null) {
+          _userInfo.phoneNumber = value.phoneNumber;
+          setState(() {
+            _phoneTextController.text = value.phoneNumber;
+          });
+        }
+        setState(() {
+          _isUpdating = false;
+        });
+      });
+    }
+    setState(() {
+      _isPhoneEditing = !_isPhoneEditing;
+    });
+  }
+
+  void call() async {
+    await canLaunch("tel:${_userInfo.phoneNumber}")
+        ? await launch("tel:${_userInfo.phoneNumber}")
+        : throw "Could not launch tel:${_userInfo.phoneNumber}";
   }
 
   @override
@@ -115,182 +198,190 @@ class _ProfileScreenState extends State<ProfileScreen>
               sliver: SliverAppBar(
                 // Provide a standard title.
                 expandedHeight: screenSize.height * 0.65,
-                actions: [
-                  if (_isMe)
-                    _isEditing
-                        ? TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isEditing = false;
-                              });
-                            },
-                            child: Text(S.of(context).save))
-                        : IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              setState(() {
-                                _isEditing = true;
-                                _nameTextController.text = _userInfo.fullName;
-                              });
-                            }),
-                ],
+
                 title: Text(
                   S.of(context).profile,
                   style: Theme.of(context).textTheme.headline2,
                 ),
-                onStretchTrigger: () async {
-                  print("hello");
-                },
                 centerTitle: true,
-                flexibleSpace: Container(
-                  margin: EdgeInsets.symmetric(vertical: kToolbarHeight),
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: CircleAvatar(
-                            radius: screenSize.height * 0.1,
-                            foregroundImage: AssetImage(
-                              "assets/images/person.png",
+                flexibleSpace: Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: kToolbarHeight),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: CircleAvatar(
+                              radius: screenSize.height * 0.1,
+                              foregroundImage: AssetImage(
+                                "assets/images/person.png",
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: _isEditing
-                              ? ConstrainedBox(
-                                  constraints: BoxConstraints(minWidth: 100),
-                                  child: IntrinsicWidth(
-                                    child: _isHideIcon
+                          Expanded(
+                              child: ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: 100),
+                            child: IntrinsicWidth(
+                              child: _isHideIcon
+                                  ? null
+                                  : TextFormField(
+                                      controller: _nameTextController,
+                                      readOnly: !_isNameEditing,
+                                      onEditingComplete: editName,
+                                      decoration: InputDecoration(
+                                        border: _isNameEditing
+                                            ? UnderlineInputBorder()
+                                            : InputBorder.none,
+                                        prefixIcon: _isMe
+                                            ? Visibility(
+                                                visible: false,
+                                                child: Icon(
+                                                    Icons.text_rotation_none))
+                                            : null,
+                                        suffixIcon: _isMe
+                                            ? IconButton(
+                                                onPressed: editName,
+                                                icon: Icon(
+                                                  _isNameEditing
+                                                      ? Icons.done
+                                                      : Icons.edit,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
+                                              )
+                                            : null,
+                                      ),
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                      textAlign: TextAlign.center,
+                                    ),
+                            ),
+                          )),
+                          Expanded(
+                            child: Container(
+                              child: ListTile(
+                                leading: _isHideIcon
+                                    ? null
+                                    : Icon(
+                                        Icons.email,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                title: Text(_userInfo.email),
+                                trailing: _isHideIcon || _isMe
+                                    ? null
+                                    : IconButton(
+                                        icon: Icon(
+                                          Icons.send,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        onPressed: () async {
+                                          await canLaunch(
+                                                  "mailto:${_userInfo.email}?subject=&body=")
+                                              ? await launch(
+                                                  "mailto:${_userInfo.email}?subject=&body=")
+                                              : throw 'Could not launch mailto:${_userInfo.email}?subject=&body=';
+                                        },
+                                      ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: ListTile(
+                                leading: _isHideIcon
+                                    ? null
+                                    : Icon(
+                                        Icons.contact_phone,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                title: _isPhoneEditing
+                                    ? _isHideIcon
                                         ? null
                                         : TextFormField(
-                                            controller: _nameTextController,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                  ),
-                                )
-                              : Text(
-                                  _userInfo.fullName,
-                                  style: Theme.of(context).textTheme.headline2,
-                                ),
-                        ),
-                        Expanded(
-                          child: Container(
+                                            controller: _phoneTextController,
+                                            keyboardType: TextInputType.phone,
+                                            onEditingComplete: editPhoneNumber,
+                                          )
+                                    : Text(_userInfo.phoneNumber == null
+                                        ? ""
+                                        : _userInfo.phoneNumber),
+                                trailing: _isHideIcon
+                                    ? null
+                                    : IconButton(
+                                        icon: Icon(
+                                          !_isMe
+                                              ? Icons.call
+                                              : _isPhoneEditing
+                                                  ? Icons.done
+                                                  : Icons.edit,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        onPressed: () async {
+                                          if (_isMe) {
+                                            editPhoneNumber();
+                                          } else {
+                                            call();
+                                          }
+                                        },
+                                      ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
                             child: ListTile(
                               leading: _isHideIcon
                                   ? null
                                   : Icon(
-                                      Icons.email,
-                                      color: Theme.of(context).primaryColor,
+                                      AppIcons.birthday,
+                                      color: Colors.deepOrange,
                                     ),
-                              title: Text(_userInfo.email),
-                              trailing: _isHideIcon || _isMe
+                              title: Text(
+                                  _dob == null ? "" : dateFormat.format(_dob)),
+                              trailing: !_isMe || _isHideIcon
                                   ? null
                                   : IconButton(
+                                      onPressed: modifyDob,
                                       icon: Icon(
-                                        Icons.send,
+                                        AppIcons.calendar_day,
                                         color: Theme.of(context).primaryColor,
                                       ),
-                                      onPressed: () async {
-                                        await canLaunch(
-                                                "mailto:${_userInfo.email}?subject=&body=")
-                                            ? await launch(
-                                                "mailto:${_userInfo.email}?subject=&body=")
-                                            : throw 'Could not launch mailto:${_userInfo.email}?subject=&body=';
-                                      },
                                     ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
+                          Expanded(
                             child: ListTile(
                               leading: _isHideIcon
                                   ? null
                                   : Icon(
-                                      Icons.contact_phone,
-                                      color: Theme.of(context).primaryColor,
+                                      Icons.location_on,
+                                      color: Colors.pink,
                                     ),
-                              title: _isEditing
-                                  ? _isHideIcon
-                                      ? null
-                                      : TextFormField(
-                                          controller: _phoneTextController,
-                                        )
-                                  : Text(_userInfo.phoneNumber == null
-                                      ? ""
-                                      : _userInfo.phoneNumber),
-                              trailing: _isHideIcon || _isMe
+                              title: Text(_userInfo.address == null
+                                  ? ""
+                                  : _userInfo.address.toString()),
+                              trailing: !_isMe || _isHideIcon
                                   ? null
                                   : IconButton(
+                                      onPressed: modifyAddress,
                                       icon: Icon(
-                                        Icons.call,
+                                        Icons.map,
                                         color: Theme.of(context).primaryColor,
                                       ),
-                                      onPressed: () async {
-                                        await canLaunch(
-                                                "tel:${_userInfo.phoneNumber}")
-                                            ? await launch(
-                                                "tel:${_userInfo.phoneNumber}")
-                                            : throw "Could not launch tel:${_userInfo.phoneNumber}";
-                                      },
                                     ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            leading: _isHideIcon
-                                ? null
-                                : Icon(
-                                    AppIcons.birthday,
-                                    color: Colors.deepOrange,
-                                  ),
-                            title: Text(
-                                _dob == null ? "" : dateFormat.format(_dob)),
-                            trailing: _isEditing
-                                ? _isHideIcon
-                                    ? null
-                                    : IconButton(
-                                        onPressed: modifyDob,
-                                        icon: Icon(
-                                          AppIcons.calendar_day,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      )
-                                : null,
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            leading: _isHideIcon
-                                ? null
-                                : Icon(
-                                    Icons.location_on,
-                                    color: Colors.pink,
-                                  ),
-                            title: Text(_userInfo.address == null
-                                ? ""
-                                : _userInfo.address.toString()),
-                            trailing: _isEditing
-                                ? _isHideIcon
-                                    ? null
-                                    : IconButton(
-                                        onPressed: modifyAddress,
-                                        icon: Icon(
-                                          Icons.map,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      )
-                                : null,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                    if (_isUpdating)
+                      Container(
+                        color: Colors.black54,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                  ],
                 ),
 
                 // Allows the user to reveal the app bar if they begin scrolling

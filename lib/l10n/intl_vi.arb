@@ -98,7 +98,7 @@
   "unregistered" : "Chưa đăng ký",
   "registrations" : "Lượt đăng ký",
   "accept" : "Chấp nhận",
-  "cancel" : "Cancel",
+  "cancel" : "Hủy",
   "confirmSent": "Xác nhận đã cho",
   "complete" : "Hoàn thành",
   "messageEmptyError" : "Lời nhắn không thể bỏ trống",
@@ -117,5 +117,7 @@
   "save" : "Lưu",
   "confirmEmail": "Xác nhận email",
   "confirmEmailFail": "Xác nhận email của bạn không . Vui lòng kiểm tra lại email",
-  "confirmEmailHint": "Bấm nút XÁC NHẬN để hoàn tất quy trình đăng ký tài khoản trên hệ thống"
+  "confirmEmailHint": "Bấm nút XÁC NHẬN để hoàn tất quy trình đăng ký tài khoản trên hệ thống",
+  "category" : "Phân loại",
+  "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm"
 }
