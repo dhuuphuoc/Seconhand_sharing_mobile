@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/models/messages_model/message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 
 enum MessageBoxType { single, first, middle, last }
 
 class MessageBox extends StatelessWidget {
   final bool _isMy;
-  final Message _message;
+  final UserMessage _message;
   final MessageBoxType _type;
   MessageBox(this._message, this._isMy, this._type);
 

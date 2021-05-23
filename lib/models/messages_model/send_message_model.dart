@@ -1,4 +1,4 @@
-import 'package:secondhand_sharing/models/messages_model/message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 
 class SendMessageModel {
   SendMessageModel({
@@ -9,13 +9,13 @@ class SendMessageModel {
 
   bool succeeded;
   String message;
-  Message data;
+  UserMessage data;
 
   factory SendMessageModel.fromJson(Map<String, dynamic> json) =>
       SendMessageModel(
         succeeded: json["succeeded"],
         message: json["message"],
-        data: Message.fromJson(json["data"]),
+        data: UserMessage.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {

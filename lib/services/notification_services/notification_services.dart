@@ -1,7 +1,12 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 
 class NotificationService {
   static final NotificationService _notificationService =
@@ -11,6 +16,8 @@ class NotificationService {
     return _notificationService;
   }
 
+  String _messageChannelGroupId = 'com.android.example.WORK_EMAIL';
+
   NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -18,13 +25,13 @@ class NotificationService {
 
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("favicon");
+        AndroidInitializationSettings("@mipmap/ic_launcher");
 
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
       onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
@@ -52,19 +59,59 @@ class NotificationService {
             showWhen: true);
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    await NotificationService().flutterLocalNotificationsPlugin.show(
-        0,
-        message.notification.title,
-        "${message.notification.body}",
-        platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin.show(0, message.notification.title,
+        "${message.notification.body}", platformChannelSpecifics,
         payload: jsonEncode(message.data));
+  }
+
+  int id = 0;
+  Future<void> sendInboxNotification(FirebaseMessage firebaseMessage) async {
+    Person person =
+        Person(name: firebaseMessage.message.sendFromAccountId.toString());
+    final MessagingStyleInformation messageingStyleInfomation =
+        MessagingStyleInformation(
+      person,
+      messages: [
+        Message(firebaseMessage.message.content,
+            firebaseMessage.message.sendDate, person)
+      ],
+    );
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      "1",
+      'Message',
+      'This channel receive message from other users',
+      importance: Importance.max,
+      priority: Priority.high,
+      styleInformation: messageingStyleInfomation,
+      groupKey: _messageChannelGroupId,
+      setAsGroupSummary: true,
+    );
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        id++,
+        firebaseMessage.message.sendFromAccountId.toString(),
+        "${firebaseMessage.message.content}",
+        platformChannelSpecifics,
+        payload: jsonEncode(firebaseMessage.toJson()));
   }
 
   Future onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
-    // display a dialog with the notification details, tap ok to go to another page
+    print("wrong");
   }
+
   Future selectNotification(String payload) async {
-    //Handle notification tapped logic here
+    FirebaseMessage firebaseMessage =
+        FirebaseMessage.fromJson(jsonDecode(payload));
+    print("wrong");
+    switch (firebaseMessage.type) {
+      case 1:
+        var userInfo = await UserServices.getUserInfoById(
+            firebaseMessage.message.sendFromAccountId);
+        Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
+        break;
+    }
   }
 }

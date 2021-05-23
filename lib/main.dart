@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
@@ -23,33 +25,9 @@ import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
-
-// void callbackDispatcher() {
-//   Workmanager().executeTask((task, inputData) async {
-//     int i = 0;
-//     while (true) {
-//       const AndroidNotificationDetails androidPlatformChannelSpecifics =
-//           AndroidNotificationDetails('TestId', 'Test Name', 'Test Description',
-//               importance: Importance.max,
-//               priority: Priority.high,
-//               showWhen: true);
-//       const NotificationDetails platformChannelSpecifics =
-//           NotificationDetails(android: androidPlatformChannelSpecifics);
-//       await flutterLocalNotificationsPlugin.show(
-//           0, 'plain title', 'plain body', platformChannelSpecifics,
-//           payload: 'item x');
-//       print("run");
-//       await Future.delayed(Duration(seconds: 5));
-//     }
-//   });
-// }
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  NotificationService().sendNotification(message);
-  print(message);
-}
 
 // class MyHttpOverrides extends HttpOverrides {
 //   @override
@@ -60,20 +38,27 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   }
 // }
 
+Future<void> _firebaseMessagingBackgroundHandler(
+    RemoteMessage remoteMessage) async {
+  await Firebase.initializeApp();
+  FirebaseMessage firebaseMessage = FirebaseMessage();
+  firebaseMessage.type = int.parse(remoteMessage.data["type"]);
+  firebaseMessage.message =
+      UserMessage.fromJson(jsonDecode(remoteMessage.data["value"]));
+  switch (firebaseMessage.type) {
+    case 1:
+      await NotificationService().sendInboxNotification(firebaseMessage);
+
+      break;
+  }
+}
+
 Future<void> main() async {
   // HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-  await FirebaseServices.initFirebase();
   await NotificationService().init();
+  await FirebaseServices.initFirebase();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // Workmanager().initialize(
-  //     callbackDispatcher, // The top level function, aka callbackDispatcher
-  //     isInDebugMode:
-  //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-  //     );
-  // Workmanager()
-  //     .registerOneOffTask("listener", "event"); //Android only (see below)
-
   runApp(TwoHandShareApp());
 }
 
@@ -86,7 +71,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen(NotificationService().sendNotification);
+    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Timer.periodic(Duration(seconds: 4), (timer) {
       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

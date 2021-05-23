@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country.da
 import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -47,9 +48,21 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
-      await UserServices.getUserInfo();
-      String deviceToken = await FirebaseMessaging.instance.getToken();
-      FirebaseServices.saveTokenToDatabase(deviceToken);
+      var result = await UserServices.getUserInfo();
+      if (result) {
+        String oldDeviceToken = prefs.getString("device_token");
+        String deviceToken = await FirebaseMessaging.instance.getToken();
+        if (oldDeviceToken != deviceToken) {
+          if (oldDeviceToken != null) {
+            await FirebaseServices.removeTokenFromDatabase();
+          }
+          await FirebaseServices.saveTokenToDatabase(deviceToken);
+        }
+      } else {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, "/login");
+      }
+
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }

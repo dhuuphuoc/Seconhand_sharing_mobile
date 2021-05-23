@@ -1,4 +1,4 @@
-import 'package:secondhand_sharing/models/messages_model/message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 
 class MessagesModel {
   MessagesModel({
@@ -13,15 +13,15 @@ class MessagesModel {
   int pageSize;
   bool succeeded;
   String message;
-  List<Message> messages;
+  List<UserMessage> messages;
 
   factory MessagesModel.fromJson(Map<String, dynamic> json) => MessagesModel(
         pageNumber: json["pageNumber"],
         pageSize: json["pageSize"],
         succeeded: json["succeeded"],
         message: json["message"],
-        messages:
-            List<Message>.from(json["data"].map((x) => Message.fromJson(x))),
+        messages: List<UserMessage>.from(
+            json["data"].map((x) => UserMessage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

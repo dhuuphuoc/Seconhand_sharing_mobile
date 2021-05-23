@@ -1,12 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/local_widgets/message_box.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key key}) : super(key: key);
@@ -21,15 +26,28 @@ class _ChatScreenState extends State<ChatScreen> {
   int page = 1;
   bool _isBottomStick = true;
   UserInfo _userInfo;
-  List<Message> messages = [];
-
+  List<UserMessage> messages = [];
+  StreamSubscription<RemoteMessage> _subscription;
   @override
   void initState() {
     super.initState();
+
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      FirebaseServices.chattingWithUserId = _userInfo.id;
       MessageServices.getMessages(_userInfo.id, page).then((value) {
         setState(() {
           messages = value.reversed.toList();
+        });
+        _subscription = FirebaseMessaging.onMessage.listen((message) {
+          print(message.data);
+          UserMessage newMessage =
+              UserMessage.fromJson(jsonDecode(message.data["value"]));
+          print(newMessage.content);
+          if (newMessage.sendFromAccountId == _userInfo.id) {
+            setState(() {
+              messages.add(newMessage);
+            });
+          }
         });
       });
     });
@@ -39,6 +57,13 @@ class _ChatScreenState extends State<ChatScreen> {
         loadMoreMessages();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+    FirebaseServices.chattingWithUserId = null;
   }
 
   void loadMoreMessages() {
@@ -73,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
       bool havePrevious;
       bool haveNext;
       for (int i = 0; i < messages.length; i++) {
-        Message message = messages[i];
+        UserMessage message = messages[i];
         if (i > 0) {
           havePrevious =
               messages[i - 1].sendFromAccountId == message.sendFromAccountId;
@@ -147,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: Icon(Icons.send),
                   onPressed: () {
                     if (_textController.text == "") return;
-                    Message message = Message(
+                    UserMessage message = UserMessage(
                         content: _textController.text.trim(),
                         sendToAccountId: _userInfo.id);
                     MessageServices.sendMessage(message).then((value) {

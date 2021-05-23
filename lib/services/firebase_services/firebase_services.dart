@@ -1,56 +1,76 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/services/api_services/api_services.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class FirebaseServices {
-  static Future<void> saveTokenToDatabase(String token) async {
+  static int chattingWithUserId;
+
+  static Future<bool> saveTokenToDatabase(String token) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("device_token", token);
-    var doc = FirebaseFirestore.instance
-        .collection('users')
-        .doc(AccessInfo().userInfo.id.toString());
-    var data = await doc.get();
-    if (data.exists) {
-      await doc.update({
-        'tokens': FieldValue.arrayUnion([token]),
-      });
-    } else {
-      await doc.set({
-        'tokens': FieldValue.arrayUnion([token]),
-      });
+    Uri url = Uri.https(APIService.apiUrl, "/FirebaseToken");
+    var response = await http
+        .post(url, body: jsonEncode({"firebaseToken": token}), headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return true;
+    } else
+      return false;
+  }
+
+  static void handleFirebaseMessage(RemoteMessage remoteMessage) {
+    print(remoteMessage.data);
+    FirebaseMessage firebaseMessage = FirebaseMessage();
+    firebaseMessage.type = int.parse(remoteMessage.data["type"]);
+    firebaseMessage.message =
+        UserMessage.fromJson(jsonDecode(remoteMessage.data["value"]));
+    switch (firebaseMessage.type) {
+      case 1:
+        if (FirebaseServices.chattingWithUserId !=
+            firebaseMessage.message.sendFromAccountId) {
+          NotificationService().sendInboxNotification(firebaseMessage);
+        }
+        break;
     }
   }
 
-  static Future<void> removeTokenFromDatabase() async {
+  static Future<bool> removeTokenFromDatabase() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String deviceToken = sharedPreferences.get("device_token");
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(AccessInfo().userInfo.id.toString())
-        .update({
-      'tokens': FieldValue.arrayRemove([deviceToken]),
-    });
+    Uri url = Uri.https(APIService.apiUrl, "/FirebaseToken");
+    var response = await http.delete(url,
+        body: jsonEncode({"firebaseToken": deviceToken}),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
+        });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      sharedPreferences.remove("device_token");
+      return true;
+    } else
+      return false;
   }
 
   static Future<void> initFirebase() async {
     await Firebase.initializeApp();
-
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    FirebaseMessaging.instance.app.setAutomaticResourceManagementEnabled(false);
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) {
-      removeTokenFromDatabase();
-      saveTokenToDatabase(deviceToken);
+    FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) async {
+      await removeTokenFromDatabase();
+      await saveTokenToDatabase(deviceToken);
     });
   }
 }

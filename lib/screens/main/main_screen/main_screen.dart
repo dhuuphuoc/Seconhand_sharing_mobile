@@ -1,10 +1,17 @@
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,6 +24,24 @@ class _MainScreenState extends State<MainScreen>
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
 
+  Future<void> handleNotificationLaunchApp() async {
+    var details = await NotificationService()
+        .flutterLocalNotificationsPlugin
+        .getNotificationAppLaunchDetails();
+    if (details.didNotificationLaunchApp) {
+      FirebaseMessage firebaseMessage =
+          FirebaseMessage.fromJson(jsonDecode(details.payload));
+      switch (firebaseMessage.type) {
+        case 1:
+          var userInfo = await UserServices.getUserInfoById(
+              firebaseMessage.message.sendFromAccountId);
+          Keys.navigatorKey.currentState
+              .pushNamed("/chat", arguments: userInfo);
+          break;
+      }
+    }
+  }
+
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
@@ -28,6 +53,7 @@ class _MainScreenState extends State<MainScreen>
         });
       }
     });
+    handleNotificationLaunchApp();
     super.initState();
   }
 

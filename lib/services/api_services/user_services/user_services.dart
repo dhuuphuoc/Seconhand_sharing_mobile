@@ -39,7 +39,7 @@ class UpdateProfileForm {
 }
 
 class UserServices {
-  static Future<void> getUserInfo() async {
+  static Future<bool> getUserInfo() async {
     Uri url = Uri.https(APIService.apiUrl, "/User");
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
@@ -49,6 +49,9 @@ class UserServices {
     if (response.statusCode == 200) {
       AccessInfo().userInfo =
           UserInfoModel.fromJson(jsonDecode(response.body)).data;
+      return true;
+    } else {
+      return false;
     }
   }
 
