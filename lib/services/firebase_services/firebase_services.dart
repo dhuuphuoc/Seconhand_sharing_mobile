@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
@@ -15,6 +16,15 @@ import 'package:http/http.dart' as http;
 
 class FirebaseServices {
   static int chattingWithUserId;
+
+  static const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'flutter_firebase_notifications_channel', // id
+    'High Importance Notifications', // title
+    'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   static Future<bool> saveTokenToDatabase(String token) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -68,6 +78,10 @@ class FirebaseServices {
 
   static Future<void> initFirebase() async {
     await Firebase.initializeApp();
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
     FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) async {
       await removeTokenFromDatabase();
       await saveTokenToDatabase(deviceToken);

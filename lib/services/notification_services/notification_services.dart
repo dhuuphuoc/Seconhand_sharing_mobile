@@ -16,12 +16,12 @@ class NotificationService {
     return _notificationService;
   }
 
-  String _messageChannelGroupId = 'com.android.example.WORK_EMAIL';
-
   NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  String messageChannelId = "message_channel";
 
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
@@ -64,11 +64,11 @@ class NotificationService {
         payload: jsonEncode(message.data));
   }
 
-  int id = 0;
+  // int id = 0;
   Future<void> sendInboxNotification(FirebaseMessage firebaseMessage) async {
     Person person =
         Person(name: firebaseMessage.message.sendFromAccountId.toString());
-    final MessagingStyleInformation messageingStyleInfomation =
+    final MessagingStyleInformation messagingStyleInformation =
         MessagingStyleInformation(
       person,
       messages: [
@@ -76,21 +76,30 @@ class NotificationService {
             firebaseMessage.message.sendDate, person)
       ],
     );
+
+    var notifications = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        .getActiveNotifications();
+    bool existMessageNotification = notifications
+        .any((notification) => notification.channelId == messageChannelId);
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      "1",
-      'Message',
+      messageChannelId,
+      'New message',
       'This channel receive message from other users',
       importance: Importance.max,
       priority: Priority.high,
-      styleInformation: messageingStyleInfomation,
-      groupKey: _messageChannelGroupId,
-      setAsGroupSummary: true,
+      styleInformation: messagingStyleInformation,
+      groupKey: "new_message",
+      setAsGroupSummary: !existMessageNotification,
     );
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
+
     await flutterLocalNotificationsPlugin.show(
-        id++,
+        firebaseMessage.message.sendFromAccountId,
+        // id++,
         firebaseMessage.message.sendFromAccountId.toString(),
         "${firebaseMessage.message.content}",
         platformChannelSpecifics,
