@@ -47,7 +47,7 @@ class FirebaseServices {
     FirebaseMessage firebaseMessage = FirebaseMessage();
     firebaseMessage.type = int.parse(remoteMessage.data["type"]);
     firebaseMessage.message =
-        UserMessage.fromJson(jsonDecode(remoteMessage.data["value"]));
+        UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
     switch (firebaseMessage.type) {
       case 1:
         if (FirebaseServices.chattingWithUserId !=

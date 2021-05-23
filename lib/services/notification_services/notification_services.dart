@@ -66,8 +66,7 @@ class NotificationService {
 
   // int id = 0;
   Future<void> sendInboxNotification(FirebaseMessage firebaseMessage) async {
-    Person person =
-        Person(name: firebaseMessage.message.sendFromAccountId.toString());
+    Person person = Person(name: firebaseMessage.message.sendFromAccountName);
     final MessagingStyleInformation messagingStyleInformation =
         MessagingStyleInformation(
       person,
@@ -100,7 +99,7 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.show(
         firebaseMessage.message.sendFromAccountId,
         // id++,
-        firebaseMessage.message.sendFromAccountId.toString(),
+        firebaseMessage.message.sendFromAccountName,
         "${firebaseMessage.message.content}",
         platformChannelSpecifics,
         payload: jsonEncode(firebaseMessage.toJson()));

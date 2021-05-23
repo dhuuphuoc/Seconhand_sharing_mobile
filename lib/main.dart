@@ -44,7 +44,7 @@ Future<void> _firebaseMessagingBackgroundHandler(
   FirebaseMessage firebaseMessage = FirebaseMessage();
   firebaseMessage.type = int.parse(remoteMessage.data["type"]);
   firebaseMessage.message =
-      UserMessage.fromJson(jsonDecode(remoteMessage.data["value"]));
+      UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
   switch (firebaseMessage.type) {
     case 1:
       await NotificationService().sendInboxNotification(firebaseMessage);
@@ -73,9 +73,9 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
     super.initState();
     FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    Timer.periodic(Duration(seconds: 4), (timer) {
-      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    });
+    // Timer.periodic(Duration(seconds: 4), (timer) {
+    //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    // });
   }
 
   @override

@@ -5,6 +5,7 @@ class UserMessage {
     this.sendDate,
     this.sendFromAccountId,
     this.sendToAccountId,
+    this.sendFromAccountName,
   });
 
   int id;
@@ -12,6 +13,7 @@ class UserMessage {
   DateTime sendDate;
   int sendFromAccountId;
   int sendToAccountId;
+  String sendFromAccountName;
 
   factory UserMessage.fromJson(Map<String, dynamic> json) => UserMessage(
         id: json["id"] != null ? json["id"] : json["Id"],
@@ -24,6 +26,7 @@ class UserMessage {
         sendToAccountId: json["sendToAccountId"] != null
             ? json["sendToAccountId"]
             : json["SendToAccountId"],
+        sendFromAccountName: json["SendFromAccountName"],
       );
 
   Map<String, dynamic> toJson() => {
