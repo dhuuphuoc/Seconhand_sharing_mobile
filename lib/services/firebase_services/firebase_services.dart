@@ -83,7 +83,6 @@ class FirebaseServices {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) async {
-      await removeTokenFromDatabase();
       await saveTokenToDatabase(deviceToken);
     });
   }

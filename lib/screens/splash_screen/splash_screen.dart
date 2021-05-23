@@ -49,16 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
       AccessInfo userSingleton = AccessInfo();
       userSingleton.token = token;
       var result = await UserServices.getUserInfo();
-      if (result) {
-        String oldDeviceToken = prefs.getString("device_token");
-        String deviceToken = await FirebaseMessaging.instance.getToken();
-        if (oldDeviceToken != deviceToken) {
-          if (oldDeviceToken != null) {
-            await FirebaseServices.removeTokenFromDatabase();
-          }
-          await FirebaseServices.saveTokenToDatabase(deviceToken);
-        }
-      } else {
+      if (!result) {
         Navigator.pop(context);
         Navigator.pushNamed(context, "/login");
       }
