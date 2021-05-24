@@ -11,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
@@ -41,14 +40,12 @@ import 'package:secondhand_sharing/services/notification_services/notification_s
 Future<void> _firebaseMessagingBackgroundHandler(
     RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
-  FirebaseMessage firebaseMessage = FirebaseMessage();
-  firebaseMessage.type = int.parse(remoteMessage.data["type"]);
-  firebaseMessage.message =
-      UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
-  switch (firebaseMessage.type) {
-    case 1:
-      await NotificationService().sendInboxNotification(firebaseMessage);
 
+  switch (remoteMessage.data["type"]) {
+    case "1":
+      UserMessage message =
+          UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
+      await NotificationService().sendInboxNotification(message);
       break;
   }
 }

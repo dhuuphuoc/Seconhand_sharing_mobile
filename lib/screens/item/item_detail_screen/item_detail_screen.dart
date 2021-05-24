@@ -125,12 +125,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
   }
 
-  void showContactInfo() {
-    UserServices.getUserInfoById(_itemDetail.donateAccountId).then((userInfo) {
-      Navigator.pushNamed(context, '/profile', arguments: userInfo);
-    });
-  }
-
   void sendThanks() {
     showDialog(
       context: context,
@@ -155,10 +149,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void showUserProfile() {
-    UserServices.getUserInfo().whenComplete(() {
-      Navigator.pushNamed(context, '/profile',
-          arguments: AccessInfo().userInfo);
-    });
+    Navigator.pushNamed(context, '/profile',
+        arguments: _itemDetail.donateAccountId);
   }
 
   @override
@@ -213,10 +205,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   builder: (context, widget) => Column(
                     children: [
                       SizedBox(height: 10),
-                      UserInfoCard(
-                          _itemDetail.donateAccountName,
-                          _itemDetail.receiveAddress,
-                          _isOwn ? showUserProfile : showContactInfo),
+                      UserInfoCard(_itemDetail.donateAccountName,
+                          _itemDetail.receiveAddress, showUserProfile),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,

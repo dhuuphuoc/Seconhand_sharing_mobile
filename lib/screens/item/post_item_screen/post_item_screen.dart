@@ -115,6 +115,7 @@ class _PostItemScreenState extends State<PostItemScreen>
         );
       },
     );
+    bool _isSuccess = true;
     PostItemForm postItemForm = PostItemForm(
         imageNumber: _images.length,
         itemName: _titleController.text,
@@ -124,21 +125,33 @@ class _PostItemScreenState extends State<PostItemScreen>
     PostItemModel postItemModel = await ItemServices.postItem(postItemForm);
     if (postItemModel != null) {
       for (int i = 0; i < _images.length; i++) {
-        int statusCode = await ItemServices.uploadImage(
+        bool result = await ItemServices.uploadImage(
             _images.values.elementAt(i),
             postItemModel.data.imageUploads[i].presignUrl);
+        if (!result) {
+          _isSuccess = false;
+        }
       }
       // showNotifyDialog(S.of(context).posted, S.of(context).postedNotification);
     } else {
-      // showNotifyDialog(S.of(context).error, S.of(context).postError);
+      _isSuccess = false;
     }
     Navigator.pop(context);
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.of(context).postedNotification),
-      ),
-    );
+    if (_isSuccess) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).postedNotification),
+        ),
+      );
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotifyDialog(S.of(context).failed, S.of(context).postFailed,
+                S.of(context).tryAgain);
+          });
+    }
   }
 
   Future<bool> onPop() async {

@@ -33,6 +33,7 @@
   "post": "Đăng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
+  "postFailed" : "Có lỗi trong quá trình đăng bài!",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
   "selectPhotos": "Chọn ảnh",
   "success": "Thành công",

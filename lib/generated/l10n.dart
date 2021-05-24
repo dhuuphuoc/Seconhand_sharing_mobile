@@ -375,6 +375,16 @@ class S {
     );
   }
 
+  /// `An error occurred while posting!`
+  String get postFailed {
+    return Intl.message(
+      'An error occurred while posting!',
+      name: 'postFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Username or password is incorrect.`
   String get loginFailedNotification {
     return Intl.message(

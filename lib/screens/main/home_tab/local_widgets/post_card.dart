@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 
 class PostCard extends StatelessWidget {
+  final Function onPostItem;
+
+  PostCard(this.onPostItem);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,9 +30,7 @@ class PostCard extends StatelessWidget {
             child: Container(
               height: 38,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/post-item");
-                },
+                onPressed: onPostItem,
                 child: Text(
                   S.of(context).postItem,
                 ),

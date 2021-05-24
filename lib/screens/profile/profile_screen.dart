@@ -43,11 +43,28 @@ class _ProfileScreenState extends State<ProfileScreen>
         });
       }
     });
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      setState(() {
+        _isUpdating = true;
+      });
+      if (_isMe) {
+        await UserServices.getUserInfo();
+        setState(() {
+          _userInfo = AccessInfo().userInfo;
+        });
+      } else {
+        var userInfo = await UserServices.getUserInfoById(_userInfo.id);
+        if (userInfo != null) {
+          setState(() {
+            _userInfo = userInfo;
+          });
+        }
+      }
       setState(() {
         _dob = _userInfo.dob;
         _nameTextController.text = _userInfo.fullName;
         _phoneTextController.text = _userInfo.phoneNumber;
+        _isUpdating = false;
       });
     });
     super.initState();
@@ -183,8 +200,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     var dateFormat = DateFormat("dd/MM/yyyy");
-    _userInfo = ModalRoute.of(context).settings.arguments as UserInfo;
+    _userInfo.id = ModalRoute.of(context).settings.arguments as int;
     _isMe = _userInfo.id == AccessInfo().userInfo.id;
     return Scaffold(
       body: NestedScrollView(
@@ -197,14 +215,16 @@ class _ProfileScreenState extends State<ProfileScreen>
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
                 // Provide a standard title.
-                expandedHeight: screenSize.height * 0.65,
+                expandedHeight: screenSize.height * 0.68,
                 actions: [
                   if (!_isMe)
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed("/chat", arguments: _userInfo);
-                        },
+                        onPressed: _isUpdating
+                            ? null
+                            : () {
+                                Navigator.of(context)
+                                    .pushNamed("/chat", arguments: _userInfo);
+                              },
                         child: Text(S.of(context).sendMessage))
                 ],
                 title: Text(
@@ -215,7 +235,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                 flexibleSpace: Stack(
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: kToolbarHeight),
+                      margin: EdgeInsets.symmetric(
+                          vertical: kToolbarHeight + statusBarHeight),
                       child: Column(
                         children: [
                           Expanded(
@@ -275,7 +296,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         Icons.email,
                                         color: Theme.of(context).primaryColor,
                                       ),
-                                title: Text(_userInfo.email),
+                                title: Text(_userInfo.email == null
+                                    ? ""
+                                    : _userInfo.email),
                                 trailing: _isHideIcon || _isMe
                                     ? null
                                     : IconButton(

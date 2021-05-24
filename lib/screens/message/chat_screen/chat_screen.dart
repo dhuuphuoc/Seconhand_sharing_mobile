@@ -22,7 +22,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   var _textController = TextEditingController();
-  var _scrollController = ScrollController();
+  var _scrollController;
+  bool _isLoading = true;
   int page = 1;
   bool _isBottomStick = true;
   UserInfo _userInfo;
@@ -31,12 +32,19 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       FirebaseServices.chattingWithUserId = _userInfo.id;
+      _scrollController = ScrollController();
+      _scrollController.addListener(() {
+        if (_scrollController.position.maxScrollExtent ==
+            _scrollController.offset) {
+          loadMoreMessages();
+        }
+      });
       MessageServices.getMessages(_userInfo.id, page).then((value) {
         setState(() {
           messages = value.reversed.toList();
+          _isLoading = false;
         });
         _subscription = FirebaseMessaging.onMessage.listen((message) {
           print(message.data);
@@ -50,12 +58,6 @@ class _ChatScreenState extends State<ChatScreen> {
           }
         });
       });
-    });
-    _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.offset) {
-        loadMoreMessages();
-      }
     });
   }
 
@@ -78,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void scrollToEnd() {
     _scrollController.animateTo(
-      0,
+      0.0,
       duration: Duration(milliseconds: 200),
       curve: Curves.easeOut,
     );
@@ -89,8 +91,9 @@ class _ChatScreenState extends State<ChatScreen> {
     _userInfo = ModalRoute.of(context).settings.arguments;
     UserInfo me = AccessInfo().userInfo;
     List<Widget> messageWidgets = [];
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (_isBottomStick) {
+      if (_isBottomStick && !_isLoading) {
         scrollToEnd();
       }
     });
@@ -149,13 +152,16 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Container(
             width: double.infinity,
             color: Color(0xFFDDDDDD),
-            child: SingleChildScrollView(
-                reverse: true,
-                controller: _scrollController,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                  child: Column(children: messageWidgets),
-                )),
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    reverse: true,
+                    controller: _scrollController,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      child: Column(children: messageWidgets),
+                    )),
           )),
           TextField(
               controller: _textController,

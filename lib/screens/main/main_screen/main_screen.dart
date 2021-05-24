@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
@@ -29,14 +28,16 @@ class _MainScreenState extends State<MainScreen>
         .flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
     if (details.didNotificationLaunchApp) {
-      FirebaseMessage firebaseMessage =
-          FirebaseMessage.fromJson(jsonDecode(details.payload));
-      switch (firebaseMessage.type) {
-        case 1:
+      var json = jsonDecode(details.payload);
+      print(json);
+      switch (json["type"]) {
+        case "1":
           var userInfo = await UserServices.getUserInfoById(
-              firebaseMessage.message.sendFromAccountId);
-          Keys.navigatorKey.currentState
-              .pushNamed("/chat", arguments: userInfo);
+              json["message"]["sendFromAccountId"]);
+          if (userInfo != null) {
+            Keys.navigatorKey.currentState
+                .pushNamed("/chat", arguments: userInfo);
+          }
           break;
       }
     }
@@ -79,9 +80,8 @@ class _MainScreenState extends State<MainScreen>
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () async {
-                      await UserServices.getUserInfo();
                       Navigator.pushNamed(context, "/profile",
-                          arguments: AccessInfo().userInfo);
+                          arguments: AccessInfo().userInfo.id);
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),

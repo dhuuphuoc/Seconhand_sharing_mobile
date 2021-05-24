@@ -14,7 +14,8 @@ class HomeTab extends StatefulWidget {
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab>
+    with AutomaticKeepAliveClientMixin<HomeTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
@@ -79,10 +80,17 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _postsScrollController = PrimaryScrollController.of(context);
 
     var listViewWidgets = <Widget>[
-      Container(margin: EdgeInsets.all(10), child: PostCard()),
+      Container(
+          margin: EdgeInsets.all(10),
+          child: PostCard(
+            () {
+              Navigator.pushNamed(context, "/post-item").then((value) {});
+            },
+          )),
       Container(
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -156,23 +164,34 @@ class _HomeTabState extends State<HomeTab> {
         ),
       ));
     }
-    return CustomScrollView(
-      slivers: [
-        SliverOverlapInjector(
-          // This is the flip side of the SliverOverlapAbsorber
-          // above.
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          sliver:
-              SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-        )
-      ],
-      // ListView(
-      //   controller: _postsScrollController,
-      //   children: listViewWidgets,
-      // ),
+    return RefreshIndicator(
+      edgeOffset: 100,
+      onRefresh: () async {
+        _items = [];
+        _pageNumber = 1;
+        await fetchItems();
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver:
+                SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+          )
+        ],
+        // ListView(
+        //   controller: _postsScrollController,
+        //   children: listViewWidgets,
+        // ),
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

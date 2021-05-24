@@ -33,6 +33,7 @@
   "post": "Post",
   "tryAgain" : "Try again",
   "failed" : "Failed",
+  "postFailed" : "An error occurred while posting!",
   "loginFailedNotification" : "Username or password is incorrect.",
   "selectPhotos": "Select photos",
   "success": "Success",

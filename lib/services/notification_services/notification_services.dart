@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:secondhand_sharing/models/messages_model/firebase_message.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -65,15 +64,12 @@ class NotificationService {
   }
 
   // int id = 0;
-  Future<void> sendInboxNotification(FirebaseMessage firebaseMessage) async {
-    Person person = Person(name: firebaseMessage.message.sendFromAccountName);
+  Future<void> sendInboxNotification(UserMessage message) async {
+    Person person = Person(name: message.sendFromAccountName);
     final MessagingStyleInformation messagingStyleInformation =
         MessagingStyleInformation(
       person,
-      messages: [
-        Message(firebaseMessage.message.content,
-            firebaseMessage.message.sendDate, person)
-      ],
+      messages: [Message(message.content, message.sendDate, person)],
     );
 
     var notifications = await flutterLocalNotificationsPlugin
@@ -97,12 +93,12 @@ class NotificationService {
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-        firebaseMessage.message.sendFromAccountId,
+        message.sendFromAccountId,
         // id++,
-        firebaseMessage.message.sendFromAccountName,
-        "${firebaseMessage.message.content}",
+        message.sendFromAccountName,
+        "${message.content}",
         platformChannelSpecifics,
-        payload: jsonEncode(firebaseMessage.toJson()));
+        payload: jsonEncode({"type": "1", "message": message.toJson()}));
   }
 
   Future onDidReceiveLocalNotification(
@@ -111,13 +107,12 @@ class NotificationService {
   }
 
   Future selectNotification(String payload) async {
-    FirebaseMessage firebaseMessage =
-        FirebaseMessage.fromJson(jsonDecode(payload));
-    print("wrong");
-    switch (firebaseMessage.type) {
-      case 1:
+    var json = jsonDecode(payload);
+    print(json);
+    switch (json["type"]) {
+      case "1":
         var userInfo = await UserServices.getUserInfoById(
-            firebaseMessage.message.sendFromAccountId);
+            json["message"]["sendFromAccountId"]);
         Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
         break;
     }

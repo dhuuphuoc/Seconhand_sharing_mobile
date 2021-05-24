@@ -89,13 +89,8 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                     .map((request) => ListTile(
                           onTap: () {
                             print(request.id);
-                            UserServices.getUserInfoById(request.receiverId)
-                                .then((value) {
-                              if (value != null) {
-                                Navigator.pushNamed(context, "/profile",
-                                    arguments: value);
-                              }
-                            });
+                            Navigator.pushNamed(context, "/profile",
+                                arguments: request.receiverId);
                           },
                           leading: CircleAvatar(
                             radius: 20,
