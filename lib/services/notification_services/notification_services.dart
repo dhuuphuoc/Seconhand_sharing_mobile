@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +23,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   String messageChannelId = "message_channel";
-
+  int summaryNotificationId;
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings("@mipmap/ic_launcher");
@@ -63,7 +65,6 @@ class NotificationService {
         payload: jsonEncode(message.data));
   }
 
-  // int id = 0;
   Future<void> sendInboxNotification(UserMessage message) async {
     Person person = Person(name: message.sendFromAccountName);
     final MessagingStyleInformation messagingStyleInformation =
@@ -76,8 +77,33 @@ class NotificationService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         .getActiveNotifications();
-    bool existMessageNotification = notifications
+    bool isEmpty = !notifications
         .any((notification) => notification.channelId == messageChannelId);
+    print(summaryNotificationId);
+    if (isEmpty) {
+      AndroidNotificationDetails summaryPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+        messageChannelId,
+        'New message',
+        'This channel receive message from other users',
+        importance: Importance.max,
+        priority: Priority.high,
+        styleInformation: messagingStyleInformation,
+        groupKey: "new_message",
+        // setAsGroupSummary: summaryNotificationId == message.sendFromAccountId,
+        setAsGroupSummary: true,
+      );
+
+      NotificationDetails summaryChannelSpecifics =
+          NotificationDetails(android: summaryPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.show(
+          // message.sendFromAccountId,
+          -id++,
+          message.sendFromAccountName,
+          "${message.content}",
+          summaryChannelSpecifics,
+          payload: jsonEncode({"type": "1", "message": message.toJson()}));
+    }
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       messageChannelId,
@@ -87,26 +113,24 @@ class NotificationService {
       priority: Priority.high,
       styleInformation: messagingStyleInformation,
       groupKey: "new_message",
-      setAsGroupSummary: !existMessageNotification,
     );
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-
     await flutterLocalNotificationsPlugin.show(
         message.sendFromAccountId,
-        // id++,
         message.sendFromAccountName,
         "${message.content}",
         platformChannelSpecifics,
         payload: jsonEncode({"type": "1", "message": message.toJson()}));
   }
 
+  int id = 0;
   Future onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
     print("wrong");
   }
 
-  Future selectNotification(String payload) async {
+  Future<void> selectNotification(String payload) async {
     var json = jsonDecode(payload);
     print(json);
     switch (json["type"]) {

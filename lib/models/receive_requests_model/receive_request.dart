@@ -13,6 +13,7 @@ class ReceiveRequest {
   int receiverId;
   String receiverName;
   RequestStatus requestStatus;
+  int itemId;
 
   factory ReceiveRequest.fromJson(Map<String, dynamic> json) => ReceiveRequest(
         id: json["id"],

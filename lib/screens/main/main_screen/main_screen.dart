@@ -28,18 +28,7 @@ class _MainScreenState extends State<MainScreen>
         .flutterLocalNotificationsPlugin
         .getNotificationAppLaunchDetails();
     if (details.didNotificationLaunchApp) {
-      var json = jsonDecode(details.payload);
-      print(json);
-      switch (json["type"]) {
-        case "1":
-          var userInfo = await UserServices.getUserInfoById(
-              json["message"]["sendFromAccountId"]);
-          if (userInfo != null) {
-            Keys.navigatorKey.currentState
-                .pushNamed("/chat", arguments: userInfo);
-          }
-          break;
-      }
+      NotificationService().selectNotification(details.payload);
     }
   }
 

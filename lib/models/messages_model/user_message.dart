@@ -16,17 +16,12 @@ class UserMessage {
   String sendFromAccountName;
 
   factory UserMessage.fromJson(Map<String, dynamic> json) => UserMessage(
-        id: json["id"] != null ? json["id"] : json["Id"],
-        content: json["content"] != null ? json["content"] : json["Content"],
-        sendDate: DateTime.parse(
-            json["sendDate"] != null ? json["sendDate"] : json["SendDate"]),
-        sendFromAccountId: json["sendFromAccountId"] != null
-            ? json["sendFromAccountId"]
-            : json["SendFromAccountId"],
-        sendToAccountId: json["sendToAccountId"] != null
-            ? json["sendToAccountId"]
-            : json["SendToAccountId"],
-        sendFromAccountName: json["SendFromAccountName"],
+        id: json["id"],
+        content: json["content"],
+        sendDate: DateTime.parse(json["sendDate"]),
+        sendFromAccountId: json["sendFromAccountId"],
+        sendToAccountId: json["sendToAccountId"],
+        sendFromAccountName: json["sendFromAccountName"],
       );
 
   Map<String, dynamic> toJson() => {

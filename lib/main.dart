@@ -41,13 +41,7 @@ Future<void> _firebaseMessagingBackgroundHandler(
     RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
 
-  switch (remoteMessage.data["type"]) {
-    case "1":
-      UserMessage message =
-          UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
-      await NotificationService().sendInboxNotification(message);
-      break;
-  }
+  FirebaseServices.handleFirebaseMessage(remoteMessage);
 }
 
 Future<void> main() async {
