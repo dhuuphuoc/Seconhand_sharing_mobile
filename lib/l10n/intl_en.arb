@@ -130,6 +130,22 @@
       }
     }
   },
-  "confirmationMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!"
+  "confirmationMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!",
+  "incomingReceiveRequest" :  "{fullName} registered to receive your {itemName} with message: {message}",
+  "@incomingReceiveRequest" :
+  {
+    "source_text" :  "{fullName} registered to receive your {itemName} with message: {message}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      },
+      "itemName": {
+        "example": "Cho TV"
+      },
+      "message": {
+        "example": "Cho em xin"
+      }
+    }
+  }
 
 }

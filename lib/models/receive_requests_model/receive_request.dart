@@ -6,7 +6,9 @@ class ReceiveRequest {
       this.receiveReason,
       this.receiverId,
       this.receiverName,
-      this.requestStatus});
+      this.requestStatus,
+      this.itemId,
+      this.itemName});
 
   int id;
   String receiveReason;
@@ -14,13 +16,17 @@ class ReceiveRequest {
   String receiverName;
   RequestStatus requestStatus;
   int itemId;
+  String itemName;
 
   factory ReceiveRequest.fromJson(Map<String, dynamic> json) => ReceiveRequest(
         id: json["id"],
         receiveReason: json["receiveReason"],
         receiverId: json["receiverId"],
         receiverName: json["receiverName"],
-        requestStatus: RequestStatus.values[json["receiveStatus"]],
+        requestStatus: RequestStatus
+            .values[json["receiveStatus"] == null ? 0 : json["receiveStatus"]],
+        itemId: json["itemId"],
+        itemName: json["itemName"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,5 +34,7 @@ class ReceiveRequest {
         "receiveReason": receiveReason,
         "receiverId": receiverId,
         "receiverName": receiverName,
+        "itemId": itemId,
+        "itemName": itemName,
       };
 }

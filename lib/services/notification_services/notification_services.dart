@@ -1,11 +1,14 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 
@@ -23,6 +26,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   String messageChannelId = "message_channel";
+  String notificationChannelId = "notification_channel";
   int summaryNotificationId;
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
@@ -46,83 +50,104 @@ class NotificationService {
         onSelectNotification: selectNotification);
   }
 
-  Future<void> sendNotification(RemoteMessage message) async {
-    List<String> lines = [];
-    for (var key in message.data.keys) {
-      lines.add("${key.toString()} : ${message.data[key]}");
-    }
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-            '1', 'Message', 'This channel receive message from other users',
-            importance: Importance.max,
-            priority: Priority.high,
-            styleInformation: InboxStyleInformation(lines),
-            showWhen: true);
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, message.notification.title,
-        "${message.notification.body}", platformChannelSpecifics,
-        payload: jsonEncode(message.data));
-  }
-
-  Future<void> sendInboxNotification(UserMessage message) async {
-    Person person = Person(name: message.sendFromAccountName);
-    final MessagingStyleInformation messagingStyleInformation =
+  AndroidNotificationDetails prepareMessageStyleAndroidNotificationDetails(
+      UserMessage message) {
+    Person person = Person(name: message.sendFromAccountName, important: true);
+    MessagingStyleInformation messagingStyleInformation =
         MessagingStyleInformation(
       person,
       messages: [Message(message.content, message.sendDate, person)],
     );
-
-    var notifications = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        .getActiveNotifications();
-    bool isEmpty = !notifications
-        .any((notification) => notification.channelId == messageChannelId);
-    print(summaryNotificationId);
-    if (isEmpty) {
-      AndroidNotificationDetails summaryPlatformChannelSpecifics =
-          AndroidNotificationDetails(
-        messageChannelId,
-        'New message',
-        'This channel receive message from other users',
-        importance: Importance.max,
-        priority: Priority.high,
-        styleInformation: messagingStyleInformation,
-        groupKey: "new_message",
-        // setAsGroupSummary: summaryNotificationId == message.sendFromAccountId,
-        setAsGroupSummary: true,
-      );
-
-      NotificationDetails summaryChannelSpecifics =
-          NotificationDetails(android: summaryPlatformChannelSpecifics);
-      await flutterLocalNotificationsPlugin.show(
-          // message.sendFromAccountId,
-          -id++,
-          message.sendFromAccountName,
-          "${message.content}",
-          summaryChannelSpecifics,
-          payload: jsonEncode({"type": "1", "message": message.toJson()}));
-    }
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+    return AndroidNotificationDetails(
       messageChannelId,
       'New message',
       'This channel receive message from other users',
       importance: Importance.max,
       priority: Priority.high,
       styleInformation: messagingStyleInformation,
-      groupKey: "new_message",
     );
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        message.sendFromAccountId,
-        message.sendFromAccountName,
-        "${message.content}",
-        platformChannelSpecifics,
-        payload: jsonEncode({"type": "1", "message": message.toJson()}));
   }
+
+  AndroidNotificationDetails prepareReceiveRequestAndroidNotificationDetails(
+      ReceiveRequest receiveRequest) {
+    BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+        "${S.current.incomingReceiveRequest(receiveRequest.receiverName, receiveRequest.itemName, receiveRequest.receiveReason)}",
+        contentTitle: "<strong>${receiveRequest.itemName}</strong>",
+        htmlFormatContent: true,
+        htmlFormatTitle: true,
+        htmlFormatBigText: true,
+        htmlFormatContentTitle: true);
+    return AndroidNotificationDetails(
+      notificationChannelId,
+      'Notification',
+      'This channel receive notifications from the server',
+      importance: Importance.max,
+      priority: Priority.high,
+      styleInformation: bigTextStyleInformation,
+    );
+  }
+
+  Future<void> sendNotification(RemoteMessage remoteMessage) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics;
+    // if (remoteMessage == null) {
+    //   BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+    //       "${S.current.incomingReceiveRequest("Người nhận", "Vật phẩm", "Lời nhắn")}",
+    //       contentTitle: "<strong>Vật phẩm</strong>",
+    //       htmlFormatContent: true,
+    //       htmlFormatTitle: true,
+    //       htmlFormatBigText: true,
+    //       htmlFormatContentTitle: true);
+    //   androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    //     notificationChannelId,
+    //     'Notification',
+    //     'This channel receive notifications from the server',
+    //     importance: Importance.max,
+    //     priority: Priority.high,
+    //     styleInformation: bigTextStyleInformation,
+    //     category: "social",
+    //     additionalFlags: Int32List.fromList([1]),
+    //   );
+    //   NotificationDetails platformChannelSpecifics =
+    //       NotificationDetails(android: androidPlatformChannelSpecifics);
+    //   await flutterLocalNotificationsPlugin.show(
+    //     1,
+    //     "<strong>Vật phẩm</strong>",
+    //     null,
+    //     platformChannelSpecifics,
+    //   );
+    //   return;
+    // }
+    switch (remoteMessage.data["type"]) {
+      case "1":
+        UserMessage message =
+            UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
+        androidPlatformChannelSpecifics =
+            prepareMessageStyleAndroidNotificationDetails(message);
+        NotificationDetails platformChannelSpecifics =
+            NotificationDetails(android: androidPlatformChannelSpecifics);
+        await flutterLocalNotificationsPlugin.show(
+            message.sendFromAccountId, null, null, platformChannelSpecifics,
+            payload: jsonEncode({"type": "1", "message": message.toJson()}));
+        break;
+      case "2":
+        ReceiveRequest receiveRequest =
+            ReceiveRequest.fromJson(jsonDecode(remoteMessage.data["message"]));
+        androidPlatformChannelSpecifics =
+            prepareReceiveRequestAndroidNotificationDetails(receiveRequest);
+        NotificationDetails platformChannelSpecifics =
+            NotificationDetails(android: androidPlatformChannelSpecifics);
+        await flutterLocalNotificationsPlugin.show(
+            receiveRequest.itemId,
+            "<strong>${receiveRequest.itemName}</strong>",
+            null,
+            platformChannelSpecifics,
+            payload:
+                jsonEncode({"type": "2", "message": receiveRequest.toJson()}));
+        break;
+    }
+  }
+
+  Future<void> sendInboxNotification(UserMessage message) async {}
 
   int id = 0;
   Future onDidReceiveLocalNotification(
@@ -138,6 +163,11 @@ class NotificationService {
         var userInfo = await UserServices.getUserInfoById(
             json["message"]["sendFromAccountId"]);
         Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
+        break;
+      case "2":
+        var itemId = json["message"]["itemId"];
+        Keys.navigatorKey.currentState
+            .pushNamed("/item/detail", arguments: itemId);
         break;
     }
   }

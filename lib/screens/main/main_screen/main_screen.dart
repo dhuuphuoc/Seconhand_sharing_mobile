@@ -83,6 +83,12 @@ class _MainScreenState extends State<MainScreen>
                       ),
                     ),
                   ),
+                  IconButton(
+                    icon: Icon(Icons.build),
+                    onPressed: () {
+                      NotificationService().sendNotification(null);
+                    },
+                  )
                 ],
                 // Allows the user to reveal the app bar if they begin scrolling
                 // back up the list of items.

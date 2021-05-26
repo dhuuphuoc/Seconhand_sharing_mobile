@@ -1264,6 +1264,16 @@ class S {
       args: [],
     );
   }
+
+  /// `{fullName} registered to receive your {itemName} with message: {message}`
+  String incomingReceiveRequest(Object fullName, Object itemName, Object message) {
+    return Intl.message(
+      '$fullName registered to receive your $itemName with message: $message',
+      name: 'incomingReceiveRequest',
+      desc: '',
+      args: [fullName, itemName, message],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

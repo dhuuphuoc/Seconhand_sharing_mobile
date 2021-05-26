@@ -130,5 +130,21 @@
     }
   }
   },
-  "confirmationMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!"
+  "confirmationMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
+  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn {message}",
+  "@incomingReceiveRequest" :
+  {
+    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      },
+      "itemName": {
+        "example": "Cho TV"
+      },
+      "message": {
+        "example": "Cho em xin"
+      }
+    }
+  }
 }

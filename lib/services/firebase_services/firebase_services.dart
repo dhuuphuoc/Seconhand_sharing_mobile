@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
@@ -15,6 +16,7 @@ import 'package:http/http.dart' as http;
 
 class FirebaseServices {
   static int chattingWithUserId;
+  static int watchingItemId;
 
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'flutter_firebase_notifications_channel', // id
@@ -42,17 +44,7 @@ class FirebaseServices {
   }
 
   static void handleFirebaseMessage(RemoteMessage remoteMessage) {
-    print(remoteMessage.data);
-
-    switch (remoteMessage.data["type"]) {
-      case "1":
-        UserMessage message =
-            UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
-        if (FirebaseServices.chattingWithUserId != message.sendFromAccountId) {
-          NotificationService().sendInboxNotification(message);
-        }
-        break;
-    }
+    NotificationService().sendNotification(remoteMessage);
   }
 
   static Future<bool> removeTokenFromDatabase() async {

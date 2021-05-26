@@ -15,6 +15,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
@@ -157,6 +158,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget build(BuildContext context) {
     if (_itemDetail.id == null) {
       _itemDetail.id = ModalRoute.of(context).settings.arguments;
+      FirebaseServices.watchingItemId = _itemDetail.id;
       print(_itemDetail.id);
     }
     return Scaffold(
