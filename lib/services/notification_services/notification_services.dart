@@ -52,7 +52,8 @@ class NotificationService {
 
   AndroidNotificationDetails prepareMessageStyleAndroidNotificationDetails(
       UserMessage message) {
-    Person person = Person(name: message.sendFromAccountName, important: true);
+    Person person =
+        Person(name: "${message.sendFromAccountName}", important: true);
     MessagingStyleInformation messagingStyleInformation =
         MessagingStyleInformation(
       person,
@@ -89,34 +90,6 @@ class NotificationService {
 
   Future<void> sendNotification(RemoteMessage remoteMessage) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics;
-    // if (remoteMessage == null) {
-    //   BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-    //       "${S.current.incomingReceiveRequest("Người nhận", "Vật phẩm", "Lời nhắn")}",
-    //       contentTitle: "<strong>Vật phẩm</strong>",
-    //       htmlFormatContent: true,
-    //       htmlFormatTitle: true,
-    //       htmlFormatBigText: true,
-    //       htmlFormatContentTitle: true);
-    //   androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    //     notificationChannelId,
-    //     'Notification',
-    //     'This channel receive notifications from the server',
-    //     importance: Importance.max,
-    //     priority: Priority.high,
-    //     styleInformation: bigTextStyleInformation,
-    //     category: "social",
-    //     additionalFlags: Int32List.fromList([1]),
-    //   );
-    //   NotificationDetails platformChannelSpecifics =
-    //       NotificationDetails(android: androidPlatformChannelSpecifics);
-    //   await flutterLocalNotificationsPlugin.show(
-    //     1,
-    //     "<strong>Vật phẩm</strong>",
-    //     null,
-    //     platformChannelSpecifics,
-    //   );
-    //   return;
-    // }
     switch (remoteMessage.data["type"]) {
       case "1":
         UserMessage message =

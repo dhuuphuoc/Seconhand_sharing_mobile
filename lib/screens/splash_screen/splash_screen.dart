@@ -52,8 +52,15 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!result) {
         Navigator.pop(context);
         Navigator.pushNamed(context, "/login");
+        return;
       }
-
+      String deviceToken = await FirebaseMessaging.instance.getToken();
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      String oldDeviceToken = sharedPreferences.getString("device_token");
+      if (deviceToken != oldDeviceToken) {
+        FirebaseServices.saveTokenToDatabase(deviceToken);
+      }
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     }
