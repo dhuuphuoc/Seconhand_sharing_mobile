@@ -1284,6 +1284,26 @@ class S {
       args: [],
     );
   }
+
+  /// `This item is donated for {fullName}`
+  String sentNotification(Object fullName) {
+    return Intl.message(
+      'This item is donated for $fullName',
+      name: 'sentNotification',
+      desc: '',
+      args: [fullName],
+    );
+  }
+
+  /// `{fullName} registered to receive your item`
+  String incomingReceiveRequestSnackBar(Object fullName) {
+    return Intl.message(
+      '$fullName registered to receive your item',
+      name: 'incomingReceiveRequestSnackBar',
+      desc: '',
+      args: [fullName],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -86,144 +86,95 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
               canTapOnHeader: true,
               body: Column(
                 children: _receiveRequestsModel.requests
-                    .map((request) => Container(
-                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 22,
-                                    foregroundImage: AssetImage(
-                                      "assets/images/person.png",
-                                    ),
+                    .map((request) => InkWell(
+                          onTap: () {
+                            print(request.id);
+                            Navigator.pushNamed(context, "/profile", arguments: request.receiverId);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black54))),
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  foregroundImage: AssetImage(
+                                    "assets/images/person.png",
                                   ),
-                                  SizedBox(
-                                    width: 11,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 2,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              request.receiverName,
-                                              style: TextStyle(fontWeight: FontWeight.w600),
-                                            ),
-                                            if (request.requestStatus == RequestStatus.receiving)
-                                              Text(
-                                                S.of(context).accepted,
-                                                style: TextStyle(color: Colors.green),
-                                              ),
-                                          ],
-                                        ),
-                                        Text(
-                                          "2 Phút trước",
-                                          style: Theme.of(context).textTheme.subtitle2,
-                                        ),
-                                        SizedBox(
-                                          height: 2,
-                                        ),
-                                        Text(request.receiveReason == null ? "No reason" : request.receiveReason),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: TextButton(
-                                            onPressed: _inProcessRequest != null
-                                                ? null
-                                                : () async {
-                                                    if (request.requestStatus == RequestStatus.pending) {
-                                                      if (_receiveRequestsModel.acceptedRequest != null) {
-                                                        await cancelRequest(_receiveRequestsModel.acceptedRequest);
-                                                      }
-                                                      await acceptRequest(request);
-                                                    } else {
-                                                      if (request.requestStatus == RequestStatus.receiving) {
-                                                        await cancelRequest(request);
-                                                      }
-                                                    }
-                                                  },
-                                            style: ButtonStyle(
-                                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero)),
-                                            child: _inProcessRequest == request
-                                                ? Container(
-                                                    height: 15,
-                                                    width: 15,
-                                                    child: CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                    ),
-                                                  )
-                                                : Text(request.requestStatus == RequestStatus.pending
-                                                    ? S.of(context).accept
-                                                    : S.of(context).cancelAccept),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            request.receiverName,
+                                            style: TextStyle(fontWeight: FontWeight.w600),
                                           ),
+                                          if (request.requestStatus == RequestStatus.receiving)
+                                            Text(
+                                              S.of(context).accepted,
+                                              style: TextStyle(color: Colors.green),
+                                            ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "2 Phút trước",
+                                        style: Theme.of(context).textTheme.subtitle2,
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Text(request.receiveReason == null ? "No reason" : request.receiveReason),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton(
+                                          onPressed: _inProcessRequest != null
+                                              ? null
+                                              : () async {
+                                                  if (request.requestStatus == RequestStatus.pending) {
+                                                    if (_receiveRequestsModel.acceptedRequest != null) {
+                                                      await cancelRequest(_receiveRequestsModel.acceptedRequest);
+                                                    }
+                                                    await acceptRequest(request);
+                                                  } else {
+                                                    if (request.requestStatus == RequestStatus.receiving) {
+                                                      await cancelRequest(request);
+                                                    }
+                                                  }
+                                                },
+                                          style: ButtonStyle(
+                                              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero)),
+                                          child: _inProcessRequest == request
+                                              ? Container(
+                                                  height: 15,
+                                                  width: 15,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                  ),
+                                                )
+                                              : Text(request.requestStatus == RequestStatus.pending
+                                                  ? S.of(context).accept
+                                                  : S.of(context).cancelAccept),
                                         ),
-                                        Divider(
-                                          thickness: 2,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                        //     ListTile(
-                        //   onTap: () {
-                        //     print(request.id);
-                        //     Navigator.pushNamed(context, "/profile",
-                        //         arguments: request.receiverId);
-                        //   },
-                        //   horizontalTitleGap: 10,
-                        //   leading: CircleAvatar(
-                        //     radius: 22,
-                        //     foregroundImage: AssetImage(
-                        //       "assets/images/person.png",
-                        //     ),
-                        //   ),
-                        //   title: Text(
-                        //     request.receiverName,
-                        //     style: TextStyle(fontWeight: FontWeight.w600),
-                        //   ),
-                        //   subtitle: Text(request.receiveReason == null
-                        //       ? "No reason"
-                        //       : request.receiveReason),
-                        //   trailing: ElevatedButton(
-                        //     onPressed: _inProcessRequest != null
-                        //         ? null
-                        //         : () async {
-                        //             if (request.requestStatus ==
-                        //                 RequestStatus.pending) {
-                        //               if (_receiveRequestsModel.acceptedRequest !=
-                        //                   null) {
-                        //                 await cancelRequest(_receiveRequestsModel
-                        //                     .acceptedRequest);
-                        //               }
-                        //               await acceptRequest(request);
-                        //             } else {
-                        //               if (request.requestStatus ==
-                        //                   RequestStatus.receiving) {
-                        //                 await cancelRequest(request);
-                        //               }
-                        //             }
-                        //           },
-                        //     child: _inProcessRequest == request
-                        //         ? Container(
-                        //             height: 15,
-                        //             width: 15,
-                        //             child: CircularProgressIndicator(
-                        //               strokeWidth: 2,
-                        //             ),
-                        //           )
-                        //         : Text(
-                        //             request.requestStatus == RequestStatus.pending
-                        //                 ? S.of(context).accept
-                        //                 : S.of(context).cancelAccept),
-                        //   ),
-                        // ),
-                        )
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ))
                     .toList(),
               ),
               isExpanded: _isRequestsExpanded),

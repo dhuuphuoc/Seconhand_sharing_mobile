@@ -10,6 +10,8 @@ import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/models/item_model/item_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info_model.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -87,9 +89,7 @@ class ItemServices {
   static Future<bool> uploadImage(ImageData image, String url) async {
     Uri uploadUrl = Uri.parse(url);
     print(uploadUrl.toString());
-    var response = await http.put(uploadUrl,
-        body: image.data,
-        headers: {HttpHeaders.contentTypeHeader: "image/png"});
+    var response = await http.put(uploadUrl, body: image.data, headers: {HttpHeaders.contentTypeHeader: "image/png"});
     print(response.body);
     if (response.statusCode == 200) return true;
     return false;
@@ -123,6 +123,20 @@ class ItemServices {
       return true;
     } else {
       return false;
+    }
+  }
+
+  static Future<UserInfo> getReceivedUserInfo(int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/received-user");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    } else {
+      return null;
     }
   }
 }

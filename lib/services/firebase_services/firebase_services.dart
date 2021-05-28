@@ -15,24 +15,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseServices {
-  static int chattingWithUserId;
-  static int watchingItemId;
-
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'flutter_firebase_notifications_channel', // id
     'High Importance Notifications', // title
     'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<bool> saveTokenToDatabase(String token) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("device_token", token);
     Uri url = Uri.https(APIService.apiUrl, "/FirebaseToken");
-    var response = await http
-        .post(url, body: jsonEncode({"firebaseToken": token}), headers: {
+    var response = await http.post(url, body: jsonEncode({"firebaseToken": token}), headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
@@ -51,12 +46,10 @@ class FirebaseServices {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String deviceToken = sharedPreferences.get("device_token");
     Uri url = Uri.https(APIService.apiUrl, "/FirebaseToken");
-    var response = await http.delete(url,
-        body: jsonEncode({"firebaseToken": deviceToken}),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-          HttpHeaders.contentTypeHeader: ContentType.json.value,
-        });
+    var response = await http.delete(url, body: jsonEncode({"firebaseToken": deviceToken}), headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
     print(response.statusCode);
     if (response.statusCode == 200) {
       sharedPreferences.remove("device_token");
@@ -68,8 +61,7 @@ class FirebaseServices {
   static Future<void> initFirebase() async {
     await Firebase.initializeApp();
     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) async {
       await saveTokenToDatabase(deviceToken);

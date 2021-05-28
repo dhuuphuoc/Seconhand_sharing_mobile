@@ -12,6 +12,7 @@ import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/u
 import 'package:secondhand_sharing/screens/message/chat_screen/local_widgets/message_box.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
+import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key key}) : super(key: key);
@@ -33,11 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      FirebaseServices.chattingWithUserId = _userInfo.id;
+      NotificationService().chattingWithUserId = _userInfo.id;
       _scrollController = ScrollController();
       _scrollController.addListener(() {
-        if (_scrollController.position.maxScrollExtent ==
-            _scrollController.offset) {
+        if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
           loadMoreMessages();
         }
       });
@@ -47,9 +47,9 @@ class _ChatScreenState extends State<ChatScreen> {
           _isLoading = false;
         });
         _subscription = FirebaseMessaging.onMessage.listen((message) {
+          if (message.data["type"] != "1") return;
           print(message.data);
-          UserMessage newMessage =
-              UserMessage.fromJson(jsonDecode(message.data["message"]));
+          UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
           print(newMessage.content);
           if (newMessage.sendFromAccountId == _userInfo.id) {
             setState(() {
@@ -65,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _subscription.cancel();
     super.dispose();
-    FirebaseServices.chattingWithUserId = null;
+    NotificationService().chattingWithUserId = null;
   }
 
   void loadMoreMessages() {
@@ -103,14 +103,12 @@ class _ChatScreenState extends State<ChatScreen> {
       for (int i = 0; i < messages.length; i++) {
         UserMessage message = messages[i];
         if (i > 0) {
-          havePrevious =
-              messages[i - 1].sendFromAccountId == message.sendFromAccountId;
+          havePrevious = messages[i - 1].sendFromAccountId == message.sendFromAccountId;
         } else {
           havePrevious = false;
         }
         if (i < messages.length - 1) {
-          haveNext =
-              messages[i + 1].sendFromAccountId == message.sendFromAccountId;
+          haveNext = messages[i + 1].sendFromAccountId == message.sendFromAccountId;
         } else {
           haveNext = false;
         }
@@ -158,8 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     reverse: true,
                     controller: _scrollController,
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                       child: Column(children: messageWidgets),
                     )),
           )),
@@ -171,16 +168,14 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: InputDecoration(
                 hintText: "${S.of(context).message}...",
                 border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.only(left: 20, top: 14, right: 12, bottom: 12),
+                contentPadding: EdgeInsets.only(left: 20, top: 14, right: 12, bottom: 12),
                 suffixIcon: IconButton(
                   splashRadius: 24,
                   icon: Icon(Icons.send),
                   onPressed: () {
                     if (_textController.text == "") return;
-                    UserMessage message = UserMessage(
-                        content: _textController.text.trim(),
-                        sendToAccountId: _userInfo.id);
+                    UserMessage message =
+                        UserMessage(content: _textController.text.trim(), sendToAccountId: _userInfo.id);
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
                         messages.add(value);

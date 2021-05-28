@@ -13,17 +13,16 @@ import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 
 class NotificationService {
-  static final NotificationService _notificationService =
-      NotificationService._internal();
+  static final NotificationService _notificationService = NotificationService._internal();
 
   factory NotificationService() {
     return _notificationService;
   }
 
   NotificationService._internal();
-
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  int chattingWithUserId;
+  int watchingItemId;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   String messageChannelId = "message_channel";
   String notificationChannelId = "notification_channel";
@@ -32,8 +31,7 @@ class NotificationService {
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings("@mipmap/ic_launcher");
 
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
+    final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
@@ -41,21 +39,14 @@ class NotificationService {
     );
 
     final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
+        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: null);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
-  AndroidNotificationDetails prepareMessageStyleAndroidNotificationDetails(
-      UserMessage message) {
-    Person person =
-        Person(name: "${message.sendFromAccountName}", important: true);
-    MessagingStyleInformation messagingStyleInformation =
-        MessagingStyleInformation(
+  AndroidNotificationDetails prepareMessageStyleAndroidNotificationDetails(UserMessage message) {
+    Person person = Person(name: "${message.sendFromAccountName}", important: true);
+    MessagingStyleInformation messagingStyleInformation = MessagingStyleInformation(
       person,
       messages: [Message(message.content, message.sendDate, person)],
     );
@@ -69,8 +60,7 @@ class NotificationService {
     );
   }
 
-  AndroidNotificationDetails prepareReceiveRequestAndroidNotificationDetails(
-      ReceiveRequest receiveRequest) {
+  AndroidNotificationDetails prepareReceiveRequestAndroidNotificationDetails(ReceiveRequest receiveRequest) {
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
         "${S.current.incomingReceiveRequest(receiveRequest.receiverName, receiveRequest.itemName, receiveRequest.receiveReason)}",
         contentTitle: "<strong>${receiveRequest.itemName}</strong>",
@@ -92,30 +82,21 @@ class NotificationService {
     AndroidNotificationDetails androidPlatformChannelSpecifics;
     switch (remoteMessage.data["type"]) {
       case "1":
-        UserMessage message =
-            UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
-        androidPlatformChannelSpecifics =
-            prepareMessageStyleAndroidNotificationDetails(message);
-        NotificationDetails platformChannelSpecifics =
-            NotificationDetails(android: androidPlatformChannelSpecifics);
-        await flutterLocalNotificationsPlugin.show(
-            message.sendFromAccountId, null, null, platformChannelSpecifics,
+        UserMessage message = UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (chattingWithUserId == message.sendFromAccountId) return;
+        androidPlatformChannelSpecifics = prepareMessageStyleAndroidNotificationDetails(message);
+        NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+        await flutterLocalNotificationsPlugin.show(message.sendFromAccountId, null, null, platformChannelSpecifics,
             payload: jsonEncode({"type": "1", "message": message.toJson()}));
         break;
       case "2":
-        ReceiveRequest receiveRequest =
-            ReceiveRequest.fromJson(jsonDecode(remoteMessage.data["message"]));
-        androidPlatformChannelSpecifics =
-            prepareReceiveRequestAndroidNotificationDetails(receiveRequest);
-        NotificationDetails platformChannelSpecifics =
-            NotificationDetails(android: androidPlatformChannelSpecifics);
+        ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (watchingItemId == receiveRequest.itemId) return;
+        androidPlatformChannelSpecifics = prepareReceiveRequestAndroidNotificationDetails(receiveRequest);
+        NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
         await flutterLocalNotificationsPlugin.show(
-            receiveRequest.itemId,
-            "<strong>${receiveRequest.itemName}</strong>",
-            null,
-            platformChannelSpecifics,
-            payload:
-                jsonEncode({"type": "2", "message": receiveRequest.toJson()}));
+            receiveRequest.itemId, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics,
+            payload: jsonEncode({"type": "2", "message": receiveRequest.toJson()}));
         break;
     }
   }
@@ -123,8 +104,7 @@ class NotificationService {
   Future<void> sendInboxNotification(UserMessage message) async {}
 
   int id = 0;
-  Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {
+  Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
     print("wrong");
   }
 
@@ -133,14 +113,12 @@ class NotificationService {
     print(json);
     switch (json["type"]) {
       case "1":
-        var userInfo = await UserServices.getUserInfoById(
-            json["message"]["sendFromAccountId"]);
+        var userInfo = await UserServices.getUserInfoById(json["message"]["sendFromAccountId"]);
         Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
         break;
       case "2":
         var itemId = json["message"]["itemId"];
-        Keys.navigatorKey.currentState
-            .pushNamed("/item/detail", arguments: itemId);
+        Keys.navigatorKey.currentState.pushNamed("/item/detail", arguments: itemId);
         break;
     }
   }

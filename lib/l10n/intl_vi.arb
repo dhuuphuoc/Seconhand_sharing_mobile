@@ -147,5 +147,26 @@
       }
     }
   },
-  "back": "Quay lại"
+  "back": "Quay lại",
+  "sentNotification" : "Vật phẩm này đã được tặng cho {fullName}",
+  "@sentNotification" :
+  {
+    "source_text" :  "Vật phẩm này đã được tặng cho {fullName}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "incomingReceiveRequestSnackBar" : "{fullName} đã đăng ký nhận vật phẩm",
+  "@incomingReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+
+    }
+  }
 }

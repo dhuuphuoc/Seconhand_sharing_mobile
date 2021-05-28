@@ -147,7 +147,27 @@
       }
     }
   },
-  "back" : "Back"
+  "back" : "Back",
+  "sentNotification" : "This item is donated for {fullName}",
+  "@sentNotification" :
+  {
+    "source_text" :  "This item is donated for {fullName}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
 
+    }
+  },
+  "incomingReceiveRequestSnackBar" : "{fullName} registered to receive your item",
+  "@incomingReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} registered your item",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
 
+    }
+  }
 }

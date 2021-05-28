@@ -1,12 +1,20 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_status.dart';
+import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
@@ -16,6 +24,7 @@ import 'package:secondhand_sharing/services/api_services/item_services/item_serv
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
+import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
@@ -29,6 +38,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   bool _isOwn = false;
   RequestStatus _requestStatus;
   ReceiveRequestsModel _receiveRequestsModel = ReceiveRequestsModel(requests: []);
+  UserInfo _receivedUserInfo;
+  StreamSubscription<RemoteMessage> _subscription;
   bool _isLoading = true;
   bool _isCanceling = false;
 
@@ -60,6 +71,24 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             });
           }
         }
+        if (_itemDetail.status == ItemStatus.success) {
+          _receivedUserInfo = await ItemServices.getReceivedUserInfo(_itemDetail.id);
+        }
+        _subscription = FirebaseMessaging.onMessage.listen((message) {
+          print(message.data);
+          if (message.data["type"] != "2") return;
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
+          final scaffold = ScaffoldMessenger.of(context);
+          scaffold.showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
+            ),
+          );
+          receiveRequest.requestStatus = RequestStatus.pending;
+          setState(() {
+            _receiveRequestsModel.requests.add(receiveRequest);
+          });
+        });
         setState(() {
           _isLoading = false;
         });
@@ -67,6 +96,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 
   void _registerToReceive() {
@@ -149,7 +184,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget build(BuildContext context) {
     if (_itemDetail.id == null) {
       _itemDetail.id = ModalRoute.of(context).settings.arguments;
-      FirebaseServices.watchingItemId = _itemDetail.id;
+      NotificationService().watchingItemId = _itemDetail.id;
       print(_itemDetail.id);
     }
     return Scaffold(
@@ -217,35 +252,62 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             strokeWidth: 3,
                           ),
                         ),
-                      if (_isOwn)
-                        SizedBox(
-                          height: 15,
-                        ),
                       if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
-                      if (_itemDetail.status != ItemStatus.success || !_isOwn)
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.all(10),
-                          child: _isOwn
-                              ? ElevatedButton(
-                                  onPressed: context.watch<ReceiveRequestsModel>().acceptedRequest != null
-                                      ? _confirmSent
-                                      : null,
-                                  child: Text(S.of(context).confirmSent))
-                              : _itemDetail.status == ItemStatus.success
-                                  ? ElevatedButton(
-                                      onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
-                                      child: Text(S.of(context).sendThanks))
-                                  : ElevatedButton(
-                                      onPressed: _itemDetail.userRequestId != 0
-                                          ? _isCanceling
-                                              ? null
-                                              : _cancelRegistration
-                                          : _registerToReceive,
-                                      child: Text(_itemDetail.userRequestId != 0
-                                          ? S.of(context).cancelRegister
-                                          : S.of(context).registerToReceive)),
-                        ),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: _itemDetail.status == ItemStatus.success ? 0 : 10),
+                        width: double.infinity,
+                        child: _isOwn
+                            ? _itemDetail.status != ItemStatus.success
+                                ? ElevatedButton(
+                                    onPressed: context.watch<ReceiveRequestsModel>().acceptedRequest != null
+                                        ? _confirmSent
+                                        : null,
+                                    child: Text(S.of(context).confirmSent))
+                                : null
+                            : _itemDetail.status == ItemStatus.success
+                                ? ElevatedButton(
+                                    onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
+                                    child: Text(S.of(context).sendThanks))
+                                : ElevatedButton(
+                                    onPressed: _itemDetail.userRequestId != 0
+                                        ? _isCanceling
+                                            ? null
+                                            : _cancelRegistration
+                                        : _registerToReceive,
+                                    child: Text(_itemDetail.userRequestId != 0
+                                        ? S.of(context).cancelRegister
+                                        : S.of(context).registerToReceive)),
+                      ),
+                      if (_itemDetail.status == ItemStatus.success)
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 10),
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(S.of(context).sentNotification(
+                                      _receivedUserInfo?.fullName == null ? "" : _receivedUserInfo.fullName)),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
                     ],
                   ),
                 ),
