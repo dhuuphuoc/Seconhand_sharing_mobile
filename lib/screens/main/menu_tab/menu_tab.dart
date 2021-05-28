@@ -16,10 +16,9 @@ class _MenuTabState extends State<MenuTab> {
         context: context,
         builder: (context) {
           return ConfirmDialog(
-              S.of(context).logout,
-              S.of(context).logoutConfirmation,
-              S.of(context).yes,
-              S.of(context).no);
+            S.of(context).logout,
+            S.of(context).logoutConfirmation,
+          );
         }).then((value) async {
       if (value == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();

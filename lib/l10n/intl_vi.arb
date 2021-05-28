@@ -95,7 +95,7 @@
   "registered" : "Đã đăng ký",
   "cancelRegister": "Hủy đăng ký",
   "pending": "Đã đăng ký",
-  "accepted" : "Đã được chấp nhận",
+  "accepted" : "Đã chấp nhận",
   "unregistered" : "Chưa đăng ký",
   "registrations" : "Lượt đăng ký",
   "accept" : "Chấp nhận",
@@ -146,5 +146,6 @@
         "example": "Cho em xin"
       }
     }
-  }
+  },
+  "back": "Quay lại"
 }

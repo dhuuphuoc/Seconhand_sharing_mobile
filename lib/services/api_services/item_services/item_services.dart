@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/contact_model/contact.dart';
-import 'package:secondhand_sharing/models/contact_model/contact_model.dart';
+
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail_model.dart';
@@ -124,20 +123,6 @@ class ItemServices {
       return true;
     } else {
       return false;
-    }
-  }
-
-  static Future<Contact> getOwnerContact(int itemId) async {
-    Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/owner-contact");
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
-      HttpHeaders.contentTypeHeader: ContentType.json.value,
-    });
-    print(response.body);
-    if (response.statusCode == 200) {
-      return ContactModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return null;
     }
   }
 }

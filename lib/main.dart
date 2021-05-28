@@ -27,6 +27,7 @@ import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class MyHttpOverrides extends HttpOverrides {
 //   @override
@@ -40,7 +41,6 @@ import 'package:secondhand_sharing/services/notification_services/notification_s
 Future<void> _firebaseMessagingBackgroundHandler(
     RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
-
   FirebaseServices.handleFirebaseMessage(remoteMessage);
 }
 

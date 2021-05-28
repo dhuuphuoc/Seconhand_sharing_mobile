@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 
 class ConfirmDialog extends StatelessWidget {
   final String _title;
   final String _message;
-  final String _acceptButton;
-  final String _declineButton;
 
-  ConfirmDialog(
-      this._title, this._message, this._acceptButton, this._declineButton);
+  ConfirmDialog(this._title, this._message);
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +28,13 @@ class ConfirmDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(_declineButton),
+          child: Text(S.of(context).back),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
         ),
         TextButton(
-          child: Text(_acceptButton),
+          child: Text(S.of(context).yes),
           onPressed: () {
             Navigator.of(context).pop(true);
           },

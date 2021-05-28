@@ -81,6 +81,7 @@ class _HomeTabState extends State<HomeTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Size screenSize = MediaQuery.of(context).size;
     _postsScrollController = PrimaryScrollController.of(context);
 
     var listViewWidgets = <Widget>[
@@ -141,7 +142,7 @@ class _HomeTabState extends State<HomeTab>
             child: CircularProgressIndicator(),
           )
         : Container(
-            height: _isEnd ? 0 : 250,
+            height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
       listViewWidgets.add(Card(
@@ -165,7 +166,7 @@ class _HomeTabState extends State<HomeTab>
       ));
     }
     return RefreshIndicator(
-      edgeOffset: 100,
+      edgeOffset: screenSize.height * 0.2,
       onRefresh: () async {
         _items = [];
         _pageNumber = 1;

@@ -28,8 +28,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   ItemDetail _itemDetail = ItemDetail();
   bool _isOwn = false;
   RequestStatus _requestStatus;
-  ReceiveRequestsModel _receiveRequestsModel =
-      ReceiveRequestsModel(requests: []);
+  ReceiveRequestsModel _receiveRequestsModel = ReceiveRequestsModel(requests: []);
   bool _isLoading = true;
   bool _isCanceling = false;
 
@@ -47,18 +46,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           if (requests != null) {
             setState(() {
               _receiveRequestsModel.requests = requests;
-              _receiveRequestsModel.acceptedRequest =
-                  _receiveRequestsModel.requests.firstWhere(
-                      (element) =>
-                          element.requestStatus == RequestStatus.receiving,
-                      orElse: () {
+              _receiveRequestsModel.acceptedRequest = _receiveRequestsModel.requests
+                  .firstWhere((element) => element.requestStatus == RequestStatus.receiving, orElse: () {
                 return null;
               });
             });
           }
         } else if (_itemDetail.userRequestId != 0) {
-          var requestDetail =
-              await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
+          var requestDetail = await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
           if (requestDetail != null) {
             setState(() {
               _requestStatus = requestDetail.receiveStatus;
@@ -95,8 +90,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     setState(() {
       _isCanceling = true;
     });
-    var result =
-        await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
+    var result = await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
     if (result) {
       setState(() {
         _itemDetail.userRequestId = 0;
@@ -112,10 +106,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     showDialog(
         context: context,
         builder: (context) => ConfirmDialog(
-            S.of(context).confirmSent,
-            S.of(context).confirmationMessage,
-            S.of(context).yes,
-            S.of(context).cancel)).then((value) {
+              S.of(context).confirmSent,
+              S.of(context).confirmationMessage,
+            )).then((value) {
       if (value) {
         ItemServices.confirmSent(_itemDetail.id).then((value) {
           if (value) {
@@ -141,8 +134,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return NotifyDialog(S.of(context).success,
-                            S.of(context).thanksSent, "Ok");
+                        return NotifyDialog(S.of(context).success, S.of(context).thanksSent, "Ok");
                       })
                 }
             }
@@ -150,8 +142,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void showUserProfile() {
-    Navigator.pushNamed(context, '/profile',
-        arguments: _itemDetail.donateAccountId);
+    Navigator.pushNamed(context, '/profile', arguments: _itemDetail.donateAccountId);
   }
 
   @override
@@ -207,8 +198,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   builder: (context, widget) => Column(
                     children: [
                       SizedBox(height: 10),
-                      UserInfoCard(_itemDetail.donateAccountName,
-                          _itemDetail.receiveAddress, showUserProfile),
+                      UserInfoCard(_itemDetail.donateAccountName, _itemDetail.receiveAddress, showUserProfile),
                       SizedBox(height: 10),
                       ImagesView(
                         images: _itemDetail.imageUrl,
@@ -231,26 +221,20 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                      if (_isOwn && _itemDetail.status != ItemStatus.success)
-                        RequestsExpansionPanel(),
+                      if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
                       if (_itemDetail.status != ItemStatus.success || !_isOwn)
                         Container(
                           width: double.infinity,
                           margin: EdgeInsets.all(10),
                           child: _isOwn
                               ? ElevatedButton(
-                                  onPressed: context
-                                              .watch<ReceiveRequestsModel>()
-                                              .acceptedRequest !=
-                                          null
+                                  onPressed: context.watch<ReceiveRequestsModel>().acceptedRequest != null
                                       ? _confirmSent
                                       : null,
                                   child: Text(S.of(context).confirmSent))
                               : _itemDetail.status == ItemStatus.success
                                   ? ElevatedButton(
-                                      onPressed: _itemDetail.userRequestId != 0
-                                          ? sendThanks
-                                          : null,
+                                      onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
                                       child: Text(S.of(context).sendThanks))
                                   : ElevatedButton(
                                       onPressed: _itemDetail.userRequestId != 0
