@@ -67,13 +67,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> handleUniLink() async {
     String link = await getInitialLink();
+    print(link);
     if (link != null) {
       Uri url = Uri.parse(link);
-      processUniLink(url);
+      if (link.contains("confirm")) {
+        processConfirmEmailUniLink(url);
+      } else if (link.contains("reset")) {
+        processUniLink(url);
+      }
     }
     uriLinkStream.listen((url) {
-      processUniLink(url);
+      if (link.contains("confirm")) {
+        processConfirmEmailUniLink(url);
+      } else if (link.contains("reset")) {
+        processUniLink(url);
+      }
     });
+  }
+
+  void processConfirmEmailUniLink(Uri url) {
+    String userId = url.queryParameters["userid"];
+    String code = url.queryParameters["code"];
+    Keys.navigatorKey.currentState.pushNamed("/confirm-email", arguments: {"userId": userId, "code": code});
   }
 
   void processUniLink(Uri url) {

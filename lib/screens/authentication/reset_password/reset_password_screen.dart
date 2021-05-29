@@ -37,8 +37,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             _code,
             _passwordTextController.text,
             _confirmPasswordTextController.text));
-
-    print(resetPasswordModel);
     if (resetPasswordModel.succeeded) {
       showDialog(
           context: context,
