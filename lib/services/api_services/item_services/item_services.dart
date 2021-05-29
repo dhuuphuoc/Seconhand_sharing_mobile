@@ -72,6 +72,24 @@ class ItemServices {
     return null;
   }
 
+  static Future<List<Item>> getDonatedItems(int userId, int pageNumber) async {
+    Uri getItemsUrl = Uri.https(APIService.apiUrl, "/Item/$userId/donations", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": _pageSize.toString(),
+    });
+    print(getItemsUrl);
+
+    var response = await http.get(getItemsUrl, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return ItemModel.fromJson(jsonDecode(response.body)).items;
+    }
+    return null;
+  }
+
   static Future<ItemDetail> getItemDetail(int id) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$id");
     var response = await http.get(url, headers: {

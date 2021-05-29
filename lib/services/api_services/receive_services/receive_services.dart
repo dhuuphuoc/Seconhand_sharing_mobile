@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/models/item_model/item_model.dart';
 import 'package:secondhand_sharing/models/receive_request_model/receive_request_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
@@ -13,6 +15,8 @@ import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
 class ReceiveServices {
+  static int _pageSize = 8;
+
   static Future<int> registerToReceive(int itemId, String message) async {
     Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem");
     var response = await http.post(url,
@@ -29,9 +33,26 @@ class ReceiveServices {
     }
   }
 
+  static Future<List<Item>> getRequestedItems(int userId, int pageNumber) async {
+    Uri getItemsUrl = Uri.https(APIService.apiUrl, "/ReceiveItem/$userId/requests", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": _pageSize.toString(),
+    });
+    print(getItemsUrl);
+
+    var response = await http.get(getItemsUrl, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return ItemModel.fromJson(jsonDecode(response.body)).items;
+    }
+    return null;
+  }
+
   static Future<bool> cancelRegistration(int requestId) async {
-    Uri url =
-        Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/cancel-receive");
+    Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/cancel-receive");
     var response = await http.put(
       url,
       headers: {
@@ -57,8 +78,7 @@ class ReceiveServices {
     );
     print(response.body);
     if (response.statusCode == 200)
-      return RequestDetailModel.fromJson(jsonDecode(response.body))
-          .requestDetail;
+      return RequestDetailModel.fromJson(jsonDecode(response.body)).requestDetail;
     else
       return null;
   }
@@ -92,8 +112,7 @@ class ReceiveServices {
   }
 
   static Future<bool> cancelReceiver(int requestId) async {
-    Uri url =
-        Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/cancel-receiver");
+    Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/cancel-receiver");
     var response = await http.put(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
@@ -107,8 +126,7 @@ class ReceiveServices {
   }
 
   static Future<bool> sendThanks(int requestId, String message) async {
-    Uri url =
-        Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/send-thanks");
+    Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/send-thanks");
     var response = await http.put(url,
         headers: {
           HttpHeaders.contentTypeHeader: ContentType.json.value,
@@ -124,8 +142,7 @@ class ReceiveServices {
   }
 
   static Future<UserInfo> getReceiverInfo(int requestId) async {
-    Uri url =
-        Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/receiver-info");
+    Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/receiver-info");
     var response = await http.get(
       url,
       headers: {

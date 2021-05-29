@@ -130,9 +130,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         listViewWidgets.add(ItemCard(item));
       });
     listViewWidgets.add(_isLoading
-        ? Center(
-            heightFactor: 8,
-            child: CircularProgressIndicator(),
+        ? Container(
+            height: screenSize.height * 0.2,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           )
         : Container(
             height: _isEnd ? 0 : screenSize.height * 0.2,
