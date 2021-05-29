@@ -118,10 +118,8 @@ class AuthenticationService {
     var response = await http.post(url, body: jsonEncode(registerForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
-    if (response.statusCode == 200) {
-      return RegisterModel.fromJson(jsonDecode(response.body));
-    }
-    return null;
+    RegisterModel registerModel = RegisterModel.fromJson(jsonDecode(response.body));
+    return registerModel;
   }
 
   static Future<int> forgotPassword(ForgotPasswordForm forgotPasswordForm) async {

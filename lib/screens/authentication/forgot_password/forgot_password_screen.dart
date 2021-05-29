@@ -26,16 +26,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.forgotPassword(
-        ForgotPasswordForm(_emailTextController.text));
+    int statusCode = await AuthenticationService.forgotPassword(ForgotPasswordForm(_emailTextController.text));
 
     if (statusCode == 200) {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).success,
-              S.of(context).checkMailForgotPassword, "OK");
+          return NotifyDialog(S.of(context).success, S.of(context).checkMailForgotPassword, "OK");
         },
       ).whenComplete(() {
         Navigator.pop(context);
@@ -45,8 +43,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
-              S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail, S.of(context).tryAgain);
         },
       );
     }
@@ -102,9 +99,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  _isLoading
-                      ? Align(child: CircularProgressIndicator())
-                      : SizedBox(),
+                  _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
                   SizedBox(
                     height: 15,
                   ),
