@@ -12,6 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/authentication/forgot_password/forgot_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/login/login_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
@@ -39,8 +40,8 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
-  NotificationService().chattingWithUserId = null;
-  NotificationService().watchingItemId = null;
+  Application().chattingWithUserId = null;
+  Application().watchingItemId = null;
   FirebaseServices.handleFirebaseMessage(remoteMessage);
 }
 
@@ -62,7 +63,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
+
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     // Timer.periodic(Duration(seconds: 4), (timer) {
     //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

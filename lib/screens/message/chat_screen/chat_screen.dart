@@ -9,6 +9,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/local_widgets/message_box.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
@@ -34,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      NotificationService().chattingWithUserId = _userInfo.id;
+      Application().chattingWithUserId = _userInfo.id;
       _scrollController = ScrollController();
       _scrollController.addListener(() {
         if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
@@ -48,7 +49,6 @@ class _ChatScreenState extends State<ChatScreen> {
         });
         _subscription = FirebaseMessaging.onMessage.listen((message) {
           if (message.data["type"] != "1") return;
-          print(message.data);
           UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
           print(newMessage.content);
           if (newMessage.sendFromAccountId == _userInfo.id) {
@@ -65,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _subscription.cancel();
     super.dispose();
-    NotificationService().chattingWithUserId = null;
+    Application().chattingWithUserId = null;
   }
 
   void loadMoreMessages() {

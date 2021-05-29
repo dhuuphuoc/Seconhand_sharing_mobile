@@ -24,8 +24,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> loadAddress() async {
-    Map<int, Province> provinces =
-        await loadProvinceData("assets/data/viet_nam_address.csv");
+    Map<int, Province> provinces = await loadProvinceData("assets/data/viet_nam_address.csv");
     Country vn = Country(84, S.of(context).vietNam, provinces);
     CountryData().vn = vn;
   }
@@ -55,8 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       String deviceToken = await FirebaseMessaging.instance.getToken();
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       String oldDeviceToken = sharedPreferences.getString("device_token");
       if (deviceToken != oldDeviceToken) {
         FirebaseServices.saveTokenToDatabase(deviceToken);
@@ -82,8 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print(url);
     String userId = url.queryParameters["userid"];
     String code = url.queryParameters["code"].replaceAll(" ", "+");
-    Keys.navigatorKey.currentState.pushNamed("/reset-password",
-        arguments: {"userId": userId, "code": code});
+    Keys.navigatorKey.currentState.pushNamed("/reset-password", arguments: {"userId": userId, "code": code});
   }
 
   Future<void> loadData() async {
@@ -95,6 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     loadData();
     super.initState();
   }
@@ -111,9 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Center(
               child: Image.asset("assets/images/login_icon.png"),
             ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: CircularProgressIndicator()),
+            Align(alignment: Alignment.bottomCenter, child: CircularProgressIndicator()),
           ],
         ),
       ),

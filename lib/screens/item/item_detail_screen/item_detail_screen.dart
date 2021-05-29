@@ -10,11 +10,14 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_status.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
@@ -52,7 +55,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           _isOwn = AccessInfo().userInfo.id == itemDetail.donateAccountId;
           _itemDetail = itemDetail;
         });
-        if (_isOwn) {
+        if (_isOwn && _itemDetail.status != ItemStatus.success) {
           var requests = await ReceiveServices.getItemRequests(itemDetail.id);
           if (requests != null) {
             setState(() {
@@ -75,19 +78,63 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           _receivedUserInfo = await ItemServices.getReceivedUserInfo(_itemDetail.id);
         }
         _subscription = FirebaseMessaging.onMessage.listen((message) {
-          print(message.data);
-          if (message.data["type"] != "2") return;
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
           final scaffold = ScaffoldMessenger.of(context);
-          scaffold.showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
-            ),
-          );
-          receiveRequest.requestStatus = RequestStatus.pending;
-          setState(() {
-            _receiveRequestsModel.requests.add(receiveRequest);
-          });
+          if (_isOwn)
+            switch (message.data["type"]) {
+              case "2":
+                ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
+                if (receiveRequest.itemId != _itemDetail.id) return;
+                scaffold.showSnackBar(
+                  SnackBar(
+                    content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
+                  ),
+                );
+                receiveRequest.requestStatus = RequestStatus.pending;
+                setState(() {
+                  _receiveRequestsModel.requests.add(receiveRequest);
+                });
+                break;
+              case "3":
+                var data = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
+
+                if (_itemDetail.id != data.itemId) return;
+                int requestId = data.requestId;
+                setState(() {
+                  _receiveRequestsModel.requests.removeWhere((request) {
+                    if (request.id == requestId) {
+                      if (_receiveRequestsModel.acceptedRequest?.id == requestId) {
+                        _receiveRequestsModel.acceptedRequest = null;
+                      }
+                      scaffold.showSnackBar(
+                        SnackBar(
+                          content: Text(S.of(context).cancelReceiveRequestSnackBar(request.receiverName)),
+                        ),
+                      );
+                      return true;
+                    }
+                    return false;
+                  });
+                });
+                break;
+            }
+          else {
+            switch (message.data["type"]) {
+              case "4":
+                var data = RequestStatusModel.fromJson(jsonDecode(message.data["message"]));
+                if (_itemDetail.id != data.itemId) return;
+                scaffold.showSnackBar(
+                  SnackBar(
+                    content: data.requestStatus == RequestStatus.receiving
+                        ? Text(S.of(context).acceptedRequestNotification)
+                        : Text(S.of(context).cancelAcceptRequestNotification),
+                  ),
+                );
+                setState(() {
+                  _requestStatus = data.requestStatus;
+                });
+                break;
+            }
+          }
         });
         setState(() {
           _isLoading = false;
@@ -101,6 +148,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   @override
   void dispose() {
     _subscription.cancel();
+    Application().watchingItemId = null;
     super.dispose();
   }
 
@@ -125,12 +173,17 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     setState(() {
       _isCanceling = true;
     });
-    var result = await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
-    if (result) {
-      setState(() {
-        _itemDetail.userRequestId = 0;
-        _requestStatus = null;
-      });
+    var confirm = await showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(S.of(context).cancelRegister, S.of(context).cancelRegistrationMessage));
+    if (confirm) {
+      var result = await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
+      if (result) {
+        setState(() {
+          _itemDetail.userRequestId = 0;
+          _requestStatus = null;
+        });
+      }
     }
     setState(() {
       _isCanceling = false;
@@ -142,7 +195,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         context: context,
         builder: (context) => ConfirmDialog(
               S.of(context).confirmSent,
-              S.of(context).confirmationMessage,
+              S.of(context).confirmationSentMessage,
             )).then((value) {
       if (value) {
         ItemServices.confirmSent(_itemDetail.id).then((value) {
@@ -184,7 +237,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget build(BuildContext context) {
     if (_itemDetail.id == null) {
       _itemDetail.id = ModalRoute.of(context).settings.arguments;
-      NotificationService().watchingItemId = _itemDetail.id;
+      Application().watchingItemId = _itemDetail.id;
       print(_itemDetail.id);
     }
     return Scaffold(
@@ -252,6 +305,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             strokeWidth: 3,
                           ),
                         ),
+                      if (_isOwn && _itemDetail.status != ItemStatus.success)
+                        SizedBox(
+                          height: 10,
+                        ),
                       if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
                       Container(
                         margin: EdgeInsets.symmetric(
@@ -300,8 +357,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                     color: Colors.green,
                                   ),
                                   SizedBox(height: 10),
-                                  Text(S.of(context).sentNotification(
-                                      _receivedUserInfo?.fullName == null ? "" : _receivedUserInfo.fullName)),
+                                  Text(S.of(context).sentNotification(_receivedUserInfo.fullName)),
                                   SizedBox(height: 10),
                                 ],
                               ),

@@ -5,8 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -15,12 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseServices {
-  static const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'flutter_firebase_notifications_channel', // id
-    'High Importance Notifications', // title
-    'This channel is used for important notifications.', // description
-    importance: Importance.high,
-  );
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<bool> saveTokenToDatabase(String token) async {
@@ -39,7 +36,29 @@ class FirebaseServices {
   }
 
   static void handleFirebaseMessage(RemoteMessage remoteMessage) {
-    NotificationService().sendNotification(remoteMessage);
+    print(remoteMessage.data);
+    switch (remoteMessage.data["type"]) {
+      case "1":
+        UserMessage message = UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().chattingWithUserId == message.sendFromAccountId) return;
+        NotificationService().sendInboxNotification(message);
+        break;
+      case "2":
+        ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().watchingItemId == receiveRequest.itemId) return;
+        NotificationService().sendIncomingReceiveRequestNotification(receiveRequest);
+        break;
+      case "3":
+        var data = CancelRequestModel.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().watchingItemId == data.itemId) return;
+        flutterLocalNotificationsPlugin.cancel(data.requestId);
+        break;
+      case "4":
+        var data = RequestStatusModel.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().watchingItemId == data.itemId) return;
+        NotificationService().sendRequestStatusNotification(data);
+        break;
+    }
   }
 
   static Future<bool> removeTokenFromDatabase() async {
@@ -60,9 +79,6 @@ class FirebaseServices {
 
   static Future<void> initFirebase() async {
     await Firebase.initializeApp();
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
     FirebaseMessaging.instance.onTokenRefresh.listen((deviceToken) async {
       await saveTokenToDatabase(deviceToken);
     });

@@ -1256,10 +1256,10 @@ class S {
   }
 
   /// `Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!`
-  String get confirmationMessage {
+  String get confirmationSentMessage {
     return Intl.message(
       'Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!',
-      name: 'confirmationMessage',
+      name: 'confirmationSentMessage',
       desc: '',
       args: [],
     );
@@ -1302,6 +1302,46 @@ class S {
       name: 'incomingReceiveRequestSnackBar',
       desc: '',
       args: [fullName],
+    );
+  }
+
+  /// `{fullName} cancelled his request`
+  String cancelReceiveRequestSnackBar(Object fullName) {
+    return Intl.message(
+      '$fullName cancelled his request',
+      name: 'cancelReceiveRequestSnackBar',
+      desc: '',
+      args: [fullName],
+    );
+  }
+
+  /// `Your registration was accepted!`
+  String get acceptedRequestNotification {
+    return Intl.message(
+      'Your registration was accepted!',
+      name: 'acceptedRequestNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your accepted registration was cancelled!`
+  String get cancelAcceptRequestNotification {
+    return Intl.message(
+      'Your accepted registration was cancelled!',
+      name: 'cancelAcceptRequestNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to cancel this registrations?`
+  String get cancelRegistrationMessage {
+    return Intl.message(
+      'Do you want to cancel this registrations?',
+      name: 'cancelRegistrationMessage',
+      desc: '',
+      args: [],
     );
   }
 }

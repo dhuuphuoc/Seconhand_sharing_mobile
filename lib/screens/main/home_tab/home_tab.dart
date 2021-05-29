@@ -14,8 +14,7 @@ class HomeTab extends StatefulWidget {
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab>
-    with AutomaticKeepAliveClientMixin<HomeTab> {
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<HomeTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
@@ -29,8 +28,7 @@ class _HomeTabState extends State<HomeTab>
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _postsScrollController.addListener(() {
-        if (_postsScrollController.position.maxScrollExtent ==
-            _postsScrollController.offset) {
+        if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
           if (!_isEnd && !_isLoading) {
             _pageNumber++;
             fetchItems();
@@ -57,8 +55,7 @@ class _HomeTabState extends State<HomeTab>
       setState(() {
         _isLoading = true;
       });
-      var items =
-          await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+      var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
       if (items.isEmpty) {
         setState(() {
           _isEnd = true;
@@ -94,9 +91,7 @@ class _HomeTabState extends State<HomeTab>
           )),
       Container(
         margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
         height: 130,
         child: ListView.builder(
           itemExtent: 90,
@@ -104,8 +99,7 @@ class _HomeTabState extends State<HomeTab>
           itemCount: _categoryModel.categories.length,
           itemBuilder: (BuildContext context, int index) {
             Category category = _categoryModel.categories[index];
-            return CategoryTab(
-                category.id == _categoryModel.selectedId, category, () async {
+            return CategoryTab(category.id == _categoryModel.selectedId, category, () async {
               setState(() {
                 _runningTasks++;
                 _categoryModel.selectedId = category.id;
@@ -114,8 +108,7 @@ class _HomeTabState extends State<HomeTab>
                 _items = [];
               });
               _pageNumber = 1;
-              var items = await ItemServices.getItems(
-                  _pageNumber, _categoryModel.selectedId);
+              var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
               setState(() {
                 _items = items;
                 if (_items.isEmpty) {
@@ -181,8 +174,7 @@ class _HomeTabState extends State<HomeTab>
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            sliver:
-                SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
           )
         ],
         // ListView(

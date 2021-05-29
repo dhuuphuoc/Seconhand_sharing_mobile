@@ -4,6 +4,7 @@ import 'package:timeago/timeago.dart' as timeAgo;
 class TimeAgo {
   static String parse(DateTime dateTime, {String locale = "en"}) {
     DateTime now = DateTime.now();
+    dateTime = dateTime.add(now.timeZoneOffset);
     Duration diff = now.difference(dateTime);
     if (locale == "vi") {
       int year = diff.inDays ~/ 365.25;
@@ -23,9 +24,7 @@ class TimeAgo {
               if (diff.inMinutes > 0) {
                 return "${diff.inMinutes} phút trước";
               } else {
-                if (diff.inSeconds > 0) {
-                  return "${diff.inSeconds} giây trước";
-                }
+                return "Vừa xong";
               }
             }
           }

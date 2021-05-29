@@ -130,7 +130,7 @@
       }
     }
   },
-  "confirmationMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!",
+  "confirmationSentMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!",
   "incomingReceiveRequest" :  "{fullName} registered to receive your {itemName} with message: {message}",
   "@incomingReceiveRequest" :
   {
@@ -156,7 +156,6 @@
       "fullName": {
         "example": "Hữu Dũng"
       }
-
     }
   },
   "incomingReceiveRequestSnackBar" : "{fullName} registered to receive your item",
@@ -167,7 +166,19 @@
       "fullName": {
         "example": "Hữu Dũng"
       }
-
     }
-  }
+  },
+  "cancelReceiveRequestSnackBar" : "{fullName} cancelled his request",
+  "@cancelReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} cancelled his request",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "acceptedRequestNotification" : "Your registration was accepted!",
+  "cancelAcceptRequestNotification" : "Your accepted registration was cancelled!",
+  "cancelRegistrationMessage" : "Do you want to cancel this registrations?"
 }

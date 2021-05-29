@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/models/request_detail_model/request_status.da
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 
 class RequestsExpansionPanel extends StatefulWidget {
@@ -92,7 +93,6 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                             Navigator.pushNamed(context, "/profile", arguments: request.receiverId);
                           },
                           child: Container(
-                            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black54))),
                             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                             margin: EdgeInsets.symmetric(vertical: 8),
                             child: Row(
@@ -111,9 +111,6 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        height: 2,
-                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
@@ -129,7 +126,8 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                                         ],
                                       ),
                                       Text(
-                                        "2 Phút trước",
+                                        TimeAgo.parse(request.createDate,
+                                            locale: Localizations.localeOf(context).languageCode),
                                         style: Theme.of(context).textTheme.subtitle2,
                                       ),
                                       SizedBox(
@@ -167,6 +165,10 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                                                   ? S.of(context).accept
                                                   : S.of(context).cancelAccept),
                                         ),
+                                      ),
+                                      Divider(
+                                        height: 5,
+                                        thickness: 2,
                                       ),
                                     ],
                                   ),

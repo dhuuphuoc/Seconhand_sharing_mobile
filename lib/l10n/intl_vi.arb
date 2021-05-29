@@ -130,7 +130,7 @@
     }
   }
   },
-  "confirmationMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
+  "confirmationSentMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
   "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn {message}",
   "@incomingReceiveRequest" :
   {
@@ -168,5 +168,18 @@
       }
 
     }
-  }
+  },
+  "cancelReceiveRequestSnackBar" : "{fullName} đã hủy đăng ký",
+  "@cancelReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} đã hủy đăng ký",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "acceptedRequestNotification" : "Đăng ký nhận của bạn đã được chấp nhận",
+  "cancelAcceptRequestNotification" : "Đăng ký nhận của bạn đã bị hủy chấp nhận!",
+  "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?"
 }
