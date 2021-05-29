@@ -1,5 +1,7 @@
 {
   "login": "Login",
+  "logout": "Logout",
+  "logoutConfirmation": "Are you sure you want to logout?",
   "loginHint": "Login to share your items",
   "registerForFree": "Register for free",
   "forgotPassword": "Forgot password",
@@ -31,7 +33,9 @@
   "post": "Post",
   "tryAgain" : "Try again",
   "failed" : "Failed",
+  "postFailed" : "An error occurred while posting!",
   "loginFailedNotification" : "Username or password is incorrect.",
+  "selectPhotos": "Select photos",
   "success": "Success",
   "registerSuccess": "Register Successful. Check your confirm email",
   "registerFailedNotification": "Register information is incorrect",
@@ -52,8 +56,133 @@
   "hour" : "hour",
   "minute" : "minute",
   "second" : "second",
+  "address" : "Address",
+  "addressHint" : "Number, street",
+  "ward" : "Ward",
+  "district" : "District",
+  "province" : "Province",
+  "vietNam" : "Viet Nam",
+  "receiveAddress" : "Receive address",
+  "provinceEmptyError" : "Province can't be empty!",
+  "districtEmptyError" : "District can't be empty!",
+  "wardEmptyError" : "Ward can't be empty!",
+  "addressEmptyError" : "Address can't be empty!",
+  "addressError" : "Address must be filled completely!",
+  "invalidPhoneNumber" : "Invalid phone number!",
+  "titleEmptyError" : "Title can't be empty!",
+  "descriptionEmptyError" : "Description can't be empty!",
+  "notEnoughImages" : "Item must have at least one images!",
+  "images" : "Images",
+  "posted" : "Posted",
+  "postedNotification" : "Your item is posted! Thank you so much!",
+  "postError" : "An error occurred while posting",
   "checkMailForgotPassword": "Check your email",
-  "unexistEmail": "Your email does not exist"
-
-
+  "resetPassword": "Reset password",
+  "resetPasswordHint": "Insert your new password to change",
+  "notExistEmail": "Your email does not exist",
+  "endNotifyMessage" : "Your have seen all posts",
+  "error" : "Error",
+  "grantStoragePermission" : "Allow 2Hand-Sharing access device's storage",
+  "grantStoragePermissionHint" : "Grant access permission in settings to upload your item's images",
+  "allowAccess" : "Allow access",
+  "detail" : "Detail",
+  "registerToReceive": "Register to receive",
+  "resetPasswordSuccess" : "Your password was reset",
+  "resetPasswordFailed" : "Recovery link is expired",
+  "yes" : "Yes",
+  "no": "No",
+  "message" : "Message",
+  "registered" : "Registered",
+  "cancelRegister": "Cancel registration",
+  "pending": "Pending",
+  "accepted" : "Accepted",
+  "unregistered" : "Unregistered",
+  "registrations" : "Registrations",
+  "accept" : "Accept",
+  "cancel" : "Cancel",
+  "confirmSent": "Confirm sent",
+  "complete" : "Complete",
+  "messageEmptyError" : "Message can't be empty",
+  "contact" : "Contact",
+  "dateOfBirth": "Date of Birth",
+  "emptyPhoneError": "Phone number can't be empty",
+  "contactDenied" : "Your registration isn't accepted",
+  "close" : "Close",
+  "sendThanks" : "Send thanks",
+  "thanks" : "Thank you so much!",
+  "send" : "Send",
+  "thanksMessage" : "Thanks message",
+  "thanksSent" : "Thanks sent!",
+  "profile" : "Profile",
+  "donation": "Donation",
+  "save" : "Save",
+  "confirmEmail": "Confirm Email",
+  "confirmEmailSuccess": "Confirm email successful",
+  "confirmEmailFail": "Confirm email is not correct. Check your confirm email",
+  "confirmEmailHint": "Press button CONFIRM to complete process register account on our system",
+  "category" : "Category",
+  "categoryUnselectedError" : "You haven't selected category of your item yet!",
+  "sendMessage" : "Send message",
+  "cancelAccept" : "Cancel accept",
+  "cancelAlert" :  "Do you want to cancel {fullName}'s accept?",
+  "@cancelAlert" :
+  {
+    "source_text" :  "Do you want to cancel {fullName}'s accept?",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "confirmationSentMessage" : "Are you sure? Just confirm when the item was sent. The item will be closed after confirm sent!",
+  "incomingReceiveRequest" :  "{fullName} registered to receive your {itemName} with message: {message}",
+  "@incomingReceiveRequest" :
+  {
+    "source_text" :  "{fullName} registered to receive your {itemName} with message: {message}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      },
+      "itemName": {
+        "example": "Cho TV"
+      },
+      "message": {
+        "example": "Cho em xin"
+      }
+    }
+  },
+  "back" : "Back",
+  "sentNotification" : "This item is donated for {fullName}",
+  "@sentNotification" :
+  {
+    "source_text" :  "This item is donated for {fullName}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "incomingReceiveRequestSnackBar" : "{fullName} registered to receive your item",
+  "@incomingReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} registered your item",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "cancelReceiveRequestSnackBar" : "{fullName} cancelled his request",
+  "@cancelReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} cancelled his request",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "acceptedRequestNotification" : "Your registration was accepted!",
+  "cancelAcceptRequestNotification" : "Your accepted registration was cancelled!",
+  "cancelRegistrationMessage" : "Do you want to cancel this registrations?"
 }

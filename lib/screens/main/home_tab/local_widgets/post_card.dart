@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 
 class PostCard extends StatelessWidget {
+  final Function onPostItem;
+
+  PostCard(this.onPostItem);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -14,13 +18,10 @@ class PostCard extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 7),
               child: CircleAvatar(
-                maxRadius: 25,
-                child: Image.asset(
+                radius: 30,
+                foregroundImage: AssetImage(
                   "assets/images/person.png",
-                  height: 60,
-                  fit: BoxFit.fill,
                 ),
-                backgroundColor: Colors.transparent,
               ),
             ),
           ),
@@ -29,9 +30,7 @@ class PostCard extends StatelessWidget {
             child: Container(
               height: 38,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/postItem");
-                },
+                onPressed: onPostItem,
                 child: Text(
                   S.of(context).postItem,
                 ),

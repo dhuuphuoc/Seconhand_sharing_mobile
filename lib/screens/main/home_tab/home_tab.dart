@@ -1,121 +1,142 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
-import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
-import 'package:secondhand_sharing/widgets/horizontal_categories_list/horizontal_categories_list.dart';
+import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 
 class HomeTab extends StatefulWidget {
   @override
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<HomeTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
   bool _isLoading = true;
   bool _isEnd = false;
-  ScrollController _postsScrollController = ScrollController();
+  int _runningTasks = 0;
+  ScrollController _postsScrollController;
   @override
   void initState() {
     fetchItems();
-    _postsScrollController.addListener(() {
-      if (_postsScrollController.position.maxScrollExtent ==
-          _postsScrollController.offset) {
-        _pageNumber++;
-        fetchItems();
-      }
-    });
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _postsScrollController.addListener(() {
+        if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
+          if (!_isEnd && !_isLoading) {
+            _pageNumber++;
+            fetchItems();
+          }
+        }
+      });
+    });
   }
 
-  void fetchItems() {
+  @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> fetchItems() async {
     if (!_isEnd) {
       setState(() {
         _isLoading = true;
       });
-      ItemServices.getItems(_pageNumber).then((value) {
+      var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+      if (items.isEmpty) {
         setState(() {
-          _items.addAll(value);
+          _isEnd = true;
           _isLoading = false;
-          if (value.isEmpty) {
-            _isEnd = true;
-            _postsScrollController.animateTo(
-              _postsScrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 800),
-            );
-          }
         });
-      });
+        _postsScrollController.animateTo(
+          _postsScrollController.position.maxScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 800),
+        );
+      } else {
+        setState(() {
+          _items.addAll(items);
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+    Size screenSize = MediaQuery.of(context).size;
+    _postsScrollController = PrimaryScrollController.of(context);
+
     var listViewWidgets = <Widget>[
-      Container(margin: EdgeInsets.all(10), child: PostCard()),
       Container(
           margin: EdgeInsets.all(10),
-          child: HorizontalCategoriesList(_categoryModel)),
+          child: PostCard(
+            () {
+              Navigator.pushNamed(context, "/post-item").then((value) {});
+            },
+          )),
+      Container(
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
+        height: 130,
+        child: ListView.builder(
+          itemExtent: 90,
+          scrollDirection: Axis.horizontal,
+          itemCount: _categoryModel.categories.length,
+          itemBuilder: (BuildContext context, int index) {
+            Category category = _categoryModel.categories[index];
+            return CategoryTab(category.id == _categoryModel.selectedId, category, () async {
+              setState(() {
+                _runningTasks++;
+                _categoryModel.selectedId = category.id;
+                _isEnd = false;
+                _isLoading = true;
+                _items = [];
+              });
+              _pageNumber = 1;
+              var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+              setState(() {
+                _items = items;
+                if (_items.isEmpty) {
+                  _isEnd = true;
+                }
+                _runningTasks--;
+                if (_runningTasks == 0) {
+                  _isLoading = false;
+                }
+              });
+            });
+          },
+        ),
+      ),
     ];
 
-    _items.forEach((item) {
-      listViewWidgets.add(Card(
-        elevation: 10,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  item.imageUrl,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 10, left: 5),
-                child: Text(
-                  item.itemName,
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                child: Text(
-                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)} - ${item.receiveAddress}",
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Divider(
-                height: 3,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                child: Text(
-                  item.description,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  maxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ));
-    });
-    if (_isLoading) {
-      listViewWidgets.add(Center(
-        heightFactor: 8,
-        child: CircularProgressIndicator(),
-      ));
-    }
+    if (_runningTasks == 0)
+      _items.forEach((item) {
+        listViewWidgets.add(ItemCard(item));
+      });
+    listViewWidgets.add(_isLoading
+        ? Center(
+            heightFactor: 8,
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            height: _isEnd ? 0 : screenSize.height * 0.2,
+          ));
     if (_isEnd) {
       listViewWidgets.add(Card(
         elevation: 10,
@@ -131,20 +152,39 @@ class _HomeTabState extends State<HomeTab> {
               color: Colors.green,
             ),
             SizedBox(height: 10),
-            Text("Bạn đã coi tất cả các bài viết"),
+            Text(S.of(context).endNotifyMessage),
             SizedBox(height: 10),
           ],
         ),
       ));
     }
-    return Container(
-      color: Colors.transparent,
-      width: double.infinity,
-      height: double.infinity,
-      child: ListView(
-        controller: _postsScrollController,
-        children: listViewWidgets,
+    return RefreshIndicator(
+      edgeOffset: screenSize.height * 0.2,
+      onRefresh: () async {
+        _items = [];
+        _pageNumber = 1;
+        await fetchItems();
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+          )
+        ],
+        // ListView(
+        //   controller: _postsScrollController,
+        //   children: listViewWidgets,
+        // ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

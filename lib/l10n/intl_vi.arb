@@ -1,5 +1,7 @@
 {
   "login": "Đăng nhập",
+  "logout": "Đăng xuất",
+  "logoutConfirmation": "Bạn có muốn đăng xuất không?",
   "loginHint": "Đăng nhập để chia sẻ món đồ của bạn",
   "registerForFree": "Đăng ký miễn phí",
   "forgotPassword": "Quên mật khẩu",
@@ -31,7 +33,9 @@
   "post": "Đăng",
   "tryAgain" : "Thử lại",
   "failed" : "Thất bại",
+  "postFailed" : "Có lỗi trong quá trình đăng bài!",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
+  "selectPhotos": "Chọn ảnh",
   "success": "Thành công",
   "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
   "registerFailedNotification": "Thông tin đăng ký không ",
@@ -52,7 +56,133 @@
   "hour" : "giờ",
   "minute" : "phút",
   "second" : "giây",
+  "address" : "Địa chỉ",
+  "addressHint" : "Số nhà, tên đường",
+  "ward" : "Phường xã",
+  "district" : "Quận huyện",
+  "province" : "Tỉnh thành",
+  "vietNam" : "Việt Nam",
+  "receiveAddress" : "Địa chỉ nhận",
+  "provinceEmptyError" : "Tỉnh thành không được trống!",
+  "districtEmptyError" : "Quận huyện không được trống!",
+  "wardEmptyError" : "Phường xã không được trống!",
+  "addressEmptyError" : "Số nhà, tên đường không được bỏ trống",
+  "addressError" : "Địa chỉ cần phải điền hoàn chỉnh",
+  "invalidPhoneNumber" : "Số điện thoại không hợp lệ!",
+  "titleEmptyError" : "Tiêu đề không được bỏ trống!",
+  "descriptionEmptyError" : "Phần mô tả không được bỏ trống!",
+  "notEnoughImages" : "Phải có ít nhất một hình ảnh của đồ vật!",
+  "images" : "Hình ảnh",
+  "posted" : "Đã đăng",
+  "postedNotification" : "Vật dụng của bạn đã được đăng! Cảm ơn bạn rất nhiều!",
+  "postError" : "Có lỗi trong quá trình đăng bài",
+  "error" : "Lỗi",
   "checkMailForgotPassword": "Kiểm tra email của bạn",
-  "unexistEmail": "Email của bạn không tồn tại"
+  "notExistEmail": "Email của bạn không tồn tại",
+  "grantStoragePermission" : "Cho phép 2Hand-Sharing truy cập vào bộ nhớ",
+  "grantStoragePermissionHint" : "Cấp quyền truy cập trong cài đặt để gửi hình ảnh đồ vật bạn muốn cho",
+  "allowAccess" : "Cho phép truy cập",
+  "resetPassword": "Thay đổi mật khẩu",
+  "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
+  "endNotifyMessage" : "Bạn đã xem tất cả các bài viết",
+  "detail" : "Thông tin chi tiết",
+  "registerToReceive": "Đăng ký nhận",
+  "resetPasswordSuccess" : "Mật khẩu của bạn đã được đặt lại",
+  "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn",
+  "yes" : "Có",
+  "no": "Không",
+  "message" : "Lời nhắn",
+  "registered" : "Đã đăng ký",
+  "cancelRegister": "Hủy đăng ký",
+  "pending": "Đã đăng ký",
+  "accepted" : "Đã chấp nhận",
+  "unregistered" : "Chưa đăng ký",
+  "registrations" : "Lượt đăng ký",
+  "accept" : "Chấp nhận",
+  "cancel" : "Hủy",
+  "confirmSent": "Xác nhận đã cho",
+  "complete" : "Hoàn thành",
+  "messageEmptyError" : "Lời nhắn không thể bỏ trống",
+  "contact" : "Liên hệ",
+  "dateOfBirth": "Ngày sinh",
+  "emptyPhoneError": "Số điện thoại không được bỏ trống",
+  "contactDenied" : "Đăng ký nhận của bạn chưa được chấp nhận",
+  "close" : "Đóng",
+  "sendThanks" : "Gửi lời cảm ơn",
+  "thanks" : "Cảm ơn bạn rất nhiều!",
+  "send" : "Gửi",
+  "thanksMessage" : "Lời cảm ơn",
+  "thanksSent": "Lời cảm ơn của bạn đã được gửi đi",
+  "profile" : "Thông tin cá nhân",
+  "donation": "Quyên góp",
+  "save" : "Lưu",
+  "confirmEmail": "Xác nhận email",
+  "confirmEmailFail": "Xác nhận email của bạn không . Vui lòng kiểm tra lại email",
+  "confirmEmailHint": "Bấm nút XÁC NHẬN để hoàn tất quy trình đăng ký tài khoản trên hệ thống",
+  "category" : "Phân loại",
+  "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm",
+  "sendMessage" : "Nhắn tin",
+  "cancelAccept" : "Hủy chấp nhận",
+  "cancelAlert" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+  "@cancelAlert" :
+  {
+    "source_text" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+    "placeholders":  {
+    "fullName": {
+      "example": "Hữu Dũng"
+    }
+  }
+  },
+  "confirmationSentMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
+  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn {message}",
+  "@incomingReceiveRequest" :
+  {
+    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      },
+      "itemName": {
+        "example": "Cho TV"
+      },
+      "message": {
+        "example": "Cho em xin"
+      }
+    }
+  },
+  "back": "Quay lại",
+  "sentNotification" : "Vật phẩm này đã được tặng cho {fullName}",
+  "@sentNotification" :
+  {
+    "source_text" :  "Vật phẩm này đã được tặng cho {fullName}",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "incomingReceiveRequestSnackBar" : "{fullName} đã đăng ký nhận vật phẩm",
+  "@incomingReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
 
+    }
+  },
+  "cancelReceiveRequestSnackBar" : "{fullName} đã hủy đăng ký",
+  "@cancelReceiveRequestSnackBar" :
+  {
+    "source_text" :  "{fullName} đã hủy đăng ký",
+    "placeholders":  {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "acceptedRequestNotification" : "Đăng ký nhận của bạn đã được chấp nhận",
+  "cancelAcceptRequestNotification" : "Đăng ký nhận của bạn đã bị hủy chấp nhận!",
+  "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?"
 }

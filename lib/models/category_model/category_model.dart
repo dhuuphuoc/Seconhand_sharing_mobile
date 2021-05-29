@@ -15,9 +15,7 @@ class CategoryModel {
   ];
   int selectedId;
 
-  CategoryModel() {
-    selectedId = 1;
-  }
+  CategoryModel();
 
   CategoryModel.withAll() {
     Category allCategory =

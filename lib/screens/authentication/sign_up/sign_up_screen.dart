@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +28,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
+  final _dateOfBirthController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   bool _isLoading = false;
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1900,8), lastDate: DateTime(2100));
+    if(picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        _dateOfBirthController.value = TextEditingValue(text: DateFormat("yyyy-MM-dd").format(picked).toString());
+      });
+  }
 
   void _registerSubmit() async {
     if (!_formKey.currentState.validate()) return;
@@ -34,76 +51,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     RegisterModel registerModel = await AuthenticationService.register(
         RegisterForm(_fullNameTextController.text, _emailTextController.text,
-            _passwordTextController.text));
-    if (registerModel.succeeded == true) {
+            _passwordTextController.text, _dateOfBirthController.text, _phoneNumberController.text));
+    print(_dateOfBirthController.text);
+    if (registerModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      _showDialogSuccess();
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return NotifyDialog(
+              S.of(context).success, S.of(context).registerSuccess, "OK");
+        },
+      ).whenComplete(() {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, "/");
+      });
     } else {
-      _showDialogFail();
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
+              S.of(context).tryAgain);
+        },
+      );
     }
     setState(() {
       _isLoading = false;
     });
-  }
-
-  Future<void> _showDialogSuccess() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: Text(S.of(context).success),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(S.of(context).registerSuccess),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "/");
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showDialogFail() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: Text(S.of(context).failed),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(S.of(context).registerFailedNotification),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(S.of(context).tryAgain),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -190,11 +165,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   obscureText: true,
                   onEditingComplete: _registerSubmit,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: S.of(context).confirmPassword,
                     suffixIcon: Icon(
                       Icons.lock,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: _dateOfBirthController,
+                      keyboardType: TextInputType.datetime,
+                      decoration: InputDecoration(
+                        hintText: S.of(context).dateOfBirth,
+                        suffixIcon: Icon(
+                          Icons.date_range_rounded,
+                        )
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: _phoneNumberController,
+                  validator: Validator.validatePhoneNumber,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: S.of(context).phoneNumber,
+                    suffixIcon: Icon(
+                      Icons.phone,
                     ),
                   ),
                 ),

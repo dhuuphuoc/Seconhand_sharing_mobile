@@ -1,10 +1,13 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/login_model/login_model.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
-import 'package:secondhand_sharing/user_singleton/user_singleton.dart';
+import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,10 +34,13 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     LoginModel loginModel = await AuthenticationService.login(
         LoginForm(_usernameTextController.text, _passwordTextController.text));
-    if (loginModel.succeeded) {
+    if (loginModel != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", loginModel.data.jwToken);
-      UserSingleton().token = loginModel.data.jwToken;
+      prefs.setString("token", loginModel.accessData.jwToken);
+      AccessInfo().token = loginModel.accessData.jwToken;
+      AccessInfo().userInfo = loginModel.accessData.userInfo;
+      String deviceToken = await FirebaseMessaging.instance.getToken();
+      await FirebaseServices.saveTokenToDatabase(deviceToken);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/home");
     } else {
@@ -42,26 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            title: Text(S.of(context).failed),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(S.of(context).loginFailedNotification),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).tryAgain),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
+          return NotifyDialog(S.of(context).failed,
+              S.of(context).loginFailedNotification, S.of(context).tryAgain);
         },
       );
     }
@@ -126,41 +114,48 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: S.of(context).password,
                       suffixIcon: Icon(Icons.lock)),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {
+                    TextButton(
+                      onPressed: () {
                         Navigator.of(context).pushNamed("/register");
                       },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
                       child: Text(
                         S.of(context).registerForFree,
+                        textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed("/forgotPassword");
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/forgot-password");
                       },
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          alignment: Alignment.centerRight),
                       child: Text(
                         "${S.of(context).forgotPassword}?",
+                        textAlign: TextAlign.end,
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
                 _isLoading
                     ? Align(child: CircularProgressIndicator())
                     : SizedBox(),
-                SizedBox(
-                  height: 15,
-                ),
+                if (_isLoading)
+                  SizedBox(
+                    height: 15,
+                  ),
                 Container(
                     width: double.infinity,
                     child: GradientButton(
