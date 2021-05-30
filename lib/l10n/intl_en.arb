@@ -184,5 +184,27 @@
   },
   "acceptedRequestNotification" : "Your registration was accepted!",
   "cancelAcceptRequestNotification" : "Your accepted registration was cancelled!",
-  "cancelRegistrationMessage" : "Do you want to cancel this registrations?"
+  "cancelRegistrationMessage" : "Do you want to cancel this registrations?",
+  "you" : "you",
+  "thanksNotification" : "Thanks: {content}",
+  "@thanksNotification" :
+  {
+    "source_text" :  "Thanks: {content}",
+    "placeholders":  {
+      "content": {
+        "example": "Thanks you so much!"
+      }
+    }
+  },
+  "confirmSentNotification" : "Item owner donated item for {receiver}",
+  "@confirmSentNotification" :
+  {
+    "source_text" :  "Item owner was accepted {receiver}'s registration",
+    "placeholders":  {
+      "receiver": {
+        "example": "Dũng nguyễn"
+      }
+    }
+  },
+  "notification": "Notification"
 }

@@ -10,9 +10,11 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
 import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -108,7 +110,7 @@ class NotificationService {
     );
   }
 
-  AndroidNotificationDetails prepareRequestAcceptedAndroidNotificationDetails() {
+  AndroidNotificationDetails prepareDefaultAndroidNotificationDetails() {
     DefaultStyleInformation defaultStyleInformation = DefaultStyleInformation(true, true);
 
     return AndroidNotificationDetails(
@@ -122,7 +124,7 @@ class NotificationService {
   }
 
   Future<void> sendRequestStatusNotification(RequestStatusModel requestStatus) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics = prepareRequestAcceptedAndroidNotificationDetails();
+    AndroidNotificationDetails androidPlatformChannelSpecifics = prepareDefaultAndroidNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     if (requestStatus.requestStatus == RequestStatus.receiving)
       await flutterLocalNotificationsPlugin.show(requestStatus.itemId, "<b>${requestStatus.itemName}</b>",
@@ -133,6 +135,18 @@ class NotificationService {
           S.current.cancelAcceptRequestNotification, platformChannelSpecifics,
           payload: jsonEncode({"type": "4", "message": requestStatus.toJson()}));
     }
+  }
+
+  Future<void> sendConfirmSentNotification(ConfirmSentModel data) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics = prepareDefaultAndroidNotificationDetails();
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        data.itemId,
+        "<b>${data.itemName}</b>",
+        S.current
+            .confirmSentNotification(data.receiverId == AccessInfo().userInfo.id ? S.current.you : data.receiverName),
+        platformChannelSpecifics,
+        payload: jsonEncode({"type": "6", "message": data.toJson()}));
   }
 
   Future<void> sendInboxNotification(UserMessage message) async {
@@ -168,12 +182,14 @@ class NotificationService {
     print(json);
     switch (json["type"]) {
       case "1":
+      case "5":
         var userInfo = await UserServices.getUserInfoById(json["message"]["sendFromAccountId"]);
         Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
         break;
       case "2":
       case "3":
       case "4":
+      case "6":
         var itemId = json["message"]["itemId"];
         Keys.navigatorKey.currentState.pushNamed("/item/detail", arguments: itemId);
         break;
