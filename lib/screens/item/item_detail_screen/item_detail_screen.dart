@@ -216,7 +216,18 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       if (value) {
         ItemServices.confirmSent(_itemDetail.id).then((value) {
           if (value) {
-            Navigator.pop(context);
+            setState(() {
+              _itemDetail.status = ItemStatus.success;
+              _receivedUserInfo = UserInfo(
+                  id: _receiveRequestsModel.acceptedRequest.receiverId,
+                  fullName: _receiveRequestsModel.acceptedRequest.receiverName);
+            });
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return NotifyDialog(S.of(context).notification,
+                      S.of(context).confirmSentSuccess(_receiveRequestsModel.acceptedRequest.receiverName), "Ok");
+                });
           }
         });
       }

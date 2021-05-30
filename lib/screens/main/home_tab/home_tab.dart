@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
@@ -28,10 +29,13 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _postsScrollController.addListener(() {
-        if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
-          if (!_isEnd && !_isLoading) {
-            _pageNumber++;
-            fetchItems();
+        TabBar tabBar = Keys.tabBarKey.currentWidget;
+        if (tabBar.controller.index == 0) {
+          if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
+            if (!_isEnd && !_isLoading) {
+              _pageNumber++;
+              fetchItems();
+            }
           }
         }
       });
@@ -47,6 +51,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
 
   @override
   void dispose() {
+    print("dispose");
     super.dispose();
   }
 

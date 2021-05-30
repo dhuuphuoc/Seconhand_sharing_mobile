@@ -206,5 +206,16 @@
       }
     }
   },
-  "notification": "Notification"
+  "notification": "Notification",
+  "confirmSentSuccess" : "You confirmed donate for {receiver}",
+  "@confirmSentSuccess" :
+  {
+    "source_text" : "You confirmed donate for {receiver}",
+    "placeholders":  {
+      "receiver": {
+        "example": "Dũng nguyễn"
+      }
+    }
+  },
+  "emptyNotification" : "There is no notification"
 }

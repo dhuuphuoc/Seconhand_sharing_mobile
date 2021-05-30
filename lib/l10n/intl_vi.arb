@@ -134,7 +134,7 @@
   }
   },
   "confirmationSentMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
-  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn {message}",
+  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
   "@incomingReceiveRequest" :
   {
     "source_text" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
@@ -199,12 +199,23 @@
   "confirmSentNotification" : "Chủ sở hữu đã tặng cho {receiver}",
   "@confirmSentNotification" :
   {
-    "source_text" :  "Item owner was accepted {receiver}'s registration",
+    "source_text" :  "Chủ sở hữu đã tặng cho {receiver}",
     "placeholders":  {
       "receiver": {
         "example": "Dũng nguyễn"
       }
     }
   },
-  "notification": "Thông báo"
+  "notification": "Thông báo",
+  "confirmSentSuccess" : "Bạn đã xác nhận tặng cho {receiver}",
+  "@confirmSentSuccess" :
+  {
+    "source_text" : "Bạn đã xác nhận tặng cho {receiver}",
+    "placeholders":  {
+      "receiver": {
+        "example": "Dũng nguyễn"
+      }
+    }
+  },
+  "emptyNotification" : "Không có thông báo nào"
 }

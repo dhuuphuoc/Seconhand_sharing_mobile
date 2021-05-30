@@ -1424,6 +1424,26 @@ class S {
       args: [],
     );
   }
+
+  /// `You confirmed donate for {receiver}`
+  String confirmSentSuccess(Object receiver) {
+    return Intl.message(
+      'You confirmed donate for $receiver',
+      name: 'confirmSentSuccess',
+      desc: '',
+      args: [receiver],
+    );
+  }
+
+  /// `There is no notification`
+  String get emptyNotification {
+    return Intl.message(
+      'There is no notification',
+      name: 'emptyNotification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
