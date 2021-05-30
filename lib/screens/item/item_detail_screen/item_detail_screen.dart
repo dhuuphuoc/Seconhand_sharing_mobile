@@ -11,6 +11,7 @@ import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
 import 'package:secondhand_sharing/models/item_detail_model/item_status.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
 import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
@@ -133,6 +134,21 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   _requestStatus = data.requestStatus;
                 });
                 break;
+              case "6":
+                var data = ConfirmSentModel.fromJson(jsonDecode(message.data["message"]));
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return NotifyDialog(
+                          S.of(context).notification,
+                          S.of(context).confirmSentNotification(
+                              data.receiverId == AccessInfo().userInfo.id ? S.of(context).you : data.receiverName),
+                          "Ok");
+                    });
+                setState(() {
+                  _itemDetail.status = ItemStatus.success;
+                  _receivedUserInfo = UserInfo(id: data.receiverId, fullName: data.receiverName);
+                });
             }
           }
         });
@@ -310,6 +326,36 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           height: 10,
                         ),
                       if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
+                      if (_itemDetail.status == ItemStatus.success)
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 10),
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
+                                      ? S.of(context).you
+                                      : _receivedUserInfo.fullName)),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: 10, vertical: _itemDetail.status == ItemStatus.success ? 0 : 10),
@@ -336,34 +382,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                         ? S.of(context).cancelRegister
                                         : S.of(context).registerToReceive)),
                       ),
-                      if (_itemDetail.status == ItemStatus.success)
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            child: Card(
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10),
-                                  Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(S.of(context).sentNotification(_receivedUserInfo.fullName)),
-                                  SizedBox(height: 10),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
                     ],
                   ),
                 ),

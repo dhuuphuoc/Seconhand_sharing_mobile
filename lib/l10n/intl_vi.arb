@@ -184,5 +184,27 @@
   },
   "acceptedRequestNotification" : "Đăng ký nhận của bạn đã được chấp nhận",
   "cancelAcceptRequestNotification" : "Đăng ký nhận của bạn đã bị hủy chấp nhận!",
-  "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?"
+  "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
+  "you": "bạn",
+  "thanksNotification" : "Lời cảm ơn: {content}",
+  "@thanksNotification" :
+  {
+    "source_text" :  "Lời cảm ơn: {content}",
+    "placeholders":  {
+      "content": {
+        "example": "Cảm ơn bạn rất nhiều!"
+      }
+    }
+  },
+  "confirmSentNotification" : "Chủ sở hữu đã tặng cho {receiver}",
+  "@confirmSentNotification" :
+  {
+    "source_text" :  "Item owner was accepted {receiver}'s registration",
+    "placeholders":  {
+      "receiver": {
+        "example": "Dũng nguyễn"
+      }
+    }
+  },
+  "notification": "Thông báo"
 }

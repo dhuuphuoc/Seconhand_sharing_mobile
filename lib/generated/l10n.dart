@@ -1384,6 +1384,46 @@ class S {
       args: [],
     );
   }
+
+  /// `you`
+  String get you {
+    return Intl.message(
+      'you',
+      name: 'you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thanks: {content}`
+  String thanksNotification(Object content) {
+    return Intl.message(
+      'Thanks: $content',
+      name: 'thanksNotification',
+      desc: '',
+      args: [content],
+    );
+  }
+
+  /// `Item owner donated item for {receiver}`
+  String confirmSentNotification(Object receiver) {
+    return Intl.message(
+      'Item owner donated item for $receiver',
+      name: 'confirmSentNotification',
+      desc: '',
+      args: [receiver],
+    );
+  }
+
+  /// `Notification`
+  String get notification {
+    return Intl.message(
+      'Notification',
+      name: 'notification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

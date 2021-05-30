@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
 import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
@@ -57,6 +59,17 @@ class FirebaseServices {
         var data = RequestStatusModel.fromJson(jsonDecode(remoteMessage.data["message"]));
         if (Application().watchingItemId == data.itemId) return;
         NotificationService().sendRequestStatusNotification(data);
+        break;
+      case "5":
+        UserMessage message = UserMessage.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().chattingWithUserId == message.sendFromAccountId) return;
+        message.content = S.current.thanksNotification(message.content);
+        NotificationService().sendInboxNotification(message);
+        break;
+      case "6":
+        var data = ConfirmSentModel.fromJson(jsonDecode(remoteMessage.data["message"]));
+        if (Application().watchingItemId == data.itemId) return;
+        NotificationService().sendConfirmSentNotification(data);
         break;
     }
   }
