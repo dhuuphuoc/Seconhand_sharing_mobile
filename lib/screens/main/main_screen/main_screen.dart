@@ -22,6 +22,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
+  bool _isChanging = false;
+  double _scrollOffset = 0;
 
   Future<void> handleNotificationLaunchApp() async {
     var details = await NotificationService().flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
@@ -33,6 +35,20 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        _isChanging = true;
+      } else {
+        _isChanging = false;
+      }
+    });
+    _scrollController.addListener(() {
+      if (_isChanging) {
+        _scrollController.jumpTo(_scrollOffset);
+      } else {
+        _scrollOffset = _scrollController.offset;
+      }
+    });
     handleNotificationLaunchApp();
     super.initState();
   }

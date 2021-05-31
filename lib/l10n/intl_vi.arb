@@ -137,7 +137,7 @@
   "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
   "@incomingReceiveRequest" :
   {
-    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+    "source_text" :  "{fullName}đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
     "placeholders":  {
       "fullName": {
         "example": "Hữu Dũng"
@@ -150,6 +150,8 @@
       }
     }
   },
+  "registeredItem": "đã đăng ký nhận vật phẩm",
+  "withMessage": "của bạn với lời nhắn:",
   "back": "Quay lại",
   "sentNotification" : "Vật phẩm này đã được tặng cho {fullName}",
   "@sentNotification" :
@@ -217,5 +219,5 @@
       }
     }
   },
-  "emptyNotification" : "Không có thông báo nào"
+  "emptyNotification" : "Không có thông báo nào nữa"
 }

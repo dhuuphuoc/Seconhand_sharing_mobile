@@ -1315,6 +1315,26 @@ class S {
     );
   }
 
+  /// `registered to receive your`
+  String get registeredItem {
+    return Intl.message(
+      'registered to receive your',
+      name: 'registeredItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `with message:`
+  String get withMessage {
+    return Intl.message(
+      'with message:',
+      name: 'withMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Back`
   String get back {
     return Intl.message(
@@ -1435,10 +1455,10 @@ class S {
     );
   }
 
-  /// `There is no notification`
+  /// `There is no more notification`
   String get emptyNotification {
     return Intl.message(
-      'There is no notification',
+      'There is no more notification',
       name: 'emptyNotification',
       desc: '',
       args: [],

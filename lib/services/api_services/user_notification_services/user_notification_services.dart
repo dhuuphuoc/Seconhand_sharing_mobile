@@ -8,11 +8,9 @@ import 'package:secondhand_sharing/models/user_model/access_info/access_info.dar
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 
 class UserNotificationServices {
-  static int _pageSize = 10;
-
-  static Future<List<UserNotification>> getNotifications(int pageNumber) async {
+  static Future<List<UserNotification>> getNotifications(int pageNumber, int pageSize) async {
     Uri url = Uri.https(
-        APIService.apiUrl, "/Notification", {"PageNumber": pageNumber.toString(), "PageSize": _pageSize.toString()});
+        APIService.apiUrl, "/Notification", {"PageNumber": pageNumber.toString(), "PageSize": pageSize.toString()});
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,

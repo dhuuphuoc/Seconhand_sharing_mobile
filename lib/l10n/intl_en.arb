@@ -151,6 +151,8 @@
       }
     }
   },
+  "registeredItem": "registered to receive your",
+  "withMessage": "with message:",
   "back" : "Back",
   "sentNotification" : "This item is donated for {fullName}",
   "@sentNotification" :
@@ -217,5 +219,5 @@
       }
     }
   },
-  "emptyNotification" : "There is no notification"
+  "emptyNotification" : "There is no more notification"
 }

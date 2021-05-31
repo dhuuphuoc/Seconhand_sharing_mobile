@@ -22,24 +22,41 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   bool _isLoading = true;
   bool _isEnd = false;
   int _runningTasks = 0;
-  ScrollController _postsScrollController;
+  ScrollController _primaryScrollController;
+  double _scrollOffset = 0;
+  bool _isPresent = true;
   @override
   void initState() {
     fetchItems();
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _postsScrollController.addListener(() {
-        TabBar tabBar = Keys.tabBarKey.currentWidget;
-        if (tabBar.controller.index == 0) {
-          if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
-            if (!_isEnd && !_isLoading) {
-              _pageNumber++;
-              fetchItems();
-            }
+      _primaryScrollController.addListener(scrollDownHandler);
+      TabBar tabBar = Keys.tabBarKey.currentWidget;
+      tabBar.controller.addListener(() {
+        TabController tabController = tabBar.controller;
+        if (tabController.indexIsChanging) {
+          if (tabController.index != 0) {
+            _scrollOffset = _primaryScrollController.offset;
+            setState(() {
+              _isPresent = false;
+            });
+          } else {
+            setState(() {
+              _isPresent = true;
+            });
           }
         }
       });
     });
+  }
+
+  void scrollDownHandler() {
+    if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
+      if (!_isEnd && !_isLoading) {
+        _pageNumber++;
+        fetchItems();
+      }
+    }
   }
 
   @override
@@ -66,8 +83,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           _isEnd = true;
           _isLoading = false;
         });
-        _postsScrollController.animateTo(
-          _postsScrollController.position.maxScrollExtent,
+        _primaryScrollController.animateTo(
+          _primaryScrollController.position.maxScrollExtent,
           curve: Curves.easeOut,
           duration: const Duration(milliseconds: 800),
         );
@@ -84,7 +101,16 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-    _postsScrollController = PrimaryScrollController.of(context);
+    if (_isPresent) {
+      _primaryScrollController = PrimaryScrollController.of(context);
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (_scrollOffset != 0) {
+          _primaryScrollController.position.restoreOffset(_scrollOffset);
+          _scrollOffset = 0;
+        }
+      });
+    }
 
     var listViewWidgets = <Widget>[
       Container(
@@ -172,23 +198,26 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         _pageNumber = 1;
         await fetchItems();
       },
-      child: CustomScrollView(
-        slivers: [
-          SliverOverlapInjector(
-            // This is the flip side of the SliverOverlapAbsorber
-            // above.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-          )
-        ],
-        // ListView(
-        //   controller: _postsScrollController,
-        //   children: listViewWidgets,
-        // ),
-      ),
+      child: _isPresent
+          ? CustomScrollView(
+              controller: _primaryScrollController,
+              slivers: [
+                SliverOverlapInjector(
+                  // This is the flip side of the SliverOverlapAbsorber
+                  // above.
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+                )
+              ],
+              // ListView(
+              //   controller: _postsScrollController,
+              //   children: listViewWidgets,
+              // ),
+            )
+          : Container(),
     );
   }
 

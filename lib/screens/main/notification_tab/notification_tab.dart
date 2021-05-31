@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
 import 'package:secondhand_sharing/models/notification_model/notification.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/incoming_request_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
@@ -18,22 +21,101 @@ class NotificationTab extends StatefulWidget {
 
 class _NotificationTabState extends State<NotificationTab> {
   List<UserNotification> _notifications = [];
+  ScrollController _primaryScrollController;
   int _pageNumber = 1;
+  int _pageSize = 10;
   bool _isLoading = true;
+  bool _isEnd = false;
+  bool _isPresent = true;
+  double _scrollOffset = 0;
 
   @override
   void initState() {
     super.initState();
-    UserNotificationServices.getNotifications(_pageNumber).then((value) {
-      setState(() {
-        _notifications.addAll(value);
-        _isLoading = false;
+    fetchNotification();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _primaryScrollController.addListener(() {
+        TabBar tabBar = Keys.tabBarKey.currentWidget;
+        if (tabBar.controller.index == 4) {
+          if (_primaryScrollController.offset == _primaryScrollController.position.maxScrollExtent) {
+            _pageNumber++;
+            fetchNotification();
+          }
+        }
+      });
+      TabBar tabBar = Keys.tabBarKey.currentWidget;
+      tabBar.controller.addListener(() {
+        TabController tabController = tabBar.controller;
+        if (tabController.indexIsChanging) {
+          if (tabController.index != 4) {
+            _scrollOffset = _primaryScrollController.offset;
+            setState(() {
+              _isPresent = false;
+            });
+          } else {
+            setState(() {
+              _isPresent = true;
+            });
+          }
+        }
       });
     });
   }
 
   @override
+  void setState(fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
+
+  Future<void> fetchNotification() async {
+    while (_notifications.length < _pageSize) {
+      var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
+      if (notifications.isEmpty) {
+        setState(() {
+          _isEnd = true;
+        });
+        break;
+      }
+      setState(() {
+        group(notifications);
+        _notifications.addAll(notifications);
+        _isLoading = false;
+      });
+      _pageNumber++;
+    }
+  }
+
+  void group(List<UserNotification> notifications) {
+    for (int i = 0; i < notifications.length; i++) {
+      if (notifications[i].type == 2) {
+        ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notifications[i].data));
+        for (int j = 0; j < i; j++) {
+          if (notifications[j].type == 3) {
+            CancelRequestModel cancelRequestModel = CancelRequestModel.fromJson(jsonDecode(notifications[j].data));
+            if (cancelRequestModel.requestId == receiveRequest.id) {
+              notifications.remove(notifications[i]);
+              notifications.remove(notifications[j]);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isPresent) {
+      _primaryScrollController = PrimaryScrollController.of(context);
+      if (_scrollOffset != 0) {
+        print(_scrollOffset);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _primaryScrollController.jumpTo(_scrollOffset);
+        });
+      }
+    }
     Size screenSize = MediaQuery.of(context).size;
     List<Widget> listViewWidgets = [];
     listViewWidgets.add(Container(
@@ -47,6 +129,9 @@ class _NotificationTabState extends State<NotificationTab> {
             style: Theme.of(context).textTheme.headline2,
           )),
     ));
+    listViewWidgets.add(SizedBox(
+      height: 8,
+    ));
     if (_isLoading) {
       listViewWidgets.add(Container(
         height: screenSize.height * 0.7,
@@ -54,7 +139,15 @@ class _NotificationTabState extends State<NotificationTab> {
           child: CircularProgressIndicator(),
         ),
       ));
-    } else if (_notifications.isEmpty) {
+    } else {
+      for (var notification in _notifications) {
+        if (notification.type == 2) {
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
+          listViewWidgets.add(IncomingRequestNotification(receiveRequest));
+        }
+      }
+    }
+    if (_isEnd) {
       listViewWidgets.add(Container(
         height: screenSize.height * 0.2,
         child: Center(
@@ -64,47 +157,26 @@ class _NotificationTabState extends State<NotificationTab> {
           ),
         ),
       ));
-    } else {
-      for (var notification in _notifications) {
-        if (notification.type == 2) {
-          // print(notification.data);
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
-          listViewWidgets.add(Card(
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: ListTile(
-              minVerticalPadding: 10,
-              leading: CircleAvatar(
-                radius: 20,
-                foregroundImage: AssetImage(
-                  "assets/images/person.png",
-                ),
-              ),
-              title: Text(
-                  "${S.current.incomingReceiveRequest(receiveRequest.receiverName, receiveRequest.itemName, receiveRequest.receiveReason)}"),
-              subtitle:
-                  Text(TimeAgo.parse(receiveRequest.createDate, locale: Localizations.localeOf(context).languageCode)),
-            ),
-          ));
-        }
-      }
     }
-
-    return CustomScrollView(
-      slivers: [
-        SliverOverlapInjector(
-          // This is the flip side of the SliverOverlapAbsorber
-          // above.
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.only(bottom: 10),
-          sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-        )
-      ],
-      // ListView(
-      //   controller: _postsScrollController,
-      //   children: listViewWidgets,
-      // ),
-    );
+    return _isPresent
+        ? CustomScrollView(
+            controller: _primaryScrollController,
+            slivers: [
+              SliverOverlapInjector(
+                // This is the flip side of the SliverOverlapAbsorber
+                // above.
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.only(bottom: 10),
+                sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+              )
+            ],
+            // ListView(
+            //   controller: _postsScrollController,
+            //   children: listViewWidgets,
+            // ),
+          )
+        : Container();
   }
 }
