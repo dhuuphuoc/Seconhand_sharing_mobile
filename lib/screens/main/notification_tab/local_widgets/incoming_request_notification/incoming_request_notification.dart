@@ -54,7 +54,9 @@ class _IncomingRequestNotificationState extends State<IncomingRequestNotificatio
                 ]),
           ),
           subtitle: Text(
-              TimeAgo.parse(widget.receiveRequest.createDate, locale: Localizations.localeOf(context).languageCode)),
+            TimeAgo.parse(widget.receiveRequest.createDate, locale: Localizations.localeOf(context).languageCode),
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
         ),
       ),
     );

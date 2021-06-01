@@ -1375,21 +1375,41 @@ class S {
     );
   }
 
-  /// `Your registration was accepted!`
-  String get acceptedRequestNotification {
+  /// `Your registration was`
+  String get yourRegistrationWas {
     return Intl.message(
-      'Your registration was accepted!',
-      name: 'acceptedRequestNotification',
+      'Your registration was',
+      name: 'yourRegistrationWas',
       desc: '',
       args: [],
     );
   }
 
-  /// `Your accepted registration was cancelled!`
-  String get cancelAcceptRequestNotification {
+  /// `Your accepted registration was`
+  String get yourAcceptedRegistrationWas {
     return Intl.message(
-      'Your accepted registration was cancelled!',
-      name: 'cancelAcceptRequestNotification',
+      'Your accepted registration was',
+      name: 'yourAcceptedRegistrationWas',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `accepted`
+  String get acceptedLowerCase {
+    return Intl.message(
+      'accepted',
+      name: 'acceptedLowerCase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `canceled`
+  String get canceledLowerCase {
+    return Intl.message(
+      'canceled',
+      name: 'canceledLowerCase',
       desc: '',
       args: [],
     );
@@ -1425,13 +1445,33 @@ class S {
     );
   }
 
-  /// `Item owner donated item for {receiver}`
+  /// `sent thanks to you:`
+  String get sentThanksToYou {
+    return Intl.message(
+      'sent thanks to you:',
+      name: 'sentThanksToYou',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item owner have confirmed donate the item for {receiver}`
   String confirmSentNotification(Object receiver) {
     return Intl.message(
-      'Item owner donated item for $receiver',
+      'Item owner have confirmed donate the item for $receiver',
       name: 'confirmSentNotification',
       desc: '',
       args: [receiver],
+    );
+  }
+
+  /// `Item owner have confirmed donate the item for`
+  String get confirmSentTo {
+    return Intl.message(
+      'Item owner have confirmed donate the item for',
+      name: 'confirmSentTo',
+      desc: '',
+      args: [],
     );
   }
 

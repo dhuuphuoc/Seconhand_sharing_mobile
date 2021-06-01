@@ -5,10 +5,11 @@ import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
-import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card.dart';
+import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
+import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
+import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -30,7 +31,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     fetchItems();
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _primaryScrollController.addListener(scrollDownHandler);
       TabBar tabBar = Keys.tabBarKey.currentWidget;
       tabBar.controller.addListener(() {
         TabController tabController = tabBar.controller;
@@ -47,16 +47,17 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           }
         }
       });
+      _primaryScrollController.addListener(() {
+        if (tabBar.controller.index == 0) {
+          if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
+            if (!_isEnd && !_isLoading) {
+              _pageNumber++;
+              fetchItems();
+            }
+          }
+        }
+      });
     });
-  }
-
-  void scrollDownHandler() {
-    if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
-      if (!_isEnd && !_isLoading) {
-        _pageNumber++;
-        fetchItems();
-      }
-    }
   }
 
   @override
@@ -83,11 +84,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           _isEnd = true;
           _isLoading = false;
         });
-        _primaryScrollController.animateTo(
-          _primaryScrollController.position.maxScrollExtent,
-          curve: Curves.easeOut,
-          duration: const Duration(milliseconds: 800),
-        );
       } else {
         setState(() {
           _items.addAll(items);
@@ -106,7 +102,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
 
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (_scrollOffset != 0) {
-          _primaryScrollController.position.restoreOffset(_scrollOffset);
+          _primaryScrollController.position.jumpTo(_scrollOffset);
           _scrollOffset = 0;
         }
       });
@@ -171,25 +167,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
             height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
-      listViewWidgets.add(Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Icon(
-              Icons.check_circle_outline,
-              color: Colors.green,
-            ),
-            SizedBox(height: 10),
-            Text(S.of(context).endNotifyMessage),
-            SizedBox(height: 10),
-          ],
-        ),
-      ));
+      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
     return RefreshIndicator(
       edgeOffset: screenSize.height * 0.2,

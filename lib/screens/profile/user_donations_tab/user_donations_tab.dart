@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
-import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/item_card.dart';
+import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
+import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class UserDonationsTab extends StatefulWidget {
   final int userId;
@@ -87,25 +88,7 @@ class _UserRequestsTabState extends State<UserDonationsTab> {
             height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
-      listViewWidgets.add(Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Icon(
-              Icons.check_circle_outline,
-              color: Colors.green,
-            ),
-            SizedBox(height: 10),
-            Text(S.of(context).endNotifyMessage),
-            SizedBox(height: 10),
-          ],
-        ),
-      ));
+      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
 
     return CustomScrollView(slivers: [SliverList(delegate: SliverChildListDelegate(listViewWidgets))]);

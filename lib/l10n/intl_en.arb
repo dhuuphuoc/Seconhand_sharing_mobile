@@ -184,8 +184,10 @@
       }
     }
   },
-  "acceptedRequestNotification" : "Your registration was accepted!",
-  "cancelAcceptRequestNotification" : "Your accepted registration was cancelled!",
+  "yourRegistrationWas" : "Your registration was",
+  "yourAcceptedRegistrationWas" : "Your accepted registration was",
+  "acceptedLowerCase" : "accepted",
+  "canceledLowerCase" : "canceled",
   "cancelRegistrationMessage" : "Do you want to cancel this registrations?",
   "you" : "you",
   "thanksNotification" : "Thanks: {content}",
@@ -198,16 +200,18 @@
       }
     }
   },
-  "confirmSentNotification" : "Item owner donated item for {receiver}",
+  "sentThanksToYou" : "sent thanks to you:",
+  "confirmSentNotification" : "Item owner have confirmed donate the item for {receiver}",
   "@confirmSentNotification" :
   {
-    "source_text" :  "Item owner was accepted {receiver}'s registration",
+    "source_text" :  "Item owner have confirmed donate the item for {receiver}",
     "placeholders":  {
       "receiver": {
         "example": "Dũng nguyễn"
       }
     }
   },
+  "confirmSentTo" : "Item owner have confirmed donate the item for",
   "notification": "Notification",
   "confirmSentSuccess" : "You confirmed donate for {receiver}",
   "@confirmSentSuccess" :

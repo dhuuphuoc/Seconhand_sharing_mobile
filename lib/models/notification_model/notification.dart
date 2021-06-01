@@ -1,3 +1,5 @@
+import 'package:secondhand_sharing/models/notification_model/notification_type.dart';
+
 class UserNotification {
   UserNotification({
     this.id,
@@ -8,14 +10,14 @@ class UserNotification {
   });
 
   int id;
-  int type;
+  NotificationType type;
   String data;
   int userId;
   DateTime createTime;
 
   factory UserNotification.fromJson(Map<String, dynamic> json) => UserNotification(
         id: json["id"],
-        type: json["type"],
+        type: NotificationType.values[json["type"]],
         data: json["data"],
         userId: json["userId"],
         createTime: DateTime.parse(json["createTime"]),

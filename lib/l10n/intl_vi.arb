@@ -184,8 +184,10 @@
       }
     }
   },
-  "acceptedRequestNotification" : "Đăng ký nhận của bạn đã được chấp nhận",
-  "cancelAcceptRequestNotification" : "Đăng ký nhận của bạn đã bị hủy chấp nhận!",
+  "yourRegistrationWas" : "Đăng ký nhận của bạn đã được",
+  "yourAcceptedRegistrationWas" : "Đăng ký nhận của bạn đã bị",
+  "acceptedLowerCase" : "chấp nhận",
+  "canceledLowerCase" : "hủy chấp nhận",
   "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
   "you": "bạn",
   "thanksNotification" : "Lời cảm ơn: {content}",
@@ -198,7 +200,8 @@
       }
     }
   },
-  "confirmSentNotification" : "Chủ sở hữu đã tặng cho {receiver}",
+  "sentThanksToYou" : "đã gửi lời cảm ơn đến bạn:",
+  "confirmSentNotification" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho {receiver}",
   "@confirmSentNotification" :
   {
     "source_text" :  "Chủ sở hữu đã tặng cho {receiver}",
@@ -208,6 +211,7 @@
       }
     }
   },
+  "confirmSentTo" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho",
   "notification": "Thông báo",
   "confirmSentSuccess" : "Bạn đã xác nhận tặng cho {receiver}",
   "@confirmSentSuccess" :

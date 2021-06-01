@@ -5,9 +5,14 @@ import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
 import 'package:secondhand_sharing/models/notification_model/notification.dart';
+import 'package:secondhand_sharing/models/notification_model/notification_type.dart';
+import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/incoming_request_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/confirm_sent_notification/confirm_sent_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/incoming_request_notification/incoming_request_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/request_status_notification/request_status_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/thanks_notification/thanks_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
@@ -38,8 +43,10 @@ class _NotificationTabState extends State<NotificationTab> {
         TabBar tabBar = Keys.tabBarKey.currentWidget;
         if (tabBar.controller.index == 4) {
           if (_primaryScrollController.offset == _primaryScrollController.position.maxScrollExtent) {
-            _pageNumber++;
-            fetchNotification();
+            if (!_isEnd) {
+              _pageNumber++;
+              fetchNotification();
+            }
           }
         }
       });
@@ -70,6 +77,9 @@ class _NotificationTabState extends State<NotificationTab> {
   }
 
   Future<void> fetchNotification() async {
+    setState(() {
+      _isLoading = true;
+    });
     while (_notifications.length < _pageSize) {
       var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
       if (notifications.isEmpty) {
@@ -89,10 +99,10 @@ class _NotificationTabState extends State<NotificationTab> {
 
   void group(List<UserNotification> notifications) {
     for (int i = 0; i < notifications.length; i++) {
-      if (notifications[i].type == 2) {
+      if (notifications[i].type == NotificationType.receiveRequest) {
         ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notifications[i].data));
         for (int j = 0; j < i; j++) {
-          if (notifications[j].type == 3) {
+          if (notifications[j].type == NotificationType.cancelReceiveRequest) {
             CancelRequestModel cancelRequestModel = CancelRequestModel.fromJson(jsonDecode(notifications[j].data));
             if (cancelRequestModel.requestId == receiveRequest.id) {
               notifications.remove(notifications[i]);
@@ -141,9 +151,22 @@ class _NotificationTabState extends State<NotificationTab> {
       ));
     } else {
       for (var notification in _notifications) {
-        if (notification.type == 2) {
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
-          listViewWidgets.add(IncomingRequestNotification(receiveRequest));
+        switch (notification.type) {
+          case NotificationType.receiveRequest:
+            ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
+            listViewWidgets.add(IncomingRequestNotification(receiveRequest));
+            break;
+          case NotificationType.requestStatus:
+            listViewWidgets.add(RequestStatusNotification(notification));
+            break;
+          case NotificationType.confirmSent:
+            listViewWidgets.add(ConfirmSentNotification(notification));
+            break;
+          case NotificationType.sendThanks:
+            listViewWidgets.add(ThanksNotification(notification));
+            break;
+          default:
+            break;
         }
       }
     }
@@ -159,23 +182,31 @@ class _NotificationTabState extends State<NotificationTab> {
       ));
     }
     return _isPresent
-        ? CustomScrollView(
-            controller: _primaryScrollController,
-            slivers: [
-              SliverOverlapInjector(
-                // This is the flip side of the SliverOverlapAbsorber
-                // above.
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              ),
-              SliverPadding(
-                padding: EdgeInsets.only(bottom: 10),
-                sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-              )
-            ],
-            // ListView(
-            //   controller: _postsScrollController,
-            //   children: listViewWidgets,
-            // ),
+        ? RefreshIndicator(
+            edgeOffset: screenSize.height * 0.2,
+            onRefresh: () async {
+              _notifications = [];
+              _pageNumber = 1;
+              await fetchNotification();
+            },
+            child: CustomScrollView(
+              controller: _primaryScrollController,
+              slivers: [
+                SliverOverlapInjector(
+                  // This is the flip side of the SliverOverlapAbsorber
+                  // above.
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+                )
+              ],
+              // ListView(
+              //   controller: _postsScrollController,
+              //   children: listViewWidgets,
+              // ),
+            ),
           )
         : Container();
   }

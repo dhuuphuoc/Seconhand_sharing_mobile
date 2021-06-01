@@ -31,6 +31,7 @@ import 'package:secondhand_sharing/services/firebase_services/firebase_services.
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
+import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   @override
@@ -126,8 +127,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 scaffold.showSnackBar(
                   SnackBar(
                     content: data.requestStatus == RequestStatus.receiving
-                        ? Text(S.of(context).acceptedRequestNotification)
-                        : Text(S.of(context).cancelAcceptRequestNotification),
+                        ? Text("${S.current.yourRegistrationWas} ${S.current.acceptedLowerCase}")
+                        : Text("${S.current.yourAcceptedRegistrationWas} ${S.current.canceledLowerCase}"),
                   ),
                 );
                 setState(() {
@@ -339,37 +340,21 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
                       if (_itemDetail.status == ItemStatus.success)
                         InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            child: Card(
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10),
-                                  Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
-                                      ? S.of(context).you
-                                      : _receivedUserInfo.fullName)),
-                                  SizedBox(height: 10),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                            onTap: () {
+                              Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
+                            },
+                            child: NotificationCard(
+                                Icons.check_circle_outline,
+                                S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
+                                    ? S.of(context).you
+                                    : _receivedUserInfo.fullName))),
+                      if (!_isOwn &&
+                          _requestStatus == RequestStatus.receiving &&
+                          _itemDetail.status != ItemStatus.success)
+                        NotificationCard(Icons.fact_check_outlined,
+                            "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
                       Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 10, vertical: _itemDetail.status == ItemStatus.success ? 0 : 10),
+                        margin: EdgeInsets.symmetric(horizontal: 10),
                         width: double.infinity,
                         child: _isOwn
                             ? _itemDetail.status != ItemStatus.success
