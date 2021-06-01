@@ -9,6 +9,7 @@ import 'package:secondhand_sharing/models/user_model/access_info/access_info.dar
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
@@ -18,15 +19,14 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>
-    with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
+  bool _isChanging = false;
+  double _scrollOffset = 0;
 
   Future<void> handleNotificationLaunchApp() async {
-    var details = await NotificationService()
-        .flutterLocalNotificationsPlugin
-        .getNotificationAppLaunchDetails();
+    var details = await NotificationService().flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details.didNotificationLaunchApp) {
       NotificationService().selectNotification(details.payload);
     }
@@ -37,10 +37,16 @@ class _MainScreenState extends State<MainScreen>
     _tabController = TabController(vsync: this, length: 6);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
-        setState(() {
-          _scrollController.dispose();
-          _scrollController = ScrollController();
-        });
+        _isChanging = true;
+      } else {
+        _isChanging = false;
+      }
+    });
+    _scrollController.addListener(() {
+      if (_isChanging) {
+        _scrollController.jumpTo(_scrollOffset);
+      } else {
+        _scrollOffset = _scrollController.offset;
       }
     });
     handleNotificationLaunchApp();
@@ -69,8 +75,7 @@ class _MainScreenState extends State<MainScreen>
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () async {
-                      Navigator.pushNamed(context, "/profile",
-                          arguments: AccessInfo().userInfo.id);
+                      Navigator.pushNamed(context, "/profile", arguments: AccessInfo().userInfo.id);
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -92,6 +97,7 @@ class _MainScreenState extends State<MainScreen>
                 // Make the initial height of the SliverAppBar larger than normal.
                 // expandedHeight: 100,
                 bottom: TabBar(
+                  key: Keys.tabBarKey,
                   controller: _tabController,
                   tabs: [
                     Tab(
@@ -128,71 +134,11 @@ class _MainScreenState extends State<MainScreen>
             Container(),
             Container(),
             Container(),
-            Container(),
+            NotificationTab(),
             MenuTab(),
           ],
         ),
-        // Next, create a SliverList
       ),
-      // floatingActionButton: Container(
-      //   height: 70,
-      //   width: 70,
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.pushNamed(context, "/post-item");
-      //     },
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [Icon(Icons.post_add), Text(S.of(context).post)],
-      //     ),
-      //   ),
-      // ),
-      // appBar: AppBar(
-      //   leading: Container(
-      //     padding: EdgeInsets.symmetric(horizontal: 10),
-      //     child: Image.asset(
-      //       "assets/images/login_icon.png",
-      //       fit: BoxFit.cover,
-      //     ),
-      //   ),
-      //   leadingWidth: 135,
-      //   toolbarHeight: 115,
-      //   bottom: TabBar(
-      //     tabs: [
-      //       Tab(
-      //         icon: Icon(Icons.home),
-      //       ),
-      //       Tab(
-      //         icon: Icon(Icons.group),
-      //       ),
-      //       Tab(
-      //         icon: Icon(
-      //           AppIcons.hands_helping,
-      //           size: 18,
-      //         ),
-      //       ),
-      //       Tab(
-      //         icon: Icon(Icons.stars),
-      //       ),
-      //       Tab(
-      //         icon: Icon(Icons.notifications),
-      //       ),
-      //       Tab(
-      //         icon: Icon(Icons.menu),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      // body: TabBarView(
-      //   children: [
-      //     HomeTab(),
-      //     Container(),
-      //     Container(),
-      //     Container(),
-      //     Container(),
-      //     Container(),
-      //   ],
-      // ),
     );
   }
 }

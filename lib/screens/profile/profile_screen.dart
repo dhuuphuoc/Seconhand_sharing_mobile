@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         return [
           SliverAppBar(
             // Provide a standard title.
-            expandedHeight: screenSize.height * 0.68,
+            expandedHeight: screenSize.height * 0.62,
             actions: [
               if (!_isMe)
                 TextButton(
@@ -225,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: 5,
                         child: CircleAvatar(
                           radius: screenSize.height * 0.1,
                           foregroundImage: AssetImage(
@@ -234,36 +234,38 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ),
                       ),
                       Expanded(
+                          flex: 3,
                           child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 100),
-                        child: IntrinsicWidth(
-                          child: _isHideIcon
-                              ? null
-                              : TextFormField(
-                                  controller: _nameTextController,
-                                  readOnly: !_isNameEditing,
-                                  onEditingComplete: editName,
-                                  decoration: InputDecoration(
-                                    border: _isNameEditing ? UnderlineInputBorder() : InputBorder.none,
-                                    prefixIcon: _isMe
-                                        ? Visibility(visible: false, child: Icon(Icons.text_rotation_none))
-                                        : null,
-                                    suffixIcon: _isMe
-                                        ? IconButton(
-                                            onPressed: editName,
-                                            icon: Icon(
-                                              _isNameEditing ? Icons.done : Icons.edit,
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                          )
-                                        : null,
-                                  ),
-                                  style: Theme.of(context).textTheme.headline2,
-                                  textAlign: TextAlign.center,
-                                ),
-                        ),
-                      )),
+                            constraints: BoxConstraints(minWidth: 100),
+                            child: IntrinsicWidth(
+                              child: _isHideIcon
+                                  ? null
+                                  : TextFormField(
+                                      controller: _nameTextController,
+                                      readOnly: !_isNameEditing,
+                                      onEditingComplete: editName,
+                                      decoration: InputDecoration(
+                                        border: _isNameEditing ? UnderlineInputBorder() : InputBorder.none,
+                                        prefixIcon: _isMe
+                                            ? Visibility(visible: false, child: Icon(Icons.text_rotation_none))
+                                            : null,
+                                        suffixIcon: _isMe
+                                            ? IconButton(
+                                                onPressed: editName,
+                                                icon: Icon(
+                                                  _isNameEditing ? Icons.done : Icons.edit,
+                                                  color: Theme.of(context).primaryColor,
+                                                ),
+                                              )
+                                            : null,
+                                      ),
+                                      style: Theme.of(context).textTheme.headline2,
+                                      textAlign: TextAlign.center,
+                                    ),
+                            ),
+                          )),
                       Expanded(
+                        flex: 2,
                         child: Container(
                           child: ListTile(
                             leading: _isHideIcon
@@ -290,46 +292,46 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          child: ListTile(
-                            leading: _isHideIcon
-                                ? null
-                                : Icon(
-                                    Icons.contact_phone,
+                        flex: 2,
+                        child: ListTile(
+                          leading: _isHideIcon
+                              ? null
+                              : Icon(
+                                  Icons.contact_phone,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                          title: _isPhoneEditing
+                              ? _isHideIcon
+                                  ? null
+                                  : TextFormField(
+                                      controller: _phoneTextController,
+                                      keyboardType: TextInputType.phone,
+                                      onEditingComplete: editPhoneNumber,
+                                    )
+                              : Text(_userInfo.phoneNumber == null ? "" : _userInfo.phoneNumber),
+                          trailing: _isHideIcon
+                              ? null
+                              : IconButton(
+                                  icon: Icon(
+                                    !_isMe
+                                        ? Icons.call
+                                        : _isPhoneEditing
+                                            ? Icons.done
+                                            : Icons.edit,
                                     color: Theme.of(context).primaryColor,
                                   ),
-                            title: _isPhoneEditing
-                                ? _isHideIcon
-                                    ? null
-                                    : TextFormField(
-                                        controller: _phoneTextController,
-                                        keyboardType: TextInputType.phone,
-                                        onEditingComplete: editPhoneNumber,
-                                      )
-                                : Text(_userInfo.phoneNumber == null ? "" : _userInfo.phoneNumber),
-                            trailing: _isHideIcon
-                                ? null
-                                : IconButton(
-                                    icon: Icon(
-                                      !_isMe
-                                          ? Icons.call
-                                          : _isPhoneEditing
-                                              ? Icons.done
-                                              : Icons.edit,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    onPressed: () async {
-                                      if (_isMe) {
-                                        editPhoneNumber();
-                                      } else {
-                                        call();
-                                      }
-                                    },
-                                  ),
-                          ),
+                                  onPressed: () async {
+                                    if (_isMe) {
+                                      editPhoneNumber();
+                                    } else {
+                                      call();
+                                    }
+                                  },
+                                ),
                         ),
                       ),
                       Expanded(
+                        flex: 2,
                         child: ListTile(
                           leading: _isHideIcon
                               ? null
@@ -350,6 +352,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ),
                       ),
                       Expanded(
+                        flex: 2,
                         child: ListTile(
                           leading: _isHideIcon
                               ? null
@@ -357,7 +360,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   Icons.location_on,
                                   color: Colors.pink,
                                 ),
-                          title: Text(_userInfo.address == null ? "" : _userInfo.address.toString()),
+                          title: Text(
+                            _userInfo.address == null ? "" : _userInfo.address.toString(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           trailing: !_isMe || _isHideIcon
                               ? null
                               : IconButton(

@@ -128,11 +128,11 @@ class NotificationService {
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     if (requestStatus.requestStatus == RequestStatus.receiving)
       await flutterLocalNotificationsPlugin.show(requestStatus.itemId, "<b>${requestStatus.itemName}</b>",
-          S.current.acceptedRequestNotification, platformChannelSpecifics,
+          "${S.current.yourRegistrationWas} <b>${S.current.acceptedLowerCase}</b>", platformChannelSpecifics,
           payload: jsonEncode({"type": "4", "message": requestStatus.toJson()}));
     else {
       await flutterLocalNotificationsPlugin.show(requestStatus.itemId, "<b>${requestStatus.itemName}</b>",
-          S.current.cancelAcceptRequestNotification, platformChannelSpecifics,
+          "${S.current.yourAcceptedRegistrationWas} <b>${S.current.canceledLowerCase}</b>", platformChannelSpecifics,
           payload: jsonEncode({"type": "4", "message": requestStatus.toJson()}));
     }
   }

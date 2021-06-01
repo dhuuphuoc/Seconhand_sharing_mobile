@@ -32,7 +32,9 @@ class ItemCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline3,
                 ),
                 subtitle: Text(
-                    "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}"),
+                  "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}",
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(left: 15),
@@ -52,8 +54,7 @@ class ItemCard extends StatelessWidget {
               Container(
                 child: Image.network(
                   item.imageUrl,
-                  frameBuilder: (BuildContext context, Widget child, int frame,
-                      bool wasSynchronouslyLoaded) {
+                  frameBuilder: (BuildContext context, Widget child, int frame, bool wasSynchronouslyLoaded) {
                     if (wasSynchronouslyLoaded ?? false) {
                       return child;
                     }

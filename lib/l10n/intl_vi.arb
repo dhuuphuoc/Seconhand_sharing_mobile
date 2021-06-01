@@ -134,10 +134,10 @@
   }
   },
   "confirmationSentMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
-  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn {message}",
+  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
   "@incomingReceiveRequest" :
   {
-    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+    "source_text" :  "{fullName}đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
     "placeholders":  {
       "fullName": {
         "example": "Hữu Dũng"
@@ -150,6 +150,8 @@
       }
     }
   },
+  "registeredItem": "đã đăng ký nhận vật phẩm",
+  "withMessage": "của bạn với lời nhắn:",
   "back": "Quay lại",
   "sentNotification" : "Vật phẩm này đã được tặng cho {fullName}",
   "@sentNotification" :
@@ -182,8 +184,10 @@
       }
     }
   },
-  "acceptedRequestNotification" : "Đăng ký nhận của bạn đã được chấp nhận",
-  "cancelAcceptRequestNotification" : "Đăng ký nhận của bạn đã bị hủy chấp nhận!",
+  "yourRegistrationWas" : "Đăng ký nhận của bạn đã được",
+  "yourAcceptedRegistrationWas" : "Đăng ký nhận của bạn đã bị",
+  "acceptedLowerCase" : "chấp nhận",
+  "canceledLowerCase" : "hủy chấp nhận",
   "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
   "you": "bạn",
   "thanksNotification" : "Lời cảm ơn: {content}",
@@ -196,15 +200,28 @@
       }
     }
   },
-  "confirmSentNotification" : "Chủ sở hữu đã tặng cho {receiver}",
+  "sentThanksToYou" : "đã gửi lời cảm ơn đến bạn:",
+  "confirmSentNotification" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho {receiver}",
   "@confirmSentNotification" :
   {
-    "source_text" :  "Item owner was accepted {receiver}'s registration",
+    "source_text" :  "Chủ sở hữu đã tặng cho {receiver}",
     "placeholders":  {
       "receiver": {
         "example": "Dũng nguyễn"
       }
     }
   },
-  "notification": "Thông báo"
+  "confirmSentTo" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho",
+  "notification": "Thông báo",
+  "confirmSentSuccess" : "Bạn đã xác nhận tặng cho {receiver}",
+  "@confirmSentSuccess" :
+  {
+    "source_text" : "Bạn đã xác nhận tặng cho {receiver}",
+    "placeholders":  {
+      "receiver": {
+        "example": "Dũng nguyễn"
+      }
+    }
+  },
+  "emptyNotification" : "Không có thông báo nào nữa"
 }
