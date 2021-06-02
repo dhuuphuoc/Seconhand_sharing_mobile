@@ -35,13 +35,13 @@ import 'package:secondhand_sharing/services/firebase_services/firebase_services.
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-  }
-}
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+//   }
+// }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
@@ -51,7 +51,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) as
 }
 
 Future<void> main() async {
-  HttpOverrides.global = new MyHttpOverrides();
+  // HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
   await FirebaseServices.initFirebase();
