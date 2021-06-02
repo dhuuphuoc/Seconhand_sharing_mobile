@@ -130,7 +130,7 @@ class _NotificationTabState extends State<NotificationTab> {
     Size screenSize = MediaQuery.of(context).size;
     List<Widget> listViewWidgets = [];
     listViewWidgets.add(Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.only(left: 12, right: 5),
       height: screenSize.height * 0.07,
       color: Theme.of(context).backgroundColor,
       child: Row(
@@ -147,7 +147,9 @@ class _NotificationTabState extends State<NotificationTab> {
               elevation: 0,
               child: InkWell(
                 borderRadius: BorderRadius.circular(90),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, "/message-box");
+                },
                 child: Icon(
                   AppIcons.facebook_messenger,
                   color: Theme.of(context).primaryColor,

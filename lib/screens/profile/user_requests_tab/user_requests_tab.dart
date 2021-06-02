@@ -20,6 +20,7 @@ class UserRequestsTab extends StatefulWidget {
 class _UserRequestsTabState extends State<UserRequestsTab> {
   List<Item> _items = [];
   int _pageNumber = 1;
+  int _pageSize = 8;
   bool _isLoading = true;
   bool _isEnd = false;
   ScrollController _postsScrollController;
@@ -55,7 +56,7 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     setState(() {
       _isLoading = true;
     });
-    var items = await ReceiveServices.getRequestedItems(widget.userId, _pageNumber);
+    var items = await ReceiveServices.getRequestedItems(widget.userId, _pageNumber, _pageSize);
     if (items.isEmpty) {
       setState(() {
         _isEnd = true;

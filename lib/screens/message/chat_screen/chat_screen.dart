@@ -12,8 +12,10 @@ import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/u
 import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/local_widgets/message_box.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
+import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
+import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key key}) : super(key: key);
@@ -26,7 +28,8 @@ class _ChatScreenState extends State<ChatScreen> {
   var _textController = TextEditingController();
   var _scrollController;
   bool _isLoading = true;
-  int page = 1;
+  int _pageNumber = 1;
+  int _pageSize = 20;
   bool _isBottomStick = true;
   UserInfo _userInfo;
   List<UserMessage> messages = [];
@@ -42,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
           loadMoreMessages();
         }
       });
-      MessageServices.getMessages(_userInfo.id, page).then((value) {
+      MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize).then((value) {
         setState(() {
           messages = value.reversed.toList();
           _isLoading = false;
@@ -69,8 +72,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void loadMoreMessages() {
-    page++;
-    MessageServices.getMessages(_userInfo.id, page).then((value) {
+    _pageNumber++;
+    MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize).then((value) {
       setState(() {
         messages.insertAll(0, value.reversed.toList());
         _isBottomStick = false;
@@ -134,14 +137,27 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         centerTitle: true,
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Icon(
-              Icons.circle,
-              color: Colors.green,
-              size: 15,
+          Container(
+            height: 50,
+            width: 50,
+            child: Card(
+              elevation: 0,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(90),
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      "/message-box",
+                      (route) =>
+                          route.settings.name == "/message-box" || route.settings.name == "/chat" ? false : true);
+                },
+                child: Icon(
+                  AppIcons.facebook_messenger,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
       body: Column(

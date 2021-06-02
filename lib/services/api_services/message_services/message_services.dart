@@ -9,10 +9,26 @@ import 'package:secondhand_sharing/models/user_model/access_info/access_info.dar
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 
 class MessageServices {
-  static Future<List<UserMessage>> getMessages(int userId, int page) async {
-    int pageSize = 20;
+  static Future<List<UserMessage>> getMessages(int userId, int pageNumber, int pageSize) async {
     Uri url = Uri.https(APIService.apiUrl, "/Message/$userId", {
-      "PageNumber": page.toString(),
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
+    var response = await http.get(url, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      return MessagesModel.fromJson(jsonDecode(response.body)).messages;
+    } else {
+      return [];
+    }
+  }
+
+  static Future<List<UserMessage>> getRecentMessages(int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Message/recent-messages", {
+      "PageNumber": pageNumber.toString(),
       "PageSize": pageSize.toString(),
     });
     var response = await http.get(url, headers: {

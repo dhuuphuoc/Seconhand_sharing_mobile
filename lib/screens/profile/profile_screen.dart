@@ -209,7 +209,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     onPressed: _isUpdating
                         ? null
                         : () {
-                            Navigator.of(context).pushNamed("/chat", arguments: _userInfo);
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, "/chat", (route) => route.settings.name == "/chat" ? false : true,
+                                arguments: _userInfo);
                           },
                     child: Text(S.of(context).sendMessage))
             ],

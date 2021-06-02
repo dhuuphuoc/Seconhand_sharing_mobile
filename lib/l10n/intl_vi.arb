@@ -223,5 +223,6 @@
       }
     }
   },
-  "emptyNotification" : "Không có thông báo nào nữa"
+  "emptyNotification" : "Không còn thông báo nào nữa",
+  "messageBox" : "Hộp thoại"
 }

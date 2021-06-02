@@ -184,7 +184,9 @@ class NotificationService {
       case "1":
       case "5":
         var userInfo = await UserServices.getUserInfoById(json["message"]["sendFromAccountId"]);
-        Keys.navigatorKey.currentState.pushNamed("/chat", arguments: userInfo);
+        Keys.navigatorKey.currentState.pushNamedAndRemoveUntil(
+            "/chat", (route) => route.settings.name == "/chat" ? false : true,
+            arguments: userInfo);
         break;
       case "2":
       case "3":

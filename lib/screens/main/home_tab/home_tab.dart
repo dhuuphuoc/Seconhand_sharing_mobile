@@ -20,6 +20,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
+  int _pageSize = 8;
   bool _isLoading = true;
   bool _isEnd = false;
   int _runningTasks = 0;
@@ -78,7 +79,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       setState(() {
         _isLoading = true;
       });
-      var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+      var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
       if (items.isEmpty) {
         setState(() {
           _isEnd = true;
@@ -135,7 +136,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
                 _items = [];
               });
               _pageNumber = 1;
-              var items = await ItemServices.getItems(_pageNumber, _categoryModel.selectedId);
+              var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
               setState(() {
                 _items = items;
                 if (_items.isEmpty) {

@@ -1504,6 +1504,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Messages box`
+  String get messageBox {
+    return Intl.message(
+      'Messages box',
+      name: 'messageBox',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

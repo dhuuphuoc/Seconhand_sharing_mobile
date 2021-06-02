@@ -223,5 +223,6 @@
       }
     }
   },
-  "emptyNotification" : "There is no more notification"
+  "emptyNotification" : "There is no more notification",
+  "messageBox" : "Messages box"
 }

@@ -15,8 +15,6 @@ import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
 
 class ReceiveServices {
-  static int _pageSize = 8;
-
   static Future<int> registerToReceive(int itemId, String message) async {
     Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem");
     var response = await http.post(url,
@@ -33,10 +31,10 @@ class ReceiveServices {
     }
   }
 
-  static Future<List<Item>> getRequestedItems(int userId, int pageNumber) async {
+  static Future<List<Item>> getRequestedItems(int userId, int pageNumber, int pageSize) async {
     Uri getItemsUrl = Uri.https(APIService.apiUrl, "/ReceiveItem/$userId/requests", {
       "PageNumber": pageNumber.toString(),
-      "PageSize": _pageSize.toString(),
+      "PageSize": pageSize.toString(),
     });
     print(getItemsUrl);
 

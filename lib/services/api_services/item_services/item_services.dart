@@ -48,16 +48,14 @@ class PostItemForm {
 }
 
 class ItemServices {
-  static final int _pageSize = 8;
-
-  static Future<List<Item>> getItems(int pageNumber, int categoryId) async {
+  static Future<List<Item>> getItems(int categoryId, int pageNumber, int pageSize) async {
     String path = "Item";
     if (categoryId != -1) {
       path = "Category/$categoryId";
     }
     Uri getItemsUrl = Uri.https(APIService.apiUrl, path, {
       "PageNumber": pageNumber.toString(),
-      "PageSize": _pageSize.toString(),
+      "PageSize": pageSize.toString(),
     });
     print(getItemsUrl);
 
@@ -72,10 +70,10 @@ class ItemServices {
     return null;
   }
 
-  static Future<List<Item>> getDonatedItems(int userId, int pageNumber) async {
+  static Future<List<Item>> getDonatedItems(int userId, int pageNumber, int pageSize) async {
     Uri getItemsUrl = Uri.https(APIService.apiUrl, "/Item/$userId/donations", {
       "PageNumber": pageNumber.toString(),
-      "PageSize": _pageSize.toString(),
+      "PageSize": pageSize.toString(),
     });
     print(getItemsUrl);
 

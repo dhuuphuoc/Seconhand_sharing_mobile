@@ -27,6 +27,7 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_scree
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
+import 'package:secondhand_sharing/screens/message/message_box_screen/message_box_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -34,13 +35,13 @@ import 'package:secondhand_sharing/services/firebase_services/firebase_services.
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// class MyHttpOverrides extends HttpOverrides {
-//   @override
-//   HttpClient createHttpClient(SecurityContext context) {
-//     return super.createHttpClient(context)
-//       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-//   }
-// }
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
   await Firebase.initializeApp();
@@ -50,7 +51,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) as
 }
 
 Future<void> main() async {
-  // HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
   await FirebaseServices.initFirebase();
@@ -136,6 +137,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/item/address": (context) => AddressScreen(),
         "/item/detail": (context) => ItemDetailScreen(),
         "/chat": (context) => ChatScreen(),
+        "/message-box": (context) => MessageBoxScreen(),
       },
     );
   }

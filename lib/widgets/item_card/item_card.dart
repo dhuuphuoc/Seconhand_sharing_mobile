@@ -16,7 +16,9 @@ class ItemCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, "/item/detail", arguments: item.id);
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/item/detail", (route) => route.settings.name == "/item/detail" ? false : true,
+              arguments: item.id);
         },
         child: Container(
           child: Column(

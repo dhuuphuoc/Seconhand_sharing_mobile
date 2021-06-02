@@ -18,6 +18,7 @@ class UserDonationsTab extends StatefulWidget {
 class _UserRequestsTabState extends State<UserDonationsTab> {
   List<Item> _items = [];
   int _pageNumber = 1;
+  int _pageSize = 8;
   bool _isLoading = true;
   bool _isEnd = false;
   ScrollController _postsScrollController;
@@ -53,7 +54,7 @@ class _UserRequestsTabState extends State<UserDonationsTab> {
     setState(() {
       _isLoading = true;
     });
-    var items = await ItemServices.getDonatedItems(widget.userId, _pageNumber);
+    var items = await ItemServices.getDonatedItems(widget.userId, _pageNumber, _pageSize);
     if (items.isEmpty) {
       setState(() {
         _isEnd = true;

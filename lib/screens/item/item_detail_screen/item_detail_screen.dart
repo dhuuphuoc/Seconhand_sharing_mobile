@@ -354,7 +354,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         NotificationCard(Icons.fact_check_outlined,
                             "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         width: double.infinity,
                         child: _isOwn
                             ? _itemDetail.status != ItemStatus.success

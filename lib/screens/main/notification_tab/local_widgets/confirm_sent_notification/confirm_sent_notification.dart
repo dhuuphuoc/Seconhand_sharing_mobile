@@ -37,7 +37,9 @@ class _ConfirmSentNotificationState extends State<ConfirmSentNotification> {
           minVerticalPadding: 10,
           leading: CircleAvatar(
             radius: 20,
-            child: Icon(Icons.app_registration),
+            child: Icon(
+              Icons.check_circle_outline,
+            ),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
