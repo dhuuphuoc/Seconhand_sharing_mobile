@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/t
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class NotificationTab extends StatefulWidget {
   const NotificationTab({Key key}) : super(key: key);
@@ -132,12 +133,30 @@ class _NotificationTabState extends State<NotificationTab> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       height: screenSize.height * 0.07,
       color: Theme.of(context).backgroundColor,
-      child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
             S.of(context).notification,
             style: Theme.of(context).textTheme.headline2,
-          )),
+          ),
+          Container(
+            height: 50,
+            width: 50,
+            child: Card(
+              elevation: 0,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(90),
+                onTap: () {},
+                child: Icon(
+                  AppIcons.facebook_messenger,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     ));
     listViewWidgets.add(SizedBox(
       height: 8,
