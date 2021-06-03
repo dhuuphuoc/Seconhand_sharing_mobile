@@ -190,6 +190,7 @@
   "canceledLowerCase" : "canceled",
   "cancelRegistrationMessage" : "Do you want to cancel this registrations?",
   "you" : "you",
+  "youUpperCase" : "You",
   "thanksNotification" : "Thanks: {content}",
   "@thanksNotification" :
   {

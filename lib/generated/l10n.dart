@@ -1435,6 +1435,16 @@ class S {
     );
   }
 
+  /// `You`
+  String get youUpperCase {
+    return Intl.message(
+      'You',
+      name: 'youUpperCase',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Thanks: {content}`
   String thanksNotification(Object content) {
     return Intl.message(
