@@ -27,46 +27,30 @@ class NotificationTab extends StatefulWidget {
 
 class _NotificationTabState extends State<NotificationTab> {
   List<UserNotification> _notifications = [];
-  ScrollController _primaryScrollController;
+  ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
   int _pageSize = 10;
   bool _isLoading = true;
   bool _isEnd = false;
   bool _isPresent = true;
-  double _scrollOffset = 0;
+  double _lastOffset = 0;
 
   @override
   void initState() {
     super.initState();
     fetchNotification();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _primaryScrollController.addListener(() {
-        TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
-        if (tabBar.controller.index == 4) {
-          if (_primaryScrollController.offset == _primaryScrollController.position.maxScrollExtent) {
-            if (!_isEnd) {
-              _pageNumber++;
-              fetchNotification();
-            }
-          }
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    _scrollController.addListener(() {
+      double scrolled = _scrollController.offset - _lastOffset;
+      _lastOffset = _scrollController.offset;
+      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
+      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
+        if (!_isEnd && !_isLoading) {
+          _pageNumber++;
+          fetchNotification();
         }
-      });
-      TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
-      tabBar.controller.addListener(() {
-        TabController tabController = tabBar.controller;
-        if (tabController.indexIsChanging) {
-          if (tabController.index != 4) {
-            _scrollOffset = _primaryScrollController.offset;
-            setState(() {
-              _isPresent = false;
-            });
-          } else {
-            setState(() {
-              _isPresent = true;
-            });
-          }
-        }
-      });
+      }
     });
   }
 
@@ -118,15 +102,6 @@ class _NotificationTabState extends State<NotificationTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isPresent) {
-      _primaryScrollController = PrimaryScrollController.of(context);
-      if (_scrollOffset != 0) {
-        print(_scrollOffset);
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _primaryScrollController.jumpTo(_scrollOffset);
-        });
-      }
-    }
     Size screenSize = MediaQuery.of(context).size;
     List<Widget> listViewWidgets = [];
     listViewWidgets.add(Container(
@@ -211,7 +186,7 @@ class _NotificationTabState extends State<NotificationTab> {
               await fetchNotification();
             },
             child: CustomScrollView(
-              controller: _primaryScrollController,
+              controller: _scrollController,
               slivers: [
                 SliverOverlapInjector(
                   // This is the flip side of the SliverOverlapAbsorber
