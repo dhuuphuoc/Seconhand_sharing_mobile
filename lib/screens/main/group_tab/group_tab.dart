@@ -5,18 +5,20 @@ import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item_model/item.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
+import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
-class HomeTab extends StatefulWidget {
+class GroupTab extends StatefulWidget {
+  const GroupTab({Key key}) : super(key: key);
+
   @override
-  _HomeTabState createState() => _HomeTabState();
+  _GroupTabState createState() => _GroupTabState();
 }
 
-class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<HomeTab> {
+class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
@@ -36,7 +38,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       TabBar tabBar = Keys.tabBarKey.currentWidget;
       tabBar.controller.addListener(() {
         if (tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.index != 0) {
+          if (tabBar.controller.index != 1) {
             setState(() {
               _isPresent = false;
             });
@@ -49,24 +51,36 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       });
       tabBar.controller.animation.addListener(() {
         if (!tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index == 0 ||
-              tabBar.controller.offset < -0.1 && tabBar.controller.index == 1) {
+          if (tabBar.controller.offset == 0.0 && tabBar.controller.index == 1) {
             if (!_isPresent)
               setState(() {
                 _isPresent = true;
               });
           }
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index != 0 ||
-              tabBar.controller.offset > 0.1 && tabBar.controller.index == 0) {
+          if (tabBar.controller.offset == 0.0 && tabBar.controller.index != 1) {
             if (_isPresent)
               setState(() {
                 _isPresent = false;
               });
           }
+          if (tabBar.controller.offset < -0.1 && tabBar.controller.index == 1) {
+            if (_isPresent) {
+              setState(() {
+                _isPresent = false;
+              });
+            }
+          }
+          if (tabBar.controller.offset > 0.1 && tabBar.controller.index == 0) {
+            if (!_isPresent) {
+              setState(() {
+                _isPresent = true;
+              });
+            }
+          }
         }
       });
       _primaryScrollController.addListener(() {
-        if (tabBar.controller.animation.value == 0.0) {
+        if (tabBar.controller.animation.value == 1.0) {
           _scrollOffset = _primaryScrollController.offset;
           if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
             if (!_isEnd && !_isLoading) {
@@ -125,6 +139,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         }
       });
     }
+
     var listViewWidgets = <Widget>[
       Container(
           margin: EdgeInsets.all(10),
