@@ -41,7 +41,7 @@ class _NotificationTabState extends State<NotificationTab> {
     fetchNotification();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _primaryScrollController.addListener(() {
-        TabBar tabBar = Keys.tabBarKey.currentWidget;
+        TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
         if (tabBar.controller.index == 4) {
           if (_primaryScrollController.offset == _primaryScrollController.position.maxScrollExtent) {
             if (!_isEnd) {
@@ -51,7 +51,7 @@ class _NotificationTabState extends State<NotificationTab> {
           }
         }
       });
-      TabBar tabBar = Keys.tabBarKey.currentWidget;
+      TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
       tabBar.controller.addListener(() {
         TabController tabController = tabBar.controller;
         if (tabController.indexIsChanging) {

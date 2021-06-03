@@ -20,7 +20,7 @@ class _MenuTabState extends State<MenuTab> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      TabBar tabBar = Keys.tabBarKey.currentWidget;
+      TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
       tabBar.controller.addListener(() {
         TabController tabController = tabBar.controller;
         if (tabController.indexIsChanging) {

@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -25,54 +26,17 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   bool _isEnd = false;
   int _runningTasks = 0;
   ScrollController _primaryScrollController;
-  double _scrollOffset = 0;
-  bool _isPresent = true;
   @override
   void initState() {
     fetchItems();
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      TabBar tabBar = Keys.tabBarKey.currentWidget;
-      tabBar.controller.addListener(() {
-        if (tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.index != 0) {
-            setState(() {
-              _isPresent = false;
-            });
-          } else {
-            setState(() {
-              _isPresent = true;
-            });
-          }
-        }
-      });
-      tabBar.controller.animation.addListener(() {
-        if (!tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index == 0 ||
-              tabBar.controller.offset < -0.1 && tabBar.controller.index == 1) {
-            if (!_isPresent)
-              setState(() {
-                _isPresent = true;
-              });
-          }
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index != 0 ||
-              tabBar.controller.offset > 0.1 && tabBar.controller.index == 0) {
-            if (_isPresent)
-              setState(() {
-                _isPresent = false;
-              });
-          }
-        }
-      });
       _primaryScrollController.addListener(() {
-        if (tabBar.controller.animation.value == 0.0) {
-          _scrollOffset = _primaryScrollController.offset;
-          if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
-            if (!_isEnd && !_isLoading) {
-              _pageNumber++;
-              fetchItems();
-            }
+        if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
+          if (!_isEnd && !_isLoading) {
+            _pageNumber++;
+            fetchItems();
           }
         }
       });
@@ -116,15 +80,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-    if (_isPresent) {
-      _primaryScrollController = PrimaryScrollController.of(context);
+    _primaryScrollController = PrimaryScrollController.of(context);
 
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (_scrollOffset != 0) {
-          _primaryScrollController.position.jumpTo(_scrollOffset);
-        }
-      });
-    }
     var listViewWidgets = <Widget>[
       Container(
           margin: EdgeInsets.all(10),
@@ -193,26 +150,24 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         _pageNumber = 1;
         await fetchItems();
       },
-      child: _isPresent
-          ? CustomScrollView(
-              controller: _primaryScrollController,
-              slivers: [
-                SliverOverlapInjector(
-                  // This is the flip side of the SliverOverlapAbsorber
-                  // above.
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-                )
-              ],
-              // ListView(
-              //   controller: _postsScrollController,
-              //   children: listViewWidgets,
-              // ),
-            )
-          : Container(),
+      child: CustomScrollView(
+        controller: _primaryScrollController,
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+          )
+        ],
+        // ListView(
+        //   controller: _postsScrollController,
+        //   children: listViewWidgets,
+        // ),
+      ),
     );
   }
 

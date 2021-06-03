@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/category_model/category.dart';
@@ -26,70 +27,25 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   bool _isLoading = true;
   bool _isEnd = false;
   int _runningTasks = 0;
-  ScrollController _primaryScrollController;
-  double _scrollOffset = 0;
-  bool _isPresent = true;
+  ScrollController _scrollController = ScrollController();
+  double _lastOffset = 0;
   @override
   void initState() {
     fetchItems();
     super.initState();
 
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      TabBar tabBar = Keys.tabBarKey.currentWidget;
-      tabBar.controller.addListener(() {
-        if (tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.index != 1) {
-            setState(() {
-              _isPresent = false;
-            });
-          } else {
-            setState(() {
-              _isPresent = true;
-            });
-          }
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    _scrollController.addListener(() {
+      double scrolled = _scrollController.offset - _lastOffset;
+      _lastOffset = _scrollController.offset;
+      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
+      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
+        if (!_isEnd && !_isLoading) {
+          _pageNumber++;
+          fetchItems();
         }
-      });
-      tabBar.controller.animation.addListener(() {
-        if (!tabBar.controller.indexIsChanging) {
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index == 1) {
-            if (!_isPresent)
-              setState(() {
-                _isPresent = true;
-              });
-          }
-          if (tabBar.controller.offset == 0.0 && tabBar.controller.index != 1) {
-            if (_isPresent)
-              setState(() {
-                _isPresent = false;
-              });
-          }
-          if (tabBar.controller.offset < -0.1 && tabBar.controller.index == 1) {
-            if (_isPresent) {
-              setState(() {
-                _isPresent = false;
-              });
-            }
-          }
-          if (tabBar.controller.offset > 0.1 && tabBar.controller.index == 0) {
-            if (!_isPresent) {
-              setState(() {
-                _isPresent = true;
-              });
-            }
-          }
-        }
-      });
-      _primaryScrollController.addListener(() {
-        if (tabBar.controller.animation.value == 1.0) {
-          _scrollOffset = _primaryScrollController.offset;
-          if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
-            if (!_isEnd && !_isLoading) {
-              _pageNumber++;
-              fetchItems();
-            }
-          }
-        }
-      });
+      }
     });
   }
 
@@ -130,15 +86,6 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-    if (_isPresent) {
-      _primaryScrollController = PrimaryScrollController.of(context);
-
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (_scrollOffset != 0) {
-          _primaryScrollController.position.jumpTo(_scrollOffset);
-        }
-      });
-    }
 
     var listViewWidgets = <Widget>[
       Container(
@@ -208,26 +155,24 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         _pageNumber = 1;
         await fetchItems();
       },
-      child: _isPresent
-          ? CustomScrollView(
-              controller: _primaryScrollController,
-              slivers: [
-                SliverOverlapInjector(
-                  // This is the flip side of the SliverOverlapAbsorber
-                  // above.
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-                )
-              ],
-              // ListView(
-              //   controller: _postsScrollController,
-              //   children: listViewWidgets,
-              // ),
-            )
-          : Container(),
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+          )
+        ],
+        // ListView(
+        //   controller: _postsScrollController,
+        //   children: listViewWidgets,
+        // ),
+      ),
     );
   }
 

@@ -7,7 +7,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/screens/main/group_tab/group_tab.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/test_tab.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
@@ -23,8 +23,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
-  bool _isChanging = false;
-  double _scrollOffset = 0;
 
   Future<void> handleNotificationLaunchApp() async {
     var details = await NotificationService().flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
@@ -36,20 +34,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        _isChanging = true;
-      } else {
-        _isChanging = false;
-      }
-    });
-    _scrollController.addListener(() {
-      if (_isChanging) {
-        _scrollController.jumpTo(_scrollOffset);
-      } else {
-        _scrollOffset = _scrollController.offset;
-      }
-    });
+
     handleNotificationLaunchApp();
     super.initState();
   }
@@ -58,6 +43,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        key: Keys.nestedScrollViewKey,
         controller: _scrollController,
         floatHeaderSlivers: true,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -98,7 +84,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                 // Make the initial height of the SliverAppBar larger than normal.
                 // expandedHeight: 100,
                 bottom: TabBar(
-                  key: Keys.tabBarKey,
                   controller: _tabController,
                   tabs: [
                     Tab(
@@ -132,7 +117,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           controller: _tabController,
           children: [
             HomeTab(),
-            GroupTab(),
+            Container(),
             Container(),
             Container(),
             NotificationTab(),
