@@ -1514,6 +1514,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Group`
+  String get group {
+    return Intl.message(
+      'Group',
+      name: 'group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Group`
+  String get createGroup {
+    return Intl.message(
+      'Create Group',
+      name: 'createGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group Name`
+  String get groupName {
+    return Intl.message(
+      'Group Name',
+      name: 'groupName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rules`
+  String get rule {
+    return Intl.message(
+      'Rules',
+      name: 'rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group Name can't be empty`
+  String get groupNameEmptyError {
+    return Intl.message(
+      'Group Name can\'t be empty',
+      name: 'groupNameEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rules can't be empty`
+  String get ruleEmptyError {
+    return Intl.message(
+      'Rules can\'t be empty',
+      name: 'ruleEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

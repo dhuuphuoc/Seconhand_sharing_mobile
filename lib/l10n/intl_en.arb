@@ -224,5 +224,11 @@
     }
   },
   "emptyNotification" : "There is no more notification",
-  "messageBox" : "Messages box"
+  "messageBox" : "Messages box",
+  "group": "Group",
+  "createGroup": "Create Group",
+  "groupName": "Group Name",
+  "rule": "Rules",
+  "groupNameEmptyError": "Group Name can't be empty",
+  "ruleEmptyError": "Rules can't be empty"
 }

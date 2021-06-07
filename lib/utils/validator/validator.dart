@@ -59,6 +59,14 @@ class Validator {
     return description.length == 0 ? S.current.descriptionEmptyError : null;
   }
 
+  static String validateGroupName(String groupName) {
+    return groupName.length == 0 ? S.current.groupNameEmptyError : null;
+  }
+
+  static String validateRule(String rule) {
+    return rule.length == 0 ? S.current.ruleEmptyError : null;
+  }
+
   static String matchPassword(String confirmPassword, String password) {
     return (confirmPassword == password) ? null : S.current.matchPassword;
   }

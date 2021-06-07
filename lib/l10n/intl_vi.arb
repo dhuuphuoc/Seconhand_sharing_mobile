@@ -224,5 +224,12 @@
     }
   },
   "emptyNotification" : "Không còn thông báo nào nữa",
-  "messageBox" : "Hộp thoại"
+  "messageBox" : "Hộp thoại",
+  "group": "Nhóm",
+  "createGroup": "Tạo nhóm",
+  "groupName": "Tên nhóm",
+  "rule": "Các luật lệ",
+  "groupNameEmptyError": "Tên nhóm không được bỏ trống",
+  "ruleEmptyError": "Luật lệ không được bỏ trống"
+
 }
