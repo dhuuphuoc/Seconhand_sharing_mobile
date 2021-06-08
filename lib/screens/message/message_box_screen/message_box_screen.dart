@@ -20,9 +20,16 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
   bool _isEnd = false;
   int _pageNumber = 1;
   int _pageSize = 10;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     fetchRecentMessages();
+    _scrollController.addListener(() {
+      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+        _pageNumber++;
+        fetchRecentMessages();
+      }
+    });
     super.initState();
   }
 
@@ -48,6 +55,7 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     List<Widget> widgets = [];
 
     for (int i = 0; i < _messages.length; i++) {
@@ -100,7 +108,25 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         ),
       ));
     }
-
+    if (_isLoading) {
+      widgets.add(Container(
+        height: screenSize.height * 0.2,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ));
+    }
+    if (_isEnd) {
+      widgets.add(Container(
+        height: screenSize.height * 0.2,
+        child: Center(
+          child: Text(
+            S.of(context).emptyNotification,
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
+        ),
+      ));
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -109,18 +135,13 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         ),
         centerTitle: true,
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: widgets,
-                ),
-              ),
-            ),
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          controller: _scrollController,
+          children: widgets,
+        ),
+      ),
     );
   }
 }

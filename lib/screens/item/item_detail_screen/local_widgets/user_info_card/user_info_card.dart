@@ -3,10 +3,11 @@ import 'package:secondhand_sharing/models/address_model/address_model.dart';
 
 class UserInfoCard extends StatefulWidget {
   final String _name;
+  final String _avatarUrl;
   final AddressModel _addressModel;
   final Function _onMapPress;
 
-  UserInfoCard(this._name, this._addressModel, this._onMapPress);
+  UserInfoCard(this._name, this._avatarUrl, this._addressModel, this._onMapPress);
 
   @override
   _UserInfoCardState createState() => _UserInfoCardState();
@@ -27,9 +28,9 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 flex: 1,
                 child: CircleAvatar(
                     maxRadius: 25,
-                    foregroundImage: AssetImage(
-                      "assets/images/person.png",
-                    ),
+                    foregroundImage: widget._avatarUrl == null
+                        ? AssetImage("assets/images/person.png")
+                        : NetworkImage(widget._avatarUrl),
                     backgroundColor: Colors.transparent),
               ),
               SizedBox(width: 10),

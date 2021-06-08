@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/images_picker/images_picker.dart';
 import 'package:secondhand_sharing/screens/profile/user_donations_tab/user_donations_tab.dart';
 import 'package:secondhand_sharing/screens/profile/user_requests_tab/user_requests_tab.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -188,6 +189,29 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         : throw "Could not launch tel:${_userInfo.phoneNumber}";
   }
 
+  void pickImages() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ImagesPicker();
+      },
+    ).then((value) {
+      if (value != null) {
+        setState(() {
+          _isUpdating = true;
+        });
+        UserServices.uploadAvatar(value).then((value) {
+          if (value != null) {
+            setState(() {
+              _userInfo.avatarUrl = value;
+              _isUpdating = false;
+            });
+          }
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -228,10 +252,22 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     children: [
                       Expanded(
                         flex: 5,
-                        child: CircleAvatar(
-                          radius: screenSize.height * 0.1,
-                          foregroundImage: AssetImage(
-                            "assets/images/person.png",
+                        child: Container(
+                          width: screenSize.height * 0.2,
+                          child: Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              CircleAvatar(
+                                radius: screenSize.height * 0.1,
+                                foregroundImage: _userInfo.avatarUrl == null
+                                    ? AssetImage("assets/images/person.png")
+                                    : NetworkImage(_userInfo.avatarUrl),
+                              ),
+                              if (!_isHideIcon)
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(onPressed: pickImages, icon: Icon(Icons.camera_alt)))
+                            ],
                           ),
                         ),
                       ),

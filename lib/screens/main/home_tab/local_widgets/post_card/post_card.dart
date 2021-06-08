@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 
 class PostCard extends StatelessWidget {
   final Function onPostItem;
@@ -19,9 +20,9 @@ class PostCard extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 7),
               child: CircleAvatar(
                 radius: 30,
-                foregroundImage: AssetImage(
-                  "assets/images/person.png",
-                ),
+                foregroundImage: AccessInfo().userInfo.avatarUrl == null
+                    ? AssetImage("assets/images/person.png")
+                    : NetworkImage(AccessInfo().userInfo.avatarUrl),
               ),
             ),
           ),
