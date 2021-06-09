@@ -77,7 +77,6 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       },
       child: CustomScrollView(
         controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber

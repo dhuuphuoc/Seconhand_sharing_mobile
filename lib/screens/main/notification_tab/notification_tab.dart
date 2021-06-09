@@ -187,7 +187,6 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
       },
       child: CustomScrollView(
         controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber
