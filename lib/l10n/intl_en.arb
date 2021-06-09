@@ -190,6 +190,7 @@
   "canceledLowerCase" : "canceled",
   "cancelRegistrationMessage" : "Do you want to cancel this registrations?",
   "you" : "you",
+  "youUpperCase" : "You",
   "thanksNotification" : "Thanks: {content}",
   "@thanksNotification" :
   {
@@ -223,6 +224,7 @@
       }
     }
   },
-  "emptyNotification" : "There is no more notification",
+  "notificationEnded" : "There is no more notification",
+  "messagesEnded" : "There is no more messages",
   "messageBox" : "Messages box"
 }

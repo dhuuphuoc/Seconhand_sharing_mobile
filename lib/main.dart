@@ -28,7 +28,7 @@ import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
 import 'package:secondhand_sharing/screens/message/message_box_screen/message_box_screen.dart';
-import 'package:secondhand_sharing/screens/profile/profile_screen.dart';
+import 'package:secondhand_sharing/screens/profile/profile_screen/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';

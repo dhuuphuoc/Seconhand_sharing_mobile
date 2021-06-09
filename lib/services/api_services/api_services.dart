@@ -1,10 +1,24 @@
+import 'dart:io';
+
+import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:http/http.dart' as http;
 
 class APIService {
   // static String apiUrl = "10.0.2.2:5001";
   static String apiUrl = "secondhandsharing.appspot.com";
+  static String cloudUrl = "https://storage.googleapis.com/secondhandsharing.appspot.com/";
 
   static Future<void> handle401StatusCode() async {
     await Keys.navigatorKey.currentState.pushNamed("/login");
+  }
+
+  static Future<bool> uploadImage(ImageData image, String url) async {
+    Uri uploadUrl = Uri.parse(url);
+    print(uploadUrl.toString());
+    var response = await http.put(uploadUrl, body: image.data, headers: {HttpHeaders.contentTypeHeader: "image/png"});
+    print(response.body);
+    if (response.statusCode == 200) return true;
+    return false;
   }
 }

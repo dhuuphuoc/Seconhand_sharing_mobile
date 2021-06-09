@@ -8,7 +8,8 @@ class Item {
       this.postTime,
       this.description,
       this.imageUrl,
-      this.donateAccountName});
+      this.donateAccountName,
+      this.avatarUrl});
 
   int id;
   String itemName;
@@ -17,6 +18,7 @@ class Item {
   String description;
   String imageUrl;
   String donateAccountName;
+  String avatarUrl;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
       id: json["id"],
@@ -25,7 +27,8 @@ class Item {
       postTime: DateTime.parse(json["postTime"]),
       description: json["description"],
       imageUrl: json["imageUrl"],
-      donateAccountName: json["donateAccountName"]);
+      donateAccountName: json["donateAccountName"],
+      avatarUrl: json["avatarUrl"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,

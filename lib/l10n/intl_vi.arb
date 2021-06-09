@@ -190,6 +190,7 @@
   "canceledLowerCase" : "hủy chấp nhận",
   "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
   "you": "bạn",
+  "youUpperCase" : "Bạn",
   "thanksNotification" : "Lời cảm ơn: {content}",
   "@thanksNotification" :
   {
@@ -223,6 +224,7 @@
       }
     }
   },
-  "emptyNotification" : "Không còn thông báo nào nữa",
+  "notificationEnded" : "Không còn thông báo nào nữa",
+  "messagesEnded" : "There còn tin nhắn nào nữa",
   "messageBox" : "Hộp thoại"
 }

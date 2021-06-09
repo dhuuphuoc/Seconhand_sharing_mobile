@@ -1435,6 +1435,16 @@ class S {
     );
   }
 
+  /// `You`
+  String get youUpperCase {
+    return Intl.message(
+      'You',
+      name: 'youUpperCase',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Thanks: {content}`
   String thanksNotification(Object content) {
     return Intl.message(
@@ -1496,10 +1506,20 @@ class S {
   }
 
   /// `There is no more notification`
-  String get emptyNotification {
+  String get notificationEnded {
     return Intl.message(
       'There is no more notification',
-      name: 'emptyNotification',
+      name: 'notificationEnded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no more messages`
+  String get messagesEnded {
+    return Intl.message(
+      'There is no more messages',
+      name: 'messagesEnded',
       desc: '',
       args: [],
     );

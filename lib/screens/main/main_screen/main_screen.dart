@@ -68,9 +68,9 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
                       child: CircleAvatar(
                         radius: 20,
-                        foregroundImage: AssetImage(
-                          "assets/images/person.png",
-                        ),
+                        foregroundImage: AccessInfo().userInfo.avatarUrl == null
+                            ? AssetImage("assets/images/person.png")
+                            : NetworkImage(AccessInfo().userInfo.avatarUrl),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
