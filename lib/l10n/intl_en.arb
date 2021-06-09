@@ -230,5 +230,7 @@
   "groupName": "Group Name",
   "rule": "Rules",
   "groupNameEmptyError": "Group Name can't be empty",
-  "ruleEmptyError": "Rules can't be empty"
+  "ruleEmptyError": "Rules can't be empty",
+  "createGroupSuccess": "Create group success",
+  "createGroupFail": "Create group fail. Please try again"
 }

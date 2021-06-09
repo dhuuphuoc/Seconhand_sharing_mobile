@@ -230,6 +230,8 @@
   "groupName": "Tên nhóm",
   "rule": "Các luật lệ",
   "groupNameEmptyError": "Tên nhóm không được bỏ trống",
-  "ruleEmptyError": "Luật lệ không được bỏ trống"
+  "ruleEmptyError": "Luật lệ không được bỏ trống",
+  "createGroupSuccess": "Tạo nhóm thành công",
+  "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại"
 
 }
