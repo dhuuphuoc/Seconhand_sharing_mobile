@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -22,6 +26,7 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
   int _pageNumber = 0;
   int _pageSize = 10;
   ScrollController _scrollController = ScrollController();
+  StreamSubscription<RemoteMessage> _subscription;
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -37,8 +42,31 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         _pageNumber++;
         await fetchRecentMessages();
       }
+      _subscription = FirebaseMessaging.onMessage.listen((message) {
+        if (message.data["type"] != "1" && message.data["type"] != "5") return;
+        UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
+        int index = _messages.indexWhere((element) {
+          if (element.sendFromAccountId == newMessage.sendFromAccountId ||
+              element.sendToAccountId == newMessage.sendFromAccountId) {
+            return true;
+          }
+          return false;
+        });
+        setState(() {
+          _messages[index] = newMessage;
+          var temp = _messages[0];
+          _messages[0] = _messages[index];
+          _messages[index] = temp;
+        });
+      });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 
   Future<void> fetchRecentMessages() async {

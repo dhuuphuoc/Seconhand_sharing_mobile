@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
@@ -14,18 +15,24 @@ class GroupTab extends StatefulWidget {
   _GroupTabState createState() => _GroupTabState();
 }
 
-class _GroupTabState extends State<GroupTab>
-    with AutomaticKeepAliveClientMixin<GroupTab> {
+class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
   List<Group> _groups = [];
+  ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
   int _pageSize = 8;
   bool _isLoading = true;
   bool _isEnd = false;
-  ScrollController _primaryScrollController;
-
+  double _lastOffset = 0;
   @override
   void initState() {
     super.initState();
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    _scrollController.addListener(() {
+      double scrolled = _scrollController.offset - _lastOffset;
+      _lastOffset = _scrollController.offset;
+      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
+    });
   }
 
   Future<void> fetchItems() async {
@@ -52,7 +59,6 @@ class _GroupTabState extends State<GroupTab>
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-    _primaryScrollController = PrimaryScrollController.of(context);
 
     var listViewWidget = <Widget>[
       Container(
@@ -70,7 +76,8 @@ class _GroupTabState extends State<GroupTab>
         await fetchItems();
       },
       child: CustomScrollView(
-        controller: _primaryScrollController,
+        controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber
@@ -79,8 +86,7 @@ class _GroupTabState extends State<GroupTab>
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            sliver:
-                SliverList(delegate: SliverChildListDelegate(listViewWidget)),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidget)),
           )
         ],
       ),

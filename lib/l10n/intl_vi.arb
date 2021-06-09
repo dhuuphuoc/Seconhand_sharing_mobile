@@ -232,6 +232,6 @@
   "ruleEmptyError": "Luật lệ không được bỏ trống",
 
   "notificationEnded" : "Không còn thông báo nào nữa",
-  "messagesEnded" : "There còn tin nhắn nào nữa",
+  "messagesEnded" : "Không còn tin nhắn nào nữa",
   "messageBox" : "Hộp thoại"
 }

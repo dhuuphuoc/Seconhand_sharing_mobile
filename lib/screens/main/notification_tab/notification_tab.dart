@@ -25,7 +25,7 @@ class NotificationTab extends StatefulWidget {
   _NotificationTabState createState() => _NotificationTabState();
 }
 
-class _NotificationTabState extends State<NotificationTab> {
+class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 0;
@@ -179,7 +179,7 @@ class _NotificationTabState extends State<NotificationTab> {
       ));
     }
     return RefreshIndicator(
-      edgeOffset: screenSize.height * 0.2,
+      edgeOffset: screenSize.height * 0.02,
       onRefresh: () async {
         _notifications = [];
         _pageNumber = 1;
@@ -187,6 +187,7 @@ class _NotificationTabState extends State<NotificationTab> {
       },
       child: CustomScrollView(
         controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber
@@ -205,4 +206,7 @@ class _NotificationTabState extends State<NotificationTab> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
