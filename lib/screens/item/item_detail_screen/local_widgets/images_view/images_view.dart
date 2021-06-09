@@ -19,7 +19,7 @@ class _ImagesViewState extends State<ImagesView> {
     if (widget.images.isNotEmpty)
       selectedImage = widget.images[0];
     else
-      selectedImage = "";
+      selectedImage = "https://i.stack.imgur.com/y9DpT.jpg";
     super.initState();
   }
 
@@ -70,9 +70,7 @@ class _ImagesViewState extends State<ImagesView> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: selectedImage == image
-                                    ? Border.all(
-                                        color: Theme.of(context).primaryColor,
-                                        width: 2)
+                                    ? Border.all(color: Theme.of(context).primaryColor, width: 2)
                                     : null),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),

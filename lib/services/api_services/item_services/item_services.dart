@@ -102,15 +102,6 @@ class ItemServices {
     }
   }
 
-  static Future<bool> uploadImage(ImageData image, String url) async {
-    Uri uploadUrl = Uri.parse(url);
-    print(uploadUrl.toString());
-    var response = await http.put(uploadUrl, body: image.data, headers: {HttpHeaders.contentTypeHeader: "image/png"});
-    print(response.body);
-    if (response.statusCode == 200) return true;
-    return false;
-  }
-
   static Future<PostItemModel> postItem(PostItemForm postItemForm) async {
     Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Item");
     var response = await http.post(postItemsUrl,

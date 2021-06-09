@@ -12,7 +12,8 @@ class ItemDetail {
       this.donateAccountId,
       this.donateAccountName,
       this.userRequestId,
-      this.status});
+      this.status,
+      this.avatarUrl});
 
   int id;
   String itemName;
@@ -24,6 +25,7 @@ class ItemDetail {
   String donateAccountName;
   int userRequestId;
   ItemStatus status;
+  String avatarUrl;
 
   factory ItemDetail.fromJson(Map<String, dynamic> json) => ItemDetail(
         id: json["id"],
@@ -36,6 +38,7 @@ class ItemDetail {
         donateAccountName: json["donateAccountName"],
         userRequestId: json["userRequestId"],
         status: ItemStatus.values[json["status"]],
+        avatarUrl: json["avatarUrl"],
       );
 
   Map<String, dynamic> toJson() => {
