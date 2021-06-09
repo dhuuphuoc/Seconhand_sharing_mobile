@@ -224,6 +224,7 @@
       }
     }
   },
-  "emptyNotification" : "Không còn thông báo nào nữa",
+  "notificationEnded" : "Không còn thông báo nào nữa",
+  "messagesEnded" : "There còn tin nhắn nào nữa",
   "messageBox" : "Hộp thoại"
 }

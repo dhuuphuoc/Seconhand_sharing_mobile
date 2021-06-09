@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
@@ -18,16 +19,23 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
   bool _isLoading = true;
   List<UserMessage> _messages = [];
   bool _isEnd = false;
-  int _pageNumber = 1;
+  int _pageNumber = 0;
   int _pageSize = 10;
   ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    fetchRecentMessages();
     _scrollController.addListener(() {
       if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+        if (!_isEnd && !_isLoading) {
+          _pageNumber++;
+          fetchRecentMessages();
+        }
+      }
+    });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
         _pageNumber++;
-        fetchRecentMessages();
+        await fetchRecentMessages();
       }
     });
     super.initState();
@@ -37,7 +45,6 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
     setState(() {
       _isLoading = true;
     });
-
     var messages = await MessageServices.getRecentMessages(_pageNumber, _pageSize);
     if (messages.isEmpty) {
       setState(() {
@@ -121,7 +128,7 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         height: screenSize.height * 0.2,
         child: Center(
           child: Text(
-            S.of(context).emptyNotification,
+            S.of(context).messagesEnded,
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
@@ -135,12 +142,10 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         ),
         centerTitle: true,
       ),
-      body: Container(
+      body: ListView(
         padding: EdgeInsets.all(10),
-        child: ListView(
-          controller: _scrollController,
-          children: widgets,
-        ),
+        controller: _scrollController,
+        children: widgets,
       ),
     );
   }

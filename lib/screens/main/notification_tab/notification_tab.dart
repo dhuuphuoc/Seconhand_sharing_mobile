@@ -28,7 +28,7 @@ class NotificationTab extends StatefulWidget {
 class _NotificationTabState extends State<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
-  int _pageNumber = 1;
+  int _pageNumber = 0;
   int _pageSize = 10;
   bool _isLoading = true;
   bool _isEnd = false;
@@ -49,6 +49,12 @@ class _NotificationTabState extends State<NotificationTab> {
           _pageNumber++;
           fetchNotification();
         }
+      }
+    });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
+        _pageNumber++;
+        await fetchNotification();
       }
     });
   }
@@ -166,7 +172,7 @@ class _NotificationTabState extends State<NotificationTab> {
         height: screenSize.height * 0.2,
         child: Center(
           child: Text(
-            S.of(context).emptyNotification,
+            S.of(context).notificationEnded,
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),

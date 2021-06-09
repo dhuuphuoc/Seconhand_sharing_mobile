@@ -224,6 +224,7 @@
       }
     }
   },
-  "emptyNotification" : "There is no more notification",
+  "notificationEnded" : "There is no more notification",
+  "messagesEnded" : "There is no more messages",
   "messageBox" : "Messages box"
 }
