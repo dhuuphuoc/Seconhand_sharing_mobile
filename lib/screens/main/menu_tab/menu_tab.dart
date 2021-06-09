@@ -13,29 +13,17 @@ class MenuTab extends StatefulWidget {
 }
 
 class _MenuTabState extends State<MenuTab> {
-  double _scrollOffset = 0;
-  ScrollController _primaryScrollController;
-  bool _isPresent = true;
+  ScrollController _scrollController = ScrollController();
+  double _lastOffset = 0;
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      TabBar tabBar = Keys.nestedScrollViewKey.currentWidget;
-      tabBar.controller.addListener(() {
-        TabController tabController = tabBar.controller;
-        if (tabController.indexIsChanging) {
-          if (tabController.index != 5) {
-            _scrollOffset = _primaryScrollController.offset;
-            setState(() {
-              _isPresent = false;
-            });
-          } else {
-            setState(() {
-              _isPresent = true;
-            });
-          }
-        }
-      });
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    _scrollController.addListener(() {
+      double scrolled = _scrollController.offset - _lastOffset;
+      _lastOffset = _scrollController.offset;
+      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
     });
     super.initState();
   }
@@ -66,47 +54,35 @@ class _MenuTabState extends State<MenuTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isPresent) {
-      _primaryScrollController = PrimaryScrollController.of(context);
-
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (_scrollOffset != 0) {
-          _primaryScrollController.position.jumpTo(_scrollOffset);
-          _scrollOffset = 0;
-        }
-      });
-    }
-    return _isPresent
-        ? CustomScrollView(
-            controller: _primaryScrollController,
-            slivers: [
-              SliverOverlapInjector(
-                // This is the flip side of the SliverOverlapAbsorber
-                // above.
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              ),
-              SliverPadding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: OutlinedButton(
-                        onPressed: logOut,
-                        child: Text("Logout"),
-                        style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all(Theme.of(context).errorColor),
-                            side: MaterialStateProperty.all(
-                              BorderSide(color: Theme.of(context).errorColor, width: 1.5),
-                            ),
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            )))),
-                  ),
-                ])),
-              )
-            ],
-          )
-        : Container();
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: [
+        SliverOverlapInjector(
+          // This is the flip side of the SliverOverlapAbsorber
+          // above.
+          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          sliver: SliverList(
+              delegate: SliverChildListDelegate([
+            Container(
+              margin: EdgeInsets.all(10),
+              child: OutlinedButton(
+                  onPressed: logOut,
+                  child: Text("Logout"),
+                  style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(Theme.of(context).errorColor),
+                      side: MaterialStateProperty.all(
+                        BorderSide(color: Theme.of(context).errorColor, width: 1.5),
+                      ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )))),
+            ),
+          ])),
+        )
+      ],
+    );
   }
 }

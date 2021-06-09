@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
@@ -35,7 +36,7 @@ class NotificationService {
   int summaryNotificationId;
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("@mipmap/ic_launcher_foreground");
 
     final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: true,
@@ -61,6 +62,7 @@ class NotificationService {
       'New message',
       'This channel receive message from other users',
       importance: Importance.max,
+      color: Colors.green,
       priority: Priority.high,
       styleInformation: messagingStyleInformation,
     );
@@ -81,6 +83,7 @@ class NotificationService {
       groupKey: receiveRequest.itemId.toString(),
       importance: Importance.max,
       priority: Priority.high,
+      color: Colors.green,
       styleInformation: bigTextStyleInformation,
       setAsGroupSummary: true,
     );
@@ -105,6 +108,7 @@ class NotificationService {
       'This channel receive notifications from the server',
       groupKey: receiveRequest.itemId.toString(),
       importance: Importance.max,
+      color: Colors.green,
       priority: Priority.high,
       styleInformation: bigTextStyleInformation,
     );
@@ -118,6 +122,7 @@ class NotificationService {
       'Notification',
       'This channel receive notifications from the server',
       importance: Importance.max,
+      color: Colors.green,
       priority: Priority.high,
       styleInformation: defaultStyleInformation,
     );

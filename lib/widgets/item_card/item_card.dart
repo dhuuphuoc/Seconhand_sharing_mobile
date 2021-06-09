@@ -26,7 +26,8 @@ class ItemCard extends StatelessWidget {
             children: [
               ListTile(
                 leading: CircleAvatar(
-                  foregroundImage: AssetImage("assets/images/person.png"),
+                  foregroundImage:
+                      item.avatarUrl == null ? AssetImage("assets/images/person.png") : NetworkImage(item.avatarUrl),
                   backgroundColor: Theme.of(context).backgroundColor,
                 ),
                 title: Text(
@@ -55,7 +56,7 @@ class ItemCard extends StatelessWidget {
               ),
               Container(
                 child: Image.network(
-                  item.imageUrl,
+                  item.imageUrl == null ? "https://i.stack.imgur.com/y9DpT.jpg" : item.imageUrl,
                   frameBuilder: (BuildContext context, Widget child, int frame, bool wasSynchronouslyLoaded) {
                     if (wasSynchronouslyLoaded ?? false) {
                       return child;

@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/ad
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
+import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
@@ -26,8 +27,7 @@ class PostItemScreen extends StatefulWidget {
   _PostItemScreenState createState() => _PostItemScreenState();
 }
 
-class _PostItemScreenState extends State<PostItemScreen>
-    with TickerProviderStateMixin {
+class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStateMixin {
   CategoryModel _categoryModel = CategoryModel();
   bool _isPosting = false;
   var _images = <String, ImageData>{};
@@ -46,9 +46,7 @@ class _PostItemScreenState extends State<PostItemScreen>
     super.initState();
   }
 
-  AddressModel _addressModel = AccessInfo().userInfo.address == null
-      ? AddressModel()
-      : AccessInfo().userInfo.address;
+  AddressModel _addressModel = AccessInfo().userInfo.address == null ? AddressModel() : AccessInfo().userInfo.address;
   void pickImages() {
     showModalBottomSheet(
             context: context,
@@ -66,14 +64,12 @@ class _PostItemScreenState extends State<PostItemScreen>
   }
 
   void onSubmit() async {
-    String addressValidateMessage =
-        Validator.validateAddressModel(_addressModel);
+    String addressValidateMessage = Validator.validateAddressModel(_addressModel);
     if (addressValidateMessage != null) {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(
-                S.of(context).address, addressValidateMessage, "OK");
+            return NotifyDialog(S.of(context).address, addressValidateMessage, "OK");
           });
       return;
     }
@@ -82,8 +78,7 @@ class _PostItemScreenState extends State<PostItemScreen>
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(
-                S.of(context).images, imagesValidateMessage, "OK");
+            return NotifyDialog(S.of(context).images, imagesValidateMessage, "OK");
           });
       return;
     }
@@ -91,8 +86,7 @@ class _PostItemScreenState extends State<PostItemScreen>
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).category,
-                S.of(context).categoryUnselectedError, "OK");
+            return NotifyDialog(S.of(context).category, S.of(context).categoryUnselectedError, "OK");
           });
       return;
     }
@@ -106,10 +100,7 @@ class _PostItemScreenState extends State<PostItemScreen>
           onWillPop: onPop,
           child: AlertDialog(
             buttonPadding: EdgeInsets.zero,
-            content: Container(
-                height: 100,
-                width: 100,
-                child: Center(child: CircularProgressIndicator())),
+            content: Container(height: 100, width: 100, child: Center(child: CircularProgressIndicator())),
             actions: <Widget>[],
           ),
         );
@@ -125,9 +116,8 @@ class _PostItemScreenState extends State<PostItemScreen>
     PostItemModel postItemModel = await ItemServices.postItem(postItemForm);
     if (postItemModel != null) {
       for (int i = 0; i < _images.length; i++) {
-        bool result = await ItemServices.uploadImage(
-            _images.values.elementAt(i),
-            postItemModel.data.imageUploads[i].presignUrl);
+        bool result =
+            await APIService.uploadImage(_images.values.elementAt(i), postItemModel.data.imageUploads[i].presignUrl);
         if (!result) {
           _isSuccess = false;
         }
@@ -148,8 +138,7 @@ class _PostItemScreenState extends State<PostItemScreen>
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).failed, S.of(context).postFailed,
-                S.of(context).tryAgain);
+            return NotifyDialog(S.of(context).failed, S.of(context).postFailed, S.of(context).tryAgain);
           });
     }
   }
@@ -161,8 +150,7 @@ class _PostItemScreenState extends State<PostItemScreen>
 
   void onMapPress() async {
     AddressModel backup = AddressModel.clone(_addressModel);
-    Navigator.pushNamed(context, "/item/address", arguments: _addressModel)
-        .then((value) {
+    Navigator.pushNamed(context, "/item/address", arguments: _addressModel).then((value) {
       setState(() {
         if (value != null)
           _addressModel = value;
@@ -174,16 +162,14 @@ class _PostItemScreenState extends State<PostItemScreen>
   }
 
   final _titleController = TextEditingController();
-  final _phoneNumberController =
-      TextEditingController(text: AccessInfo().userInfo.phoneNumber);
+  final _phoneNumberController = TextEditingController(text: AccessInfo().userInfo.phoneNumber);
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).donate,
-            style: Theme.of(context).textTheme.headline2),
+        title: Text(S.of(context).donate, style: Theme.of(context).textTheme.headline2),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -206,8 +192,7 @@ class _PostItemScreenState extends State<PostItemScreen>
                     labelText: "${S.of(context).title}",
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
               SizedBox(
                 height: 10,
@@ -215,9 +200,8 @@ class _PostItemScreenState extends State<PostItemScreen>
               //Add photo
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(10)),
+                decoration:
+                    BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -238,9 +222,8 @@ class _PostItemScreenState extends State<PostItemScreen>
               ),
               //Categories
               Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(10)),
+                decoration:
+                    BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
                 height: 130,
                 child: ListView.builder(
                   itemExtent: 90,
@@ -248,8 +231,7 @@ class _PostItemScreenState extends State<PostItemScreen>
                   itemCount: _categoryModel.categories.length,
                   itemBuilder: (BuildContext context, int index) {
                     Category category = _categoryModel.categories[index];
-                    return CategoryTab(
-                        category.id == _categoryModel.selectedId, category, () {
+                    return CategoryTab(category.id == _categoryModel.selectedId, category, () {
                       setState(() {
                         _categoryModel.selectedId = category.id;
                       });
@@ -271,21 +253,16 @@ class _PostItemScreenState extends State<PostItemScreen>
                     suffixIcon: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed("/profile",
-                                arguments: AccessInfo().userInfo)
-                            .whenComplete(() {
+                        Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo).whenComplete(() {
                           setState(() {
-                            _phoneNumberController.text =
-                                AccessInfo().userInfo.phoneNumber;
+                            _phoneNumberController.text = AccessInfo().userInfo.phoneNumber;
                           });
                         });
                       },
                     ),
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
               SizedBox(
                 height: 10,
@@ -301,16 +278,13 @@ class _PostItemScreenState extends State<PostItemScreen>
                     hintText: "${S.of(context).description}...",
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
               SizedBox(
                 height: 10,
               ),
               Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: onSubmit, child: Text(S.of(context).post))),
+                  width: double.infinity, child: ElevatedButton(onPressed: onSubmit, child: Text(S.of(context).post))),
               SizedBox(
                 height: 10,
               )

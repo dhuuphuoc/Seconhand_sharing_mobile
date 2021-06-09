@@ -1435,6 +1435,16 @@ class S {
     );
   }
 
+  /// `You`
+  String get youUpperCase {
+    return Intl.message(
+      'You',
+      name: 'youUpperCase',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Thanks: {content}`
   String thanksNotification(Object content) {
     return Intl.message(
@@ -1492,26 +1502,6 @@ class S {
       name: 'confirmSentSuccess',
       desc: '',
       args: [receiver],
-    );
-  }
-
-  /// `There is no more notification`
-  String get emptyNotification {
-    return Intl.message(
-      'There is no more notification',
-      name: 'emptyNotification',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Messages box`
-  String get messageBox {
-    return Intl.message(
-      'Messages box',
-      name: 'messageBox',
-      desc: '',
-      args: [],
     );
   }
 
@@ -1590,6 +1580,36 @@ class S {
     return Intl.message(
       'Create group fail. Please try again',
       name: 'createGroupFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no more notification`
+  String get notificationEnded {
+    return Intl.message(
+      'There is no more notification',
+      name: 'notificationEnded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no more messages`
+  String get messagesEnded {
+    return Intl.message(
+      'There is no more messages',
+      name: 'messagesEnded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Messages box`
+  String get messageBox {
+    return Intl.message(
+      'Messages box',
+      name: 'messageBox',
       desc: '',
       args: [],
     );

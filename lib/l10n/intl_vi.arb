@@ -190,6 +190,7 @@
   "canceledLowerCase" : "hủy chấp nhận",
   "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
   "you": "bạn",
+  "youUpperCase" : "Bạn",
   "thanksNotification" : "Lời cảm ơn: {content}",
   "@thanksNotification" :
   {
@@ -223,8 +224,6 @@
       }
     }
   },
-  "emptyNotification" : "Không còn thông báo nào nữa",
-  "messageBox" : "Hộp thoại",
   "group": "Nhóm",
   "createGroup": "Tạo nhóm",
   "groupName": "Tên nhóm",
@@ -232,6 +231,8 @@
   "groupNameEmptyError": "Tên nhóm không được bỏ trống",
   "ruleEmptyError": "Luật lệ không được bỏ trống",
   "createGroupSuccess": "Tạo nhóm thành công",
-  "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại"
-
+  "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại",
+  "notificationEnded" : "Không còn thông báo nào nữa",
+  "messagesEnded" : "Không còn tin nhắn nào nữa",
+  "messageBox" : "Hộp thoại"
 }

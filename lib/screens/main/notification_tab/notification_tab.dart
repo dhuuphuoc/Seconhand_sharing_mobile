@@ -25,14 +25,13 @@ class NotificationTab extends StatefulWidget {
   _NotificationTabState createState() => _NotificationTabState();
 }
 
-class _NotificationTabState extends State<NotificationTab> {
+class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
-  int _pageNumber = 1;
+  int _pageNumber = 0;
   int _pageSize = 10;
   bool _isLoading = true;
   bool _isEnd = false;
-  bool _isPresent = true;
   double _lastOffset = 0;
 
   @override
@@ -52,6 +51,12 @@ class _NotificationTabState extends State<NotificationTab> {
         }
       }
     });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
+        _pageNumber++;
+        await fetchNotification();
+      }
+    });
   }
 
   @override
@@ -65,21 +70,17 @@ class _NotificationTabState extends State<NotificationTab> {
     setState(() {
       _isLoading = true;
     });
-    while (_notifications.length < _pageSize) {
-      var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
-      if (notifications.isEmpty) {
-        setState(() {
-          _isEnd = true;
-        });
-        break;
-      }
+    var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
+    if (notifications.isEmpty) {
       setState(() {
-        group(notifications);
-        _notifications.addAll(notifications);
-        _isLoading = false;
+        _isEnd = true;
       });
-      _pageNumber++;
     }
+    setState(() {
+      group(notifications);
+      _notifications.addAll(notifications);
+      _isLoading = false;
+    });
   }
 
   void group(List<UserNotification> notifications) {
@@ -138,72 +139,73 @@ class _NotificationTabState extends State<NotificationTab> {
     listViewWidgets.add(SizedBox(
       height: 8,
     ));
+
+    for (var notification in _notifications) {
+      switch (notification.type) {
+        case NotificationType.receiveRequest:
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
+          listViewWidgets.add(IncomingRequestNotification(receiveRequest));
+          break;
+        case NotificationType.requestStatus:
+          listViewWidgets.add(RequestStatusNotification(notification));
+          break;
+        case NotificationType.confirmSent:
+          listViewWidgets.add(ConfirmSentNotification(notification));
+          break;
+        case NotificationType.sendThanks:
+          listViewWidgets.add(ThanksNotification(notification));
+          break;
+        default:
+          break;
+      }
+    }
     if (_isLoading) {
       listViewWidgets.add(Container(
-        height: screenSize.height * 0.7,
+        height: screenSize.height * 0.3,
         child: Center(
           child: CircularProgressIndicator(),
         ),
       ));
-    } else {
-      for (var notification in _notifications) {
-        switch (notification.type) {
-          case NotificationType.receiveRequest:
-            ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
-            listViewWidgets.add(IncomingRequestNotification(receiveRequest));
-            break;
-          case NotificationType.requestStatus:
-            listViewWidgets.add(RequestStatusNotification(notification));
-            break;
-          case NotificationType.confirmSent:
-            listViewWidgets.add(ConfirmSentNotification(notification));
-            break;
-          case NotificationType.sendThanks:
-            listViewWidgets.add(ThanksNotification(notification));
-            break;
-          default:
-            break;
-        }
-      }
     }
     if (_isEnd) {
       listViewWidgets.add(Container(
         height: screenSize.height * 0.2,
         child: Center(
           child: Text(
-            S.of(context).emptyNotification,
+            S.of(context).notificationEnded,
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
       ));
     }
-    return _isPresent
-        ? RefreshIndicator(
-            edgeOffset: screenSize.height * 0.2,
-            onRefresh: () async {
-              _notifications = [];
-              _pageNumber = 1;
-              await fetchNotification();
-            },
-            child: CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverOverlapInjector(
-                  // This is the flip side of the SliverOverlapAbsorber
-                  // above.
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-                )
-              ],
-              // ListView(
-              //   controller: _postsScrollController,
-              //   children: listViewWidgets,
-              // ),
-            ),
+    return RefreshIndicator(
+      edgeOffset: screenSize.height * 0.02,
+      onRefresh: () async {
+        _notifications = [];
+        _pageNumber = 1;
+        await fetchNotification();
+      },
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(bottom: 10),
+            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
           )
-        : Container();
+        ],
+        // ListView(
+        //   controller: _postsScrollController,
+        //   children: listViewWidgets,
+        // ),
+      ),
+    );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -152,6 +152,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       },
       child: CustomScrollView(
         controller: _primaryScrollController,
+        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber
