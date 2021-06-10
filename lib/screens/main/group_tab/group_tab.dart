@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
+import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class GroupTab extends StatefulWidget {
@@ -40,7 +41,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       setState(() {
         _isLoading = true;
       });
-      var groups = await GroupServices.getGroups(3);
+      var groups;
       if (groups.isEmpty) {
         setState(() {
           _isEnd = true;
@@ -68,6 +69,13 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         }),
       )
     ];
+
+    _groups.forEach((group) {
+      listViewWidget.add(GroupCard(group));
+    });
+    if(!_isEnd) {
+      listViewWidget.add(NotificationCard(Icons.check_circle_outline, "You don't have group"));
+    }
     return RefreshIndicator(
       edgeOffset: screenSize.height * 0.2,
       onRefresh: () async {
