@@ -25,22 +25,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   bool _isLoading = true;
   bool _isEnd = false;
   int _runningTasks = 0;
-  ScrollController _primaryScrollController;
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     fetchItems();
     super.initState();
-
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _primaryScrollController.addListener(() {
-        if (_primaryScrollController.position.maxScrollExtent == _primaryScrollController.offset) {
-          if (!_isEnd && !_isLoading) {
-            _pageNumber++;
-            fetchItems();
-          }
-        }
-      });
-    });
   }
 
   @override
@@ -48,6 +37,12 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     if (this.mounted) {
       super.setState(fn);
     }
+  }
+
+  void absorbScrollBehaviour(double scrolled) {
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   @override
@@ -80,7 +75,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-    _primaryScrollController = PrimaryScrollController.of(context);
 
     var listViewWidgets = <Widget>[
       Container(
@@ -143,31 +137,49 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     if (_isEnd) {
       listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
-    return RefreshIndicator(
-      edgeOffset: screenSize.height * 0.2,
-      onRefresh: () async {
-        _items = [];
-        _pageNumber = 1;
-        await fetchItems();
+
+    return NotificationListener(
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+          if (notification.overscroll > 0) {
+            if (!_isEnd && !_isLoading) {
+              _pageNumber++;
+              fetchItems();
+            }
+          }
+        }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
+        }
+        return true;
       },
-      child: CustomScrollView(
-        controller: _primaryScrollController,
-        physics: AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverOverlapInjector(
-            // This is the flip side of the SliverOverlapAbsorber
-            // above.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-          )
-        ],
-        // ListView(
-        //   controller: _postsScrollController,
-        //   children: listViewWidgets,
-        // ),
+      child: RefreshIndicator(
+        edgeOffset: screenSize.height * 0.2,
+        onRefresh: () async {
+          _items = [];
+          _pageNumber = 1;
+          await fetchItems();
+        },
+        child: CustomScrollView(
+          key: Keys.primaryScrollViewKey,
+          controller: _scrollController,
+          slivers: [
+            SliverOverlapInjector(
+              // This is the flip side of the SliverOverlapAbsorber
+              // above.
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+            )
+          ],
+          // ListView(
+          //   controller: _postsScrollController,
+          //   children: listViewWidgets,
+          // ),
+        ),
       ),
     );
   }

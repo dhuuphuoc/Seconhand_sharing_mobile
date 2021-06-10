@@ -18,14 +18,13 @@ class _MenuTabState extends State<MenuTab> {
 
   @override
   void initState() {
+    super.initState();
+  }
+
+  void absorbScrollBehaviour(double scrolled) {
     NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
     ScrollController primaryScrollController = nestedScrollView.controller;
-    _scrollController.addListener(() {
-      double scrolled = _scrollController.offset - _lastOffset;
-      _lastOffset = _scrollController.offset;
-      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
-    });
-    super.initState();
+    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   @override
@@ -54,35 +53,47 @@ class _MenuTabState extends State<MenuTab> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        SliverOverlapInjector(
-          // This is the flip side of the SliverOverlapAbsorber
-          // above.
-          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          sliver: SliverList(
-              delegate: SliverChildListDelegate([
-            Container(
-              margin: EdgeInsets.all(10),
-              child: OutlinedButton(
-                  onPressed: logOut,
-                  child: Text("Logout"),
-                  style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(Theme.of(context).errorColor),
-                      side: MaterialStateProperty.all(
-                        BorderSide(color: Theme.of(context).errorColor, width: 1.5),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      )))),
-            ),
-          ])),
-        )
-      ],
+    return NotificationListener(
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+        }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
+        }
+        return true;
+      },
+      child: CustomScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        controller: _scrollController,
+        slivers: [
+          SliverOverlapInjector(
+            // This is the flip side of the SliverOverlapAbsorber
+            // above.
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverList(
+                delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.all(10),
+                child: OutlinedButton(
+                    onPressed: logOut,
+                    child: Text("Logout"),
+                    style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).errorColor),
+                        side: MaterialStateProperty.all(
+                          BorderSide(color: Theme.of(context).errorColor, width: 1.5),
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )))),
+              ),
+            ])),
+          )
+        ],
+      ),
     );
   }
 }
