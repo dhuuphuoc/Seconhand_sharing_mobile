@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/group_tab.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/test_tab.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
@@ -34,7 +35,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
-    _scrollController.addListener(() {});
     handleNotificationLaunchApp();
     super.initState();
   }

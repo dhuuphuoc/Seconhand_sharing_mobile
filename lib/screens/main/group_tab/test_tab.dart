@@ -12,14 +12,14 @@ import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
-class GroupTab extends StatefulWidget {
-  const GroupTab({Key key}) : super(key: key);
+class TestTab extends StatefulWidget {
+  const TestTab({Key key}) : super(key: key);
 
   @override
-  _GroupTabState createState() => _GroupTabState();
+  _TestTabState createState() => _TestTabState();
 }
 
-class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
+class _TestTabState extends State<TestTab> with AutomaticKeepAliveClientMixin<TestTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;

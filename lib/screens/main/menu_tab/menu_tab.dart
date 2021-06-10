@@ -18,10 +18,6 @@ class _MenuTabState extends State<MenuTab> {
 
   @override
   void initState() {
-    _scrollController.addListener(() {
-      absorbScrollBehaviour(_scrollController.offset - _lastOffset);
-      _lastOffset = _scrollController.offset;
-    });
     super.initState();
   }
 
@@ -58,9 +54,12 @@ class _MenuTabState extends State<MenuTab> {
   @override
   Widget build(BuildContext context) {
     return NotificationListener(
-      onNotification: (t) {
-        if (t is OverscrollNotification) {
-          absorbScrollBehaviour(t.overscroll);
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+        }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },

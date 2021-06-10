@@ -36,9 +36,8 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(() {
-      absorbScrollBehaviour(_scrollController.offset - _lastOffset);
-      _lastOffset = _scrollController.offset;
       if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
@@ -181,10 +180,20 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
       ));
     }
     return NotificationListener(
-      onNotification: (t) {
-        if (t is OverscrollNotification) {
-          absorbScrollBehaviour(t.overscroll);
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+          if (notification.overscroll > 0) {
+            if (!_isEnd && !_isLoading) {
+              _pageNumber++;
+              fetchNotification();
+            }
+          }
         }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
+        }
+
         return true;
       },
       child: RefreshIndicator(

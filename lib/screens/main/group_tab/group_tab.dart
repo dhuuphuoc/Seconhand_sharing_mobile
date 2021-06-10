@@ -26,10 +26,6 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      absorbScrollBehaviour(_scrollController.offset - _lastOffset);
-      _lastOffset = _scrollController.offset;
-    });
   }
 
   void absorbScrollBehaviour(double scrolled) {
@@ -72,9 +68,12 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       )
     ];
     return NotificationListener(
-      onNotification: (t) {
-        if (t is OverscrollNotification) {
-          absorbScrollBehaviour(t.overscroll);
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+        }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },
