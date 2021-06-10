@@ -1,20 +1,16 @@
 class CreateGroupForm {
-  CreateGroupForm({
-    this.groupName,
-    this.description,
-    this.rules,
-  });
+  String _groupName;
+  String _description;
+  String _rules;
 
-  String groupName;
-  String description;
-  String rules;
+  CreateGroupForm(this._groupName, this._description, this._rules);
 
-  factory CreateGroupForm.fromJson(Map<String, dynamic> json) =>
-      CreateGroupForm(
-        groupName: json["groupName"],
-        description: json["description"],
-        rules: json["rules"],
-      );
+  String get groupName => _groupName;
+
+  String get description => _description;
+
+  String get rules => _rules;
+
 
   Map<String, dynamic> toJson() => {
     "groupName": groupName,

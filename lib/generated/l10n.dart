@@ -1565,6 +1565,26 @@ class S {
     );
   }
 
+  /// `Create group success`
+  String get createGroupSuccess {
+    return Intl.message(
+      'Create group success',
+      name: 'createGroupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create group fail. Please try again`
+  String get createGroupFail {
+    return Intl.message(
+      'Create group fail. Please try again',
+      name: 'createGroupFail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There is no more notification`
   String get notificationEnded {
     return Intl.message(

@@ -5,20 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/category_model/category.dart';
-import 'package:secondhand_sharing/models/category_model/category_model.dart';
-import 'package:secondhand_sharing/models/image_model/image_data.dart';
-import 'package:secondhand_sharing/models/image_model/image_model.dart';
-import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
-import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
-import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
-import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
-import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
+import 'package:secondhand_sharing/models/group_model/create_group/create_group.dart';
+import 'package:secondhand_sharing/models/group_model/create_group/create_group_model.dart';
+import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
-import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
 class CreateGroupScreen extends StatefulWidget {
@@ -37,10 +27,43 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
   final _groupNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ruleController = TextEditingController();
+  bool _isLoading = false;
 
   void onSubmit() async {
     if (!_formKey.currentState.validate()) return;
-    
+    setState(() {
+      _isLoading = true;
+    });
+
+    CreateGroupModel createGroupModel = await GroupServices.createGroup(
+        CreateGroupForm(_groupNameController.text, _descriptionController.text,
+            _ruleController.text));
+
+    print(createGroupModel);
+
+    if (createGroupModel != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return NotifyDialog(
+              S.of(context).success, S.of(context).createGroupSuccess, "OK");
+        },
+      ).whenComplete(() {
+        Navigator.pop(context);
+      });
+    } else {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return NotifyDialog(S.of(context).failed, S.of(context).createGroupFail,
+              S.of(context).tryAgain);
+        },
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -61,6 +84,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                 TextFormField(
                   controller: _groupNameController,
                   validator: Validator.validateGroupName,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       labelText: "${S.of(context).groupName}",
                       filled: true,
@@ -75,6 +99,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                   minLines: 8,
                   maxLines: 20,
                   validator: Validator.validateDescription,
+                  textInputAction: TextInputAction.next,
                   controller: _descriptionController,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
@@ -92,6 +117,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                   maxLines: 15,
                   controller: _ruleController,
                   validator: Validator.validateRule,
+                  textInputAction: TextInputAction.done,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
                       hintText: "${S.of(context).rule}...",
@@ -101,15 +127,19 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                           borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 15,
+                ),
+                _isLoading
+                    ? Align(child: CircularProgressIndicator())
+                    : SizedBox(),
+                SizedBox(
+                  height: 15,
                 ),
                 Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: onSubmit, child: Text(S.of(context).confirm))),
-                SizedBox(
-                  height: 10,
-                )
+                        onPressed: onSubmit,
+                        child: Text(S.of(context).confirm))),
               ],
             ),
           ),
