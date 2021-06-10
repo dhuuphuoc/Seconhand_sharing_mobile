@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 6);
-
+    _scrollController.addListener(() {});
     handleNotificationLaunchApp();
     super.initState();
   }

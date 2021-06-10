@@ -26,13 +26,16 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      absorbScrollBehaviour(_scrollController.offset - _lastOffset);
+      _lastOffset = _scrollController.offset;
+    });
+  }
+
+  void absorbScrollBehaviour(double scrolled) {
     NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
     ScrollController primaryScrollController = nestedScrollView.controller;
-    _scrollController.addListener(() {
-      double scrolled = _scrollController.offset - _lastOffset;
-      _lastOffset = _scrollController.offset;
-      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
-    });
+    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   Future<void> fetchItems() async {
@@ -68,26 +71,35 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         }),
       )
     ];
-    return RefreshIndicator(
-      edgeOffset: screenSize.height * 0.2,
-      onRefresh: () async {
-        _groups = [];
-        _pageNumber = 1;
-        await fetchItems();
+    return NotificationListener(
+      onNotification: (t) {
+        if (t is OverscrollNotification) {
+          absorbScrollBehaviour(t.overscroll);
+        }
+        return true;
       },
-      child: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverOverlapInjector(
-            // This is the flip side of the SliverOverlapAbsorber
-            // above.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidget)),
-          )
-        ],
+      child: RefreshIndicator(
+        edgeOffset: screenSize.height * 0.2,
+        onRefresh: () async {
+          _groups = [];
+          _pageNumber = 1;
+          await fetchItems();
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverOverlapInjector(
+              // This is the flip side of the SliverOverlapAbsorber
+              // above.
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidget)),
+            )
+          ],
+        ),
       ),
     );
   }

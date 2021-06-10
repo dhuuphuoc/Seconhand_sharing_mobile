@@ -25,6 +25,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
   bool _isLoading = true;
   bool _isEnd = false;
   int _runningTasks = 0;
+  double _lastOffset = 0;
   ScrollController _primaryScrollController;
   @override
   void initState() {
@@ -143,6 +144,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     if (_isEnd) {
       listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
+
     return RefreshIndicator(
       edgeOffset: screenSize.height * 0.2,
       onRefresh: () async {
@@ -152,7 +154,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       },
       child: CustomScrollView(
         controller: _primaryScrollController,
-        physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverOverlapInjector(
             // This is the flip side of the SliverOverlapAbsorber
