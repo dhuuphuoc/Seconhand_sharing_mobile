@@ -9,8 +9,7 @@ class SelectiveImageView extends StatelessWidget {
   final bool isSelected;
   final ImageData image;
 
-  SelectiveImageView(
-      {@required this.onPress, this.isSelected = false, @required this.image});
+  SelectiveImageView({@required this.onPress, this.isSelected = false, @required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +18,7 @@ class SelectiveImageView extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(10)),
+            border: Border.all(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.circular(10)),
         child: Stack(fit: StackFit.expand, children: [
           ClipRRect(
             child: Image.memory(
@@ -33,15 +31,13 @@ class SelectiveImageView extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Container(
               child: Icon(isSelected ? Icons.check_circle : Icons.circle,
-                  color: isSelected
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).backgroundColor),
+                  color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).backgroundColor),
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(
-                      width: 1.5, color: Theme.of(context).primaryColor)),
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(width: 1.5, color: Theme.of(context).primaryColor),
+              ),
             ),
           ),
         ]),

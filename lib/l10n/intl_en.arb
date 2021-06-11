@@ -35,12 +35,13 @@
   "failed" : "Failed",
   "postFailed" : "An error occurred while posting!",
   "loginFailedNotification" : "Username or password is incorrect.",
-  "selectPhotos": "Select photos",
+  "addPhotos": "Add photos",
   "success": "Success",
   "registerSuccess": "Register Successful. Check your confirm email",
   "registerFailedNotification": "Register information is incorrect",
   "emptyFullNameError": "Full Name can't be empty",
   "addPhoto": "Add photo",
+  "chooseImage": "Choose image",
   "postItem" : "Post",
   "all" : "All",
   "clothes": "Clothes",
@@ -224,7 +225,16 @@
       }
     }
   },
+  "group": "Group",
+  "createGroup": "Create Group",
+  "groupName": "Group Name",
+  "rule": "Rules",
+  "groupNameEmptyError": "Group Name can't be empty",
+  "ruleEmptyError": "Rules can't be empty",
+  "createGroupSuccess": "Create group success",
+  "createGroupFail": "Create group fail. Please try again",
   "notificationEnded" : "There is no more notification",
   "messagesEnded" : "There is no more messages",
-  "messageBox" : "Messages box"
+  "messageBox" : "Messages box",
+  "homeAddress": "Home address"
 }

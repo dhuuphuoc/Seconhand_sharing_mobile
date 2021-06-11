@@ -52,9 +52,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     RegisterModel registerModel = await AuthenticationService.register(
         RegisterForm(_fullNameTextController.text, _emailTextController.text,
             _passwordTextController.text, _dateOfBirthController.text, _phoneNumberController.text));
-    print(_dateOfBirthController.text);
+
     if (registerModel != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!

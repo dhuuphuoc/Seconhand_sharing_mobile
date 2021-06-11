@@ -25,25 +25,18 @@ class NotificationTab extends StatefulWidget {
   _NotificationTabState createState() => _NotificationTabState();
 }
 
-class _NotificationTabState extends State<NotificationTab> {
+class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
-  int _pageNumber = 0;
+  int _pageNumber = 1;
   int _pageSize = 10;
   bool _isLoading = true;
   bool _isEnd = false;
-  double _lastOffset = 0;
-
   @override
   void initState() {
     super.initState();
     fetchNotification();
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
     _scrollController.addListener(() {
-      double scrolled = _scrollController.offset - _lastOffset;
-      _lastOffset = _scrollController.offset;
-      primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
       if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
@@ -51,12 +44,12 @@ class _NotificationTabState extends State<NotificationTab> {
         }
       }
     });
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
-        _pageNumber++;
-        await fetchNotification();
-      }
-    });
+  }
+
+  void absorbScrollBehaviour(double scrolled) {
+    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
+    ScrollController primaryScrollController = nestedScrollView.controller;
+    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   @override
@@ -103,6 +96,7 @@ class _NotificationTabState extends State<NotificationTab> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size screenSize = MediaQuery.of(context).size;
     List<Widget> listViewWidgets = [];
     listViewWidgets.add(Container(
@@ -178,31 +172,56 @@ class _NotificationTabState extends State<NotificationTab> {
         ),
       ));
     }
-    return RefreshIndicator(
-      edgeOffset: screenSize.height * 0.2,
-      onRefresh: () async {
-        _notifications = [];
-        _pageNumber = 1;
-        await fetchNotification();
+    return NotificationListener(
+      onNotification: (notification) {
+        if (notification is OverscrollNotification) {
+          absorbScrollBehaviour(notification.overscroll);
+          if (notification.overscroll > 0) {
+            if (!_isEnd && !_isLoading) {
+              _pageNumber++;
+              fetchNotification();
+            }
+          }
+        }
+        if (notification is ScrollUpdateNotification) {
+          absorbScrollBehaviour(notification.scrollDelta);
+        }
+
+        return true;
       },
-      child: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverOverlapInjector(
-            // This is the flip side of the SliverOverlapAbsorber
-            // above.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.only(bottom: 10),
-            sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
-          )
-        ],
-        // ListView(
-        //   controller: _postsScrollController,
-        //   children: listViewWidgets,
-        // ),
+      child: RefreshIndicator(
+        edgeOffset: screenSize.height * 0.02,
+        onRefresh: () async {
+          _notifications = [];
+          _isEnd = false;
+          _pageNumber = 1;
+
+          await fetchNotification();
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverOverlapInjector(
+              // This is the flip side of the SliverOverlapAbsorber
+              // above.
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 0),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+            )
+          ],
+          // ListView(
+          //   padding: EdgeInsets.only(bottom: 10),
+          //   controller: _scrollController,
+          //   children: listViewWidgets,
+          //   // ),
+        ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

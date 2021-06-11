@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -19,11 +23,13 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
   bool _isLoading = true;
   List<UserMessage> _messages = [];
   bool _isEnd = false;
-  int _pageNumber = 0;
-  int _pageSize = 10;
+  int _pageNumber = 1;
+  int _pageSize = 20;
   ScrollController _scrollController = ScrollController();
+  StreamSubscription<RemoteMessage> _subscription;
   @override
   void initState() {
+    fetchRecentMessages();
     _scrollController.addListener(() {
       if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
         if (!_isEnd && !_isLoading) {
@@ -32,13 +38,31 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         }
       }
     });
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
-        _pageNumber++;
-        await fetchRecentMessages();
-      }
+    _subscription = FirebaseMessaging.onMessage.listen((message) {
+      if (message.data["type"] != "1" && message.data["type"] != "5") return;
+      UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
+      int index = _messages.indexWhere((element) {
+        if (element.sendFromAccountId == newMessage.sendFromAccountId ||
+            element.sendToAccountId == newMessage.sendFromAccountId) {
+          return true;
+        }
+        return false;
+      });
+      setState(() {
+        _messages[index] = newMessage;
+        var temp = _messages[0];
+        _messages[0] = _messages[index];
+        _messages[index] = temp;
+      });
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 
   Future<void> fetchRecentMessages() async {
@@ -142,10 +166,33 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: EdgeInsets.all(10),
-        controller: _scrollController,
-        children: widgets,
+      body: NotificationListener(
+        onNotification: (notification) {
+          if (notification is OverscrollNotification) {
+            if (notification.overscroll > 0) {
+              if (!_isEnd && !_isLoading) {
+                _pageNumber++;
+                fetchRecentMessages();
+              }
+            }
+          }
+
+          return true;
+        },
+        child: RefreshIndicator(
+          onRefresh: () async {
+            _pageNumber = 1;
+            _messages = [];
+            _isEnd = false;
+            fetchRecentMessages();
+          },
+          child: ListView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(10),
+            controller: _scrollController,
+            children: widgets,
+          ),
+        ),
       ),
     );
   }

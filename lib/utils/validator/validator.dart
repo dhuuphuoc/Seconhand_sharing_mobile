@@ -15,15 +15,14 @@ class Validator {
   }
 
   static String validateAddressModel(AddressModel addressModel) {
-    if (addressModel.province == null || addressModel.district == null)
-      return S.current.addressError;
+    if (addressModel.province == null || addressModel.district == null) return S.current.addressError;
     if (addressModel.ward == null) {
       if (addressModel.district.wards.length == 0) return null;
       return S.current.addressError;
     }
   }
 
-  static String validateImages(Map<String, ImageData> images) {
+  static String validateImages(List<ImageData> images) {
     return images.length > 0 ? null : S.current.notEnoughImages;
   }
 
@@ -57,6 +56,14 @@ class Validator {
 
   static String validateDescription(String description) {
     return description.length == 0 ? S.current.descriptionEmptyError : null;
+  }
+
+  static String validateGroupName(String groupName) {
+    return groupName.length == 0 ? S.current.groupNameEmptyError : null;
+  }
+
+  static String validateRule(String rule) {
+    return rule.length == 0 ? S.current.ruleEmptyError : null;
   }
 
   static String matchPassword(String confirmPassword, String password) {

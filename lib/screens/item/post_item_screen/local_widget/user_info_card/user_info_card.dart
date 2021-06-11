@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 
 class UserInfoCard extends StatefulWidget {
-  final _addressModel;
-  final Function _onMapPress;
+  final Function onMapPress;
 
-  UserInfoCard(this._addressModel, this._onMapPress);
+  UserInfoCard(this.onMapPress);
 
   @override
   _UserInfoCardState createState() => _UserInfoCardState();
@@ -17,67 +18,33 @@ class _UserInfoCardState extends State<UserInfoCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.zero,
-        elevation: 8,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: CircleAvatar(
-                    maxRadius: 25,
-                    foregroundImage: AssetImage(
-                      "assets/images/person.png",
-                    ),
-                    backgroundColor: Colors.transparent),
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        AccessInfo().userInfo.fullName,
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Icon(Icons.location_on_outlined, color: Colors.pink),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              widget._addressModel.toString(),
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                flex: 1,
-                child: IconButton(
-                  color: Theme.of(context).primaryColor,
-                  icon: Icon(Icons.map_outlined),
-                  onPressed: widget._onMapPress,
-                ),
-              ),
-            ],
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            horizontalTitleGap: 10,
+            leading: CircleAvatar(
+              maxRadius: 22,
+              foregroundImage: AccessInfo().userInfo.avatarUrl == null
+                  ? AssetImage("assets/images/person.png")
+                  : NetworkImage(AccessInfo().userInfo.avatarUrl),
+            ),
+            title: Text(
+              AccessInfo().userInfo.fullName,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            subtitle: Text(
+              AccessInfo().userInfo.email,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            trailing: IconButton(
+              color: Theme.of(context).primaryColor,
+              icon: Icon(Icons.contact_phone_outlined),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo.id);
+              },
+            ),
           ),
         ));
   }

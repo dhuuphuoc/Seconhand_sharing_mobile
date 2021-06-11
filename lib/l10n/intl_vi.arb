@@ -35,12 +35,13 @@
   "failed" : "Thất bại",
   "postFailed" : "Có lỗi trong quá trình đăng bài!",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
-  "selectPhotos": "Chọn ảnh",
+  "addPhotos": "Thêm ảnh",
   "success": "Thành công",
   "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
   "registerFailedNotification": "Thông tin đăng ký không ",
   "emptyFullNameError": "Tên không được bỏ trống ",
   "addPhoto": "Thêm ảnh",
+  "chooseImage": "Chọn ảnh",
   "postItem" : "Đăng bài viết",
   "all" : "Tất cả",
   "clothes": "Quần áo",
@@ -224,7 +225,16 @@
       }
     }
   },
+  "group": "Nhóm",
+  "createGroup": "Tạo nhóm",
+  "groupName": "Tên nhóm",
+  "rule": "Các luật lệ",
+  "groupNameEmptyError": "Tên nhóm không được bỏ trống",
+  "ruleEmptyError": "Luật lệ không được bỏ trống",
+  "createGroupSuccess": "Tạo nhóm thành công",
+  "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại",
   "notificationEnded" : "Không còn thông báo nào nữa",
-  "messagesEnded" : "There còn tin nhắn nào nữa",
-  "messageBox" : "Hộp thoại"
+  "messagesEnded" : "Không còn tin nhắn nào nữa",
+  "messageBox" : "Hộp thoại",
+  "homeAddress": "Địa chỉ nhà"
 }

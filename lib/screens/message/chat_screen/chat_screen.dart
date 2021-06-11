@@ -51,9 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
           _isLoading = false;
         });
         _subscription = FirebaseMessaging.onMessage.listen((message) {
-          if (message.data["type"] != "1" || message.data["type"] != "5") return;
+          if (message.data["type"] != "1" && message.data["type"] != "5") return;
           UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
-          print(newMessage.content);
           if (newMessage.sendFromAccountId == _userInfo.id) {
             setState(() {
               messages.add(newMessage);

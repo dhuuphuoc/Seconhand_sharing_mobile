@@ -395,11 +395,11 @@ class S {
     );
   }
 
-  /// `Select photos`
-  String get selectPhotos {
+  /// `Add photos`
+  String get addPhotos {
     return Intl.message(
-      'Select photos',
-      name: 'selectPhotos',
+      'Add photos',
+      name: 'addPhotos',
       desc: '',
       args: [],
     );
@@ -450,6 +450,16 @@ class S {
     return Intl.message(
       'Add photo',
       name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose image`
+  String get chooseImage {
+    return Intl.message(
+      'Choose image',
+      name: 'chooseImage',
       desc: '',
       args: [],
     );
@@ -1505,6 +1515,86 @@ class S {
     );
   }
 
+  /// `Group`
+  String get group {
+    return Intl.message(
+      'Group',
+      name: 'group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Group`
+  String get createGroup {
+    return Intl.message(
+      'Create Group',
+      name: 'createGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group Name`
+  String get groupName {
+    return Intl.message(
+      'Group Name',
+      name: 'groupName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rules`
+  String get rule {
+    return Intl.message(
+      'Rules',
+      name: 'rule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group Name can't be empty`
+  String get groupNameEmptyError {
+    return Intl.message(
+      'Group Name can\'t be empty',
+      name: 'groupNameEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rules can't be empty`
+  String get ruleEmptyError {
+    return Intl.message(
+      'Rules can\'t be empty',
+      name: 'ruleEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create group success`
+  String get createGroupSuccess {
+    return Intl.message(
+      'Create group success',
+      name: 'createGroupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create group fail. Please try again`
+  String get createGroupFail {
+    return Intl.message(
+      'Create group fail. Please try again',
+      name: 'createGroupFail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There is no more notification`
   String get notificationEnded {
     return Intl.message(
@@ -1530,6 +1620,16 @@ class S {
     return Intl.message(
       'Messages box',
       name: 'messageBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home address`
+  String get homeAddress {
+    return Intl.message(
+      'Home address',
+      name: 'homeAddress',
       desc: '',
       args: [],
     );
