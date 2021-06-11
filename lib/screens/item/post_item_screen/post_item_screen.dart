@@ -13,7 +13,7 @@ import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
-import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/address_card/AddressCard.dart';
+import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/address_card/address_card.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
@@ -31,7 +31,7 @@ class PostItemScreen extends StatefulWidget {
 class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStateMixin {
   CategoryModel _categoryModel = CategoryModel();
   bool _isPosting = false;
-  var _images = <String, ImageData>{};
+  List<ImageData> _images = [];
 
   Future<void> requestStoragePermission() async {
     if (await Permission.storage.isDenied) {
@@ -50,15 +50,14 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
   AddressModel _addressModel = AccessInfo().userInfo.address == null ? AddressModel() : AccessInfo().userInfo.address;
   void pickImages() {
     showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return ImagesPickerBottomSheet();
-            },
-            routeSettings: RouteSettings(arguments: _images))
-        .then((value) {
+      context: context,
+      builder: (context) {
+        return ImagesPickerBottomSheet();
+      },
+    ).then((value) {
       if (value != null) {
         setState(() {
-          _images = value;
+          _images.addAll(value);
         });
       }
     });
@@ -117,8 +116,7 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
     PostItemModel postItemModel = await ItemServices.postItem(postItemForm);
     if (postItemModel != null) {
       for (int i = 0; i < _images.length; i++) {
-        bool result =
-            await APIService.uploadImage(_images.values.elementAt(i), postItemModel.data.imageUploads[i].presignUrl);
+        bool result = await APIService.uploadImage(_images.elementAt(i), postItemModel.data.imageUploads[i].presignUrl);
         if (!result) {
           _isSuccess = false;
         }
@@ -187,24 +185,9 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
               ),
               AddressCard(_addressModel, onMapPress),
               SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _titleController,
-                validator: Validator.validateTitle,
-                decoration: InputDecoration(
-                    hintText: "${S.of(context).title}...",
-                    labelText: "${S.of(context).title}",
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-              ),
-
-              //Title
-
-              SizedBox(
                 height: 10,
               ),
+
               //Add photo
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -213,14 +196,18 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: _images.values.toList().length + 1,
+                  itemCount: _images.length + 1,
                   cacheExtent: 10000,
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
                       return AddPhoto(onPress: pickImages);
                     } else {
-                      ImageData image = _images.values.toList()[index - 1];
-                      return ImageView(image: image);
+                      ImageData image = _images[index - 1];
+                      return ImageView(image, () {
+                        setState(() {
+                          _images.removeAt(index - 1);
+                        });
+                      });
                     }
                   },
                 ),
@@ -251,7 +238,6 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
               SizedBox(
                 height: 15,
               ),
-              //Phone number
 
               TextFormField(
                 validator: Validator.validatePhoneNumber,
@@ -277,7 +263,24 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
               SizedBox(
-                height: 10,
+                height: 15,
+              ),
+              //Phone number
+              TextFormField(
+                controller: _titleController,
+                validator: Validator.validateTitle,
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).title}...",
+                    labelText: "${S.of(context).title}",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+              ),
+
+              //Title
+
+              SizedBox(
+                height: 15,
               ),
               //Description
               TextFormField(

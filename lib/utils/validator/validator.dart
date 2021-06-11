@@ -15,15 +15,14 @@ class Validator {
   }
 
   static String validateAddressModel(AddressModel addressModel) {
-    if (addressModel.province == null || addressModel.district == null)
-      return S.current.addressError;
+    if (addressModel.province == null || addressModel.district == null) return S.current.addressError;
     if (addressModel.ward == null) {
       if (addressModel.district.wards.length == 0) return null;
       return S.current.addressError;
     }
   }
 
-  static String validateImages(Map<String, ImageData> images) {
+  static String validateImages(List<ImageData> images) {
     return images.length > 0 ? null : S.current.notEnoughImages;
   }
 

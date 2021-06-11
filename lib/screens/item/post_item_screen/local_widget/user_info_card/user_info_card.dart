@@ -18,7 +18,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.zero,
-        elevation: 5,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           child: ListTile(
@@ -37,6 +37,13 @@ class _UserInfoCardState extends State<UserInfoCard> {
             subtitle: Text(
               AccessInfo().userInfo.email,
               style: Theme.of(context).textTheme.subtitle1,
+            ),
+            trailing: IconButton(
+              color: Theme.of(context).primaryColor,
+              icon: Icon(Icons.contact_phone_outlined),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo.id);
+              },
             ),
           ),
         ));

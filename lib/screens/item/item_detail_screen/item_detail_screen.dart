@@ -19,11 +19,11 @@ import 'package:secondhand_sharing/models/request_detail_model/request_status.da
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
 import 'package:secondhand_sharing/screens/application/application.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_card/contact_card.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/send_thanks_form/send_thanks_form.dart';
-import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/user_info_card/user_info_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
@@ -314,7 +314,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   builder: (context, widget) => Column(
                     children: [
                       SizedBox(height: 10),
-                      UserInfoCard(_itemDetail.donateAccountName, _itemDetail.avatarUrl, _itemDetail.receiveAddress,
+                      ContactCard(_itemDetail.donateAccountName, _itemDetail.avatarUrl, _itemDetail.receiveAddress,
                           showUserProfile),
                       SizedBox(height: 10),
                       ImagesView(

@@ -17,12 +17,13 @@ class _UserInfoCardState extends State<AddressCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.zero,
-        elevation: 5,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Row(
             children: [
+              SizedBox(width: 5),
               Icon(
                 Icons.location_on_outlined,
                 color: Colors.pink,

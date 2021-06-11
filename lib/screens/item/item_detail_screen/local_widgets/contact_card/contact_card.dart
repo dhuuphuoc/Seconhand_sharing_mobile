@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 
-class UserInfoCard extends StatefulWidget {
+class ContactCard extends StatefulWidget {
   final String _name;
   final String _avatarUrl;
   final AddressModel _addressModel;
   final Function _onMapPress;
 
-  UserInfoCard(this._name, this._avatarUrl, this._addressModel, this._onMapPress);
+  ContactCard(this._name, this._avatarUrl, this._addressModel, this._onMapPress);
 
   @override
-  _UserInfoCardState createState() => _UserInfoCardState();
+  _ContactCardState createState() => _ContactCardState();
 }
 
-class _UserInfoCardState extends State<UserInfoCard> {
+class _ContactCardState extends State<ContactCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
