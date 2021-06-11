@@ -70,15 +70,14 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
       _isLoading = true;
     });
     var messages = await MessageServices.getRecentMessages(_pageNumber, _pageSize);
-    if (messages.isEmpty) {
-      setState(() {
+
+    setState(() {
+      _messages.addAll(messages);
+      if (messages.length < _pageSize) {
         _isEnd = true;
-      });
-    } else {
-      setState(() {
-        _messages.addAll(messages);
-      });
-    }
+      }
+    });
+
     setState(() {
       _isLoading = false;
     });
@@ -139,14 +138,12 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
         ),
       ));
     }
-    if (_isLoading) {
-      widgets.add(Container(
-        height: screenSize.height * 0.2,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ));
-    }
+    widgets.add(Container(
+      height: _isEnd ? 0 : screenSize.height * 0.2,
+      child: Center(
+        child: _isLoading ? CircularProgressIndicator() : Container(),
+      ),
+    ));
     if (_isEnd) {
       widgets.add(Container(
         height: screenSize.height * 0.2,

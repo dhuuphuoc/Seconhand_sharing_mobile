@@ -64,12 +64,10 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
       _isLoading = true;
     });
     var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
-    if (notifications.isEmpty) {
-      setState(() {
-        _isEnd = true;
-      });
-    }
     setState(() {
+      if (notifications.length < _pageSize) {
+        _isEnd = true;
+      }
       group(notifications);
       _notifications.addAll(notifications);
       _isLoading = false;
@@ -153,14 +151,12 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
           break;
       }
     }
-    if (_isLoading) {
-      listViewWidgets.add(Container(
-        height: screenSize.height * 0.3,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ));
-    }
+    listViewWidgets.add(Container(
+      height: _isEnd ? 0 : screenSize.height * 0.2,
+      child: Center(
+        child: _isLoading ? CircularProgressIndicator() : Container(),
+      ),
+    ));
     if (_isEnd) {
       listViewWidgets.add(Container(
         height: screenSize.height * 0.2,

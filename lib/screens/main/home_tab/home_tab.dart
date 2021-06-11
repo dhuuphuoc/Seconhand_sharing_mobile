@@ -57,17 +57,13 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         _isLoading = true;
       });
       var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
-      if (items.isEmpty) {
-        setState(() {
+      setState(() {
+        if (items.length < _pageSize) {
           _isEnd = true;
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _items.addAll(items);
-          _isLoading = false;
-        });
-      }
+        }
+        _items.addAll(items);
+        _isLoading = false;
+      });
     }
   }
 
@@ -90,7 +86,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           child: PostCard(
             () {
               Navigator.pushNamed(context, "/post-item").then((value) {
-                if (value) {
+                if (value == true) {
                   reload();
                 }
               });
@@ -118,7 +114,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
               var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
               setState(() {
                 _items = items;
-                if (_items.isEmpty) {
+                if (items.length < _pageSize) {
                   _isEnd = true;
                 }
                 _runningTasks--;
@@ -136,16 +132,13 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       _items.forEach((item) {
         listViewWidgets.add(ItemCard(item));
       });
-    listViewWidgets.add(_isLoading
-        ? Container(
-            height: screenSize.height * 0.2,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : Container(
-            height: _isEnd ? 0 : screenSize.height * 0.2,
-          ));
+    listViewWidgets.add(Container(
+      height: _isEnd ? 0 : screenSize.height * 0.2,
+      child: Center(
+        child: _isLoading ? CircularProgressIndicator() : Container(),
+      ),
+    ));
+
     if (_isEnd) {
       listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
