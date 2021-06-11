@@ -395,11 +395,11 @@ class S {
     );
   }
 
-  /// `Select photos`
-  String get selectPhotos {
+  /// `Add photos`
+  String get addPhotos {
     return Intl.message(
-      'Select photos',
-      name: 'selectPhotos',
+      'Add photos',
+      name: 'addPhotos',
       desc: '',
       args: [],
     );
@@ -450,6 +450,16 @@ class S {
     return Intl.message(
       'Add photo',
       name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose image`
+  String get chooseImage {
+    return Intl.message(
+      'Choose image',
+      name: 'chooseImage',
       desc: '',
       args: [],
     );
@@ -1610,6 +1620,16 @@ class S {
     return Intl.message(
       'Messages box',
       name: 'messageBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home address`
+  String get homeAddress {
+    return Intl.message(
+      'Home address',
+      name: 'homeAddress',
       desc: '',
       args: [],
     );

@@ -67,7 +67,7 @@ class _ImagesPickerState extends State<ImagesPicker> {
                     icon: Icon(Icons.camera_alt_rounded),
                   ),
                   title: Text(
-                    S.of(context).selectPhotos,
+                    S.of(context).chooseImage,
                     textAlign: TextAlign.center,
                   ),
                   trailing: IconButton(

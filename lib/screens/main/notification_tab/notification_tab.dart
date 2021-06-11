@@ -28,27 +28,20 @@ class NotificationTab extends StatefulWidget {
 class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
-  int _pageNumber = 0;
+  int _pageNumber = 1;
   int _pageSize = 10;
   bool _isLoading = true;
   bool _isEnd = false;
-  double _lastOffset = 0;
   @override
   void initState() {
     super.initState();
-
+    fetchNotification();
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
           fetchNotification();
         }
-      }
-    });
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      while (_scrollController.offset == _scrollController.position.maxScrollExtent && !_isEnd) {
-        _pageNumber++;
-        await fetchNotification();
       }
     });
   }
@@ -200,7 +193,9 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
         edgeOffset: screenSize.height * 0.02,
         onRefresh: () async {
           _notifications = [];
+          _isEnd = false;
           _pageNumber = 1;
+
           await fetchNotification();
         },
         child: CustomScrollView(

@@ -77,7 +77,7 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                     icon: Icon(Icons.camera_alt_rounded),
                   ),
                   title: Text(
-                    S.of(context).selectPhotos,
+                    S.of(context).addPhotos,
                     textAlign: TextAlign.center,
                   ),
                   trailing: IconButton(

@@ -127,7 +127,8 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
     }
     Navigator.pop(context);
     if (_isSuccess) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
+      Navigator.pushNamed(context, "/item/detail", arguments: postItemModel.data.id);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(S.of(context).postedNotification),

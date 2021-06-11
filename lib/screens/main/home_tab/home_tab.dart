@@ -71,6 +71,14 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     }
   }
 
+  Future<void> reload() async {
+    _items = [];
+    _pageNumber = 1;
+    _isEnd = false;
+
+    await fetchItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -81,7 +89,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           margin: EdgeInsets.all(10),
           child: PostCard(
             () {
-              Navigator.pushNamed(context, "/post-item").then((value) {});
+              Navigator.pushNamed(context, "/post-item").then((value) {
+                if (value) {
+                  reload();
+                }
+              });
             },
           )),
       Container(
@@ -156,11 +168,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       },
       child: RefreshIndicator(
         edgeOffset: screenSize.height * 0.2,
-        onRefresh: () async {
-          _items = [];
-          _pageNumber = 1;
-          await fetchItems();
-        },
+        onRefresh: reload,
         child: CustomScrollView(
           key: Keys.primaryScrollViewKey,
           controller: _scrollController,
