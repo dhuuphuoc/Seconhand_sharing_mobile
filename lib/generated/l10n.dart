@@ -1634,6 +1634,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Your avatar will be changed to selected image!`
+  String get avatarChangeConfirmation {
+    return Intl.message(
+      'Your avatar will be changed to selected image!',
+      name: 'avatarChangeConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get areYouSure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'areYouSure',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

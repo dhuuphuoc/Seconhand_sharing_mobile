@@ -236,5 +236,7 @@
   "notificationEnded" : "Không còn thông báo nào nữa",
   "messagesEnded" : "Không còn tin nhắn nào nữa",
   "messageBox" : "Hộp thoại",
-  "homeAddress": "Địa chỉ nhà"
+  "homeAddress": "Địa chỉ nhà",
+  "avatarChangeConfirmation" : "Ảnh đại diện của bạn sẽ được đổi thành ảnh đã chọn!",
+  "areYouSure" : "Bạn chắc chứ?"
 }
