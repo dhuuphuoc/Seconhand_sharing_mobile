@@ -90,12 +90,13 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
 
     for (int i = 0; i < _messages.length; i++) {
       var message = _messages[i];
+      bool isMy = message.sendFromAccountId == AccessInfo().userInfo.id;
       widgets.add(Card(
         margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
         child: ListTile(
           onTap: () async {
             UserInfo userInfo;
-            if (AccessInfo().userInfo.id == message.sendFromAccountId) {
+            if (isMy) {
               userInfo = UserInfo(id: message.sendToAccountId, fullName: message.sendToAccountName);
             } else {
               userInfo = UserInfo(id: message.sendFromAccountId, fullName: message.sendFromAccountName);
@@ -115,18 +116,22 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
           },
           leading: CircleAvatar(
             radius: 25,
-            foregroundImage: AssetImage(
+            foregroundImage: isMy && message.sendToAccountAvatarUrl == null ||
+                    message.sendFromAccountId != AccessInfo().userInfo.id && message.sendFromAccountAvatarUrl == null
+                ? AssetImage(
+                    "assets/images/person.png",
+                  )
+                : NetworkImage(isMy ? message.sendToAccountAvatarUrl : message.sendFromAccountAvatarUrl),
+            backgroundImage: AssetImage(
               "assets/images/person.png",
             ),
           ),
           title: Text(
-            AccessInfo().userInfo.id == message.sendFromAccountId
-                ? message.sendToAccountName
-                : message.sendFromAccountName,
+            isMy ? message.sendToAccountName : message.sendFromAccountName,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           subtitle: Text(
-            "${AccessInfo().userInfo.id == message.sendFromAccountId ? "${S.of(context).youUpperCase}: " : ""}${message.content}",
+            "${isMy ? "${S.of(context).youUpperCase}: " : ""}${message.content}",
             style: Theme.of(context).textTheme.bodyText2,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

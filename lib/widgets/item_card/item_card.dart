@@ -28,7 +28,9 @@ class ItemCard extends StatelessWidget {
                 leading: CircleAvatar(
                   foregroundImage:
                       item.avatarUrl == null ? AssetImage("assets/images/person.png") : NetworkImage(item.avatarUrl),
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundImage: AssetImage(
+                    "assets/images/person.png",
+                  ),
                 ),
                 title: Text(
                   item.donateAccountName,

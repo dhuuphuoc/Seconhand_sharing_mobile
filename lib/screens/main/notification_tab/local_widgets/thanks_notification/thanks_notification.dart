@@ -43,6 +43,9 @@ class _ThanksNotificationState extends State<ThanksNotification> {
                     "assets/images/person.png",
                   )
                 : NetworkImage(_message.sendFromAccountAvatarUrl),
+            backgroundImage: AssetImage(
+              "assets/images/person.png",
+            ),
           ),
           title: RichText(
             text: TextSpan(

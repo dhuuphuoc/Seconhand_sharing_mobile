@@ -268,6 +268,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                 foregroundImage: _userInfo.avatarUrl == null
                                     ? AssetImage("assets/images/person.png")
                                     : NetworkImage(_userInfo.avatarUrl),
+                                backgroundImage: AssetImage(
+                                  "assets/images/person.png",
+                                ),
                               ),
                               if (!_isHideIcon)
                                 Align(
