@@ -99,6 +99,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("locale", Localizations.localeOf(context).toString());
     await loadAddress();
 
     if (!kIsWeb) await loadImages(context);

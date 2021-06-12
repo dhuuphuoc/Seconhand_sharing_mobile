@@ -25,9 +25,11 @@ class _IncomingRequestNotificationState extends State<IncomingRequestNotificatio
           minVerticalPadding: 10,
           leading: CircleAvatar(
             radius: 20,
-            foregroundImage: AssetImage(
-              "assets/images/person.png",
-            ),
+            foregroundImage: widget.receiveRequest.receiverAvatarUrl == null
+                ? AssetImage(
+                    "assets/images/person.png",
+                  )
+                : NetworkImage(widget.receiveRequest.receiverAvatarUrl),
           ),
           title: RichText(
             // "${receiveRequest.receiverName} ${S.of(context).registeredItem} ${receiveRequest.itemName} ${S.of(context).withMessage} ${receiveRequest.receiveReason}",

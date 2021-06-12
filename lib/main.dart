@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -46,7 +47,6 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
-  await Firebase.initializeApp();
   Application().chattingWithUserId = null;
   Application().watchingItemId = null;
   FirebaseServices.handleFirebaseMessage(remoteMessage);
@@ -70,7 +70,6 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
-
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     // Timer.periodic(Duration(seconds: 4), (timer) {
     //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

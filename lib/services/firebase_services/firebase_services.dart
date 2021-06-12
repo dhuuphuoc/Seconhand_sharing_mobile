@@ -52,8 +52,7 @@ class FirebaseServices {
         break;
       case "3":
         var data = CancelRequestModel.fromJson(jsonDecode(remoteMessage.data["message"]));
-        if (Application().watchingItemId == data.itemId) return;
-        flutterLocalNotificationsPlugin.cancel(data.requestId);
+        NotificationService().cancelReceiveRequest(data);
         break;
       case "4":
         var data = RequestStatusModel.fromJson(jsonDecode(remoteMessage.data["message"]));

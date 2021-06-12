@@ -38,9 +38,11 @@ class _ThanksNotificationState extends State<ThanksNotification> {
           minVerticalPadding: 10,
           leading: CircleAvatar(
             radius: 20,
-            foregroundImage: AssetImage(
-              "assets/images/person.png",
-            ),
+            foregroundImage: _message.sendFromAccountAvatarUrl == null
+                ? AssetImage(
+                    "assets/images/person.png",
+                  )
+                : NetworkImage(_message.sendFromAccountAvatarUrl),
           ),
           title: RichText(
             text: TextSpan(
