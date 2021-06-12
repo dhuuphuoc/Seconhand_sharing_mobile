@@ -68,28 +68,9 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
       if (notifications.length < _pageSize) {
         _isEnd = true;
       }
-      group(notifications);
       _notifications.addAll(notifications);
       _isLoading = false;
     });
-  }
-
-  void group(List<UserNotification> notifications) {
-    for (int i = 0; i < notifications.length; i++) {
-      if (notifications[i].type == NotificationType.receiveRequest) {
-        ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notifications[i].data));
-        for (int j = 0; j < i; j++) {
-          if (notifications[j].type == NotificationType.cancelReceiveRequest) {
-            CancelRequestModel cancelRequestModel = CancelRequestModel.fromJson(jsonDecode(notifications[j].data));
-            if (cancelRequestModel.requestId == receiveRequest.id) {
-              notifications.remove(notifications[i]);
-              notifications.remove(notifications[j]);
-              break;
-            }
-          }
-        }
-      }
-    }
   }
 
   @override

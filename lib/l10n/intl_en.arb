@@ -236,5 +236,7 @@
   "notificationEnded" : "There is no more notification",
   "messagesEnded" : "There is no more messages",
   "messageBox" : "Messages box",
-  "homeAddress": "Home address"
+  "homeAddress": "Home address",
+  "avatarChangeConfirmation" : "Your avatar will be changed to selected image!",
+  "areYouSure" : "Are you sure?"
 }

@@ -9,12 +9,14 @@ class ReceiveRequest {
       this.requestStatus,
       this.itemId,
       this.itemName,
-      this.createDate});
+      this.createDate,
+      this.receiverAvatarUrl});
 
   int id;
   String receiveReason;
   int receiverId;
   String receiverName;
+  String receiverAvatarUrl;
   RequestStatus requestStatus;
   int itemId;
   String itemName;
@@ -29,6 +31,7 @@ class ReceiveRequest {
         itemId: json["itemId"],
         itemName: json["itemName"],
         createDate: DateTime.parse(json["createDate"]),
+        receiverAvatarUrl: json["receiverAvatarUrl"],
       );
 
   Map<String, dynamic> toJson() => {

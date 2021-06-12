@@ -33,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   UserInfo _userInfo = UserInfo();
   var _nameTextController = TextEditingController();
   var _phoneTextController = TextEditingController();
+
+  @override
+  void setState(VoidCallback fn) {
+    if (this.mounted) super.setState(fn);
+  }
+
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 2);

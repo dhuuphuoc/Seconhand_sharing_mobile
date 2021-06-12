@@ -193,7 +193,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     var confirm = await showDialog(
         context: context,
         builder: (context) => ConfirmDialog(S.of(context).cancelRegister, S.of(context).cancelRegistrationMessage));
-    if (confirm) {
+    if (confirm == true) {
       var result = await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
       if (result) {
         setState(() {

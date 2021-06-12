@@ -1,15 +1,17 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-
+import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-
+import 'dart:ui';
 import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
 import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
 import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
@@ -18,7 +20,9 @@ import 'package:secondhand_sharing/models/request_detail_model/request_status.da
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   static final NotificationService _notificationService = NotificationService._internal();
@@ -33,6 +37,7 @@ class NotificationService {
 
   String messageChannelId = "message_channel";
   String itemChannel = "item_channel";
+
   int summaryNotificationId;
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
@@ -51,8 +56,12 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
-  AndroidNotificationDetails prepareMessageStyleAndroidNotificationDetails(UserMessage message) {
-    Person person = Person(name: "${message.sendFromAccountName}", important: true);
+  Future<AndroidNotificationDetails> prepareMessageStyleAndroidNotificationDetails(UserMessage message) async {
+    Person person = Person(
+        name: "${message.sendFromAccountName}",
+        important: true,
+        icon: BitmapFilePathAndroidIcon(await APIService.downloadAndSaveFile(
+            message.sendFromAccountAvatarUrl, message.sendFromAccountId.toString())));
     MessagingStyleInformation messagingStyleInformation = MessagingStyleInformation(
       person,
       messages: [Message(message.content, message.sendDate, person)],
@@ -68,48 +77,61 @@ class NotificationService {
     );
   }
 
-  Future<void> showSummaryNotification(ReceiveRequest receiveRequest) async {
-    BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-        "${S.current.incomingReceiveRequest(receiveRequest.receiverName, receiveRequest.itemName, receiveRequest.receiveReason)}",
-        contentTitle: "<strong>${receiveRequest.itemName}</strong>",
-        htmlFormatContent: true,
-        htmlFormatTitle: true,
-        htmlFormatBigText: true,
-        htmlFormatContentTitle: true);
-    var details = AndroidNotificationDetails(
-      itemChannel,
-      'Notification',
-      'This channel receive notifications from the server',
-      groupKey: receiveRequest.itemId.toString(),
-      importance: Importance.max,
-      priority: Priority.high,
-      color: Colors.green,
-      styleInformation: bigTextStyleInformation,
-      setAsGroupSummary: true,
-    );
-    NotificationDetails platformChannelSpecifics = NotificationDetails(android: details);
-    await flutterLocalNotificationsPlugin.show(
-        -receiveRequest.itemId, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics,
-        payload: jsonEncode({"type": "2", "message": receiveRequest.toJson()}));
+  Future<void> cancelReceiveRequest(CancelRequestModel data) async {
+    await flutterLocalNotificationsPlugin.cancel(data.requestId);
+    var notifications = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .getActiveNotifications();
+    if (notifications.where((element) => element.channelId == data.itemId.toString()).length == 1) {
+      await flutterLocalNotificationsPlugin.cancel(0);
+    }
   }
 
-  AndroidNotificationDetails prepareReceiveRequestAndroidNotificationDetails(ReceiveRequest receiveRequest) {
+  Future<S> loadI18n() async {
+    return await S.load(Locale(Intl.getCurrentLocale()));
+  }
+
+  Future<AndroidNotificationDetails> prepareReceiveRequestAndroidNotificationDetails(
+      ReceiveRequest receiveRequest) async {
+    S i18n = await loadI18n();
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-        "${S.current.incomingReceiveRequest(receiveRequest.receiverName, receiveRequest.itemName, receiveRequest.receiveReason)}",
+        "${i18n.incomingReceiveRequest("<b>${receiveRequest.receiverName}</b>", "<b>${receiveRequest.itemName}</b>", "<b>${receiveRequest.receiveReason}</b>")}",
         contentTitle: "<strong>${receiveRequest.itemName}</strong>",
         htmlFormatContent: true,
         htmlFormatTitle: true,
         htmlFormatBigText: true,
         htmlFormatContentTitle: true);
-
-    return AndroidNotificationDetails(
-      itemChannel,
-      'Notification',
+    String path =
+        await APIService.downloadAndSaveFile(receiveRequest.receiverAvatarUrl, receiveRequest.receiverId.toString());
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: AndroidNotificationDetails(
+      receiveRequest.itemId.toString(),
+      receiveRequest.itemName,
       'This channel receive notifications from the server',
       groupKey: receiveRequest.itemId.toString(),
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
+      largeIcon: receiveRequest.receiverAvatarUrl == null
+          ? DrawableResourceAndroidBitmap("person.png")
+          : FilePathAndroidBitmap(path),
+      styleInformation: bigTextStyleInformation,
+      setAsGroupSummary: true,
+    ));
+    flutterLocalNotificationsPlugin.show(
+        0, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics);
+
+    return AndroidNotificationDetails(
+      receiveRequest.itemId.toString(),
+      receiveRequest.itemName,
+      'This channel receive notifications from the server',
+      groupKey: receiveRequest.itemId.toString(),
+      importance: Importance.max,
+      color: Colors.green,
+      priority: Priority.high,
+      largeIcon: receiveRequest.receiverAvatarUrl == null
+          ? DrawableResourceAndroidBitmap("person.png")
+          : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
     );
   }
@@ -129,15 +151,16 @@ class NotificationService {
   }
 
   Future<void> sendRequestStatusNotification(RequestStatusModel requestStatus) async {
+    S i18n = await loadI18n();
     AndroidNotificationDetails androidPlatformChannelSpecifics = prepareDefaultAndroidNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     if (requestStatus.requestStatus == RequestStatus.receiving)
       await flutterLocalNotificationsPlugin.show(requestStatus.itemId, "<b>${requestStatus.itemName}</b>",
-          "${S.current.yourRegistrationWas} <b>${S.current.acceptedLowerCase}</b>", platformChannelSpecifics,
+          "${i18n.yourRegistrationWas} <b>${i18n.acceptedLowerCase}</b>", platformChannelSpecifics,
           payload: jsonEncode({"type": "4", "message": requestStatus.toJson()}));
     else {
       await flutterLocalNotificationsPlugin.show(requestStatus.itemId, "<b>${requestStatus.itemName}</b>",
-          "${S.current.yourAcceptedRegistrationWas} <b>${S.current.canceledLowerCase}</b>", platformChannelSpecifics,
+          "${i18n.yourAcceptedRegistrationWas} <b>${i18n.canceledLowerCase}</b>", platformChannelSpecifics,
           payload: jsonEncode({"type": "4", "message": requestStatus.toJson()}));
     }
   }
@@ -145,33 +168,27 @@ class NotificationService {
   Future<void> sendConfirmSentNotification(ConfirmSentModel data) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics = prepareDefaultAndroidNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    S i18n = await loadI18n();
     await flutterLocalNotificationsPlugin.show(
         data.itemId,
         "<b>${data.itemName}</b>",
-        S.current
-            .confirmSentNotification(data.receiverId == AccessInfo().userInfo.id ? S.current.you : data.receiverName),
+        i18n.confirmSentNotification(data.receiverId == AccessInfo().userInfo.id ? i18n.you : data.receiverName),
         platformChannelSpecifics,
         payload: jsonEncode({"type": "6", "message": data.toJson()}));
   }
 
   Future<void> sendInboxNotification(UserMessage message) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics = prepareMessageStyleAndroidNotificationDetails(message);
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        await prepareMessageStyleAndroidNotificationDetails(message);
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(message.sendFromAccountId, null, null, platformChannelSpecifics,
         payload: jsonEncode({"type": "1", "message": message.toJson()}));
   }
 
   Future<void> sendIncomingReceiveRequestNotification(ReceiveRequest receiveRequest) async {
-    var notifications = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        .getActiveNotifications();
-    if (!notifications.any((notification) => notification.id == -receiveRequest.itemId)) {
-      await showSummaryNotification(receiveRequest);
-    }
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        prepareReceiveRequestAndroidNotificationDetails(receiveRequest);
+        await prepareReceiveRequestAndroidNotificationDetails(receiveRequest);
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-
     await flutterLocalNotificationsPlugin.show(
         receiveRequest.id, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics,
         payload: jsonEncode({"type": "2", "message": receiveRequest.toJson()}));

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,23 +38,22 @@ import 'package:secondhand_sharing/services/firebase_services/firebase_services.
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// class MyHttpOverrides extends HttpOverrides {
-//   @override
-//   HttpClient createHttpClient(SecurityContext context) {
-//     return super.createHttpClient(context)
-//       ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-//   }
-// }
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
-  await Firebase.initializeApp();
   Application().chattingWithUserId = null;
   Application().watchingItemId = null;
   FirebaseServices.handleFirebaseMessage(remoteMessage);
 }
 
 Future<void> main() async {
-  // HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
   await FirebaseServices.initFirebase();
@@ -70,7 +70,6 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
-
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     // Timer.periodic(Duration(seconds: 4), (timer) {
     //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
