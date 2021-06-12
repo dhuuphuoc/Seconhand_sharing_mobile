@@ -70,7 +70,9 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                         foregroundImage: AccessInfo().userInfo.avatarUrl == null
                             ? AssetImage("assets/images/person.png")
                             : NetworkImage(AccessInfo().userInfo.avatarUrl),
-                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage(
+                          "assets/images/person.png",
+                        ),
                       ),
                     ),
                   ),

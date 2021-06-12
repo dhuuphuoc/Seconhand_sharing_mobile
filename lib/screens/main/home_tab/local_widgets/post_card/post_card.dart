@@ -23,6 +23,9 @@ class PostCard extends StatelessWidget {
                 foregroundImage: AccessInfo().userInfo.avatarUrl == null
                     ? AssetImage("assets/images/person.png")
                     : NetworkImage(AccessInfo().userInfo.avatarUrl),
+                backgroundImage: AssetImage(
+                  "assets/images/person.png",
+                ),
               ),
             ),
           ),

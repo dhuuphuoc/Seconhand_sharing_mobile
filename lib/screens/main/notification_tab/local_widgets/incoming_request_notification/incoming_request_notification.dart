@@ -30,6 +30,9 @@ class _IncomingRequestNotificationState extends State<IncomingRequestNotificatio
                     "assets/images/person.png",
                   )
                 : NetworkImage(widget.receiveRequest.receiverAvatarUrl),
+            backgroundImage: AssetImage(
+              "assets/images/person.png",
+            ),
           ),
           title: RichText(
             // "${receiveRequest.receiverName} ${S.of(context).registeredItem} ${receiveRequest.itemName} ${S.of(context).withMessage} ${receiveRequest.receiveReason}",
