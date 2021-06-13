@@ -13,6 +13,7 @@ import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
 import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
+import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/address_card/AddressCard.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/images_picker_bottom_sheet/images_picker_bottom_sheet.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/user_info_card/user_info_card.dart';
@@ -179,11 +180,15 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Column(children: [
               //Avatar address
-              UserInfoCard(_addressModel, onMapPress),
+
+              UserInfoCard(onMapPress),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
-              //Title
+              AddressCard(_addressModel, onMapPress),
+              SizedBox(
+                height: 15,
+              ),
               TextFormField(
                 controller: _titleController,
                 validator: Validator.validateTitle,
@@ -194,6 +199,9 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                     fillColor: Theme.of(context).backgroundColor,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
+
+              //Title
+
               SizedBox(
                 height: 10,
               ),
@@ -239,10 +247,12 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                   },
                 ),
               ),
+
               SizedBox(
                 height: 15,
               ),
               //Phone number
+
               TextFormField(
                 validator: Validator.validatePhoneNumber,
                 controller: _phoneNumberController,
@@ -253,7 +263,9 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                     suffixIcon: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
-                        Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo).whenComplete(() {
+                        Navigator.of(context)
+                            .pushNamed("/profile", arguments: AccessInfo().userInfo.id)
+                            .whenComplete(() {
                           setState(() {
                             _phoneNumberController.text = AccessInfo().userInfo.phoneNumber;
                           });
