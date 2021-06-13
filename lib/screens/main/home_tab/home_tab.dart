@@ -164,6 +164,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         onRefresh: reload,
         child: CustomScrollView(
           key: Keys.primaryScrollViewKey,
+          cacheExtent: double.infinity,
           controller: _scrollController,
           slivers: [
             SliverOverlapInjector(

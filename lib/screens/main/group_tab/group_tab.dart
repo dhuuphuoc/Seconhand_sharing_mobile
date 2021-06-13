@@ -71,7 +71,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     _groups.forEach((group) {
       listViewWidget.add(GroupCard(group));
     });
-    if(!_isEnd) {
+    if (!_isEnd) {
       listViewWidget.add(NotificationCard(Icons.check_circle_outline, "You don't have group"));
     }
     return NotificationListener(
@@ -94,6 +94,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         child: CustomScrollView(
           controller: _scrollController,
           physics: AlwaysScrollableScrollPhysics(),
+          cacheExtent: double.infinity,
           slivers: [
             SliverOverlapInjector(
               // This is the flip side of the SliverOverlapAbsorber
