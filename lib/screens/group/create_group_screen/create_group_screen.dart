@@ -39,8 +39,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
         CreateGroupForm(_groupNameController.text, _descriptionController.text,
             _ruleController.text));
 
-    print(createGroupModel);
-
     if (createGroupModel != null) {
       showDialog(
         context: context,
@@ -49,7 +47,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
               S.of(context).success, S.of(context).createGroupSuccess, "OK");
         },
       ).whenComplete(() {
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        Navigator.pushNamed(context, "/group/detail", arguments: createGroupModel.data.id);
       });
     } else {
       showDialog<void>(

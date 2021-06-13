@@ -1585,6 +1585,16 @@ class S {
     );
   }
 
+  /// `Group Detail`
+  String get groupDetail {
+    return Intl.message(
+      'Group Detail',
+      name: 'groupDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There is no more notification`
   String get notificationEnded {
     return Intl.message(
@@ -1610,6 +1620,16 @@ class S {
     return Intl.message(
       'Messages box',
       name: 'messageBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Member`
+  String get member {
+    return Intl.message(
+      'Member',
+      name: 'member',
       desc: '',
       args: [],
     );

@@ -232,7 +232,9 @@
   "ruleEmptyError": "Rules can't be empty",
   "createGroupSuccess": "Create group success",
   "createGroupFail": "Create group fail. Please try again",
+  "groupDetail": "Group Detail",
   "notificationEnded" : "There is no more notification",
   "messagesEnded" : "There is no more messages",
-  "messageBox" : "Messages box"
+  "messageBox" : "Messages box",
+  "member": "Member"
 }

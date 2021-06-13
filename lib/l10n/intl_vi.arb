@@ -232,7 +232,9 @@
   "ruleEmptyError": "Luật lệ không được bỏ trống",
   "createGroupSuccess": "Tạo nhóm thành công",
   "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại",
+  "groupDetail": "Chi tiết nhóm",
   "notificationEnded" : "Không còn thông báo nào nữa",
   "messagesEnded" : "Không còn tin nhắn nào nữa",
-  "messageBox" : "Hộp thoại"
+  "messageBox" : "Hộp thoại",
+  "member": "Thành viên"
 }
