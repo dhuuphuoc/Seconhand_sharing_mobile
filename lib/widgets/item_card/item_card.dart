@@ -59,6 +59,7 @@ class ItemCard extends StatelessWidget {
               Container(
                 child: Image.network(
                   item.imageUrl == null ? "https://i.stack.imgur.com/y9DpT.jpg" : item.imageUrl,
+                  gaplessPlayback: true,
                   frameBuilder: (BuildContext context, Widget child, int frame, bool wasSynchronouslyLoaded) {
                     if (wasSynchronouslyLoaded ?? false) {
                       return child;
