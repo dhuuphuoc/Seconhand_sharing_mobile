@@ -70,6 +70,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     // Timer.periodic(Duration(seconds: 4), (timer) {
     //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

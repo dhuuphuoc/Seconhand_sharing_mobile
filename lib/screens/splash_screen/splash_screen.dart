@@ -54,6 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       String deviceToken = await FirebaseMessaging.instance.getToken();
+      print(deviceToken);
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       String oldDeviceToken = sharedPreferences.getString("device_token");
       if (deviceToken != oldDeviceToken) {
@@ -99,6 +100,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> loadData() async {
+    String deviceToken = await FirebaseMessaging.instance.getToken();
+    print(deviceToken);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("locale", Localizations.localeOf(context).toString());
     await loadAddress();
@@ -109,7 +112,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     loadData();
     super.initState();
   }
