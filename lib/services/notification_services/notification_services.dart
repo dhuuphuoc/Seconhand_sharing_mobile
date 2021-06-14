@@ -4,11 +4,13 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:devicelocale/devicelocale.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl_standalone.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'dart:ui';
@@ -88,7 +90,8 @@ class NotificationService {
   }
 
   Future<S> loadI18n() async {
-    return await S.load(Locale(Intl.getCurrentLocale()));
+    var locale = await Devicelocale.currentAsLocale;
+    return await S.load(locale);
   }
 
   Future<AndroidNotificationDetails> prepareReceiveRequestAndroidNotificationDetails(
