@@ -19,8 +19,7 @@ class APIService {
     print(uploadUrl.toString());
     var response = await http.put(uploadUrl, body: image.data, headers: {HttpHeaders.contentTypeHeader: "image/png"});
     print(response.body);
-    if (response.statusCode == 200) return true;
-    return false;
+    return response.statusCode == 200;
   }
 
   static Future<String> downloadAndSaveFile(String url, String fileName) async {

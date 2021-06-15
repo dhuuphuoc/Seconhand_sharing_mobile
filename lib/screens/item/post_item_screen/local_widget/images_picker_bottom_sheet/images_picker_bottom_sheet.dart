@@ -1,14 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:mime/mime.dart' as mime;
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/selective_image_view/selective_image_view.dart';

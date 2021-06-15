@@ -1,12 +1,5 @@
-import 'dart:io';
-
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/address_model/country_model/country.dart';
-import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
-import 'package:secondhand_sharing/models/address_model/district/district.dart';
-import 'package:secondhand_sharing/models/address_model/province/province.dart';
-import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 
 class Validator {
@@ -20,6 +13,7 @@ class Validator {
       if (addressModel.district.wards.length == 0) return null;
       return S.current.addressError;
     }
+    return null;
   }
 
   static String validateImages(List<ImageData> images) {

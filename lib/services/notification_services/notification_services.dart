@@ -1,30 +1,18 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:devicelocale/devicelocale.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/intl_standalone.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'dart:ui';
-import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
-import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
-import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
-import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/screens/application/application.dart';
+import 'package:secondhand_sharing/models/message/user_message.dart';
+import 'package:secondhand_sharing/models/notification/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification/confirm_sent_model/confirm_sent_model.dart';
+import 'package:secondhand_sharing/models/notification/request_status_model/request_status_model.dart';
+import 'package:secondhand_sharing/models/enums/request_status/request_status.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   static final NotificationService _notificationService = NotificationService._internal();

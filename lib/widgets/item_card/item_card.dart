@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
 class ItemCard extends StatelessWidget {

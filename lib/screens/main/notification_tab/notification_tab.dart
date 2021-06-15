@@ -3,23 +3,18 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/notification_model/cancel_request_model/cancel_request_model.dart';
-import 'package:secondhand_sharing/models/notification_model/notification.dart';
-import 'package:secondhand_sharing/models/notification_model/notification_type.dart';
-import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/notification/cancel_request_model/cancel_request_model.dart';
+import 'package:secondhand_sharing/models/notification/notification.dart';
+import 'package:secondhand_sharing/models/enums/notification_type/notification_type.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/confirm_sent_notification/confirm_sent_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/incoming_request_notification/incoming_request_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/request_status_notification/request_status_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/thanks_notification/thanks_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
-import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
-import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class NotificationTab extends StatefulWidget {

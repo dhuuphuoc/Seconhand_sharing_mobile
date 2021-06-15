@@ -10,8 +10,8 @@ import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
-import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/image_upload_model/images_upload_model.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/add_photo/add_photo.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/address_card/address_card.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/image_view/image_view.dart';
@@ -113,10 +113,10 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
         categoryId: _categoryModel.selectedId,
         description: _descriptionController.text,
         receiveAddress: _addressModel);
-    PostItemModel postItemModel = await ItemServices.postItem(postItemForm);
-    if (postItemModel != null) {
+    ImagesUploadModel imagesUploadModel = await ItemServices.postItem(postItemForm);
+    if (imagesUploadModel != null) {
       for (int i = 0; i < _images.length; i++) {
-        bool result = await APIService.uploadImage(_images.elementAt(i), postItemModel.data.imageUploads[i].presignUrl);
+        bool result = await APIService.uploadImage(_images.elementAt(i), imagesUploadModel.imageUploads[i].presignUrl);
         if (!result) {
           _isSuccess = false;
         }
@@ -128,7 +128,7 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
     Navigator.pop(context);
     if (_isSuccess) {
       Navigator.pop(context, true);
-      Navigator.pushNamed(context, "/item/detail", arguments: postItemModel.data.id);
+      Navigator.pushNamed(context, "/item/detail", arguments: imagesUploadModel.id);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(S.of(context).postedNotification),

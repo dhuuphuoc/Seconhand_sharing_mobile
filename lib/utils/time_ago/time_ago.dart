@@ -1,4 +1,3 @@
-import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 
 class TimeAgo {

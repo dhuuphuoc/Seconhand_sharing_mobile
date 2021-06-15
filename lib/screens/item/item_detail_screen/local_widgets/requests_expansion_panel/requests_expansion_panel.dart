@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
-import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
+import 'package:secondhand_sharing/models/enums/request_status/request_status.dart';
+import 'package:secondhand_sharing/models/providers/receive_requests_model/receive_requests_model.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:provider/provider.dart';
-import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 
