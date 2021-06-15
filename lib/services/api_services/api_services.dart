@@ -6,8 +6,8 @@ import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:http/http.dart' as http;
 
 class APIService {
-  static String apiUrl = "10.0.2.2:5001";
-  // static String apiUrl = "secondhandsharing.appspot.com";
+  // static String apiUrl = "10.0.2.2:5001";
+  static String apiUrl = "secondhandsharing-316714.as.r.appspot.com";
   static String cloudUrl = "https://storage.googleapis.com/secondhandsharing.appspot.com/";
 
   static Future<void> handle401StatusCode() async {
@@ -19,8 +19,7 @@ class APIService {
     print(uploadUrl.toString());
     var response = await http.put(uploadUrl, body: image.data, headers: {HttpHeaders.contentTypeHeader: "image/png"});
     print(response.body);
-    if (response.statusCode == 200) return true;
-    return false;
+    return response.statusCode == 200;
   }
 
   static Future<String> downloadAndSaveFile(String url, String fileName) async {

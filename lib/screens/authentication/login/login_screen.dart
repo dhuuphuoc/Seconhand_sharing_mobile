@@ -2,8 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/login_model/login_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/access_data/access_data.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
@@ -32,13 +33,13 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    LoginModel loginModel = await AuthenticationService.login(
-        LoginForm(_usernameTextController.text, _passwordTextController.text));
-    if (loginModel != null) {
+    AccessData accessData =
+        await AuthenticationService.login(LoginForm(_usernameTextController.text, _passwordTextController.text));
+    if (accessData != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", loginModel.accessData.jwToken);
-      AccessInfo().token = loginModel.accessData.jwToken;
-      AccessInfo().userInfo = loginModel.accessData.userInfo;
+      prefs.setString("token", accessData.jwToken);
+      AccessInfo().token = accessData.jwToken;
+      AccessInfo().userInfo = accessData.userInfo;
       String deviceToken = await FirebaseMessaging.instance.getToken();
       await FirebaseServices.saveTokenToDatabase(deviceToken);
       Navigator.pop(context);
@@ -48,8 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed,
-              S.of(context).loginFailedNotification, S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).loginFailedNotification, S.of(context).tryAgain);
         },
       );
     }
@@ -99,9 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _usernameTextController,
                   validator: Validator.validateEmail,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                      hintText: S.of(context).username,
-                      suffixIcon: Icon(Icons.email)),
+                  decoration: InputDecoration(hintText: S.of(context).username, suffixIcon: Icon(Icons.email)),
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
@@ -110,9 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   onEditingComplete: _loginSubmit,
-                  decoration: InputDecoration(
-                      hintText: S.of(context).password,
-                      suffixIcon: Icon(Icons.lock)),
+                  decoration: InputDecoration(hintText: S.of(context).password, suffixIcon: Icon(Icons.lock)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,8 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.zero),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
                       ),
                       child: Text(
                         S.of(context).registerForFree,
@@ -138,8 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.zero),
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
                           alignment: Alignment.centerRight),
                       child: Text(
                         "${S.of(context).forgotPassword}?",
@@ -149,9 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                _isLoading
-                    ? Align(child: CircularProgressIndicator())
-                    : SizedBox(),
+                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
                 if (_isLoading)
                   SizedBox(
                     height: 15,

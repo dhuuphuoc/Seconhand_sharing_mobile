@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:secondhand_sharing/models/confirm_email_model/confirm_email_model.dart';
-import 'package:secondhand_sharing/models/login_model/login_model.dart';
-import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
-import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
+import 'package:secondhand_sharing/models/access_data/access_data.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondhand_sharing/utils/response_deserializer/response_deserializer.dart';
 
 class LoginForm {
   String _email;
@@ -100,57 +98,43 @@ class ConfirmEmailForm {
 }
 
 class AuthenticationService {
-  static Future<LoginModel> login(LoginForm loginForm) async {
+  static Future<AccessData> login(LoginForm loginForm) async {
     Uri url = Uri.https(APIService.apiUrl, "/Identity/authenticate");
     var response = await http.post(url, body: jsonEncode(loginForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return LoginModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
+    return AccessData.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
-  static Future<RegisterModel> register(RegisterForm registerForm) async {
+  static Future<bool> register(RegisterForm registerForm) async {
     Uri url = Uri.https(APIService.apiUrl, "/Identity/register");
     var response = await http.post(url, body: jsonEncode(registerForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
-    RegisterModel registerModel = RegisterModel.fromJson(jsonDecode(response.body));
-    return registerModel;
+    return response.statusCode == 200;
   }
 
-  static Future<int> forgotPassword(ForgotPasswordForm forgotPasswordForm) async {
+  static Future<bool> forgotPassword(ForgotPasswordForm forgotPasswordForm) async {
     Uri url = Uri.https(APIService.apiUrl, "/Identity/forgot-password");
     var response = await http.post(url, body: jsonEncode(forgotPasswordForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
-    return response.statusCode;
+    return response.statusCode == 200;
   }
 
-  static Future<ResetPasswordModel> resetPassword(ResetPasswordForm resetPasswordForm) async {
+  static Future<bool> resetPassword(ResetPasswordForm resetPasswordForm) async {
     Uri url = Uri.https(APIService.apiUrl, "/Identity/reset-password");
     var response = await http.post(url, body: jsonEncode(resetPasswordForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
-    print(response.body);
-    if (response.statusCode == 200) {
-      return ResetPasswordModel.fromJson(jsonDecode(response.body));
-    }
-    return null;
+    return response.statusCode == 200;
   }
 
-  static Uri _confirmEmailUri = Uri.https(APIService.apiUrl, "/Identity/confirm-email");
-
-  static Future<ConfirmEmailModel> confirmEmail(ConfirmEmailForm confirmEmailForm) async {
-    var response = await http.post(_confirmEmailUri,
+  static Future<bool> confirmEmail(ConfirmEmailForm confirmEmailForm) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Identity/confirm-email");
+    var response = await http.post(url,
         body: jsonEncode(confirmEmailForm.toJson()), headers: {HttpHeaders.contentTypeHeader: "application/json"});
-    // print(response.body);
-    if (response.statusCode == 200) {
-      return ConfirmEmailModel.fromJson(jsonDecode(response.body));
-    }
-    return null;
+    return response.statusCode == 200;
   }
 }

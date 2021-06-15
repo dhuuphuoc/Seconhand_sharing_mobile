@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/notification_model/notification.dart';
+import 'package:secondhand_sharing/models/message/user_message.dart';
+import 'package:secondhand_sharing/models/notification/notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 

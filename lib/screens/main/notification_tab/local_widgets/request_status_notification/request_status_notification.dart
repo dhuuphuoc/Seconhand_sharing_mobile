@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/notification_model/notification.dart';
-import 'package:secondhand_sharing/models/notification_model/request_status_model/request_status_model.dart';
-import 'package:secondhand_sharing/models/request_detail_model/request_status.dart';
+import 'package:secondhand_sharing/models/notification/notification.dart';
+import 'package:secondhand_sharing/models/notification/request_status_model/request_status_model.dart';
+import 'package:secondhand_sharing/models/enums/request_status/request_status.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
 class RequestStatusNotification extends StatefulWidget {

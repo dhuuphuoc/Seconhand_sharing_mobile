@@ -1,5 +1,3 @@
-import 'package:secondhand_sharing/generated/l10n.dart';
-
 class Application {
   int chattingWithUserId;
   int watchingItemId;

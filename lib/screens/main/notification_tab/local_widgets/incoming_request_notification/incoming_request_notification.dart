@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
 class IncomingRequestNotification extends StatefulWidget {

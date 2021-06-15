@@ -7,8 +7,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country_da
 import 'package:secondhand_sharing/models/address_model/district/district.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/address_model/ward/ward.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/utils/validator/validator.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 
 class AddressScreen extends StatefulWidget {
   @override

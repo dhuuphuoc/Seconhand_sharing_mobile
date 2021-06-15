@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
@@ -26,7 +25,7 @@ class GroupCard extends StatelessWidget {
             children: [
               ListTile(
                 leading: CircleAvatar(
-                  foregroundImage:AssetImage("assets/images/person.png"),
+                  foregroundImage: AssetImage("assets/images/person.png"),
                   backgroundColor: Theme.of(context).backgroundColor,
                 ),
                 title: Text(

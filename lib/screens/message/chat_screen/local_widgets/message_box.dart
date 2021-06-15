@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
+import 'package:secondhand_sharing/models/message/user_message.dart';
 
 enum MessageBoxType { single, first, middle, last }
 
@@ -17,32 +17,20 @@ class MessageBox extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
         margin: EdgeInsets.only(
-            left: _isMy ? screenSize.width * 0.4 : 0,
-            top: 3,
-            right: !_isMy ? screenSize.width * 0.4 : 0),
+            left: _isMy ? screenSize.width * 0.4 : 0, top: 3, right: !_isMy ? screenSize.width * 0.4 : 0),
         decoration: BoxDecoration(
-          color: _isMy
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).backgroundColor,
+          color: _isMy ? Theme.of(context).primaryColor : Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.only(
-            topLeft: !_isMy &&
-                    (_type == MessageBoxType.last ||
-                        _type == MessageBoxType.middle)
+            topLeft: !_isMy && (_type == MessageBoxType.last || _type == MessageBoxType.middle)
                 ? Radius.circular(5)
                 : Radius.circular(20),
-            bottomLeft: !_isMy &&
-                    (_type == MessageBoxType.first ||
-                        _type == MessageBoxType.middle)
+            bottomLeft: !_isMy && (_type == MessageBoxType.first || _type == MessageBoxType.middle)
                 ? Radius.circular(5)
                 : Radius.circular(20),
-            topRight: _isMy &&
-                    (_type == MessageBoxType.last ||
-                        _type == MessageBoxType.middle)
+            topRight: _isMy && (_type == MessageBoxType.last || _type == MessageBoxType.middle)
                 ? Radius.circular(5)
                 : Radius.circular(20),
-            bottomRight: _isMy &&
-                    (_type == MessageBoxType.first ||
-                        _type == MessageBoxType.middle)
+            bottomRight: _isMy && (_type == MessageBoxType.first || _type == MessageBoxType.middle)
                 ? Radius.circular(5)
                 : Radius.circular(20),
           ),

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 
 class UserInfoCard extends StatefulWidget {
   final Function onMapPress;

@@ -1,18 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:secondhand_sharing/models/item_model/item.dart';
-import 'package:secondhand_sharing/models/item_model/item_model.dart';
-import 'package:secondhand_sharing/models/receive_request_model/receive_request_model.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_requests_model.dart';
-import 'package:secondhand_sharing/models/request_detail_model/request_detail.dart';
-import 'package:secondhand_sharing/models/request_detail_model/request_detail_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info_model.dart';
+import 'package:secondhand_sharing/models/item/item.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
+import 'package:secondhand_sharing/models/request_detail/request_detail.dart';
+
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondhand_sharing/utils/response_deserializer/response_deserializer.dart';
 
 class ReceiveServices {
   static Future<int> registerToReceive(int itemId, String message) async {
@@ -24,11 +21,7 @@ class ReceiveServices {
         },
         body: jsonEncode({"itemId": itemId, "receiveReason": message}));
     print(response.body);
-    if (response.statusCode == 200) {
-      return ReceiveRequestModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return 0;
-    }
+    return ResponseDeserializer.deserializeResponse(response) as int;
   }
 
   static Future<List<Item>> getRequestedItems(int userId, int pageNumber, int pageSize) async {
@@ -43,10 +36,7 @@ class ReceiveServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return ItemModel.fromJson(jsonDecode(response.body)).items;
-    }
-    return null;
+    return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
   }
 
   static Future<bool> cancelRegistration(int requestId) async {
@@ -59,10 +49,7 @@ class ReceiveServices {
       },
     );
     print(response.body);
-    if (response.statusCode == 200)
-      return true;
-    else
-      return false;
+    return response.statusCode == 200;
   }
 
   static Future<RequestDetail> getRequestDetail(int requestId) async {
@@ -75,10 +62,7 @@ class ReceiveServices {
       },
     );
     print(response.body);
-    if (response.statusCode == 200)
-      return RequestDetailModel.fromJson(jsonDecode(response.body)).requestDetail;
-    else
-      return null;
+    return RequestDetail.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
   static Future<List<ReceiveRequest>> getItemRequests(int itemId) async {
@@ -88,11 +72,8 @@ class ReceiveServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return ReceiveRequestsModel.fromJson(jsonDecode(response.body)).requests;
-    } else {
-      return null;
-    }
+    return List<ReceiveRequest>.from(
+        ResponseDeserializer.deserializeResponseToList(response).map((x) => ReceiveRequest.fromJson(x)));
   }
 
   static Future<bool> acceptRequest(int requestId) async {
@@ -102,11 +83,7 @@ class ReceiveServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return response.statusCode == 200;
   }
 
   static Future<bool> cancelReceiver(int requestId) async {
@@ -116,11 +93,7 @@ class ReceiveServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return response.statusCode == 200;
   }
 
   static Future<bool> sendThanks(int requestId, String message) async {
@@ -132,27 +105,6 @@ class ReceiveServices {
         },
         body: jsonEncode({"thanks": message}));
     print(response.body);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  static Future<UserInfo> getReceiverInfo(int requestId) async {
-    Uri url = Uri.https(APIService.apiUrl, "/ReceiveItem/$requestId/receiver-info");
-    var response = await http.get(
-      url,
-      headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.value,
-        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
-      },
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return null;
-    }
+    return response.statusCode == 200;
   }
 }

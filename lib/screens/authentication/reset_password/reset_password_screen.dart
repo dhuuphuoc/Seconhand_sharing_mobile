@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/reset_password_model/reset_password_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
@@ -31,18 +30,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _isLoading = true;
     });
 
-    ResetPasswordModel resetPasswordModel =
-        await AuthenticationService.resetPassword(ResetPasswordForm(
-            _userId,
-            _code,
-            _passwordTextController.text,
-            _confirmPasswordTextController.text));
-    if (resetPasswordModel.succeeded) {
+    bool result = await AuthenticationService.resetPassword(
+        ResetPasswordForm(_userId, _code, _passwordTextController.text, _confirmPasswordTextController.text));
+    if (result) {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).success,
-                S.of(context).resetPasswordSuccess, "OK");
+            return NotifyDialog(S.of(context).success, S.of(context).resetPasswordSuccess, "OK");
           }).whenComplete(() {
         Navigator.pop(context);
       });
@@ -50,8 +44,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(
-                S.of(context).failed, S.of(context).resetPasswordFailed, "OK");
+            return NotifyDialog(S.of(context).failed, S.of(context).resetPasswordFailed, "OK");
           });
     }
     setState(() {
@@ -130,9 +123,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                _isLoading
-                    ? Align(child: CircularProgressIndicator())
-                    : SizedBox(),
+                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),

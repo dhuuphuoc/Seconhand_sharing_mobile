@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card.dart';
-import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
@@ -23,7 +20,6 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   int _pageSize = 8;
   bool _isLoading = true;
   bool _isEnd = false;
-  double _lastOffset = 0;
   @override
   void initState() {
     super.initState();
