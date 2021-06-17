@@ -98,11 +98,11 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
-                                  radius: 20,
-                                  foregroundImage: AssetImage(
-                                    "assets/images/person.png",
-                                  ),
-                                ),
+                                    radius: 20,
+                                    foregroundImage: request.receiverAvatarUrl == null
+                                        ? AssetImage("assets/images/person.png")
+                                        : NetworkImage(request.receiverAvatarUrl),
+                                    backgroundImage: AssetImage("assets/images/person.png")),
                                 SizedBox(
                                   width: 15,
                                 ),
