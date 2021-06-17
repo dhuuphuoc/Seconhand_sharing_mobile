@@ -191,8 +191,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         UserMessage(content: _textController.text.trim(), sendToAccountId: _userInfo.id);
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
-                        messages.add(value);
-                        _isBottomStick = true;
+                        if (value != null) {
+                          messages.add(value);
+                          _isBottomStick = true;
+                        }
                       });
                     });
                     _textController.text = "";

@@ -238,5 +238,6 @@
   "messageBox" : "Messages box",
   "homeAddress": "Home address",
   "avatarChangeConfirmation" : "Your avatar will be changed to selected image!",
-  "areYouSure" : "Are you sure?"
+  "areYouSure" : "Are you sure?",
+  "registeredNotification": "You registered this item and waiting for acceptance ..."
 }

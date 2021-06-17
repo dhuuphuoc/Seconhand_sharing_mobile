@@ -1654,6 +1654,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You registered this item and waiting for acceptance ...`
+  String get registeredNotification {
+    return Intl.message(
+      'You registered this item and waiting for acceptance ...',
+      name: 'registeredNotification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
