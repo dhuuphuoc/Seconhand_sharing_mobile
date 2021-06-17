@@ -46,116 +46,126 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      ItemDetail itemDetail = await ItemServices.getItemDetail(_itemDetail.id);
-      if (itemDetail != null) {
-        setState(() {
-          _isOwn = AccessInfo().userInfo.id == itemDetail.donateAccountId;
-          _itemDetail = itemDetail;
-        });
-        if (_isOwn && _itemDetail.status != ItemStatus.success) {
-          var requests = await ReceiveServices.getItemRequests(itemDetail.id);
-          if (requests != null) {
-            setState(() {
-              _receiveRequestsModel.requests = requests;
-              _receiveRequestsModel.acceptedRequest = _receiveRequestsModel.requests
-                  .firstWhere((element) => element.requestStatus == RequestStatus.receiving, orElse: () {
-                return null;
-              });
-            });
-          }
-        } else if (_itemDetail.userRequestId != 0) {
-          var requestDetail = await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
-          if (requestDetail != null) {
-            setState(() {
-              _requestStatus = requestDetail.receiveStatus;
-            });
-          }
-        }
-        if (_itemDetail.status == ItemStatus.success) {
-          _receivedUserInfo = await ItemServices.getReceivedUserInfo(_itemDetail.id);
-        }
-        _subscription = FirebaseMessaging.onMessage.listen((message) {
-          final scaffold = ScaffoldMessenger.of(context);
-          if (_isOwn)
-            switch (message.data["type"]) {
-              case "2":
-                ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
-                if (receiveRequest.itemId != _itemDetail.id) return;
-                scaffold.showSnackBar(
-                  SnackBar(
-                    content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
-                  ),
-                );
-                receiveRequest.requestStatus = RequestStatus.pending;
-                setState(() {
-                  _receiveRequestsModel.requests.add(receiveRequest);
-                });
-                break;
-              case "3":
-                var data = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
-
-                if (_itemDetail.id != data.itemId) return;
-                int requestId = data.requestId;
-                setState(() {
-                  _receiveRequestsModel.requests.removeWhere((request) {
-                    if (request.id == requestId) {
-                      if (_receiveRequestsModel.acceptedRequest?.id == requestId) {
-                        _receiveRequestsModel.acceptedRequest = null;
-                      }
-                      scaffold.showSnackBar(
-                        SnackBar(
-                          content: Text(S.of(context).cancelReceiveRequestSnackBar(request.receiverName)),
-                        ),
-                      );
-                      return true;
-                    }
-                    return false;
-                  });
-                });
-                break;
-            }
-          else {
-            switch (message.data["type"]) {
-              case "4":
-                var data = RequestStatusModel.fromJson(jsonDecode(message.data["message"]));
-                if (_itemDetail.id != data.itemId) return;
-                scaffold.showSnackBar(
-                  SnackBar(
-                    content: data.requestStatus == RequestStatus.receiving
-                        ? Text("${S.current.yourRegistrationWas} ${S.current.acceptedLowerCase}")
-                        : Text("${S.current.yourAcceptedRegistrationWas} ${S.current.canceledLowerCase}"),
-                  ),
-                );
-                setState(() {
-                  _requestStatus = data.requestStatus;
-                });
-                break;
-              case "6":
-                var data = ConfirmSentModel.fromJson(jsonDecode(message.data["message"]));
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return NotifyDialog(
-                          S.of(context).notification,
-                          S.of(context).confirmSentNotification(
-                              data.receiverId == AccessInfo().userInfo.id ? S.of(context).you : data.receiverName),
-                          "Ok");
-                    });
-                setState(() {
-                  _itemDetail.status = ItemStatus.success;
-                  _receivedUserInfo = UserInfo(id: data.receiverId, fullName: data.receiverName);
-                });
-            }
-          }
-        });
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Application().watchingItemId = _itemDetail.id;
+      loadItemDetail();
     });
 
     super.initState();
+  }
+
+  Future<void> loadItemDetail() async {
+    setState(() {
+      _isLoading = true;
+    });
+    ItemDetail itemDetail = await ItemServices.getItemDetail(_itemDetail.id);
+    if (itemDetail != null) {
+      setState(() {
+        _isOwn = AccessInfo().userInfo.id == itemDetail.donateAccountId;
+        _itemDetail = itemDetail;
+      });
+      if (_isOwn && _itemDetail.status != ItemStatus.success) {
+        var requests = await ReceiveServices.getItemRequests(itemDetail.id);
+        if (requests != null) {
+          setState(() {
+            _receiveRequestsModel.requests = requests;
+            _receiveRequestsModel.acceptedRequest = _receiveRequestsModel.requests
+                .firstWhere((element) => element.requestStatus == RequestStatus.receiving, orElse: () {
+              return null;
+            });
+          });
+        }
+      } else if (_itemDetail.userRequestId != 0) {
+        var requestDetail = await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
+        if (requestDetail != null) {
+          setState(() {
+            _requestStatus = requestDetail.receiveStatus;
+          });
+        }
+      }
+      if (_itemDetail.status == ItemStatus.success) {
+        _receivedUserInfo = await ItemServices.getReceivedUserInfo(_itemDetail.id);
+      }
+      _subscription = FirebaseMessaging.onMessage.listen(handleRequestEvent);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void handleRequestEvent(message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    if (_isOwn)
+      switch (message.data["type"]) {
+        case "2":
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
+          if (receiveRequest.itemId != _itemDetail.id) return;
+          scaffold.showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
+            ),
+          );
+          receiveRequest.requestStatus = RequestStatus.pending;
+          setState(() {
+            _receiveRequestsModel.requests.add(receiveRequest);
+          });
+          break;
+        case "3":
+          var data = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
+
+          if (_itemDetail.id != data.itemId) return;
+          int requestId = data.requestId;
+          setState(() {
+            _receiveRequestsModel.requests.removeWhere((request) {
+              if (request.id == requestId) {
+                if (_receiveRequestsModel.acceptedRequest?.id == requestId) {
+                  _receiveRequestsModel.acceptedRequest = null;
+                }
+                scaffold.showSnackBar(
+                  SnackBar(
+                    content: Text(S.of(context).cancelReceiveRequestSnackBar(request.receiverName)),
+                  ),
+                );
+                return true;
+              }
+              return false;
+            });
+          });
+          break;
+      }
+    else {
+      switch (message.data["type"]) {
+        case "4":
+          var data = RequestStatusModel.fromJson(jsonDecode(message.data["message"]));
+          if (_itemDetail.id != data.itemId) return;
+          scaffold.showSnackBar(
+            SnackBar(
+              content: data.requestStatus == RequestStatus.receiving
+                  ? Text("${S.current.yourRegistrationWas} ${S.current.acceptedLowerCase}")
+                  : Text("${S.current.yourAcceptedRegistrationWas} ${S.current.canceledLowerCase}"),
+            ),
+          );
+          setState(() {
+            _requestStatus = data.requestStatus;
+          });
+          break;
+        case "6":
+          var data = ConfirmSentModel.fromJson(jsonDecode(message.data["message"]));
+          showDialog(
+              context: context,
+              builder: (context) {
+                return NotifyDialog(
+                    S.of(context).notification,
+                    S.of(context).confirmSentNotification(
+                        data.receiverId == AccessInfo().userInfo.id ? S.of(context).you : data.receiverName),
+                    "Ok");
+              });
+          setState(() {
+            _itemDetail.status = ItemStatus.success;
+            _receivedUserInfo = UserInfo(id: data.receiverId, fullName: data.receiverName);
+          });
+      }
+    }
   }
 
   @override
@@ -330,7 +340,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             strokeWidth: 3,
                           ),
                         ),
-                      if (_isOwn && _itemDetail.status != ItemStatus.success)
+                      if (_itemDetail.userRequestId != 0 || _isOwn)
                         SizedBox(
                           height: 10,
                         ),
@@ -350,6 +360,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           _itemDetail.status != ItemStatus.success)
                         NotificationCard(Icons.fact_check_outlined,
                             "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
+                      if (!_isOwn && _itemDetail.userRequestId != 0 && _requestStatus != RequestStatus.receiving)
+                        NotificationCard(Icons.app_registration, "${S.of(context).registeredNotification}"),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         width: double.infinity,

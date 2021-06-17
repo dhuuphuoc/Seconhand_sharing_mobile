@@ -21,7 +21,7 @@ class ReceiveServices {
         },
         body: jsonEncode({"itemId": itemId, "receiveReason": message}));
     print(response.body);
-    return ResponseDeserializer.deserializeResponse(response) as int;
+    return ResponseDeserializer.deserializeResponseToInt(response);
   }
 
   static Future<List<Item>> getRequestedItems(int userId, int pageNumber, int pageSize) async {
