@@ -202,7 +202,6 @@ class NotificationService {
             arguments: userInfo);
         break;
       case "2":
-      case "3":
       case "4":
       case "6":
         var itemId = json["message"]["itemId"];

@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 
 class RequestsExpansionPanel extends StatefulWidget {
@@ -97,12 +98,7 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                    radius: 20,
-                                    foregroundImage: request.receiverAvatarUrl == null
-                                        ? AssetImage("assets/images/person.png")
-                                        : NetworkImage(request.receiverAvatarUrl),
-                                    backgroundImage: AssetImage("assets/images/person.png")),
+                                Avatar(request.receiverAvatarUrl, 20),
                                 SizedBox(
                                   width: 15,
                                 ),

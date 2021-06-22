@@ -328,18 +328,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         itemName: _itemDetail.itemName,
                         description: _itemDetail.description,
                       ),
-                      if (_isCanceling)
-                        SizedBox(
-                          height: 15,
-                        ),
-                      if (_isCanceling)
-                        Container(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 3,
-                          ),
-                        ),
                       if (_itemDetail.userRequestId != 0 || _isOwn)
                         SizedBox(
                           height: 10,
@@ -362,6 +350,18 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
                       if (!_isOwn && _itemDetail.userRequestId != 0 && _requestStatus != RequestStatus.receiving)
                         NotificationCard(Icons.app_registration, "${S.of(context).registeredNotification}"),
+                      if (_isCanceling)
+                        SizedBox(
+                          height: 15,
+                        ),
+                      if (_isCanceling)
+                        Container(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                          ),
+                        ),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         width: double.infinity,

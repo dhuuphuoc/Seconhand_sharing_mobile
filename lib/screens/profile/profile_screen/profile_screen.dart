@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/
 import 'package:secondhand_sharing/screens/profile/user_donations_tab/user_donations_tab.dart';
 import 'package:secondhand_sharing/screens/profile/user_requests_tab/user_requests_tab.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -263,16 +264,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           child: Stack(
                             alignment: AlignmentDirectional.center,
                             children: [
-                              CircleAvatar(
-                                radius: screenSize.height * 0.1,
-                                foregroundImage: _userInfo.avatarUrl == null
-                                    ? AssetImage("assets/images/person.png")
-                                    : NetworkImage(_userInfo.avatarUrl),
-                                backgroundImage: AssetImage(
-                                  "assets/images/person.png",
-                                ),
-                              ),
-                              if (!_isHideIcon)
+                              Avatar(_userInfo.avatarUrl, screenSize.height * 0.1),
+                              if (!_isHideIcon && _isMe)
                                 Align(
                                     alignment: Alignment.bottomRight,
                                     child: IconButton(onPressed: pickImages, icon: Icon(Icons.camera_alt)))

@@ -26,6 +26,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
               foregroundImage: AccessInfo().userInfo.avatarUrl == null
                   ? AssetImage("assets/images/person.png")
                   : NetworkImage(AccessInfo().userInfo.avatarUrl),
+              backgroundColor: Theme.of(context).backgroundColor,
             ),
             title: Text(
               AccessInfo().userInfo.fullName,

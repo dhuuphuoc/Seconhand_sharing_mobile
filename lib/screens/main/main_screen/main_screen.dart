@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
@@ -59,15 +60,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                      child: CircleAvatar(
-                        radius: 20,
-                        foregroundImage: AccessInfo().userInfo.avatarUrl == null
-                            ? AssetImage("assets/images/person.png")
-                            : NetworkImage(AccessInfo().userInfo.avatarUrl),
-                        backgroundImage: AssetImage(
-                          "assets/images/person.png",
-                        ),
-                      ),
+                      child: Avatar(AccessInfo().userInfo.avatarUrl, 20),
                     ),
                   ),
                 ],

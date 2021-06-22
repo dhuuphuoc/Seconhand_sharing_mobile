@@ -78,7 +78,7 @@ class _MenuTabState extends State<MenuTab> {
                 margin: EdgeInsets.all(10),
                 child: OutlinedButton(
                     onPressed: logOut,
-                    child: Text("Logout"),
+                    child: Text(S.of(context).logout),
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(Theme.of(context).errorColor),
                         side: MaterialStateProperty.all(

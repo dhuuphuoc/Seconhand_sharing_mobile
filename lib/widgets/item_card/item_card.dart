@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
 class ItemCard extends StatelessWidget {
   final Item item;
@@ -25,13 +26,7 @@ class ItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
-                leading: CircleAvatar(
-                  foregroundImage:
-                      item.avatarUrl == null ? AssetImage("assets/images/person.png") : NetworkImage(item.avatarUrl),
-                  backgroundImage: AssetImage(
-                    "assets/images/person.png",
-                  ),
-                ),
+                leading: Avatar(item.avatarUrl, 20),
                 title: Text(
                   item.donateAccountName,
                   style: Theme.of(context).textTheme.headline3,

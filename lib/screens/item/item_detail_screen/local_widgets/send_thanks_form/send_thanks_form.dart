@@ -24,7 +24,7 @@ class _SendThanksFormState extends State<SendThanksForm> {
     Size screenSize = MediaQuery.of(context).size;
     int requestId = ModalRoute.of(context).settings.arguments;
     return AlertDialog(
-      title: Text(S.of(context).registerToReceive),
+      title: Text(S.of(context).sendThanks),
       insetPadding: EdgeInsets.all(15),
       contentPadding: EdgeInsets.symmetric(horizontal: 24),
       actionsPadding: EdgeInsets.all(10),
@@ -64,8 +64,7 @@ class _SendThanksFormState extends State<SendThanksForm> {
                     setState(() {
                       _isLoading = true;
                     });
-                    var result = await ReceiveServices.sendThanks(
-                        requestId, _textController.text);
+                    var result = await ReceiveServices.sendThanks(requestId, _textController.text);
                     print(result);
                     Navigator.pop(context, result);
                     setState(() {

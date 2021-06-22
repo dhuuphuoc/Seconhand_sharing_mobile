@@ -144,7 +144,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     return NotificationListener(
       onNotification: (notification) {
         if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
+          if (notification.metrics.axisDirection == AxisDirection.up ||
+              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.overscroll);
           if (notification.overscroll > 0) {
             if (!_isEnd && !_isLoading) {
               _pageNumber++;
@@ -153,7 +154,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           }
         }
         if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
+          if (notification.metrics.axisDirection == AxisDirection.up ||
+              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },

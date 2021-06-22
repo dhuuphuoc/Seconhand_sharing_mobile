@@ -9,6 +9,7 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
 class MessageBoxScreen extends StatefulWidget {
   const MessageBoxScreen({Key key}) : super(key: key);
@@ -112,18 +113,7 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
                 });
             });
           },
-          leading: CircleAvatar(
-            radius: 25,
-            foregroundImage: isMy && message.sendToAccountAvatarUrl == null ||
-                    message.sendFromAccountId != AccessInfo().userInfo.id && message.sendFromAccountAvatarUrl == null
-                ? AssetImage(
-                    "assets/images/person.png",
-                  )
-                : NetworkImage(isMy ? message.sendToAccountAvatarUrl : message.sendFromAccountAvatarUrl),
-            backgroundImage: AssetImage(
-              "assets/images/person.png",
-            ),
-          ),
+          leading: Avatar(isMy ? message.sendToAccountAvatarUrl : message.sendFromAccountAvatarUrl, 25),
           title: Text(
             isMy ? message.sendToAccountName : message.sendFromAccountName,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
