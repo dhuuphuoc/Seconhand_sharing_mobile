@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/tappable_image/tappable_image.dart';
+import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 
 class ImagesPicker extends StatefulWidget {
   @override
@@ -67,7 +68,7 @@ class _ImagesPickerState extends State<ImagesPicker> {
                     icon: Icon(Icons.camera_alt_rounded),
                   ),
                   title: Text(
-                    S.of(context).selectPhotos,
+                    S.of(context).chooseImage,
                     textAlign: TextAlign.center,
                   ),
                   trailing: IconButton(
@@ -90,7 +91,14 @@ class _ImagesPickerState extends State<ImagesPicker> {
                           cacheExtent: 2000,
                           children: _imagesInGallery.map((image) {
                             return TappableImage(() {
-                              Navigator.pop(context, image);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => ConfirmDialog(
+                                      S.of(context).areYouSure, S.of(context).avatarChangeConfirmation)).then((value) {
+                                if (value == true) {
+                                  Navigator.pop(context, image);
+                                }
+                              });
                             }, image);
                           }).toList(),
                         ),

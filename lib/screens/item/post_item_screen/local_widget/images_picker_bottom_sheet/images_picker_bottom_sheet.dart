@@ -1,27 +1,21 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:path_provider/path_provider.dart' as path;
-import 'package:mime/mime.dart' as mime;
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/selective_image_view/selective_image_view.dart';
 
 class ImagesPickerBottomSheet extends StatefulWidget {
   @override
-  _ImagesPickerBottomSheetState createState() =>
-      _ImagesPickerBottomSheetState();
+  _ImagesPickerBottomSheetState createState() => _ImagesPickerBottomSheetState();
 }
 
 class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
   bool _isLoading = false;
-  Map<String, ImageData> _images = {};
+  List<ImageData> _images = [];
   List<ImageData> _imagesInGallery = ImageModel().imagesData;
   bool _isPermissionGrant = false;
   Future<File> getImage() async {
@@ -61,7 +55,6 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    _images.addAll(ModalRoute.of(context).settings.arguments);
     return Container(
       height: 300,
       child: _isPermissionGrant
@@ -72,15 +65,14 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                     onPressed: () {
                       getImage().then((image) {
                         setState(() {
-                          _imagesInGallery.insert(0,
-                              ImageData(image.readAsBytesSync(), image.path));
+                          _imagesInGallery.insert(0, ImageData(image.readAsBytesSync(), image.path));
                         });
                       });
                     },
                     icon: Icon(Icons.camera_alt_rounded),
                   ),
                   title: Text(
-                    S.of(context).selectPhotos,
+                    S.of(context).addPhotos,
                     textAlign: TextAlign.center,
                   ),
                   trailing: IconButton(
@@ -103,15 +95,15 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                             return SelectiveImageView(
                                 onPress: () {
                                   setState(() {
-                                    if (_images.containsKey(image.path)) {
-                                      _images.remove(image.path);
+                                    if (_images.contains(image)) {
+                                      _images.remove(image);
                                     } else {
-                                      _images[image.path] = image;
+                                      _images.add(image);
                                     }
                                   });
                                 },
                                 image: image,
-                                isSelected: _images.containsKey(image.path));
+                                isSelected: _images.contains(image));
                           }).toList(),
                         ),
                 ),
@@ -134,9 +126,7 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: requestStoragePermission,
-                        child: Text(S.of(context).allowAccess))
+                    ElevatedButton(onPressed: requestStoragePermission, child: Text(S.of(context).allowAccess))
                   ],
                 ),
               ),

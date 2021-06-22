@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/notification_model/confirm_sent_model/confirm_sent_model.dart';
-import 'package:secondhand_sharing/models/notification_model/notification.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/notification/confirm_sent_model/confirm_sent_model.dart';
+import 'package:secondhand_sharing/models/notification/notification.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
 class ConfirmSentNotification extends StatefulWidget {

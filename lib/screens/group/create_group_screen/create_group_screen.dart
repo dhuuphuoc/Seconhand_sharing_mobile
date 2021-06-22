@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/create_group/create_group.dart';
-import 'package:secondhand_sharing/models/group_model/create_group/create_group_model.dart';
+import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
@@ -16,8 +15,7 @@ class CreateGroupScreen extends StatefulWidget {
   _CreateGroupScreenState createState() => _CreateGroupScreenState();
 }
 
-class _CreateGroupScreenState extends State<CreateGroupScreen>
-    with TickerProviderStateMixin {
+class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -35,28 +33,25 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
       _isLoading = true;
     });
 
-    CreateGroupModel createGroupModel = await GroupServices.createGroup(
-        CreateGroupForm(_groupNameController.text, _descriptionController.text,
-            _ruleController.text));
+    Group group = await GroupServices.createGroup(
+        CreateGroupForm(_groupNameController.text, _descriptionController.text, _ruleController.text));
 
-    if (createGroupModel != null) {
+    if (group != null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return NotifyDialog(
-              S.of(context).success, S.of(context).createGroupSuccess, "OK");
+          return NotifyDialog(S.of(context).success, S.of(context).createGroupSuccess, "OK");
         },
       ).whenComplete(() {
         // Navigator.pop(context);
-        Navigator.pushNamed(context, "/group/detail", arguments: createGroupModel.data.id);
+        Navigator.pushNamed(context, "/group/detail", arguments: group.id);
       });
     } else {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).createGroupFail,
-              S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).createGroupFail, S.of(context).tryAgain);
         },
       );
     }
@@ -69,8 +64,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).createGroup,
-            style: Theme.of(context).textTheme.headline2),
+        title: Text(S.of(context).createGroup, style: Theme.of(context).textTheme.headline2),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -88,8 +82,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       labelText: "${S.of(context).groupName}",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 10,
@@ -105,8 +98,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       hintText: "${S.of(context).description}...",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 10,
@@ -122,23 +114,18 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       hintText: "${S.of(context).rule}...",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                _isLoading
-                    ? Align(child: CircularProgressIndicator())
-                    : SizedBox(),
+                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),
                 Container(
                     width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: onSubmit,
-                        child: Text(S.of(context).confirm))),
+                    child: ElevatedButton(onPressed: onSubmit, child: Text(S.of(context).confirm))),
               ],
             ),
           ),

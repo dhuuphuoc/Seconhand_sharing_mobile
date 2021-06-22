@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +7,7 @@ import 'package:secondhand_sharing/models/address_model/country_model/country.da
 import 'package:secondhand_sharing/models/address_model/country_model/country_data.dart';
 import 'package:secondhand_sharing/models/address_model/province/province.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
@@ -54,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       String deviceToken = await FirebaseMessaging.instance.getToken();
+      print(deviceToken);
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
       String oldDeviceToken = sharedPreferences.getString("device_token");
       if (deviceToken != oldDeviceToken) {
@@ -99,6 +97,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> loadData() async {
+    String deviceToken = await FirebaseMessaging.instance.getToken();
+    print(deviceToken);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("locale", Localizations.localeOf(context).toString());
     await loadAddress();
 
     if (!kIsWeb) await loadImages(context);
@@ -107,7 +109,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     loadData();
     super.initState();
   }

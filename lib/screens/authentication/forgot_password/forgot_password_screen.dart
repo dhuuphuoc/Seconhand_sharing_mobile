@@ -26,9 +26,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {
       _isLoading = true;
     });
-    int statusCode = await AuthenticationService.forgotPassword(ForgotPasswordForm(_emailTextController.text));
+    bool result = await AuthenticationService.forgotPassword(ForgotPasswordForm(_emailTextController.text));
 
-    if (statusCode == 200) {
+    if (result) {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!

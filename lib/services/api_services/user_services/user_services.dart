@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/avatar_upload_model/avatar_upload_model.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/image_upload_model/image_upload_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info_model.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
+import 'package:secondhand_sharing/utils/response_deserializer/response_deserializer.dart';
 
 class UpdateProfileForm {
   UpdateProfileForm({
@@ -46,12 +46,12 @@ class UserServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      AccessInfo().userInfo = UserInfoModel.fromJson(jsonDecode(response.body)).data;
+    UserInfo userInfo = UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (userInfo != null) {
+      AccessInfo().userInfo = userInfo;
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   static Future<String> uploadAvatar(ImageData image) async {
@@ -64,16 +64,13 @@ class UserServices {
       },
     );
     print(response.body);
-    if (response.statusCode == 200) {
-      var avatarUploadModel = AvatarUploadModel.fromJson(jsonDecode(response.body));
-      var result = await APIService.uploadImage(image, avatarUploadModel.data.imageUpload.presignUrl);
-      if (result) {
-        return APIService.cloudUrl + avatarUploadModel.data.imageUpload.imageName;
-      } else {
-        return null;
-      }
+    ImageUploadModel imageUploadModel = ImageUploadModel.fromJson(ResponseDeserializer.deserializeResponse(response));
+    var result = await APIService.uploadImage(image, imageUploadModel.imageUpload.presignUrl);
+    if (result) {
+      return APIService.cloudUrl + imageUploadModel.imageUpload.imageName;
+    } else {
+      return null;
     }
-    return null;
   }
 
   static Future<UserInfo> getUserInfoById(int userId) async {
@@ -83,11 +80,7 @@ class UserServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return null;
-    }
+    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
   static Future<UserInfo> updateUserInfo(UpdateProfileForm form) async {
@@ -99,9 +92,6 @@ class UserServices {
         },
         body: jsonEncode(form.toJson()));
     print(response.body);
-    if (response.statusCode == 200)
-      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
-    else
-      return null;
+    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 }

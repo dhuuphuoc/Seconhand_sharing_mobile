@@ -35,12 +35,13 @@
   "failed" : "Thất bại",
   "postFailed" : "Có lỗi trong quá trình đăng bài!",
   "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
-  "selectPhotos": "Chọn ảnh",
+  "addPhotos": "Thêm ảnh",
   "success": "Thành công",
   "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
   "registerFailedNotification": "Thông tin đăng ký không ",
   "emptyFullNameError": "Tên không được bỏ trống ",
   "addPhoto": "Thêm ảnh",
+  "chooseImage": "Chọn ảnh",
   "postItem" : "Đăng bài viết",
   "all" : "Tất cả",
   "clothes": "Quần áo",
@@ -236,5 +237,9 @@
   "notificationEnded" : "Không còn thông báo nào nữa",
   "messagesEnded" : "Không còn tin nhắn nào nữa",
   "messageBox" : "Hộp thoại",
-  "member": "Thành viên"
+  "member": "Thành viên",
+  "homeAddress": "Địa chỉ nhà",
+  "avatarChangeConfirmation" : "Ảnh đại diện của bạn sẽ được đổi thành ảnh đã chọn!",
+  "areYouSure" : "Bạn chắc chứ?",
+  "registeredNotification": "Bạn đã đăng ký nhận vật phẩm này và đang chờ chủ sở hữu chấp nhận ..."
 }

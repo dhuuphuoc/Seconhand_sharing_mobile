@@ -1,16 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/signup_model/signup_model.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -35,8 +31,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   DateTime selectedDate = DateTime.now();
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1900,8), lastDate: DateTime(2100));
-    if(picked != null && picked != selectedDate)
+    final DateTime picked = await showDatePicker(
+        context: context, initialDate: selectedDate, firstDate: DateTime(1900, 8), lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
         _dateOfBirthController.value = TextEditingValue(text: DateFormat("yyyy-MM-dd").format(picked).toString());
@@ -49,17 +46,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    RegisterModel registerModel = await AuthenticationService.register(
-        RegisterForm(_fullNameTextController.text, _emailTextController.text,
-            _passwordTextController.text, _dateOfBirthController.text, _phoneNumberController.text));
+    bool result = await AuthenticationService.register(RegisterForm(
+        _fullNameTextController.text,
+        _emailTextController.text,
+        _passwordTextController.text,
+        _dateOfBirthController.text,
+        _phoneNumberController.text));
 
-    if (registerModel != null) {
+    if (result) {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(
-              S.of(context).success, S.of(context).registerSuccess, "OK");
+          return NotifyDialog(S.of(context).success, S.of(context).registerSuccess, "OK");
         },
       ).whenComplete(() {
         Navigator.pop(context);
@@ -70,8 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
-              S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail, S.of(context).tryAgain);
         },
       );
     }
@@ -115,9 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.text,
                   controller: _fullNameTextController,
                   validator: (value) {
-                    return value.isEmpty
-                        ? S.of(context).emptyFullNameError
-                        : null;
+                    return value.isEmpty ? S.of(context).emptyFullNameError : null;
                   },
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
@@ -179,11 +175,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _dateOfBirthController,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                        hintText: S.of(context).dateOfBirth,
-                        suffixIcon: Icon(
-                          Icons.date_range_rounded,
-                        )
-                      ),
+                          hintText: S.of(context).dateOfBirth,
+                          suffixIcon: Icon(
+                            Icons.date_range_rounded,
+                          )),
                     ),
                   ),
                 ),
@@ -202,9 +197,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                _isLoading
-                    ? Align(child: CircularProgressIndicator())
-                    : SizedBox(),
+                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),

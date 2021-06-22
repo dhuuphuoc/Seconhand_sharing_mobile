@@ -395,11 +395,11 @@ class S {
     );
   }
 
-  /// `Select photos`
-  String get selectPhotos {
+  /// `Add photos`
+  String get addPhotos {
     return Intl.message(
-      'Select photos',
-      name: 'selectPhotos',
+      'Add photos',
+      name: 'addPhotos',
       desc: '',
       args: [],
     );
@@ -450,6 +450,16 @@ class S {
     return Intl.message(
       'Add photo',
       name: 'addPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose image`
+  String get chooseImage {
+    return Intl.message(
+      'Choose image',
+      name: 'chooseImage',
       desc: '',
       args: [],
     );
@@ -1630,6 +1640,46 @@ class S {
     return Intl.message(
       'Member',
       name: 'member',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home address`
+  String get homeAddress {
+    return Intl.message(
+      'Home address',
+      name: 'homeAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your avatar will be changed to selected image!`
+  String get avatarChangeConfirmation {
+    return Intl.message(
+      'Your avatar will be changed to selected image!',
+      name: 'avatarChangeConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get areYouSure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'areYouSure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You registered this item and waiting for acceptance ...`
+  String get registeredNotification {
+    return Intl.message(
+      'You registered this item and waiting for acceptance ...',
+      name: 'registeredNotification',
       desc: '',
       args: [],
     );

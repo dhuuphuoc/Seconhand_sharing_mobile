@@ -1,18 +1,13 @@
-import 'dart:convert';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/group_tab.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
-import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class MainScreen extends StatefulWidget {
@@ -65,13 +60,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                      child: CircleAvatar(
-                        radius: 20,
-                        foregroundImage: AccessInfo().userInfo.avatarUrl == null
-                            ? AssetImage("assets/images/person.png")
-                            : NetworkImage(AccessInfo().userInfo.avatarUrl),
-                        backgroundColor: Colors.transparent,
-                      ),
+                      child: Avatar(AccessInfo().userInfo.avatarUrl, 20),
                     ),
                   ),
                 ],

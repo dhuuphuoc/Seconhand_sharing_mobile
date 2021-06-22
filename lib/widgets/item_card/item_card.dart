@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/item_model/item.dart';
+import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
 class ItemCard extends StatelessWidget {
   final Item item;
@@ -25,11 +26,7 @@ class ItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
-                leading: CircleAvatar(
-                  foregroundImage:
-                      item.avatarUrl == null ? AssetImage("assets/images/person.png") : NetworkImage(item.avatarUrl),
-                  backgroundColor: Theme.of(context).backgroundColor,
-                ),
+                leading: Avatar(item.avatarUrl, 20),
                 title: Text(
                   item.donateAccountName,
                   style: Theme.of(context).textTheme.headline3,
@@ -57,6 +54,7 @@ class ItemCard extends StatelessWidget {
               Container(
                 child: Image.network(
                   item.imageUrl == null ? "https://i.stack.imgur.com/y9DpT.jpg" : item.imageUrl,
+                  gaplessPlayback: true,
                   frameBuilder: (BuildContext context, Widget child, int frame, bool wasSynchronouslyLoaded) {
                     if (wasSynchronouslyLoaded ?? false) {
                       return child;

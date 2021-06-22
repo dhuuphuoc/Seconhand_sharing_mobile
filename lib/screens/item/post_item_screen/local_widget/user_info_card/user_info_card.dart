@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/address_model/address_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 
 class UserInfoCard extends StatefulWidget {
   final Function onMapPress;
@@ -18,7 +15,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.zero,
-        elevation: 5,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           child: ListTile(
@@ -29,6 +26,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
               foregroundImage: AccessInfo().userInfo.avatarUrl == null
                   ? AssetImage("assets/images/person.png")
                   : NetworkImage(AccessInfo().userInfo.avatarUrl),
+              backgroundColor: Theme.of(context).backgroundColor,
             ),
             title: Text(
               AccessInfo().userInfo.fullName,
@@ -37,6 +35,13 @@ class _UserInfoCardState extends State<UserInfoCard> {
             subtitle: Text(
               AccessInfo().userInfo.email,
               style: Theme.of(context).textTheme.subtitle1,
+            ),
+            trailing: IconButton(
+              color: Theme.of(context).primaryColor,
+              icon: Icon(Icons.contact_phone_outlined),
+              onPressed: () {
+                Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo.id);
+              },
             ),
           ),
         ));

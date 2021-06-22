@@ -9,14 +9,12 @@ import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 
-
 class GroupDetailScreen extends StatefulWidget {
   @override
   _GroupDetailScreenState createState() => _GroupDetailScreenState();
 }
 
-class _GroupDetailScreenState extends State<GroupDetailScreen>
-    with SingleTickerProviderStateMixin {
+class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
   ScrollController _scrollController = ScrollController();
   int _groupId;
@@ -36,7 +34,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "$_groupDetail.groupName",
+          "${_groupDetail.groupName}",
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
@@ -71,9 +69,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
                     ),
                     Container(
                       height: 600,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: BorderSide(color: Colors.grey, width: 0.5))),
+                      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.5))),
                       child: TabBarView(
                         children: <Widget>[
                           Container(

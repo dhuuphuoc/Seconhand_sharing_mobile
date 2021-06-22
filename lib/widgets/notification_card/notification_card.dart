@@ -15,7 +15,7 @@ class NotificationCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             SizedBox(height: 10),
@@ -24,7 +24,13 @@ class NotificationCard extends StatelessWidget {
               color: Colors.green,
             ),
             SizedBox(height: 10),
-            Text(_notification),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                _notification,
+                textAlign: TextAlign.center,
+              ),
+            ),
             SizedBox(height: 10),
           ],
         ),

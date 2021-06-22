@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/receive_requests_model/receive_request.dart';
+import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
 class IncomingRequestNotification extends StatefulWidget {
   final ReceiveRequest receiveRequest;
@@ -23,12 +24,7 @@ class _IncomingRequestNotificationState extends State<IncomingRequestNotificatio
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: ListTile(
           minVerticalPadding: 10,
-          leading: CircleAvatar(
-            radius: 20,
-            foregroundImage: AssetImage(
-              "assets/images/person.png",
-            ),
-          ),
+          leading: Avatar(widget.receiveRequest.receiverAvatarUrl, 20),
           title: RichText(
             // "${receiveRequest.receiverName} ${S.of(context).registeredItem} ${receiveRequest.itemName} ${S.of(context).withMessage} ${receiveRequest.receiveReason}",
             text: TextSpan(

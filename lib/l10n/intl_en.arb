@@ -35,12 +35,13 @@
   "failed" : "Failed",
   "postFailed" : "An error occurred while posting!",
   "loginFailedNotification" : "Username or password is incorrect.",
-  "selectPhotos": "Select photos",
+  "addPhotos": "Add photos",
   "success": "Success",
   "registerSuccess": "Register Successful. Check your confirm email",
   "registerFailedNotification": "Register information is incorrect",
   "emptyFullNameError": "Full Name can't be empty",
   "addPhoto": "Add photo",
+  "chooseImage": "Choose image",
   "postItem" : "Post",
   "all" : "All",
   "clothes": "Clothes",
@@ -236,5 +237,9 @@
   "notificationEnded" : "There is no more notification",
   "messagesEnded" : "There is no more messages",
   "messageBox" : "Messages box",
-  "member": "Member"
+  "member": "Member",
+  "homeAddress": "Home address",
+  "avatarChangeConfirmation" : "Your avatar will be changed to selected image!",
+  "areYouSure" : "Are you sure?",
+  "registeredNotification": "You registered this item and waiting for acceptance ..."
 }

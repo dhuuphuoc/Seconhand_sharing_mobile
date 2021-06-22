@@ -3,17 +3,16 @@ import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 
-import 'package:secondhand_sharing/models/image_model/image_data.dart';
-import 'package:secondhand_sharing/models/item_detail_model/item_detail.dart';
-import 'package:secondhand_sharing/models/item_detail_model/item_detail_model.dart';
-import 'package:secondhand_sharing/models/item_model/item.dart';
-import 'package:secondhand_sharing/models/item_model/item_model.dart';
-import 'package:secondhand_sharing/models/item_model/post_item_model.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info_model.dart';
+import 'package:secondhand_sharing/models/image_upload_model/images_upload_model.dart';
+import 'package:secondhand_sharing/models/item/item.dart';
+import 'package:secondhand_sharing/models/item_detail/item_detail.dart';
+
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
+
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondhand_sharing/utils/response_deserializer/response_deserializer.dart';
 
 class PostItemForm {
   PostItemForm({
@@ -64,10 +63,7 @@ class ItemServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return ItemModel.fromJson(jsonDecode(response.body)).items;
-    }
-    return null;
+    return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
   }
 
   static Future<List<Item>> getDonatedItems(int userId, int pageNumber, int pageSize) async {
@@ -82,10 +78,7 @@ class ItemServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return ItemModel.fromJson(jsonDecode(response.body)).items;
-    }
-    return null;
+    return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
   }
 
   static Future<ItemDetail> getItemDetail(int id) async {
@@ -95,14 +88,10 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return ItemDetailModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return null;
-    }
+    return ItemDetail.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
-  static Future<PostItemModel> postItem(PostItemForm postItemForm) async {
+  static Future<ImagesUploadModel> postItem(PostItemForm postItemForm) async {
     Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Item");
     var response = await http.post(postItemsUrl,
         headers: {
@@ -112,11 +101,7 @@ class ItemServices {
         body: jsonEncode(postItemForm.toJson()));
     print(postItemForm.toJson());
     print(response.body);
-    if (response.statusCode == 200) {
-      return PostItemModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
+    return ImagesUploadModel.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
   static Future<bool> confirmSent(int itemId) async {
@@ -126,11 +111,7 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return response.statusCode == 200;
   }
 
   static Future<UserInfo> getReceivedUserInfo(int itemId) async {
@@ -140,10 +121,6 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      return UserInfoModel.fromJson(jsonDecode(response.body)).data;
-    } else {
-      return null;
-    }
+    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 }

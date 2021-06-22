@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/notification_model/notification.dart';
+import 'package:secondhand_sharing/models/message/user_message.dart';
+import 'package:secondhand_sharing/models/notification/notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
 class ThanksNotification extends StatefulWidget {
   final UserNotification notification;
@@ -36,12 +37,7 @@ class _ThanksNotificationState extends State<ThanksNotification> {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: ListTile(
           minVerticalPadding: 10,
-          leading: CircleAvatar(
-            radius: 20,
-            foregroundImage: AssetImage(
-              "assets/images/person.png",
-            ),
-          ),
+          leading: Avatar(_message.sendFromAccountAvatarUrl, 20),
           title: RichText(
             text: TextSpan(
                 text: "${_message.sendFromAccountName}",

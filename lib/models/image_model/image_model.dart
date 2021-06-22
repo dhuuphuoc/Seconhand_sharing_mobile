@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:ext_storage/ext_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:mime/mime.dart' as mime;
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
@@ -20,11 +18,9 @@ class ImageModel {
   Future<void> loadImages() async {
     var capture = await path.getExternalStorageDirectory();
 
-    var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DCIM);
+    var dcimPath = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DCIM);
 
-    var picturePath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_PICTURES);
+    var picturePath = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_PICTURES);
 
     await collectImagesFromDirectory(capture);
 

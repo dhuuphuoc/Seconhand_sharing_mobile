@@ -6,15 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
-import 'package:secondhand_sharing/models/user_model/access_info/access_info.dart';
-import 'package:secondhand_sharing/models/user_model/user_info_model/user_info/user_info.dart';
+import 'package:secondhand_sharing/models/message/user_message.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
+
 import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/local_widgets/message_box.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
-import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
-import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
-import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -193,8 +191,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         UserMessage(content: _textController.text.trim(), sendToAccountId: _userInfo.id);
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
-                        messages.add(value);
-                        _isBottomStick = true;
+                        if (value != null) {
+                          messages.add(value);
+                          _isBottomStick = true;
+                        }
                       });
                     });
                     _textController.text = "";

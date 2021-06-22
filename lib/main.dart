@@ -1,18 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
+import 'dart:ui';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:secondhand_sharing/generated/l10n.dart';
-import 'package:secondhand_sharing/models/messages_model/user_message.dart';
 import 'package:secondhand_sharing/screens/application/application.dart';
 
 import 'package:secondhand_sharing/screens/authentication/confirm_email/confirm_email.dart';
@@ -32,10 +28,8 @@ import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart'
 import 'package:secondhand_sharing/screens/message/message_box_screen/message_box_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
-import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // class MyHttpOverrides extends HttpOverrides {
 //   @override
@@ -46,7 +40,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
-  await Firebase.initializeApp();
   Application().chattingWithUserId = null;
   Application().watchingItemId = null;
   FirebaseServices.handleFirebaseMessage(remoteMessage);
@@ -70,7 +63,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
   @override
   void initState() {
     super.initState();
-
+    FirebaseMessaging.onMessage.listen(FirebaseServices.handleFirebaseMessage);
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     // Timer.periodic(Duration(seconds: 4), (timer) {
     //   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
