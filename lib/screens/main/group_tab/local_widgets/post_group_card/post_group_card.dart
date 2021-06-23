@@ -24,34 +24,36 @@ class _PostGroupCardState extends State<PostGroupCard> {
       elevation: 10,
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  child: Text(
-                    S.of(context).group.toUpperCase(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  height: 30,
-                  child: ElevatedButton(
-                    onPressed: widget.onPostGroup,
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
                     child: Text(
-                      "+ " + S.of(context).createGroup,
+                      S.of(context).group.toUpperCase(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-            ],
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: 30,
+                    child: ElevatedButton(
+                      onPressed: widget.onPostGroup,
+                      child: Text(
+                        "+ " + S.of(context).createGroup,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Container(
             height: 100,
