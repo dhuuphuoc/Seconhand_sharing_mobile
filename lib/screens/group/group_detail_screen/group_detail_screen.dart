@@ -14,17 +14,20 @@ class GroupDetailScreen extends StatefulWidget {
   _GroupDetailScreenState createState() => _GroupDetailScreenState();
 }
 
-class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTickerProviderStateMixin {
+class _GroupDetailScreenState extends State<GroupDetailScreen>
+    with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
-  ScrollController _scrollController = ScrollController();
   int _groupId;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupId);
-      _groupDetail = groupDetail;
+      setState(() {
+        _groupDetail = groupDetail;
+      });
     });
+
     super.initState();
   }
 
@@ -34,10 +37,19 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${_groupDetail.groupName}",
+          _groupDetail.groupName != null
+              ? _groupDetail.groupName.toUpperCase()
+              : S.of(context).groupName,
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/home', (Route<dynamic> route) => false);
+          },
+        ),
         actions: [
           Center(
             child: Container(
@@ -69,7 +81,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                     ),
                     Container(
                       height: 600,
-                      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.5))),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.grey, width: 0.5))),
                       child: TabBarView(
                         children: <Widget>[
                           Container(
@@ -80,13 +94,17 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                           ),
                           Container(
                             child: Text(
-                              _groupDetail.description,
+                              _groupDetail.description != null
+                                  ? _groupDetail.description
+                                  : S.of(context).description,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
                           Container(
                             child: Text(
-                              _groupDetail.rules,
+                              _groupDetail.rules != null
+                                  ? _groupDetail.rules
+                                  : S.of(context).rule,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
