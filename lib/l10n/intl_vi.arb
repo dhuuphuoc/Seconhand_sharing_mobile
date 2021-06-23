@@ -77,6 +77,7 @@
   "posted" : "Đã đăng",
   "postedNotification" : "Vật dụng của bạn đã được đăng! Cảm ơn bạn rất nhiều!",
   "postError" : "Có lỗi trong quá trình đăng bài",
+  "posts" : "Bài đăng",
   "error" : "Lỗi",
   "checkMailForgotPassword": "Kiểm tra email của bạn",
   "notExistEmail": "Email của bạn không tồn tại",
@@ -242,5 +243,6 @@
   "avatarChangeConfirmation" : "Ảnh đại diện của bạn sẽ được đổi thành ảnh đã chọn!",
   "areYouSure" : "Bạn chắc chứ?",
   "registeredNotification": "Bạn đã đăng ký nhận vật phẩm này và đang chờ chủ sở hữu chấp nhận ...",
-  "noMoreEvent" : "Không còn sự kiện nào nữa"
+  "noMoreEvent" : "Không còn sự kiện nào nữa",
+  "event" : "Sự kiện"
 }

@@ -355,6 +355,16 @@ class S {
     );
   }
 
+  /// `Posts`
+  String get posts {
+    return Intl.message(
+      'Posts',
+      name: 'posts',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Try again`
   String get tryAgain {
     return Intl.message(
@@ -1690,6 +1700,16 @@ class S {
     return Intl.message(
       'There is no more events',
       name: 'noMoreEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event`
+  String get event {
+    return Intl.message(
+      'Event',
+      name: 'event',
       desc: '',
       args: [],
     );

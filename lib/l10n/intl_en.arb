@@ -31,6 +31,7 @@
   "phoneNumber": "Phone number",
   "description": "Description",
   "post": "Post",
+  "posts" : "Posts",
   "tryAgain" : "Try again",
   "failed" : "Failed",
   "postFailed" : "An error occurred while posting!",
@@ -242,5 +243,6 @@
   "avatarChangeConfirmation" : "Your avatar will be changed to selected image!",
   "areYouSure" : "Are you sure?",
   "registeredNotification": "You registered this item and waiting for acceptance ...",
-  "noMoreEvent" : "There is no more events"
+  "noMoreEvent" : "There is no more events",
+  "event" : "Event"
 }

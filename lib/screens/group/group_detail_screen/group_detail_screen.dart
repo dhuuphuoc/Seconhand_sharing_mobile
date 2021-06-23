@@ -31,89 +31,43 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
         _isLoading = false;
       });
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _groupDetail.id = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _groupDetail.groupName ?? "",
-          style: Theme.of(context).textTheme.headline2,
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _groupDetail.groupName ?? "",
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          centerTitle: true,
+          bottom: TabBar(
+            labelPadding: EdgeInsets.zero,
+            tabs: [
+              Tab(text: S.of(context).posts),
+              Tab(text: S.of(context).description),
+              Tab(text: S.of(context).rule),
+              Tab(text: S.of(context).member)
+            ],
+          ),
         ),
-        centerTitle: true,
-        actions: [
-          Center(
-            child: Container(
-              margin: EdgeInsets.only(right: 15),
-            ),
-          )
-        ],
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : TabBarView(children: [
+                Container(),
+                Container(),
+                Container(),
+                Container(),
+              ]),
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  DefaultTabController(
-                      length: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            child: TabBar(
-                              labelColor: Colors.green,
-                              unselectedLabelColor: Colors.black,
-                              tabs: [
-                                Tab(text: S.of(context).post),
-                                Tab(text: S.of(context).description),
-                                Tab(text: S.of(context).rule),
-                                Tab(text: S.of(context).member)
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 600,
-                            decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.5))),
-                            child: TabBarView(
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    S.of(context).all,
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    _groupDetail.description,
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    _groupDetail.rules,
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    S.of(context).member,
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                ],
-              ),
-            ),
     );
   }
 }
