@@ -104,7 +104,10 @@ class AuthenticationService {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    return AccessData.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return AccessData.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<bool> register(RegisterForm registerForm) async {

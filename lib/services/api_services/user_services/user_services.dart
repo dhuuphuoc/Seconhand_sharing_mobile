@@ -46,7 +46,8 @@ class UserServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    UserInfo userInfo = UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
+
+    UserInfo userInfo = UserInfo.fromJson(jsonDecode(response.body)["data"]);
     if (userInfo != null) {
       AccessInfo().userInfo = userInfo;
       return true;
@@ -64,7 +65,8 @@ class UserServices {
       },
     );
     print(response.body);
-    ImageUploadModel imageUploadModel = ImageUploadModel.fromJson(ResponseDeserializer.deserializeResponse(response));
+
+    ImageUploadModel imageUploadModel = ImageUploadModel.fromJson(jsonDecode(response.body)["data"]);
     var result = await APIService.uploadImage(image, imageUploadModel.imageUpload.presignUrl);
     if (result) {
       return APIService.cloudUrl + imageUploadModel.imageUpload.imageName;
@@ -80,7 +82,10 @@ class UserServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return UserInfo.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<UserInfo> updateUserInfo(UpdateProfileForm form) async {
@@ -92,6 +97,9 @@ class UserServices {
         },
         body: jsonEncode(form.toJson()));
     print(response.body);
-    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return UserInfo.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 }

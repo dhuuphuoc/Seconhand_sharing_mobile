@@ -88,7 +88,10 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    return ItemDetail.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return ItemDetail.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<ImagesUploadModel> postItem(PostItemForm postItemForm) async {
@@ -101,7 +104,10 @@ class ItemServices {
         body: jsonEncode(postItemForm.toJson()));
     print(postItemForm.toJson());
     print(response.body);
-    return ImagesUploadModel.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return ImagesUploadModel.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<bool> confirmSent(int itemId) async {
@@ -121,6 +127,9 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    return UserInfo.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return UserInfo.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 }

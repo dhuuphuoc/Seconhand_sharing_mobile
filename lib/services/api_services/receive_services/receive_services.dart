@@ -62,7 +62,10 @@ class ReceiveServices {
       },
     );
     print(response.body);
-    return RequestDetail.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return RequestDetail.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<List<ReceiveRequest>> getItemRequests(int itemId) async {

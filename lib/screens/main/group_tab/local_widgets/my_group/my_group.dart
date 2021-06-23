@@ -25,7 +25,7 @@ class _MyGroupState extends State<MyGroup> {
             height: 10,
           ),
           Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Text(
                 S.of(context).joinedGroup.toUpperCase(),
                 style: TextStyle(fontWeight: FontWeight.bold),

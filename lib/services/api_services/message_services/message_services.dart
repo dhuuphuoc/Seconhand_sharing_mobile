@@ -48,6 +48,9 @@ class MessageServices {
       body: jsonEncode(message.toJson()),
     );
     print(response.body);
-    return UserMessage.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return UserMessage.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 }

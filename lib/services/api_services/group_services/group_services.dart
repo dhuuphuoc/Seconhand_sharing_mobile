@@ -19,7 +19,10 @@ class GroupServices {
         },
         body: jsonEncode(createGroupForm.toJson()));
     print(response.body);
-    return Group.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return Group.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 
   static Future<List<Group>> getGroups() async {
@@ -49,6 +52,9 @@ class GroupServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
     });
     print(response.body);
-    return GroupDetail.fromJson(ResponseDeserializer.deserializeResponse(response));
+    if (response.statusCode == 200)
+      return GroupDetail.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 }

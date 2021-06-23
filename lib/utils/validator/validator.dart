@@ -30,7 +30,7 @@ class Validator {
   }
 
   static String validatePassword(String password) {
-    RegExp regExp = new RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+    RegExp regExp = new RegExp(r"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
     return password.isEmpty
         ? S.current.emptyPasswordError
         : regExp.hasMatch(password)
