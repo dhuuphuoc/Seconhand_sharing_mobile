@@ -43,7 +43,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
           return NotifyDialog(S.of(context).success, S.of(context).createGroupSuccess, "OK");
         },
       ).whenComplete(() {
-        // Navigator.pop(context);
         Navigator.pushNamed(context, "/group/detail", arguments: group.id);
       });
     } else {
