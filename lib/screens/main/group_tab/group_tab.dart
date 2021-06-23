@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
@@ -59,16 +60,20 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     var listViewWidget = <Widget>[
       Container(
         margin: EdgeInsets.all(10),
-        child: PostGroupCard(() {
-          Navigator.pushNamed(context, "/create-group").then((value) {});
-        }),
+        child: Column(
+          children: [
+            PostGroupCard(() {
+              Navigator.pushNamed(context, "/create-group").then((value) {});
+            }),
+          ],
+        ),
       )
     ];
     _groups.forEach((group) {
       listViewWidget.add(GroupCard(group));
     });
     if (!_isEnd) {
-      listViewWidget.add(NotificationCard(Icons.check_circle_outline, "You don't have group"));
+      listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
     }
     return NotificationListener(
       onNotification: (notification) {

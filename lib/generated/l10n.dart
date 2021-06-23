@@ -1684,6 +1684,16 @@ class S {
       args: [],
     );
   }
+
+  /// `There is no more events`
+  String get noMoreEvent {
+    return Intl.message(
+      'There is no more events',
+      name: 'noMoreEvent',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
