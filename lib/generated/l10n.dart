@@ -1714,6 +1714,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Joined group`
+  String get joinedGroup {
+    return Intl.message(
+      'Joined group',
+      name: 'joinedGroup',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

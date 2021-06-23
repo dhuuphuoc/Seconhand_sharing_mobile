@@ -23,7 +23,17 @@ class GroupServices {
   }
 
   static Future<List<Group>> getGroups() async {
-    Uri url = Uri.https(APIService.apiUrl, "/group");
+    Uri url = Uri.https(APIService.apiUrl, "/Group");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Group>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Group.fromJson(x)));
+  }
+
+  static Future<List<Group>> getJoinedGroups() async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/joined-group");
     var response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",

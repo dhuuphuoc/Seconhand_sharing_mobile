@@ -244,5 +244,6 @@
   "areYouSure" : "Bạn chắc chứ?",
   "registeredNotification": "Bạn đã đăng ký nhận vật phẩm này và đang chờ chủ sở hữu chấp nhận ...",
   "noMoreEvent" : "Không còn sự kiện nào nữa",
-  "event" : "Sự kiện"
+  "event" : "Sự kiện",
+  "joinedGroup" : "Nhóm đã tham gia"
 }

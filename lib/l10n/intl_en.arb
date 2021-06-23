@@ -244,5 +244,6 @@
   "areYouSure" : "Are you sure?",
   "registeredNotification": "You registered this item and waiting for acceptance ...",
   "noMoreEvent" : "There is no more events",
-  "event" : "Event"
+  "event" : "Event",
+  "joinedGroup" : "Joined group"
 }

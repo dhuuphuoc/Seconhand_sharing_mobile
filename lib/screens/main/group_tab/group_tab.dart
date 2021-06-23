@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/my_group/my_group.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
@@ -17,6 +18,7 @@ class GroupTab extends StatefulWidget {
 
 class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
   List<Group> _groups = [];
+  List<Group> _myGroups = [];
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
   int _pageSize = 8;
@@ -25,6 +27,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   void absorbScrollBehaviour(double scrolled) {
@@ -33,12 +36,13 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
-  Future<void> fetchItems() async {
+  Future<void> fetchData() async {
     if (!_isEnd) {
       setState(() {
         _isLoading = true;
       });
       var groups = await GroupServices.getGroups();
+      var myGroups = await GroupServices.getJoinedGroups();
       if (groups.isEmpty) {
         setState(() {
           _isEnd = true;
@@ -47,6 +51,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       } else {
         setState(() {
           _groups.addAll(groups);
+          _myGroups.addAll(myGroups);
           _isLoading = false;
         });
       }
@@ -66,6 +71,11 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         }, _groups),
       )
     ];
+    listViewWidget.add(Container(
+      margin: EdgeInsets.all(10),
+      child: MyGroup(_myGroups),
+    ));
+
     if (!_isEnd) {
       listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
     }
@@ -85,8 +95,9 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         edgeOffset: screenSize.height * 0.2,
         onRefresh: () async {
           _groups = [];
+          _myGroups = [];
           _pageNumber = 1;
-          await fetchItems();
+          await fetchData();
         },
         child: CustomScrollView(
           controller: _scrollController,

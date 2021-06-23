@@ -13,7 +13,7 @@ class GroupWidget extends StatelessWidget {
         Navigator.pushNamed(context, "/group/detail", arguments: _group.id);
       },
       child: Container(
-        margin: EdgeInsets.only(left: 5),
+        margin: EdgeInsets.only(right: 5),
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [

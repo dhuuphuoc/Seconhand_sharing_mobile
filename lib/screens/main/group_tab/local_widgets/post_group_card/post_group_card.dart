@@ -33,11 +33,9 @@ class _PostGroupCardState extends State<PostGroupCard> {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    child: Text(
-                      S.of(context).group.toUpperCase(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                  child: Text(
+                    S.of(context).group.toUpperCase(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Expanded(

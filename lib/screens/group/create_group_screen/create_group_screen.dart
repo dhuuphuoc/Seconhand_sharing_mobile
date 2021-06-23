@@ -90,7 +90,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
                   minLines: 8,
                   maxLines: 20,
                   validator: Validator.validateDescription,
-                  textInputAction: TextInputAction.next,
                   controller: _descriptionController,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
@@ -107,7 +106,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
                   maxLines: 15,
                   controller: _ruleController,
                   validator: Validator.validateRule,
-                  textInputAction: TextInputAction.done,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
                       hintText: "${S.of(context).rule}...",
