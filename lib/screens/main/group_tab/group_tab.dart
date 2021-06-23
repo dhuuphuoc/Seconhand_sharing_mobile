@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
+import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
@@ -37,7 +38,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       setState(() {
         _isLoading = true;
       });
-      var groups;
+      var groups = await GroupServices.getGroups();
       if (groups.isEmpty) {
         setState(() {
           _isEnd = true;
@@ -60,28 +61,23 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     var listViewWidget = <Widget>[
       Container(
         margin: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            PostGroupCard(() {
-              Navigator.pushNamed(context, "/create-group").then((value) {});
-            }),
-          ],
-        ),
+        child: PostGroupCard(() {
+          Navigator.pushNamed(context, "/create-group").then((value) {});
+        }, _groups),
       )
     ];
-    _groups.forEach((group) {
-      listViewWidget.add(GroupCard(group));
-    });
     if (!_isEnd) {
       listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
     }
     return NotificationListener(
       onNotification: (notification) {
         if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
+          if (notification.metrics.axisDirection == AxisDirection.up ||
+              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.overscroll);
         }
         if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
+          if (notification.metrics.axisDirection == AxisDirection.up ||
+              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },

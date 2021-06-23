@@ -17,24 +17,30 @@ class GroupDetailScreen extends StatefulWidget {
 class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
   ScrollController _scrollController = ScrollController();
-  int _groupId;
+  bool _isLoading = true;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupId);
-      _groupDetail = groupDetail;
+      setState(() {
+        _isLoading = true;
+      });
+      GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
+      setState(() {
+        _groupDetail = groupDetail;
+        _isLoading = false;
+      });
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _groupId = ModalRoute.of(context).settings.arguments;
+    _groupDetail.id = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${_groupDetail.groupName}",
+          _groupDetail.groupName ?? "",
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
@@ -46,64 +52,68 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
           )
         ],
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            DefaultTabController(
-                length: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      child: TabBar(
-                        labelColor: Colors.green,
-                        unselectedLabelColor: Colors.black,
-                        tabs: [
-                          Tab(text: S.of(context).post),
-                          Tab(text: S.of(context).description),
-                          Tab(text: S.of(context).rule),
-                          Tab(text: S.of(context).member)
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 600,
-                      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.5))),
-                      child: TabBarView(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  DefaultTabController(
+                      length: 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Container(
-                            child: Text(
-                              S.of(context).all,
-                              style: Theme.of(context).textTheme.bodyText1,
+                            child: TabBar(
+                              labelColor: Colors.green,
+                              unselectedLabelColor: Colors.black,
+                              tabs: [
+                                Tab(text: S.of(context).post),
+                                Tab(text: S.of(context).description),
+                                Tab(text: S.of(context).rule),
+                                Tab(text: S.of(context).member)
+                              ],
                             ),
                           ),
                           Container(
-                            child: Text(
-                              _groupDetail.description,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                              _groupDetail.rules,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                              S.of(context).member,
-                              style: Theme.of(context).textTheme.bodyText1,
+                            height: 600,
+                            decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey, width: 0.5))),
+                            child: TabBarView(
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    S.of(context).all,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    _groupDetail.description,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    _groupDetail.rules,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    S.of(context).member,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                )
+                              ],
                             ),
                           )
                         ],
-                      ),
-                    )
-                  ],
-                )),
-          ],
-        ),
-      ),
+                      )),
+                ],
+              ),
+            ),
     );
   }
 }

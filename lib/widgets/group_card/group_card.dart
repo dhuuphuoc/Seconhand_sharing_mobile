@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
+import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 
 class GroupCard extends StatelessWidget {
-  final Group group;
+  final GroupDetail group;
 
   GroupCard(this.group);
 

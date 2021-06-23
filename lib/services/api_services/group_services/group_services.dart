@@ -22,8 +22,8 @@ class GroupServices {
     return Group.fromJson(ResponseDeserializer.deserializeResponse(response));
   }
 
-  static Future<List<Group>> getGroups(int id) async {
-    Uri url = Uri.https(APIService.apiUrl, "/group/$id");
+  static Future<List<Group>> getGroups() async {
+    Uri url = Uri.https(APIService.apiUrl, "/group");
     var response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
