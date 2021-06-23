@@ -99,8 +99,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> loadData() async {
     String deviceToken = await FirebaseMessaging.instance.getToken();
     print(deviceToken);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("locale", Localizations.localeOf(context).toString());
     await loadAddress();
 
     if (!kIsWeb) await loadImages(context);
