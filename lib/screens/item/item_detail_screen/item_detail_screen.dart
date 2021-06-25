@@ -93,7 +93,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
   }
 
-  void handleRequestEvent(message) {
+  void handleRequestEvent(RemoteMessage message) {
     final scaffold = ScaffoldMessenger.of(context);
     if (_isOwn)
       switch (message.data["type"]) {

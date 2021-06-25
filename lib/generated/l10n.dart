@@ -1724,6 +1724,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Requests to join`
+  String get requestToJoin {
+    return Intl.message(
+      'Requests to join',
+      name: 'requestToJoin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Kick`
+  String get kick {
+    return Intl.message(
+      'Kick',
+      name: 'kick',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add as admin`
+  String get addAsAdmin {
+    return Intl.message(
+      'Add as admin',
+      name: 'addAsAdmin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add member`
+  String get addMember {
+    return Intl.message(
+      'Add member',
+      name: 'addMember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invitation was sent`
+  String get invitationWasSent {
+    return Intl.message(
+      'Invitation was sent',
+      name: 'invitationWasSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email not exists`
+  String get emailNotExist {
+    return Intl.message(
+      'Email not exists',
+      name: 'emailNotExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This user already existed in group`
+  String get memberExisted {
+    return Intl.message(
+      'This user already existed in group',
+      name: 'memberExisted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are not group's admin`
+  String get youAreNotAdmin {
+    return Intl.message(
+      'You are not group\'s admin',
+      name: 'youAreNotAdmin',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

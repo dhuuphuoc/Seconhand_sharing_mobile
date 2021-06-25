@@ -10,6 +10,7 @@ class GroupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        print(_group.id);
         Navigator.pushNamed(context, "/group/detail", arguments: _group.id);
       },
       child: Container(
@@ -40,7 +41,8 @@ class GroupWidget extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     _group.groupName,
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   )),
             )
           ],

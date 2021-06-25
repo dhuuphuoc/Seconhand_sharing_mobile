@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
+import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
+import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 
 class GroupDetailScreen extends StatefulWidget {
@@ -14,7 +16,8 @@ class GroupDetailScreen extends StatefulWidget {
   _GroupDetailScreenState createState() => _GroupDetailScreenState();
 }
 
-class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTickerProviderStateMixin {
+class _GroupDetailScreenState extends State<GroupDetailScreen>
+    with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
   ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
@@ -25,7 +28,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
       setState(() {
         _isLoading = true;
       });
-      GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
+      GroupDetail groupDetail =
+          await GroupServices.getGroupDetail(_groupDetail.id);
       setState(() {
         _groupDetail = groupDetail;
         _isLoading = false;
@@ -39,7 +43,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
   Widget build(BuildContext context) {
     _groupDetail.id = ModalRoute.of(context).settings.arguments;
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -52,7 +56,6 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
             tabs: [
               Tab(text: S.of(context).posts),
               Tab(text: S.of(context).description),
-              Tab(text: S.of(context).rule),
               Tab(text: S.of(context).member)
             ],
           ),
@@ -63,9 +66,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
               )
             : TabBarView(children: [
                 Container(),
-                Container(),
-                Container(),
-                Container(),
+                DescriptionTab(_groupDetail.description),
+                MemberTab(_groupDetail.id),
               ]),
       ),
     );

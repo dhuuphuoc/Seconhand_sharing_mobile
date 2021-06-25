@@ -16,7 +16,8 @@ class GroupTab extends StatefulWidget {
   _GroupTabState createState() => _GroupTabState();
 }
 
-class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
+class _GroupTabState extends State<GroupTab>
+    with AutomaticKeepAliveClientMixin<GroupTab> {
   List<Group> _groups = [];
   List<Group> _myGroups = [];
   ScrollController _scrollController = ScrollController();
@@ -43,18 +44,11 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       });
       var groups = await GroupServices.getGroups();
       var myGroups = await GroupServices.getJoinedGroups();
-      if (groups.isEmpty) {
-        setState(() {
-          _isEnd = true;
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          _groups.addAll(groups);
-          _myGroups.addAll(myGroups);
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _groups.addAll(groups);
+        _myGroups.addAll(myGroups);
+        _isLoading = false;
+      });
     }
   }
 
@@ -62,32 +56,46 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   Widget build(BuildContext context) {
     super.build(context);
     Size screenSize = MediaQuery.of(context).size;
-
-    var listViewWidget = <Widget>[
-      Container(
+    List<Widget> listViewWidget = [];
+    if (_isLoading) {
+      listViewWidget.add(Center(
+          child: Container(
+        margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.4),
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 3,
+        ),
+      )));
+    } else {
+      listViewWidget.add(Container(
         margin: EdgeInsets.all(10),
         child: PostGroupCard(() {
           Navigator.pushNamed(context, "/create-group").then((value) {});
         }, _groups),
-      )
-    ];
-    listViewWidget.add(Container(
-      margin: EdgeInsets.all(10),
-      child: MyGroup(_myGroups),
-    ));
+      ));
+      listViewWidget.add(Container(
+        margin: EdgeInsets.all(10),
+        child: MyGroup(_myGroups),
+      ));
 
-    if (!_isEnd) {
-      listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
+      if (!_isEnd) {
+        listViewWidget.add(NotificationCard(
+            Icons.check_circle_outline, S.of(context).noMoreEvent));
+      }
     }
+
     return NotificationListener(
       onNotification: (notification) {
         if (notification is OverscrollNotification) {
           if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.overscroll);
+              notification.metrics.axisDirection == AxisDirection.down)
+            absorbScrollBehaviour(notification.overscroll);
         }
         if (notification is ScrollUpdateNotification) {
           if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.scrollDelta);
+              notification.metrics.axisDirection == AxisDirection.down)
+            absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },
@@ -111,7 +119,8 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidget)),
+              sliver:
+                  SliverList(delegate: SliverChildListDelegate(listViewWidget)),
             )
           ],
         ),

@@ -245,5 +245,13 @@
   "registeredNotification": "You registered this item and waiting for acceptance ...",
   "noMoreEvent" : "There is no more events",
   "event" : "Event",
-  "joinedGroup" : "Joined group"
+  "joinedGroup" : "Joined group",
+  "requestToJoin" : "Requests to join",
+  "kick" : "Kick",
+  "addAsAdmin" : "Add as admin",
+  "addMember" : "Add member",
+  "invitationWasSent": "Invitation was sent",
+  "emailNotExist" : "Email not exists",
+  "memberExisted" : "This user already existed in group",
+  "youAreNotAdmin" : "You are not group's admin"
 }
