@@ -25,8 +25,7 @@ class NotificationTab extends StatefulWidget {
   _NotificationTabState createState() => _NotificationTabState();
 }
 
-class _NotificationTabState extends State<NotificationTab>
-    with AutomaticKeepAliveClientMixin<NotificationTab> {
+class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
@@ -39,13 +38,10 @@ class _NotificationTabState extends State<NotificationTab>
     super.initState();
     _subscription = FirebaseMessaging.onMessage.listen((message) {
       if (message.data["type"] == "3") {
-        CancelRequestModel cancelRequest =
-            CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
-        var requestNotifications = _notifications.where(
-            (element) => element.type == NotificationType.receiveRequest);
+        CancelRequestModel cancelRequest = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
+        var requestNotifications = _notifications.where((element) => element.type == NotificationType.receiveRequest);
         var result = requestNotifications.firstWhere((element) {
-          ReceiveRequest receiveRequest =
-              ReceiveRequest.fromJson(jsonDecode(element.data));
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(element.data));
           return receiveRequest.id == cancelRequest.requestId;
         });
 
@@ -65,8 +61,7 @@ class _NotificationTabState extends State<NotificationTab>
     });
     fetchNotification();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.offset) {
+      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
           fetchNotification();
@@ -98,8 +93,7 @@ class _NotificationTabState extends State<NotificationTab>
     setState(() {
       _isLoading = true;
     });
-    var notifications =
-        await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
+    var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
     setState(() {
       if (notifications.length < _pageSize) {
         _isEnd = true;
@@ -118,31 +112,12 @@ class _NotificationTabState extends State<NotificationTab>
       padding: EdgeInsets.only(left: 12, right: 5),
       height: screenSize.height * 0.07,
       color: Theme.of(context).backgroundColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            S.of(context).notification,
-            style: Theme.of(context).textTheme.headline2,
-          ),
-          Container(
-            height: 50,
-            width: 50,
-            child: Card(
-              elevation: 0,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(90),
-                onTap: () {
-                  Navigator.pushNamed(context, "/message-box");
-                },
-                child: Icon(
-                  AppIcons.facebook_messenger,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          S.of(context).notification,
+          style: Theme.of(context).textTheme.headline2,
+        ),
       ),
     ));
     listViewWidgets.add(SizedBox(
@@ -152,8 +127,7 @@ class _NotificationTabState extends State<NotificationTab>
     for (var notification in _notifications) {
       switch (notification.type) {
         case NotificationType.receiveRequest:
-          ReceiveRequest receiveRequest =
-              ReceiveRequest.fromJson(jsonDecode(notification.data));
+          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
           listViewWidgets.add(IncomingRequestNotification(receiveRequest));
           break;
         case NotificationType.requestStatus:
@@ -224,8 +198,7 @@ class _NotificationTabState extends State<NotificationTab>
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 0),
-              sliver: SliverList(
-                  delegate: SliverChildListDelegate(listViewWidgets)),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
             )
           ],
           // ListView(

@@ -40,22 +40,18 @@ class _ChatScreenState extends State<ChatScreen> {
       Application().chattingWithUserId = _userInfo.id;
       _scrollController = ScrollController();
       _scrollController.addListener(() {
-        if (_scrollController.position.maxScrollExtent ==
-            _scrollController.offset) {
+        if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
           loadMoreMessages();
         }
       });
-      MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize)
-          .then((value) {
+      MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize).then((value) {
         setState(() {
           messages = value.reversed.toList();
           _isLoading = false;
         });
         _subscription = FirebaseMessaging.onMessage.listen((message) {
-          if (message.data["type"] != "1" && message.data["type"] != "5")
-            return;
-          UserMessage newMessage =
-              UserMessage.fromJson(jsonDecode(message.data["message"]));
+          if (message.data["type"] != "1" && message.data["type"] != "5") return;
+          UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
           if (newMessage.sendFromAccountId == _userInfo.id) {
             setState(() {
               messages.add(newMessage);
@@ -75,8 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void loadMoreMessages() {
     _pageNumber++;
-    MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize)
-        .then((value) {
+    MessageServices.getMessages(_userInfo.id, _pageNumber, _pageSize).then((value) {
       setState(() {
         messages.insertAll(0, value.reversed.toList());
         _isBottomStick = false;
@@ -109,14 +104,12 @@ class _ChatScreenState extends State<ChatScreen> {
       for (int i = 0; i < messages.length; i++) {
         UserMessage message = messages[i];
         if (i > 0) {
-          havePrevious =
-              messages[i - 1].sendFromAccountId == message.sendFromAccountId;
+          havePrevious = messages[i - 1].sendFromAccountId == message.sendFromAccountId;
         } else {
           havePrevious = false;
         }
         if (i < messages.length - 1) {
-          haveNext =
-              messages[i + 1].sendFromAccountId == message.sendFromAccountId;
+          haveNext = messages[i + 1].sendFromAccountId == message.sendFromAccountId;
         } else {
           haveNext = false;
         }
@@ -141,31 +134,6 @@ class _ChatScreenState extends State<ChatScreen> {
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
-        actions: [
-          Container(
-            height: 50,
-            width: 50,
-            child: Card(
-              elevation: 0,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(90),
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      "/message-box",
-                      (route) => route.settings.name == "/message-box" ||
-                              route.settings.name == "/chat"
-                          ? false
-                          : true);
-                },
-                child: Icon(
-                  AppIcons.facebook_messenger,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -179,8 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     reverse: true,
                     controller: _scrollController,
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                       child: Column(children: messageWidgets),
                     )),
           )),
@@ -192,16 +159,14 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: InputDecoration(
                 hintText: "${S.of(context).message}...",
                 border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.only(left: 20, top: 14, right: 12, bottom: 12),
+                contentPadding: EdgeInsets.only(left: 20, top: 14, right: 12, bottom: 12),
                 suffixIcon: IconButton(
                   splashRadius: 24,
                   icon: Icon(Icons.send),
                   onPressed: () {
                     if (_textController.text == "") return;
-                    UserMessage message = UserMessage(
-                        content: _textController.text.trim(),
-                        sendToAccountId: _userInfo.id);
+                    UserMessage message =
+                        UserMessage(content: _textController.text.trim(), sendToAccountId: _userInfo.id);
                     MessageServices.sendMessage(message).then((value) {
                       setState(() {
                         if (value != null) {

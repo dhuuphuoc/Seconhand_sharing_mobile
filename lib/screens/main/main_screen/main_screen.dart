@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/screens/main/glory_tab/glory_tab.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/group_tab.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/home_tab.dart';
 import 'package:secondhand_sharing/screens/main/menu_tab/menu_tab.dart';
+import 'package:secondhand_sharing/screens/main/message_tab/message_tab.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/notification_tab.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
@@ -16,15 +17,12 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>
-    with SingleTickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   ScrollController _scrollController = ScrollController();
   TabController _tabController;
 
   Future<void> handleNotificationLaunchApp() async {
-    var details = await NotificationService()
-        .flutterLocalNotificationsPlugin
-        .getNotificationAppLaunchDetails();
+    var details = await NotificationService().flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details.didNotificationLaunchApp) {
       NotificationService().selectNotification(details.payload);
     }
@@ -32,7 +30,7 @@ class _MainScreenState extends State<MainScreen>
 
   @override
   void initState() {
-    _tabController = TabController(vsync: this, length: 5);
+    _tabController = TabController(vsync: this, length: 6);
     handleNotificationLaunchApp();
     super.initState();
   }
@@ -60,8 +58,7 @@ class _MainScreenState extends State<MainScreen>
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () async {
-                      Navigator.pushNamed(context, "/profile",
-                          arguments: AccessInfo().userInfo.id);
+                      Navigator.pushNamed(context, "/profile", arguments: AccessInfo().userInfo.id);
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -89,6 +86,12 @@ class _MainScreenState extends State<MainScreen>
                       icon: Icon(Icons.stars),
                     ),
                     Tab(
+                      icon: Icon(
+                        AppIcons.facebook_messenger,
+                        size: 20,
+                      ),
+                    ),
+                    Tab(
                       icon: Icon(Icons.notifications),
                     ),
                     Tab(
@@ -106,6 +109,7 @@ class _MainScreenState extends State<MainScreen>
             HomeTab(),
             GroupTab(),
             GloryTab(),
+            MessageTab(),
             NotificationTab(),
             MenuTab(),
           ],

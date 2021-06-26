@@ -26,7 +26,6 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_scree
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
-import 'package:secondhand_sharing/screens/message/message_box_screen/message_box_screen.dart';
 import 'package:secondhand_sharing/screens/profile/profile_screen/profile_screen.dart';
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
@@ -40,8 +39,7 @@ import 'package:secondhand_sharing/services/notification_services/notification_s
 //   }
 // }
 
-Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage remoteMessage) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {
   Application().chattingWithUserId = null;
   Application().watchingItemId = null;
   FirebaseServices.handleFirebaseMessage(remoteMessage);
@@ -83,9 +81,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         scaffoldBackgroundColor: Color(0xFFF2F2F2),
         selectedRowColor: Color(0xFF9DD0FF),
         errorColor: Colors.red,
-        tabBarTheme: TabBarTheme(
-            unselectedLabelColor: Color(0xFF494949),
-            labelColor: Color(0xFF0E88FA)),
+        tabBarTheme: TabBarTheme(unselectedLabelColor: Color(0xFF494949), labelColor: Color(0xFF0E88FA)),
         appBarTheme: AppBarTheme(
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Color(0xFF0E88FA)),
@@ -110,8 +106,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
             fontSize: 14,
           ),
           bodyText2: TextStyle(fontSize: 15),
-          subtitle2: TextStyle(
-              fontSize: 14, color: Colors.black45, fontWeight: FontWeight.bold),
+          subtitle2: TextStyle(fontSize: 14, color: Colors.black45, fontWeight: FontWeight.bold),
         ),
       ),
       localizationsDelegates: [
@@ -137,7 +132,6 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/item/address": (context) => AddressScreen(),
         "/item/detail": (context) => ItemDetailScreen(),
         "/chat": (context) => ChatScreen(),
-        "/message-box": (context) => MessageBoxScreen(),
         "/create-group": (context) => CreateGroupScreen(),
         "/group/detail": (context) => GroupDetailScreen(),
         "/group/add-member": (context) => AddMemberScreen(),
