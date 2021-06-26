@@ -1814,6 +1814,46 @@ class S {
       args: [],
     );
   }
+
+  /// `You have not joined any groups yet`
+  String get emptyJoinedGroup {
+    return Intl.message(
+      'You have not joined any groups yet',
+      name: 'emptyJoinedGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No groups have been created yet`
+  String get emptyGroup {
+    return Intl.message(
+      'No groups have been created yet',
+      name: 'emptyGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Admin`
+  String get admin {
+    return Intl.message(
+      'Admin',
+      name: 'admin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Down to member`
+  String get downToMember {
+    return Intl.message(
+      'Down to member',
+      name: 'downToMember',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -33,10 +33,13 @@ class _MyGroupState extends State<MyGroup> {
           Container(
             height: 100,
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: widget.groups.map((e) => GroupWidget(e)).toList(),
-            ),
+            child: widget.groups.isEmpty
+                ? Center(child: Text(S.of(context).emptyJoinedGroup))
+                : ListView(
+                    itemExtent: 120,
+                    scrollDirection: Axis.horizontal,
+                    children: widget.groups.map((e) => GroupWidget(e)).toList(),
+                  ),
           )
         ],
       ),

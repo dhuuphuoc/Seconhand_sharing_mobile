@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/group_model/create_group/create_group.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
@@ -26,6 +27,22 @@ class GroupServices {
       return null;
   }
 
+  static Future<MemberRole> getMemberRole(int userId, int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/get-role", {"userId": userId.toString()});
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    if (response.statusCode == 200) {
+      String role = jsonDecode(response.body)["message"];
+      if (role == "admin")
+        return MemberRole.admin;
+      else
+        return MemberRole.member;
+    } else
+      return null;
+  }
+
   static Future<List<Group>> getGroups() async {
     Uri url = Uri.https(APIService.apiUrl, "/Group");
     var response = await http.get(url, headers: {
@@ -33,9 +50,7 @@ class GroupServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
     });
     print(response.body);
-    return List<Group>.from(
-        ResponseDeserializer.deserializeResponseToList(response)
-            .map((x) => Group.fromJson(x)));
+    return List<Group>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Group.fromJson(x)));
   }
 
   static Future<List<Group>> getJoinedGroups() async {
@@ -45,9 +60,7 @@ class GroupServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
     });
     print(response.body);
-    return List<Group>.from(
-        ResponseDeserializer.deserializeResponseToList(response)
-            .map((x) => Group.fromJson(x)));
+    return List<Group>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Group.fromJson(x)));
   }
 
   static Future<GroupDetail> getGroupDetail(int id) async {
@@ -70,9 +83,17 @@ class GroupServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
     });
     print(response.body);
-    return List<Member>.from(
-        ResponseDeserializer.deserializeResponseToList(response)
-            .map((x) => Member.fromJson(x)));
+    return List<Member>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Member.fromJson(x)));
+  }
+
+  static Future<List<Member>> getAdmins(int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/admin");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Member>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Member.fromJson(x)));
   }
 
   static Future<int> inviteMember(int groupId, String email) async {
@@ -86,6 +107,7 @@ class GroupServices {
     print(response.body);
     if (response.statusCode == 200) return 0;
     String message = jsonDecode(response.body)["Message"];
+
     if (message == "Member exist in group.") {
       return 1;
     }

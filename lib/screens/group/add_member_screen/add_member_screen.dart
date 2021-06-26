@@ -16,32 +16,31 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   int _groupId;
 
   Future<void> invite() async {
-    var result = await GroupServices.inviteMember(
-        _groupId, _searchTextEditingController.text);
+    var result = await GroupServices.inviteMember(_groupId, _searchTextEditingController.text);
     if (result == 0) {
       showDialog(
               context: context,
-              builder: (context) => NotifyDialog(
-                  S.of(context).success, S.of(context).invitationWasSent, "OK"))
+              builder: (context) => NotifyDialog(S.of(context).success, S.of(context).invitationWasSent, "OK"))
           .whenComplete(() {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
       });
+      return;
     }
     if (result == 1) {
       showDialog(
           context: context,
-          builder: (context) => NotifyDialog(S.of(context).failed,
-              S.of(context).memberExisted, S.of(context).tryAgain));
+          builder: (context) =>
+              NotifyDialog(S.of(context).failed, S.of(context).memberExisted, S.of(context).tryAgain));
     } else if (result == 2) {
       showDialog(
           context: context,
-          builder: (context) => NotifyDialog(S.of(context).failed,
-              S.of(context).emailNotExist, S.of(context).tryAgain));
+          builder: (context) =>
+              NotifyDialog(S.of(context).failed, S.of(context).emailNotExist, S.of(context).tryAgain));
     } else {
       showDialog(
           context: context,
-          builder: (context) => NotifyDialog(S.of(context).failed,
-              S.of(context).youAreNotAdmin, S.of(context).tryAgain));
+          builder: (context) =>
+              NotifyDialog(S.of(context).failed, S.of(context).youAreNotAdmin, S.of(context).tryAgain));
     }
   }
 
@@ -73,8 +72,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
               child: CupertinoSearchTextField(
                 controller: _searchTextEditingController,
                 placeholder: "Email",
-                prefixInsets:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                prefixInsets: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               ))
         ],
       ),

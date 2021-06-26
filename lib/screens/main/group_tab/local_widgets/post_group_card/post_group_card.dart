@@ -19,6 +19,7 @@ class PostGroupCard extends StatefulWidget {
 class _PostGroupCardState extends State<PostGroupCard> {
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       elevation: 10,
@@ -56,10 +57,15 @@ class _PostGroupCardState extends State<PostGroupCard> {
           Container(
             height: 100,
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: widget.groups.map((e) => GroupWidget(e)).toList(),
-            ),
+            child: widget.groups.isEmpty
+                ? Center(
+                    child: Text(S.of(context).emptyGroup),
+                  )
+                : ListView(
+                    itemExtent: screenSize.width * 0.35,
+                    scrollDirection: Axis.horizontal,
+                    children: widget.groups.map((e) => GroupWidget(e)).toList(),
+                  ),
           )
         ],
       ),

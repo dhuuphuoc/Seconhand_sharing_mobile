@@ -108,7 +108,7 @@ class _GloryTabState extends State<GloryTab>
           ),
         ));
       });
-      widgets.add(SizedBox(height: 100));
+      widgets.add(SizedBox(height: 10));
     }
 
     return NotificationListener(

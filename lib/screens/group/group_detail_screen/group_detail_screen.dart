@@ -5,8 +5,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/access_data/access_data.dart';
+import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
@@ -20,6 +23,7 @@ class GroupDetailScreen extends StatefulWidget {
 class _GroupDetailScreenState extends State<GroupDetailScreen>
     with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
+  MemberRole _role;
   ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
 
@@ -31,7 +35,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
       });
       GroupDetail groupDetail =
           await GroupServices.getGroupDetail(_groupDetail.id);
+      var role = await GroupServices.getMemberRole(
+          AccessInfo().userInfo.id, _groupDetail.id);
       setState(() {
+        _role = role;
         _groupDetail = groupDetail;
         _isLoading = false;
       });
@@ -68,7 +75,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
             : TabBarView(children: [
                 Container(),
                 DescriptionTab(_groupDetail.description),
-                MemberTab(_groupDetail.id),
+                MemberTab(_groupDetail.id, _role),
               ]),
       ),
     );

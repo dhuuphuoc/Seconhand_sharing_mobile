@@ -254,5 +254,9 @@
   "emailNotExist" : "Email không tồn tại",
   "memberExisted" : "Người này đã là thành viên của nhóm",
   "youAreNotAdmin" : "Bạn không phải là quản trị viên của nhóm",
-  "glory" : "Vinh danh"
+  "glory" : "Vinh danh",
+  "emptyJoinedGroup" : "Bạn chưa tham gia nhóm nào cả",
+  "emptyGroup" : "Chưa có nhóm nào được thành lập",
+  "admin" : "Quản trị viên",
+  "downToMember": "Giáng xuống thành viên"
 }
