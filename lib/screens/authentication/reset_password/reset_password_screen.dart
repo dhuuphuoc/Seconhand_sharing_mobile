@@ -5,6 +5,7 @@ import 'package:secondhand_sharing/services/api_services/authentication_services
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -30,13 +31,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _isLoading = true;
     });
 
-    bool result = await AuthenticationService.resetPassword(
-        ResetPasswordForm(_userId, _code, _passwordTextController.text, _confirmPasswordTextController.text));
+    bool result = await AuthenticationService.resetPassword(ResetPasswordForm(
+        _userId,
+        _code,
+        _passwordTextController.text,
+        _confirmPasswordTextController.text));
     if (result) {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).success, S.of(context).resetPasswordSuccess, "OK");
+            return NotifyDialog(S.of(context).success,
+                S.of(context).resetPasswordSuccess, "OK");
           }).whenComplete(() {
         Navigator.pop(context);
       });
@@ -44,7 +49,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).failed, S.of(context).resetPasswordFailed, "OK");
+            return NotifyDialog(
+                S.of(context).failed, S.of(context).resetPasswordFailed, "OK");
           });
     }
     setState(() {
@@ -123,7 +129,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
+                _isLoading ? Align(child: MiniIndicator()) : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),

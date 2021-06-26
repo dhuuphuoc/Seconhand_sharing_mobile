@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/services/api_services/authentication_services
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -32,11 +33,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context, initialDate: selectedDate, firstDate: DateTime(1900, 8), lastDate: DateTime(2100));
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900, 8),
+        lastDate: DateTime(2100));
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        _dateOfBirthController.value = TextEditingValue(text: DateFormat("yyyy-MM-dd").format(picked).toString());
+        _dateOfBirthController.value = TextEditingValue(
+            text: DateFormat("yyyy-MM-dd").format(picked).toString());
       });
   }
 
@@ -58,7 +63,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).success, S.of(context).registerSuccess, "OK");
+          return NotifyDialog(
+              S.of(context).success, S.of(context).registerSuccess, "OK");
         },
       ).whenComplete(() {
         Navigator.pop(context);
@@ -69,7 +75,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail, S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
+              S.of(context).tryAgain);
         },
       );
     }
@@ -113,7 +120,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.text,
                   controller: _fullNameTextController,
                   validator: (value) {
-                    return value.isEmpty ? S.of(context).emptyFullNameError : null;
+                    return value.isEmpty
+                        ? S.of(context).emptyFullNameError
+                        : null;
                   },
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
@@ -197,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
+                _isLoading ? Align(child: MiniIndicator()) : SizedBox(),
                 SizedBox(
                   height: 15,
                 ),

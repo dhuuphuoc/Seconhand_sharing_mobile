@@ -3,6 +3,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/services/api_services/authentication_services/authentication_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class ConfirmEmailScreen extends StatefulWidget {
   @override
@@ -24,19 +25,22 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
       _isLoading = true;
     });
 
-    bool result = await AuthenticationService.confirmEmail(ConfirmEmailForm(_userId, _code));
+    bool result = await AuthenticationService.confirmEmail(
+        ConfirmEmailForm(_userId, _code));
 
     if (!result) {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).failed, S.of(context).confirmEmailFail, "OK");
+            return NotifyDialog(
+                S.of(context).failed, S.of(context).confirmEmailFail, "OK");
           });
     } else {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(S.of(context).success, S.of(context).confirmEmailSuccess, "OK");
+            return NotifyDialog(
+                S.of(context).success, S.of(context).confirmEmailSuccess, "OK");
           }).whenComplete(() {
         Navigator.pop(context);
         Navigator.pushNamed(context, "/login");
@@ -82,7 +86,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
               SizedBox(
                 height: 50,
               ),
-              _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
+              _isLoading ? Align(child: MiniIndicator()) : SizedBox(),
               SizedBox(
                 height: 15,
               ),

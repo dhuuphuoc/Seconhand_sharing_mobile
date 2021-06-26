@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/services/firebase_services/firebase_services.
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/gradient_button/gradient_button.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    AccessData accessData =
-        await AuthenticationService.login(LoginForm(_usernameTextController.text, _passwordTextController.text));
+    AccessData accessData = await AuthenticationService.login(
+        LoginForm(_usernameTextController.text, _passwordTextController.text));
     if (accessData != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("token", accessData.jwToken);
@@ -49,7 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).loginFailedNotification, S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed,
+              S.of(context).loginFailedNotification, S.of(context).tryAgain);
         },
       );
     }
@@ -99,7 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _usernameTextController,
                   validator: Validator.validateEmail,
                   textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(hintText: S.of(context).username, suffixIcon: Icon(Icons.email)),
+                  decoration: InputDecoration(
+                      hintText: S.of(context).username,
+                      suffixIcon: Icon(Icons.email)),
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
@@ -108,7 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   onEditingComplete: _loginSubmit,
-                  decoration: InputDecoration(hintText: S.of(context).password, suffixIcon: Icon(Icons.lock)),
+                  decoration: InputDecoration(
+                      hintText: S.of(context).password,
+                      suffixIcon: Icon(Icons.lock)),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.zero),
-                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
                       ),
                       child: Text(
                         S.of(context).registerForFree,
@@ -133,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all(EdgeInsets.zero),
-                          overlayColor: MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
                           alignment: Alignment.centerRight),
                       child: Text(
                         "${S.of(context).forgotPassword}?",
@@ -143,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                _isLoading ? Align(child: CircularProgressIndicator()) : SizedBox(),
+                _isLoading ? Align(child: MiniIndicator()) : SizedBox(),
                 if (_isLoading)
                   SizedBox(
                     height: 15,
