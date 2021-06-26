@@ -253,5 +253,6 @@
   "invitationWasSent": "Invitation was sent",
   "emailNotExist" : "Email not exists",
   "memberExisted" : "This user already existed in group",
-  "youAreNotAdmin" : "You are not group's admin"
+  "youAreNotAdmin" : "You are not group's admin",
+  "glory" : "Glory"
 }

@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class UserRequestsTab extends StatefulWidget {
@@ -28,7 +29,8 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _postsScrollController.addListener(() {
-        if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
+        if (_postsScrollController.position.maxScrollExtent ==
+            _postsScrollController.offset) {
           if (!_isEnd && !_isLoading) {
             _pageNumber++;
             fetchItems();
@@ -54,7 +56,8 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     setState(() {
       _isLoading = true;
     });
-    var items = await ReceiveServices.getRequestedItems(widget.userId, _pageNumber, _pageSize);
+    var items = await ReceiveServices.getRequestedItems(
+        widget.userId, _pageNumber, _pageSize);
     if (items.isEmpty) {
       setState(() {
         _isEnd = true;
@@ -82,16 +85,20 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
         ? Container(
             height: screenSize.height * 0.2,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: MiniIndicator(),
             ),
           )
         : Container(
             height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
-      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
+      listViewWidgets.add(NotificationCard(
+          Icons.check_circle_outline, S.of(context).endNotifyMessage));
+      listViewWidgets.add(SizedBox(height: 10));
     }
 
-    return CustomScrollView(slivers: [SliverList(delegate: SliverChildListDelegate(listViewWidgets))]);
+    return CustomScrollView(slivers: [
+      SliverList(delegate: SliverChildListDelegate(listViewWidgets))
+    ]);
   }
 }

@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
         ),
         body: _isLoading
             ? Center(
-                child: CircularProgressIndicator(),
+                child: MiniIndicator(),
               )
             : TabBarView(children: [
                 Container(),

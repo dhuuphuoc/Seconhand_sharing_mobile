@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class HomeTab extends StatefulWidget {
@@ -15,7 +16,8 @@ class HomeTab extends StatefulWidget {
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<HomeTab> {
+class _HomeTabState extends State<HomeTab>
+    with AutomaticKeepAliveClientMixin<HomeTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
@@ -54,7 +56,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       setState(() {
         _isLoading = true;
       });
-      var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
+      var items = await ItemServices.getItems(
+          _categoryModel.selectedId, _pageNumber, _pageSize);
       setState(() {
         if (items.length < _pageSize) {
           _isEnd = true;
@@ -92,7 +95,9 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           )),
       Container(
         margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            borderRadius: BorderRadius.circular(10)),
         height: 130,
         child: ListView.builder(
           itemExtent: 90,
@@ -100,7 +105,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
           itemCount: _categoryModel.categories.length,
           itemBuilder: (BuildContext context, int index) {
             Category category = _categoryModel.categories[index];
-            return CategoryTab(category.id == _categoryModel.selectedId, category, () async {
+            return CategoryTab(
+                category.id == _categoryModel.selectedId, category, () async {
               setState(() {
                 _runningTasks++;
                 _categoryModel.selectedId = category.id;
@@ -109,7 +115,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
                 _items = [];
               });
               _pageNumber = 1;
-              var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
+              var items = await ItemServices.getItems(
+                  _categoryModel.selectedId, _pageNumber, _pageSize);
               setState(() {
                 _items = items;
                 if (items.length < _pageSize) {
@@ -133,19 +140,21 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     listViewWidgets.add(Container(
       height: _isEnd ? 0 : screenSize.height * 0.2,
       child: Center(
-        child: _isLoading ? CircularProgressIndicator() : Container(),
+        child: _isLoading ? MiniIndicator() : Container(),
       ),
     ));
 
     if (_isEnd) {
-      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
+      listViewWidgets.add(NotificationCard(
+          Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
 
     return NotificationListener(
       onNotification: (notification) {
         if (notification is OverscrollNotification) {
           if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.overscroll);
+              notification.metrics.axisDirection == AxisDirection.down)
+            absorbScrollBehaviour(notification.overscroll);
           if (notification.overscroll > 0) {
             if (!_isEnd && !_isLoading) {
               _pageNumber++;
@@ -155,7 +164,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
         }
         if (notification is ScrollUpdateNotification) {
           if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down) absorbScrollBehaviour(notification.scrollDelta);
+              notification.metrics.axisDirection == AxisDirection.down)
+            absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },
@@ -174,7 +184,8 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+              sliver: SliverList(
+                  delegate: SliverChildListDelegate(listViewWidgets)),
             )
           ],
           // ListView(

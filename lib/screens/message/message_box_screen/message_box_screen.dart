@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class MessageBoxScreen extends StatefulWidget {
   const MessageBoxScreen({Key key}) : super(key: key);
@@ -30,7 +31,8 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
   void initState() {
     fetchRecentMessages();
     _scrollController.addListener(() {
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.offset ==
+          _scrollController.position.maxScrollExtent) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
           fetchRecentMessages();
@@ -39,7 +41,8 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
     });
     _subscription = FirebaseMessaging.onMessage.listen((message) {
       if (message.data["type"] != "1" && message.data["type"] != "5") return;
-      UserMessage newMessage = UserMessage.fromJson(jsonDecode(message.data["message"]));
+      UserMessage newMessage =
+          UserMessage.fromJson(jsonDecode(message.data["message"]));
       int index = _messages.indexWhere((element) {
         if (element.sendFromAccountId == newMessage.sendFromAccountId ||
             element.sendToAccountId == newMessage.sendFromAccountId) {
@@ -68,7 +71,8 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
     setState(() {
       _isLoading = true;
     });
-    var messages = await MessageServices.getRecentMessages(_pageNumber, _pageSize);
+    var messages =
+        await MessageServices.getRecentMessages(_pageNumber, _pageSize);
 
     setState(() {
       _messages.addAll(messages);
@@ -96,12 +100,16 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
           onTap: () async {
             UserInfo userInfo;
             if (isMy) {
-              userInfo = UserInfo(id: message.sendToAccountId, fullName: message.sendToAccountName);
+              userInfo = UserInfo(
+                  id: message.sendToAccountId,
+                  fullName: message.sendToAccountName);
             } else {
-              userInfo = UserInfo(id: message.sendFromAccountId, fullName: message.sendFromAccountName);
+              userInfo = UserInfo(
+                  id: message.sendFromAccountId,
+                  fullName: message.sendFromAccountName);
             }
-            Navigator.pushNamedAndRemoveUntil(
-                    context, "/chat", (route) => route.settings.name == "/chat" ? false : true,
+            Navigator.pushNamedAndRemoveUntil(context, "/chat",
+                    (route) => route.settings.name == "/chat" ? false : true,
                     arguments: userInfo)
                 .then((value) {
               if (value != null)
@@ -113,7 +121,11 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
                 });
             });
           },
-          leading: Avatar(isMy ? message.sendToAccountAvatarUrl : message.sendFromAccountAvatarUrl, 25),
+          leading: Avatar(
+              isMy
+                  ? message.sendToAccountAvatarUrl
+                  : message.sendFromAccountAvatarUrl,
+              25),
           title: Text(
             isMy ? message.sendToAccountName : message.sendFromAccountName,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -125,7 +137,8 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Text(
-            TimeAgo.parse(message.sendDate, locale: Localizations.localeOf(context).languageCode),
+            TimeAgo.parse(message.sendDate,
+                locale: Localizations.localeOf(context).languageCode),
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
@@ -134,7 +147,7 @@ class _MessageBoxScreenState extends State<MessageBoxScreen> {
     widgets.add(Container(
       height: _isEnd ? 0 : screenSize.height * 0.2,
       child: Center(
-        child: _isLoading ? CircularProgressIndicator() : Container(),
+        child: _isLoading ? MiniIndicator() : Container(),
       ),
     ));
     if (_isEnd) {

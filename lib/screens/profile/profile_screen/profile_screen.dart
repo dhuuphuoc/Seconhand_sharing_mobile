@@ -21,7 +21,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   TabController _tabController;
   DateTime _dob;
@@ -90,7 +91,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           }
         });
       }
-      if (_scrollController.position.minScrollExtent == _scrollController.offset) {
+      if (_scrollController.position.minScrollExtent ==
+          _scrollController.offset) {
         setState(() {
           _isHideIcon = false;
         });
@@ -99,13 +101,18 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   }
 
   void modifyDob() {
-    showDatePicker(context: context, initialDate: _dob, firstDate: DateTime.utc(1), lastDate: DateTime.now())
+    showDatePicker(
+            context: context,
+            initialDate: _dob,
+            firstDate: DateTime.utc(1),
+            lastDate: DateTime.now())
         .then((value) {
       setState(() {
         _isUpdating = true;
       });
       if (value != null) {
-        UserServices.updateUserInfo(UpdateProfileForm(dob: value)).then((response) {
+        UserServices.updateUserInfo(UpdateProfileForm(dob: value))
+            .then((response) {
           if (response != null) {
             setState(() {
               _dob = response.dob;
@@ -124,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       setState(() {
         _isUpdating = true;
       });
-      UpdateProfileForm form = UpdateProfileForm(fullName: _nameTextController.text);
+      UpdateProfileForm form =
+          UpdateProfileForm(fullName: _nameTextController.text);
       UserServices.updateUserInfo(form).then((value) {
         if (value != null) {
           _userInfo.fullName = value.fullName;
@@ -144,12 +152,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
   void modifyAddress() {
     AddressModel backup = AddressModel.clone(_userInfo.address);
-    Navigator.pushNamed(context, "/item/address", arguments: _userInfo.address).then((value) {
+    Navigator.pushNamed(context, "/item/address", arguments: _userInfo.address)
+        .then((value) {
       setState(() {
         _isUpdating = true;
       });
       if (value != null)
-        UserServices.updateUserInfo(UpdateProfileForm(address: value)).then((response) {
+        UserServices.updateUserInfo(UpdateProfileForm(address: value))
+            .then((response) {
           if (response != null) {
             setState(() {
               _userInfo.address = response.address;
@@ -172,7 +182,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       setState(() {
         _isUpdating = true;
       });
-      UpdateProfileForm form = UpdateProfileForm(phoneNumber: _phoneTextController.text);
+      UpdateProfileForm form =
+          UpdateProfileForm(phoneNumber: _phoneTextController.text);
       UserServices.updateUserInfo(form).then((value) {
         if (value != null) {
           _userInfo.phoneNumber = value.phoneNumber;
@@ -241,7 +252,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ? null
                         : () {
                             Navigator.pushNamedAndRemoveUntil(
-                                context, "/chat", (route) => route.settings.name == "/chat" ? false : true,
+                                context,
+                                "/chat",
+                                (route) => route.settings.name == "/chat"
+                                    ? false
+                                    : true,
                                 arguments: _userInfo);
                           },
                     child: Text(S.of(context).sendMessage))
@@ -254,23 +269,24 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             flexibleSpace: Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: kToolbarHeight + statusBarHeight),
+                  margin: EdgeInsets.symmetric(
+                      vertical: kToolbarHeight + statusBarHeight),
                   child: Column(
                     children: [
                       Expanded(
                         flex: 5,
-                        child: Container(
-                          width: screenSize.height * 0.2,
-                          child: Stack(
-                            alignment: AlignmentDirectional.center,
-                            children: [
-                              Avatar(_userInfo.avatarUrl, screenSize.height * 0.1),
-                              if (!_isHideIcon && _isMe)
-                                Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: IconButton(onPressed: pickImages, icon: Icon(Icons.camera_alt)))
-                            ],
-                          ),
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            Avatar(
+                                _userInfo.avatarUrl, screenSize.height * 0.07),
+                            if (!_isHideIcon && _isMe)
+                              Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: IconButton(
+                                      onPressed: pickImages,
+                                      icon: Icon(Icons.camera_alt)))
+                          ],
                         ),
                       ),
                       Expanded(
@@ -285,21 +301,30 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       readOnly: !_isNameEditing,
                                       onEditingComplete: editName,
                                       decoration: InputDecoration(
-                                        border: _isNameEditing ? UnderlineInputBorder() : InputBorder.none,
+                                        border: _isNameEditing
+                                            ? UnderlineInputBorder()
+                                            : InputBorder.none,
                                         prefixIcon: _isMe
-                                            ? Visibility(visible: false, child: Icon(Icons.text_rotation_none))
+                                            ? Visibility(
+                                                visible: false,
+                                                child: Icon(
+                                                    Icons.text_rotation_none))
                                             : null,
                                         suffixIcon: _isMe
                                             ? IconButton(
                                                 onPressed: editName,
                                                 icon: Icon(
-                                                  _isNameEditing ? Icons.done : Icons.edit,
-                                                  color: Theme.of(context).primaryColor,
+                                                  _isNameEditing
+                                                      ? Icons.done
+                                                      : Icons.edit,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
                                                 ),
                                               )
                                             : null,
                                       ),
-                                      style: Theme.of(context).textTheme.headline2,
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
                                       textAlign: TextAlign.center,
                                     ),
                             ),
@@ -314,7 +339,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     Icons.email,
                                     color: Theme.of(context).primaryColor,
                                   ),
-                            title: Text(_userInfo.email == null ? "" : _userInfo.email),
+                            title: Text(
+                                _userInfo.email == null ? "" : _userInfo.email),
                             trailing: _isHideIcon || _isMe
                                 ? null
                                 : IconButton(
@@ -323,8 +349,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       color: Theme.of(context).primaryColor,
                                     ),
                                     onPressed: () async {
-                                      await canLaunch("mailto:${_userInfo.email}?subject=&body=")
-                                          ? await launch("mailto:${_userInfo.email}?subject=&body=")
+                                      await canLaunch(
+                                              "mailto:${_userInfo.email}?subject=&body=")
+                                          ? await launch(
+                                              "mailto:${_userInfo.email}?subject=&body=")
                                           : throw 'Could not launch mailto:${_userInfo.email}?subject=&body=';
                                     },
                                   ),
@@ -348,7 +376,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       keyboardType: TextInputType.phone,
                                       onEditingComplete: editPhoneNumber,
                                     )
-                              : Text(_userInfo.phoneNumber == null ? "" : _userInfo.phoneNumber),
+                              : Text(_userInfo.phoneNumber == null
+                                  ? ""
+                                  : _userInfo.phoneNumber),
                           trailing: _isHideIcon
                               ? null
                               : IconButton(
@@ -379,7 +409,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   AppIcons.birthday,
                                   color: Colors.deepOrange,
                                 ),
-                          title: Text(_dob == null ? "" : dateFormat.format(_dob)),
+                          title:
+                              Text(_dob == null ? "" : dateFormat.format(_dob)),
                           trailing: !_isMe || _isHideIcon
                               ? null
                               : IconButton(
@@ -401,7 +432,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   color: Colors.pink,
                                 ),
                           title: Text(
-                            _userInfo.address == null ? "" : _userInfo.address.toString(),
+                            _userInfo.address == null
+                                ? ""
+                                : _userInfo.address.toString(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

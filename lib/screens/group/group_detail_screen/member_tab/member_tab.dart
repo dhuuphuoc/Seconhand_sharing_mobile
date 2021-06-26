@@ -3,6 +3,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/member/member.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 enum MemberActions {
   addAsAdmin,
@@ -52,7 +53,7 @@ class _MemberTabState extends State<MemberTab>
     super.build(context);
     return _isLoading
         ? Center(
-            child: CircularProgressIndicator(),
+            child: MiniIndicator(),
           )
         : ListView(
             children: [

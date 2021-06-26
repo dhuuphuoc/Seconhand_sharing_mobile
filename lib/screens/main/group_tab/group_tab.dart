@@ -7,6 +7,7 @@ import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/my_group
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class GroupTab extends StatefulWidget {
@@ -58,15 +59,8 @@ class _GroupTabState extends State<GroupTab>
     Size screenSize = MediaQuery.of(context).size;
     List<Widget> listViewWidget = [];
     if (_isLoading) {
-      listViewWidget.add(Center(
-          child: Container(
-        margin: EdgeInsets.symmetric(vertical: screenSize.height * 0.4),
-        height: 20,
-        width: 20,
-        child: CircularProgressIndicator(
-          strokeWidth: 3,
-        ),
-      )));
+      listViewWidget.add(SizedBox(height: screenSize.height * 0.4));
+      listViewWidget.add(Center(child: MiniIndicator()));
     } else {
       listViewWidget.add(Container(
         margin: EdgeInsets.all(10),
@@ -110,7 +104,6 @@ class _GroupTabState extends State<GroupTab>
         child: CustomScrollView(
           controller: _scrollController,
           physics: AlwaysScrollableScrollPhysics(),
-          cacheExtent: double.infinity,
           slivers: [
             SliverOverlapInjector(
               // This is the flip side of the SliverOverlapAbsorber

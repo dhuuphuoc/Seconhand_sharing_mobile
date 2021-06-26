@@ -27,6 +27,7 @@ import 'package:secondhand_sharing/services/api_services/item_services/item_serv
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
 class ItemDetailScreen extends StatefulWidget {
@@ -38,7 +39,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   ItemDetail _itemDetail = ItemDetail();
   bool _isOwn = false;
   RequestStatus _requestStatus;
-  ReceiveRequestsModel _receiveRequestsModel = ReceiveRequestsModel(requests: []);
+  ReceiveRequestsModel _receiveRequestsModel =
+      ReceiveRequestsModel(requests: []);
   UserInfo _receivedUserInfo;
   StreamSubscription<RemoteMessage> _subscription;
   bool _isLoading = true;
@@ -69,14 +71,18 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         if (requests != null) {
           setState(() {
             _receiveRequestsModel.requests = requests;
-            _receiveRequestsModel.acceptedRequest = _receiveRequestsModel.requests
-                .firstWhere((element) => element.requestStatus == RequestStatus.receiving, orElse: () {
+            _receiveRequestsModel.acceptedRequest =
+                _receiveRequestsModel.requests.firstWhere(
+                    (element) =>
+                        element.requestStatus == RequestStatus.receiving,
+                    orElse: () {
               return null;
             });
           });
         }
       } else if (_itemDetail.userRequestId != 0) {
-        var requestDetail = await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
+        var requestDetail =
+            await ReceiveServices.getRequestDetail(_itemDetail.userRequestId);
         if (requestDetail != null) {
           setState(() {
             _requestStatus = requestDetail.receiveStatus;
@@ -84,7 +90,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         }
       }
       if (_itemDetail.status == ItemStatus.success) {
-        _receivedUserInfo = await ItemServices.getReceivedUserInfo(_itemDetail.id);
+        _receivedUserInfo =
+            await ItemServices.getReceivedUserInfo(_itemDetail.id);
       }
       _subscription = FirebaseMessaging.onMessage.listen(handleRequestEvent);
     }
@@ -98,11 +105,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     if (_isOwn)
       switch (message.data["type"]) {
         case "2":
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
+          ReceiveRequest receiveRequest =
+              ReceiveRequest.fromJson(jsonDecode(message.data["message"]));
           if (receiveRequest.itemId != _itemDetail.id) return;
           scaffold.showSnackBar(
             SnackBar(
-              content: Text(S.of(context).incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
+              content: Text(S
+                  .of(context)
+                  .incomingReceiveRequestSnackBar(receiveRequest.receiverName)),
             ),
           );
           receiveRequest.requestStatus = RequestStatus.pending;
@@ -111,7 +121,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           });
           break;
         case "3":
-          var data = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
+          var data =
+              CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
 
           if (_itemDetail.id != data.itemId) return;
           int requestId = data.requestId;
@@ -123,7 +134,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 }
                 scaffold.showSnackBar(
                   SnackBar(
-                    content: Text(S.of(context).cancelReceiveRequestSnackBar(request.receiverName)),
+                    content: Text(S
+                        .of(context)
+                        .cancelReceiveRequestSnackBar(request.receiverName)),
                   ),
                 );
                 return true;
@@ -136,13 +149,16 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     else {
       switch (message.data["type"]) {
         case "4":
-          var data = RequestStatusModel.fromJson(jsonDecode(message.data["message"]));
+          var data =
+              RequestStatusModel.fromJson(jsonDecode(message.data["message"]));
           if (_itemDetail.id != data.itemId) return;
           scaffold.showSnackBar(
             SnackBar(
               content: data.requestStatus == RequestStatus.receiving
-                  ? Text("${S.current.yourRegistrationWas} ${S.current.acceptedLowerCase}")
-                  : Text("${S.current.yourAcceptedRegistrationWas} ${S.current.canceledLowerCase}"),
+                  ? Text(
+                      "${S.current.yourRegistrationWas} ${S.current.acceptedLowerCase}")
+                  : Text(
+                      "${S.current.yourAcceptedRegistrationWas} ${S.current.canceledLowerCase}"),
             ),
           );
           setState(() {
@@ -150,19 +166,23 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           });
           break;
         case "6":
-          var data = ConfirmSentModel.fromJson(jsonDecode(message.data["message"]));
+          var data =
+              ConfirmSentModel.fromJson(jsonDecode(message.data["message"]));
           showDialog(
               context: context,
               builder: (context) {
                 return NotifyDialog(
                     S.of(context).notification,
                     S.of(context).confirmSentNotification(
-                        data.receiverId == AccessInfo().userInfo.id ? S.of(context).you : data.receiverName),
+                        data.receiverId == AccessInfo().userInfo.id
+                            ? S.of(context).you
+                            : data.receiverName),
                     "Ok");
               });
           setState(() {
             _itemDetail.status = ItemStatus.success;
-            _receivedUserInfo = UserInfo(id: data.receiverId, fullName: data.receiverName);
+            _receivedUserInfo =
+                UserInfo(id: data.receiverId, fullName: data.receiverName);
           });
       }
     }
@@ -198,9 +218,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     });
     var confirm = await showDialog(
         context: context,
-        builder: (context) => ConfirmDialog(S.of(context).cancelRegister, S.of(context).cancelRegistrationMessage));
+        builder: (context) => ConfirmDialog(S.of(context).cancelRegister,
+            S.of(context).cancelRegistrationMessage));
     if (confirm == true) {
-      var result = await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
+      var result =
+          await ReceiveServices.cancelRegistration(_itemDetail.userRequestId);
       if (result) {
         setState(() {
           _itemDetail.userRequestId = 0;
@@ -232,8 +254,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             showDialog(
                 context: context,
                 builder: (context) {
-                  return NotifyDialog(S.of(context).notification,
-                      S.of(context).confirmSentSuccess(_receiveRequestsModel.acceptedRequest.receiverName), "Ok");
+                  return NotifyDialog(
+                      S.of(context).notification,
+                      S.of(context).confirmSentSuccess(
+                          _receiveRequestsModel.acceptedRequest.receiverName),
+                      "Ok");
                 });
           }
         });
@@ -256,7 +281,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return NotifyDialog(S.of(context).success, S.of(context).thanksSent, "Ok");
+                        return NotifyDialog(S.of(context).success,
+                            S.of(context).thanksSent, "Ok");
                       })
                 }
             }
@@ -264,7 +290,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   void showUserProfile() {
-    Navigator.pushNamed(context, '/profile', arguments: _itemDetail.donateAccountId);
+    Navigator.pushNamed(context, '/profile',
+        arguments: _itemDetail.donateAccountId);
   }
 
   @override
@@ -311,7 +338,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       ),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: MiniIndicator(),
             )
           : Container(
               child: SingleChildScrollView(
@@ -320,7 +347,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   builder: (context, widget) => Column(
                     children: [
                       SizedBox(height: 10),
-                      ContactCard(_itemDetail.donateAccountName, _itemDetail.avatarUrl, _itemDetail.receiveAddress,
+                      ContactCard(
+                          _itemDetail.donateAccountName,
+                          _itemDetail.avatarUrl,
+                          _itemDetail.receiveAddress,
                           showUserProfile),
                       SizedBox(height: 10),
                       ImagesView(
@@ -332,24 +362,31 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                      if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
+                      if (_isOwn && _itemDetail.status != ItemStatus.success)
+                        RequestsExpansionPanel(),
                       if (_itemDetail.status == ItemStatus.success)
                         InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
+                              Navigator.pushNamed(context, "/profile",
+                                  arguments: _receivedUserInfo.id);
                             },
                             child: NotificationCard(
                                 Icons.check_circle_outline,
-                                S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
-                                    ? S.of(context).you
-                                    : _receivedUserInfo.fullName))),
+                                S.of(context).sentNotification(
+                                    _receivedUserInfo.id ==
+                                            AccessInfo().userInfo.id
+                                        ? S.of(context).you
+                                        : _receivedUserInfo.fullName))),
                       if (!_isOwn &&
                           _requestStatus == RequestStatus.receiving &&
                           _itemDetail.status != ItemStatus.success)
                         NotificationCard(Icons.fact_check_outlined,
                             "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
-                      if (!_isOwn && _itemDetail.userRequestId != 0 && _requestStatus != RequestStatus.receiving)
-                        NotificationCard(Icons.app_registration, "${S.of(context).registeredNotification}"),
+                      if (!_isOwn &&
+                          _itemDetail.userRequestId != 0 &&
+                          _requestStatus != RequestStatus.receiving)
+                        NotificationCard(Icons.app_registration,
+                            "${S.of(context).registeredNotification}"),
                       if (_isCanceling)
                         SizedBox(
                           height: 15,
@@ -363,19 +400,25 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           ),
                         ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         width: double.infinity,
                         child: _isOwn
                             ? _itemDetail.status != ItemStatus.success
                                 ? ElevatedButton(
-                                    onPressed: context.watch<ReceiveRequestsModel>().acceptedRequest != null
+                                    onPressed: context
+                                                .watch<ReceiveRequestsModel>()
+                                                .acceptedRequest !=
+                                            null
                                         ? _confirmSent
                                         : null,
                                     child: Text(S.of(context).confirmSent))
                                 : null
                             : _itemDetail.status == ItemStatus.success
                                 ? ElevatedButton(
-                                    onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
+                                    onPressed: _itemDetail.userRequestId != 0
+                                        ? sendThanks
+                                        : null,
                                     child: Text(S.of(context).sendThanks))
                                 : ElevatedButton(
                                     onPressed: _itemDetail.userRequestId != 0

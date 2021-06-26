@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/glory/glory.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_upload_model/image_upload_model.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +24,8 @@ class UpdateProfileForm {
   String phoneNumber;
   AddressModel address;
 
-  factory UpdateProfileForm.fromJson(Map<String, dynamic> json) => UpdateProfileForm(
+  factory UpdateProfileForm.fromJson(Map<String, dynamic> json) =>
+      UpdateProfileForm(
         fullName: json["fullName"],
         dob: DateTime.parse(json["dob"]),
         phoneNumber: json["phoneNumber"],
@@ -32,7 +34,8 @@ class UpdateProfileForm {
 
   Map<String, dynamic> toJson() => {
         "fullName": fullName,
-        "dob": dob != null ? dob.toIso8601String() : DateTime(1).toIso8601String(),
+        "dob":
+            dob != null ? dob.toIso8601String() : DateTime(1).toIso8601String(),
         "phoneNumber": phoneNumber,
         "address": address?.toJson(),
       };
@@ -66,8 +69,10 @@ class UserServices {
     );
     print(response.body);
 
-    ImageUploadModel imageUploadModel = ImageUploadModel.fromJson(jsonDecode(response.body)["data"]);
-    var result = await APIService.uploadImage(image, imageUploadModel.imageUpload.presignUrl);
+    ImageUploadModel imageUploadModel =
+        ImageUploadModel.fromJson(jsonDecode(response.body)["data"]);
+    var result = await APIService.uploadImage(
+        image, imageUploadModel.imageUpload.presignUrl);
     if (result) {
       return APIService.cloudUrl + imageUploadModel.imageUpload.imageName;
     } else {
@@ -101,5 +106,17 @@ class UserServices {
       return UserInfo.fromJson(jsonDecode(response.body)["data"]);
     else
       return null;
+  }
+
+  static Future<List<Glory>> getTopAwards() async {
+    Uri url = Uri.https(APIService.apiUrl, "/User/Award");
+    var response = await http.get(url, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.body);
+    return List<Glory>.from(
+        ResponseDeserializer.deserializeResponseToList(response)
+            .map((x) => Glory.fromJson(x)));
   }
 }

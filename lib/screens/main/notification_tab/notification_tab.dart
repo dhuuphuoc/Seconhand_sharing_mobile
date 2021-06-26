@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/r
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/thanks_notification/thanks_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class NotificationTab extends StatefulWidget {
   const NotificationTab({Key key}) : super(key: key);
@@ -24,7 +25,8 @@ class NotificationTab extends StatefulWidget {
   _NotificationTabState createState() => _NotificationTabState();
 }
 
-class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAliveClientMixin<NotificationTab> {
+class _NotificationTabState extends State<NotificationTab>
+    with AutomaticKeepAliveClientMixin<NotificationTab> {
   List<UserNotification> _notifications = [];
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
@@ -37,10 +39,13 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     super.initState();
     _subscription = FirebaseMessaging.onMessage.listen((message) {
       if (message.data["type"] == "3") {
-        CancelRequestModel cancelRequest = CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
-        var requestNotifications = _notifications.where((element) => element.type == NotificationType.receiveRequest);
+        CancelRequestModel cancelRequest =
+            CancelRequestModel.fromJson(jsonDecode(message.data["message"]));
+        var requestNotifications = _notifications.where(
+            (element) => element.type == NotificationType.receiveRequest);
         var result = requestNotifications.firstWhere((element) {
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(element.data));
+          ReceiveRequest receiveRequest =
+              ReceiveRequest.fromJson(jsonDecode(element.data));
           return receiveRequest.id == cancelRequest.requestId;
         });
 
@@ -60,7 +65,8 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     });
     fetchNotification();
     _scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.offset) {
         if (!_isEnd && !_isLoading) {
           _pageNumber++;
           fetchNotification();
@@ -92,7 +98,8 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     setState(() {
       _isLoading = true;
     });
-    var notifications = await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
+    var notifications =
+        await UserNotificationServices.getNotifications(_pageNumber, _pageSize);
     setState(() {
       if (notifications.length < _pageSize) {
         _isEnd = true;
@@ -145,7 +152,8 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     for (var notification in _notifications) {
       switch (notification.type) {
         case NotificationType.receiveRequest:
-          ReceiveRequest receiveRequest = ReceiveRequest.fromJson(jsonDecode(notification.data));
+          ReceiveRequest receiveRequest =
+              ReceiveRequest.fromJson(jsonDecode(notification.data));
           listViewWidgets.add(IncomingRequestNotification(receiveRequest));
           break;
         case NotificationType.requestStatus:
@@ -164,7 +172,7 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     listViewWidgets.add(Container(
       height: _isEnd ? 0 : screenSize.height * 0.2,
       child: Center(
-        child: _isLoading ? CircularProgressIndicator() : Container(),
+        child: _isLoading ? MiniIndicator() : Container(),
       ),
     ));
     if (_isEnd) {
@@ -216,7 +224,8 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 0),
-              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
+              sliver: SliverList(
+                  delegate: SliverChildListDelegate(listViewWidgets)),
             )
           ],
           // ListView(

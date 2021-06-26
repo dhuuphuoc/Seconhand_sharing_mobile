@@ -45,9 +45,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="http"
-                    android:host="localhost"
-                    android:port="4200"
+                    android:scheme="https"
+                    android:host="secondhand-sharing.web.app"
                     android:pathPattern="/auth/forgot-password/reset"
                     />
             </intent-filter>
@@ -60,9 +59,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="http"
-                    android:host="localhost"
-                    android:port="4200"
+                    android:scheme="https"
+                    android:host="secondhand-sharing.web.app"
                     android:pathPattern="/auth/register/confirm"
                     />
             </intent-filter>

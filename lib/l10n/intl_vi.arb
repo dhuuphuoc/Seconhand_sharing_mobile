@@ -253,5 +253,6 @@
   "invitationWasSent": "Lời mời đã được gửi đi",
   "emailNotExist" : "Email không tồn tại",
   "memberExisted" : "Người này đã là thành viên của nhóm",
-  "youAreNotAdmin" : "Bạn không phải là quản trị viên của nhóm"
+  "youAreNotAdmin" : "Bạn không phải là quản trị viên của nhóm",
+  "glory" : "Vinh danh"
 }
