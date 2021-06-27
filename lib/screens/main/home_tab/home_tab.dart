@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/models/category_model/category.dart';
 import 'package:secondhand_sharing/models/category_model/category_model.dart';
 import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
@@ -16,8 +17,7 @@ class HomeTab extends StatefulWidget {
   _HomeTabState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab>
-    with AutomaticKeepAliveClientMixin<HomeTab> {
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<HomeTab> {
   CategoryModel _categoryModel = CategoryModel.withAll();
   List<Item> _items = [];
   int _pageNumber = 1;
@@ -39,12 +39,6 @@ class _HomeTabState extends State<HomeTab>
     }
   }
 
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
-  }
-
   @override
   void dispose() {
     print("dispose");
@@ -56,8 +50,7 @@ class _HomeTabState extends State<HomeTab>
       setState(() {
         _isLoading = true;
       });
-      var items = await ItemServices.getItems(
-          _categoryModel.selectedId, _pageNumber, _pageSize);
+      var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
       setState(() {
         if (items.length < _pageSize) {
           _isEnd = true;
@@ -95,9 +88,7 @@ class _HomeTabState extends State<HomeTab>
           )),
       Container(
         margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
         height: 130,
         child: ListView.builder(
           itemExtent: 90,
@@ -105,8 +96,7 @@ class _HomeTabState extends State<HomeTab>
           itemCount: _categoryModel.categories.length,
           itemBuilder: (BuildContext context, int index) {
             Category category = _categoryModel.categories[index];
-            return CategoryTab(
-                category.id == _categoryModel.selectedId, category, () async {
+            return CategoryTab(category.id == _categoryModel.selectedId, category, () async {
               setState(() {
                 _runningTasks++;
                 _categoryModel.selectedId = category.id;
@@ -115,8 +105,7 @@ class _HomeTabState extends State<HomeTab>
                 _items = [];
               });
               _pageNumber = 1;
-              var items = await ItemServices.getItems(
-                  _categoryModel.selectedId, _pageNumber, _pageSize);
+              var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
               setState(() {
                 _items = items;
                 if (items.length < _pageSize) {
@@ -145,27 +134,19 @@ class _HomeTabState extends State<HomeTab>
     ));
 
     if (_isEnd) {
-      listViewWidgets.add(NotificationCard(
-          Icons.check_circle_outline, S.of(context).endNotifyMessage));
+      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
     }
 
     return NotificationListener(
       onNotification: (notification) {
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         if (notification is OverscrollNotification) {
-          if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down)
-            absorbScrollBehaviour(notification.overscroll);
           if (notification.overscroll > 0) {
             if (!_isEnd && !_isLoading) {
               _pageNumber++;
               fetchItems();
             }
           }
-        }
-        if (notification is ScrollUpdateNotification) {
-          if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down)
-            absorbScrollBehaviour(notification.scrollDelta);
         }
         return true;
       },
@@ -184,8 +165,7 @@ class _HomeTabState extends State<HomeTab>
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              sliver: SliverList(
-                  delegate: SliverChildListDelegate(listViewWidgets)),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidgets)),
             )
           ],
           // ListView(

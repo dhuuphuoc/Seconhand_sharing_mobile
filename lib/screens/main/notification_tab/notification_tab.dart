@@ -15,6 +15,7 @@ import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/i
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/request_status_notification/request_status_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/thanks_notification/thanks_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
@@ -68,12 +69,6 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
         }
       }
     });
-  }
-
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   @override
@@ -162,17 +157,14 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
     }
     return NotificationListener(
       onNotification: (notification) {
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
           if (notification.overscroll > 0) {
             if (!_isEnd && !_isLoading) {
               _pageNumber++;
               fetchNotification();
             }
           }
-        }
-        if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
         }
 
         return true;

@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -12,20 +16,22 @@ import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
+import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
+import 'dart:ui' as ui;
 
 class GroupDetailScreen extends StatefulWidget {
   @override
   _GroupDetailScreenState createState() => _GroupDetailScreenState();
 }
 
-class _GroupDetailScreenState extends State<GroupDetailScreen>
-    with SingleTickerProviderStateMixin {
+class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTickerProviderStateMixin {
   GroupDetail _groupDetail = GroupDetail();
   MemberRole _role;
   ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
+  Size _imageSize;
 
   @override
   void initState() {
@@ -33,10 +39,16 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
       setState(() {
         _isLoading = true;
       });
-      GroupDetail groupDetail =
-          await GroupServices.getGroupDetail(_groupDetail.id);
-      var role = await GroupServices.getMemberRole(
-          AccessInfo().userInfo.id, _groupDetail.id);
+      GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
+      final buffer = await rootBundle.load('assets/images/group.png');
+      Image image = new Image.asset('assets/images/group.png');
+      Completer<ui.Image> completer = Completer<ui.Image>();
+      image.image.resolve(ImageConfiguration()).addListener(ImageStreamListener((ImageInfo info, bool _) {
+        completer.complete(info.image);
+      }));
+      var value = await completer.future;
+      _imageSize = Size(value.width.toDouble(), value.height.toDouble());
+      var role = await GroupServices.getMemberRole(AccessInfo().userInfo.id, _groupDetail.id);
       setState(() {
         _role = role;
         _groupDetail = groupDetail;
@@ -49,34 +61,78 @@ class _GroupDetailScreenState extends State<GroupDetailScreen>
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     _groupDetail.id = ModalRoute.of(context).settings.arguments;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _groupDetail.groupName ?? "",
-            style: Theme.of(context).textTheme.headline2,
-          ),
-          centerTitle: true,
-          bottom: TabBar(
-            labelPadding: EdgeInsets.zero,
-            tabs: [
-              Tab(text: S.of(context).posts),
-              Tab(text: S.of(context).description),
-              Tab(text: S.of(context).member)
-            ],
-          ),
-        ),
-        body: _isLoading
-            ? Center(
-                child: MiniIndicator(),
+        body: NestedScrollView(
+          key: Keys.groupScreenNestedScrollViewKey,
+          controller: _scrollController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  expandedHeight: _imageSize == null ? 0 : _imageSize.height * screenSize.width / _imageSize.width,
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding: EdgeInsets.only(bottom: kToolbarHeight + 10, left: 20),
+                    title: Text(
+                      _groupDetail.groupName ?? "",
+                    ),
+                    background: Stack(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.only(bottom: kToolbarHeight),
+                          child: Image.asset(
+                            "assets/images/group.png",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          // height: kToolbarHeight,
+                          margin: EdgeInsets.only(bottom: kToolbarHeight),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              Color(0xB0000000),
+                              Color(0x00000000),
+                              Color(0x00000000),
+                              Color(0x00000000),
+                              Color(0x00000000),
+                              Color(0xB0000000)
+                            ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  centerTitle: true,
+                  floating: true,
+                  pinned: true,
+                  bottom: TabBar(
+                    labelPadding: EdgeInsets.zero,
+                    tabs: [
+                      Tab(text: S.of(context).posts),
+                      Tab(text: S.of(context).description),
+                      Tab(text: S.of(context).member),
+                    ],
+                  ),
+                ),
               )
-            : TabBarView(children: [
-                Container(),
-                DescriptionTab(_groupDetail.description),
-                MemberTab(_groupDetail.id, _role),
-              ]),
+            ];
+          },
+          body: _isLoading
+              ? Center(
+                  child: MiniIndicator(),
+                )
+              : TabBarView(children: [
+                  Container(),
+                  DescriptionTab(_groupDetail.description),
+                  MemberTab(_groupDetail.id, _role),
+                ]),
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,12 +18,6 @@ class _MenuTabState extends State<MenuTab> {
   @override
   void initState() {
     super.initState();
-  }
-
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   @override
@@ -53,12 +48,7 @@ class _MenuTabState extends State<MenuTab> {
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: (notification) {
-        if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
-        }
-        if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
-        }
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         return true;
       },
       child: CustomScrollView(

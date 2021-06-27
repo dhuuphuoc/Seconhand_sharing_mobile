@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        key: Keys.nestedScrollViewKey,
+        key: Keys.mainScreenNestedScrollViewKey,
         controller: _scrollController,
         floatHeaderSlivers: true,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

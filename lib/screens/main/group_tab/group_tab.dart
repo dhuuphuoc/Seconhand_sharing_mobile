@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/my_group/my_group.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
@@ -17,8 +18,7 @@ class GroupTab extends StatefulWidget {
   _GroupTabState createState() => _GroupTabState();
 }
 
-class _GroupTabState extends State<GroupTab>
-    with AutomaticKeepAliveClientMixin<GroupTab> {
+class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
   List<Group> _groups = [];
   List<Group> _myGroups = [];
   ScrollController _scrollController = ScrollController();
@@ -30,12 +30,6 @@ class _GroupTabState extends State<GroupTab>
   void initState() {
     super.initState();
     fetchData();
-  }
-
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   Future<void> fetchData() async {
@@ -74,23 +68,13 @@ class _GroupTabState extends State<GroupTab>
       ));
 
       if (!_isEnd) {
-        listViewWidget.add(NotificationCard(
-            Icons.check_circle_outline, S.of(context).noMoreEvent));
+        listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
       }
     }
 
     return NotificationListener(
       onNotification: (notification) {
-        if (notification is OverscrollNotification) {
-          if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down)
-            absorbScrollBehaviour(notification.overscroll);
-        }
-        if (notification is ScrollUpdateNotification) {
-          if (notification.metrics.axisDirection == AxisDirection.up ||
-              notification.metrics.axisDirection == AxisDirection.down)
-            absorbScrollBehaviour(notification.scrollDelta);
-        }
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         return true;
       },
       child: RefreshIndicator(
@@ -112,8 +96,7 @@ class _GroupTabState extends State<GroupTab>
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 10),
-              sliver:
-                  SliverList(delegate: SliverChildListDelegate(listViewWidget)),
+              sliver: SliverList(delegate: SliverChildListDelegate(listViewWidget)),
             )
           ],
         ),

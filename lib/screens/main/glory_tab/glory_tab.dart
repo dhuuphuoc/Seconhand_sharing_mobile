@@ -3,6 +3,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/glory/glory.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
@@ -14,17 +15,10 @@ class GloryTab extends StatefulWidget {
   _GloryTabState createState() => _GloryTabState();
 }
 
-class _GloryTabState extends State<GloryTab>
-    with AutomaticKeepAliveClientMixin<GloryTab> {
+class _GloryTabState extends State<GloryTab> with AutomaticKeepAliveClientMixin<GloryTab> {
   ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
   List<Glory> _topAwards = [];
-
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
-  }
 
   @override
   void initState() {
@@ -84,8 +78,7 @@ class _GloryTabState extends State<GloryTab>
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: InkWell(
             onTap: () {
-              Navigator.pushNamed(context, "/profile",
-                  arguments: glory.accountId);
+              Navigator.pushNamed(context, "/profile", arguments: glory.accountId);
             },
             child: Container(
               height: screenSize.height * 0.25,
@@ -95,15 +88,10 @@ class _GloryTabState extends State<GloryTab>
                   SizedBox(height: 10),
                   Avatar(glory.avatarUrl, 22),
                   SizedBox(height: 10),
-                  Text(glory.donateAccountName,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(glory.donateAccountName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
               ),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/glory.jpg"),
-                      fit: BoxFit.fill)),
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/glory.jpg"), fit: BoxFit.fill)),
             ),
           ),
         ));
@@ -113,13 +101,7 @@ class _GloryTabState extends State<GloryTab>
 
     return NotificationListener(
       onNotification: (notification) {
-        if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
-        }
-        if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
-        }
-
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         return true;
       },
       child: RefreshIndicator(

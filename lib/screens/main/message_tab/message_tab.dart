@@ -9,6 +9,7 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/message_services/message_services.dart';
+import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
@@ -58,12 +59,6 @@ class _MessageTabState extends State<MessageTab> with AutomaticKeepAliveClientMi
     });
 
     super.initState();
-  }
-
-  void absorbScrollBehaviour(double scrolled) {
-    NestedScrollView nestedScrollView = Keys.nestedScrollViewKey.currentWidget;
-    ScrollController primaryScrollController = nestedScrollView.controller;
-    primaryScrollController.jumpTo(primaryScrollController.offset + scrolled);
   }
 
   Future<void> fetchRecentMessages() async {
@@ -128,8 +123,7 @@ class _MessageTabState extends State<MessageTab> with AutomaticKeepAliveClientMi
             } else {
               userInfo = UserInfo(id: message.sendFromAccountId, fullName: message.sendFromAccountName);
             }
-            Navigator.pushNamedAndRemoveUntil(
-                    context, "/chat", (route) => route.settings.name == "/chat" ? false : true,
+            Navigator.pushNamedAndRemoveUntil(context, "/chat", (route) => route.settings.name == "/chat" ? false : true,
                     arguments: userInfo)
                 .then((value) {
               if (value != null)
@@ -178,17 +172,14 @@ class _MessageTabState extends State<MessageTab> with AutomaticKeepAliveClientMi
     }
     return NotificationListener(
       onNotification: (notification) {
+        ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
         if (notification is OverscrollNotification) {
-          absorbScrollBehaviour(notification.overscroll);
           if (notification.overscroll > 0) {
             if (!_isEnd && !_isLoading) {
               _pageNumber++;
               fetchRecentMessages();
             }
           }
-        }
-        if (notification is ScrollUpdateNotification) {
-          absorbScrollBehaviour(notification.scrollDelta);
         }
 
         return true;
@@ -214,11 +205,6 @@ class _MessageTabState extends State<MessageTab> with AutomaticKeepAliveClientMi
             ),
             SliverList(delegate: SliverChildListDelegate(widgets)),
           ],
-          // ListView(
-          //   padding: EdgeInsets.only(bottom: 10),
-          //   controller: _scrollController,
-          //   children: listViewWidgets,
-          //   // ),
         ),
       ),
     );
