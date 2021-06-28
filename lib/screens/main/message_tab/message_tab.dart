@@ -50,12 +50,15 @@ class _MessageTabState extends State<MessageTab> with AutomaticKeepAliveClientMi
         }
         return false;
       });
-      setState(() {
-        _messages[index] = newMessage;
-        var temp = _messages[0];
-        _messages[0] = _messages[index];
-        _messages[index] = temp;
-      });
+      if (index == -1) {
+        _messages.add(newMessage);
+      } else
+        setState(() {
+          _messages[index] = newMessage;
+          var temp = _messages[0];
+          _messages[0] = _messages[index];
+          _messages[index] = temp;
+        });
     });
 
     super.initState();
