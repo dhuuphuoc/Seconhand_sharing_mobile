@@ -11,6 +11,7 @@ class GroupDetail {
     this.description,
     this.createDate,
     this.rules,
+    this.avatarUrl,
   });
 
   int id;
@@ -18,20 +19,22 @@ class GroupDetail {
   String description;
   DateTime createDate;
   String rules;
+  String avatarUrl;
 
   factory GroupDetail.fromJson(Map<String, dynamic> json) => GroupDetail(
-    id: json["id"],
-    groupName: json["groupName"],
-    description: json["description"],
-    createDate: DateTime.parse(json["createDate"]),
-    rules: json["rules"],
-  );
+        id: json["id"],
+        groupName: json["groupName"],
+        description: json["description"],
+        createDate: DateTime.parse(json["createDate"]),
+        rules: json["rules"],
+        avatarUrl: json["avatarUrl"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "groupName": groupName,
-    "description": description,
-    "createDate": createDate.toIso8601String(),
-    "rules": rules,
-  };
+        "id": id,
+        "groupName": groupName,
+        "description": description,
+        "createDate": createDate.toIso8601String(),
+        "rules": rules,
+      };
 }

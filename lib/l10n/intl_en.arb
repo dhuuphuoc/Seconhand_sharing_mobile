@@ -258,5 +258,8 @@
   "emptyJoinedGroup" : "You have not joined any groups yet",
   "emptyGroup" : "No groups have been created yet",
   "admin" : "Admin",
-  "downToMember": "Down to member"
+  "downToMember": "Down to member",
+  "emptyJoinRequests": "There are no join requests",
+  "joinGroup" : "Join group",
+  "requested" : "Requested"
 }

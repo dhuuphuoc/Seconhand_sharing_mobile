@@ -17,6 +17,7 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/images_picker/images_picker.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'dart:ui' as ui;
@@ -40,14 +41,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
         _isLoading = true;
       });
       GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
-      final buffer = await rootBundle.load('assets/images/group.png');
-      Image image = new Image.asset('assets/images/group.png');
-      Completer<ui.Image> completer = Completer<ui.Image>();
-      image.image.resolve(ImageConfiguration()).addListener(ImageStreamListener((ImageInfo info, bool _) {
-        completer.complete(info.image);
-      }));
-      var value = await completer.future;
-      _imageSize = Size(value.width.toDouble(), value.height.toDouble());
+      _imageSize = await calculateAvatarSize(groupDetail.avatarUrl);
       var role = await GroupServices.getMemberRole(AccessInfo().userInfo.id, _groupDetail.id);
       setState(() {
         _role = role;
@@ -57,6 +51,38 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
     });
 
     super.initState();
+  }
+
+  Future<Size> calculateAvatarSize(String avatarUrl) async {
+    Image image = avatarUrl == null ? Image.asset('assets/images/group.png') : Image.network(avatarUrl);
+    Completer<ui.Image> completer = Completer<ui.Image>();
+    image.image.resolve(ImageConfiguration()).addListener(ImageStreamListener((ImageInfo info, bool _) {
+      if (!completer.isCompleted) completer.complete(info.image);
+    }));
+    var value = await completer.future;
+    return Size(value.width.toDouble(), value.height.toDouble());
+  }
+
+  void updateAvatar() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ImagesPicker();
+      },
+    ).then((value) {
+      if (value != null) {
+        GroupServices.updateAvatar(_groupDetail.id, value).then((value) {
+          if (value != null) {
+            calculateAvatarSize(value).then((size) {
+              setState(() {
+                _imageSize = size;
+                _groupDetail.avatarUrl = value;
+              });
+            });
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -86,10 +112,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                         Container(
                           width: double.infinity,
                           margin: EdgeInsets.only(bottom: kToolbarHeight),
-                          child: Image.asset(
-                            "assets/images/group.png",
-                            fit: BoxFit.cover,
-                          ),
+                          child: _groupDetail.avatarUrl == null
+                              ? Image.asset(
+                                  "assets/images/group.png",
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  _groupDetail.avatarUrl,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         Container(
                           // height: kToolbarHeight,
@@ -103,6 +134,19 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                               Color(0x00000000),
                               Color(0xB0000000)
                             ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: kToolbarHeight),
+                            child: IconButton(
+                              onPressed: updateAvatar,
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         )
                       ],

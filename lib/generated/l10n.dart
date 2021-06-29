@@ -1854,6 +1854,36 @@ class S {
       args: [],
     );
   }
+
+  /// `There are no join requests`
+  String get emptyJoinRequests {
+    return Intl.message(
+      'There are no join requests',
+      name: 'emptyJoinRequests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Join group`
+  String get joinGroup {
+    return Intl.message(
+      'Join group',
+      name: 'joinGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Requested`
+  String get requested {
+    return Intl.message(
+      'Requested',
+      name: 'requested',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

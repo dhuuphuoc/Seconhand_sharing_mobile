@@ -24,8 +24,7 @@ class UpdateProfileForm {
   String phoneNumber;
   AddressModel address;
 
-  factory UpdateProfileForm.fromJson(Map<String, dynamic> json) =>
-      UpdateProfileForm(
+  factory UpdateProfileForm.fromJson(Map<String, dynamic> json) => UpdateProfileForm(
         fullName: json["fullName"],
         dob: DateTime.parse(json["dob"]),
         phoneNumber: json["phoneNumber"],
@@ -34,8 +33,7 @@ class UpdateProfileForm {
 
   Map<String, dynamic> toJson() => {
         "fullName": fullName,
-        "dob":
-            dob != null ? dob.toIso8601String() : DateTime(1).toIso8601String(),
+        "dob": dob != null ? dob.toIso8601String() : DateTime(1).toIso8601String(),
         "phoneNumber": phoneNumber,
         "address": address?.toJson(),
       };
@@ -58,7 +56,7 @@ class UserServices {
     return false;
   }
 
-  static Future<String> uploadAvatar(ImageData image) async {
+  static Future<String> updateAvatar(ImageData image) async {
     Uri url = Uri.https(APIService.apiUrl, "/User/update-avatar");
     var response = await http.put(
       url,
@@ -69,10 +67,8 @@ class UserServices {
     );
     print(response.body);
 
-    ImageUploadModel imageUploadModel =
-        ImageUploadModel.fromJson(jsonDecode(response.body)["data"]);
-    var result = await APIService.uploadImage(
-        image, imageUploadModel.imageUpload.presignUrl);
+    ImageUploadModel imageUploadModel = ImageUploadModel.fromJson(jsonDecode(response.body)["data"]);
+    var result = await APIService.uploadImage(image, imageUploadModel.imageUpload.presignUrl);
     if (result) {
       return APIService.cloudUrl + imageUploadModel.imageUpload.imageName;
     } else {
@@ -115,8 +111,6 @@ class UserServices {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
-    return List<Glory>.from(
-        ResponseDeserializer.deserializeResponseToList(response)
-            .map((x) => Glory.fromJson(x)));
+    return List<Glory>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Glory.fromJson(x)));
   }
 }

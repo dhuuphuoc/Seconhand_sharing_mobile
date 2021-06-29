@@ -258,5 +258,8 @@
   "emptyJoinedGroup" : "Bạn chưa tham gia nhóm nào cả",
   "emptyGroup" : "Chưa có nhóm nào được thành lập",
   "admin" : "Quản trị viên",
-  "downToMember": "Giáng xuống thành viên"
+  "downToMember": "Giáng xuống thành viên",
+  "emptyJoinRequests": "Không có yêu cầu tham gia nào",
+  "joinGroup" : "Tham gia nhóm",
+  "requested" : "Đã gửi yêu cầu"
 }
