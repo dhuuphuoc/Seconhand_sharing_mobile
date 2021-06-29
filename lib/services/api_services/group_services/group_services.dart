@@ -227,11 +227,10 @@ class GroupServices {
     var json = jsonDecode(response.body);
     var result = AddMemberModel();
     if (response.statusCode == 200) {
-      result.member = Member.fromJson(json["data"]);
-      if (json["message"] == "Added") {
+      if (json["data"] != null) {
         result.type = AddMemberResponseType.added;
-      }
-      if (json["message"] == "Invited") {
+        result.member = Member.fromJson(json["data"]);
+      } else {
         result.type = AddMemberResponseType.invited;
       }
       return result;
