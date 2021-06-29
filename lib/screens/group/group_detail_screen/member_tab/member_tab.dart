@@ -4,9 +4,11 @@ import 'package:secondhand_sharing/models/enums/join_status/join_status.dart';
 import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/join_request/join_request.dart';
 import 'package:secondhand_sharing/models/member/member.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 enum MemberActions {
@@ -18,8 +20,9 @@ enum MemberActions {
 class MemberTab extends StatefulWidget {
   final int groupId;
   final MemberRole role;
+  final Function(MemberRole) changeRole;
 
-  MemberTab(this.groupId, this.role);
+  MemberTab(this.groupId, this.role, this.changeRole);
 
   @override
   _MemberTabState createState() => _MemberTabState();
@@ -69,14 +72,7 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
   }
 
   void addMember() {
-    Navigator.pushNamed(context, "/group/add-member", arguments: widget.groupId).then((value) {
-      if (value == true) {
-        _members = [];
-        _admins = [];
-
-        loadMembers();
-      }
-    });
+    Navigator.pushNamed(context, "/group/add-member", arguments: widget.groupId);
   }
 
   void joinGroup() {
@@ -85,6 +81,27 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
         setState(() {
           _joinStatus = JoinStatus.requested;
         });
+    });
+  }
+
+  void leaveGroup() {
+    showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(S.of(context).leaveGroup, S.of(context).leaveGroupConfirmation)).then((value) {
+      if (value == true) {
+        GroupServices.kickMember(widget.groupId, AccessInfo().userInfo.id).then((result) {
+          if (result) {
+            setState(() {
+              if (widget.role == MemberRole.admin) {
+                _members.removeWhere((member) => member.id == AccessInfo().userInfo.id);
+              } else {
+                _admins.removeWhere((admin) => admin.id == AccessInfo().userInfo.id);
+              }
+            });
+            widget.changeRole(null);
+          }
+        });
+      }
     });
   }
 
@@ -146,7 +163,16 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                                         children: [
                                           Expanded(
                                             child: IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  GroupServices.rejectJoinRequest(widget.groupId, request.requesterId)
+                                                      .then((value) {
+                                                    if (value) {
+                                                      setState(() {
+                                                        _joinRequests.remove(request);
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                                 icon: Icon(
                                                   Icons.close,
                                                   color: Colors.red,
@@ -154,7 +180,21 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                                           ),
                                           Expanded(
                                             child: IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  GroupServices.acceptJoinRequest(widget.groupId, request.requesterId)
+                                                      .then((value) {
+                                                    if (value) {
+                                                      setState(() {
+                                                        _joinRequests.remove(request);
+                                                        _members.add(Member(
+                                                            id: request.requesterId,
+                                                            fullName: request.requesterName,
+                                                            joinDate: DateTime.now(),
+                                                            avatarUrl: request.avatarUrl));
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                                 icon: Icon(
                                                   Icons.check,
                                                   color: Colors.green,
@@ -172,8 +212,8 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                           ],
                         ),
                       ),
-                    )
-                  else
+                    ),
+                  if (widget.role == null)
                     Card(
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
@@ -230,6 +270,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                                                     setState(() {
                                                       _members.remove(admin);
                                                     });
+                                                    if (admin.id == AccessInfo().userInfo.id) {
+                                                      leaveGroup();
+                                                    }
                                                   }
                                                 });
                                               }
@@ -240,6 +283,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                                                       _admins.remove(admin);
                                                       _members.add(admin);
                                                     });
+                                                    if (admin.id == AccessInfo().userInfo.id) {
+                                                      widget.changeRole(MemberRole.member);
+                                                    }
                                                   }
                                                 });
                                               }
@@ -306,7 +352,11 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  widget.role != null
+                      ? Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          child: ElevatedButton(onPressed: leaveGroup, child: Text(S.of(context).leaveGroup)))
+                      : SizedBox(height: 10),
                 ])),
               ],
             ),

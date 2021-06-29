@@ -6,8 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_model/image_model.dart';
-import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/tappable_image/tappable_image.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
+import 'package:secondhand_sharing/widgets/images_picker/tappable_image/tappable_image.dart';
 
 class ImagesPicker extends StatefulWidget {
   @override
@@ -92,9 +92,10 @@ class _ImagesPickerState extends State<ImagesPicker> {
                           children: _imagesInGallery.map((image) {
                             return TappableImage(() {
                               showDialog(
-                                  context: context,
-                                  builder: (context) => ConfirmDialog(
-                                      S.of(context).areYouSure, S.of(context).avatarChangeConfirmation)).then((value) {
+                                      context: context,
+                                      builder: (context) =>
+                                          ConfirmDialog(S.of(context).areYouSure, S.of(context).avatarChangeConfirmation))
+                                  .then((value) {
                                 if (value == true) {
                                   Navigator.pop(context, image);
                                 }

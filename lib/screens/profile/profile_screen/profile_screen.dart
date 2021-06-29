@@ -6,12 +6,12 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
-import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/images_picker/images_picker.dart';
 import 'package:secondhand_sharing/screens/profile/user_donations_tab/user_donations_tab.dart';
 import 'package:secondhand_sharing/screens/profile/user_requests_tab/user_requests_tab.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
+import 'package:secondhand_sharing/widgets/images_picker/images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {

@@ -1884,6 +1884,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Leave group`
+  String get leaveGroup {
+    return Intl.message(
+      'Leave group',
+      name: 'leaveGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to leave this group?`
+  String get leaveGroupConfirmation {
+    return Intl.message(
+      'Do you want to leave this group?',
+      name: 'leaveGroupConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group invitations`
+  String get groupInvitation {
+    return Intl.message(
+      'Group invitations',
+      name: 'groupInvitation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Decline`
+  String get decline {
+    return Intl.message(
+      'Decline',
+      name: 'decline',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

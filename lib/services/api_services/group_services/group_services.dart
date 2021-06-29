@@ -8,6 +8,7 @@ import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_upload_model/image_upload_model.dart';
+import 'package:secondhand_sharing/models/invitation/invitation.dart';
 import 'package:secondhand_sharing/models/join_request/join_request.dart';
 import 'package:secondhand_sharing/models/member/member.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
@@ -112,6 +113,16 @@ class GroupServices {
     return List<JoinRequest>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => JoinRequest.fromJson(x)));
   }
 
+  static Future<List<Invitation>> getInvitations() async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/invitations");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Invitation>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Invitation.fromJson(x)));
+  }
+
   static Future<List<Member>> getAdmins(int groupId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/admin");
     var response = await http.get(url, headers: {
@@ -154,6 +165,46 @@ class GroupServices {
 
   static Future<bool> demoteAdmin(int groupId, memberId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/demote-admin/$memberId");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> acceptJoinRequest(int groupId, memberId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/join-request/$memberId/accept");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> rejectJoinRequest(int groupId, memberId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/join-request/$memberId/reject");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> acceptInvitation(int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/accept-invitation");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> declineInvitation(int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/decline-invitation");
     var response = await http.put(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",

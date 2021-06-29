@@ -261,5 +261,9 @@
   "downToMember": "Giáng xuống thành viên",
   "emptyJoinRequests": "Không có yêu cầu tham gia nào",
   "joinGroup" : "Tham gia nhóm",
-  "requested" : "Đã gửi yêu cầu"
+  "requested" : "Đã gửi yêu cầu",
+  "leaveGroup" : "Rời khỏi nhóm",
+  "leaveGroupConfirmation" : "Bạn có muốn rời khỏi nhóm không?",
+  "groupInvitation": "Lời mời gia nhập nhóm",
+  "decline": "Từ chối"
 }

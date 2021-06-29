@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
+import 'package:secondhand_sharing/models/invitation/invitation.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/my_group/my_group.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/post_group_card/post_group_card.dart';
@@ -21,6 +22,7 @@ class GroupTab extends StatefulWidget {
 class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<GroupTab> {
   List<Group> _groups = [];
   List<Group> _myGroups = [];
+  List<Invitation> _invitations = [];
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
   int _pageSize = 8;
@@ -39,9 +41,11 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       });
       var groups = await GroupServices.getGroups();
       var myGroups = await GroupServices.getJoinedGroups();
+      var invitations = await GroupServices.getInvitations();
       setState(() {
         _groups.addAll(groups);
         _myGroups.addAll(myGroups);
+        _invitations = invitations;
         _isLoading = false;
       });
     }
@@ -56,6 +60,32 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       listViewWidget.add(SizedBox(height: screenSize.height * 0.4));
       listViewWidget.add(Center(child: MiniIndicator()));
     } else {
+      if (_invitations.isNotEmpty)
+        listViewWidget.add(Card(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "/group/invitations", arguments: _invitations);
+            },
+            leading: Icon(
+              Icons.mail,
+              color: Theme.of(context).primaryColor,
+            ),
+            horizontalTitleGap: 0,
+            title: Text(S.of(context).groupInvitation),
+            trailing: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: Text(
+                _invitations.length.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+        ));
       listViewWidget.add(Container(
         margin: EdgeInsets.all(10),
         child: PostGroupCard(() {

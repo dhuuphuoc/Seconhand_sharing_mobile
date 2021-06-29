@@ -17,8 +17,8 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
-import 'package:secondhand_sharing/screens/profile/profile_screen/local_widgets/images_picker/images_picker.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
+import 'package:secondhand_sharing/widgets/images_picker/images_picker.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'dart:ui' as ui;
 
@@ -85,6 +85,12 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
     });
   }
 
+  void changeRole(MemberRole role) {
+    setState(() {
+      _role = role;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -136,19 +142,20 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                             ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: kToolbarHeight),
-                            child: IconButton(
-                              onPressed: updateAvatar,
-                              icon: Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
+                        if (_role == MemberRole.admin)
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: kToolbarHeight),
+                              child: IconButton(
+                                onPressed: updateAvatar,
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                        )
+                          )
                       ],
                     ),
                   ),
@@ -174,7 +181,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
               : TabBarView(children: [
                   Container(),
                   DescriptionTab(_groupDetail.description),
-                  MemberTab(_groupDetail.id, _role),
+                  MemberTab(_groupDetail.id, _role, changeRole),
                 ]),
         ),
       ),
