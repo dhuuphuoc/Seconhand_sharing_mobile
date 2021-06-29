@@ -46,7 +46,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) as
 }
 
 Future<void> main() async {
-  HttpOverrides.global = new MyHttpOverrides();
+  // HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
   await FirebaseServices.initFirebase();

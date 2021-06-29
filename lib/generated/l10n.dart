@@ -1924,6 +1924,26 @@ class S {
       args: [],
     );
   }
+
+  /// `New member added!`
+  String get memberAdded {
+    return Intl.message(
+      'New member added!',
+      name: 'memberAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now, you are a member of {groupName} group`
+  String youAreMemberOfGroup(Object groupName) {
+    return Intl.message(
+      'Now, you are a member of $groupName group',
+      name: 'youAreMemberOfGroup',
+      desc: '',
+      args: [groupName],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -265,5 +265,16 @@
   "leaveGroup" : "Rời khỏi nhóm",
   "leaveGroupConfirmation" : "Bạn có muốn rời khỏi nhóm không?",
   "groupInvitation": "Lời mời gia nhập nhóm",
-  "decline": "Từ chối"
+  "decline": "Từ chối",
+  "memberAdded" : "Thành viên mới đã được thêm vào!",
+  "youAreMemberOfGroup" : "Bạn đã là thành viên của nhóm {groupName}",
+  "@youAreMemberOfGroup" :
+  {
+    "source_text" : "Bạn đã là thành viên của nhóm {groupName}",
+    "placeholders":  {
+      "groupName": {
+        "example": "Hội tụ"
+      }
+    }
+  }
 }

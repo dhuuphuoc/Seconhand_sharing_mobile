@@ -265,5 +265,16 @@
   "leaveGroup" : "Leave group",
   "leaveGroupConfirmation" : "Do you want to leave this group?",
   "groupInvitation": "Group invitations",
-  "decline": "Decline"
+  "decline": "Decline",
+  "memberAdded" : "New member added!",
+  "youAreMemberOfGroup" : "Now, you are a member of {groupName} group",
+  "@youAreMemberOfGroup" :
+  {
+    "source_text" : "Now, you are a member of {groupName} group",
+    "placeholders":  {
+      "groupName": {
+        "example": "Hội tụ"
+      }
+    }
+  }
 }

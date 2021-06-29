@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/enums/add_member_response_type/add_member_response_type.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 
@@ -17,31 +18,36 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
 
   Future<void> invite() async {
     var result = await GroupServices.inviteMember(_groupId, _searchTextEditingController.text);
-    if (result == 0) {
+    if (result.type == AddMemberResponseType.invited) {
       showDialog(
-              context: context,
-              builder: (context) => NotifyDialog(S.of(context).success, S.of(context).invitationWasSent, "OK"))
-          .whenComplete(() {
-        Navigator.of(context).pop(true);
+          context: context,
+          builder: (context) => NotifyDialog(S.of(context).success, S.of(context).invitationWasSent, "OK")).whenComplete(() {
+        Navigator.of(context).pop();
       });
       return;
     }
-    if (result == 1) {
-      showDialog(
-          context: context,
-          builder: (context) =>
-              NotifyDialog(S.of(context).failed, S.of(context).memberExisted, S.of(context).tryAgain));
-    } else if (result == 2) {
-      showDialog(
-          context: context,
-          builder: (context) =>
-              NotifyDialog(S.of(context).failed, S.of(context).emailNotExist, S.of(context).tryAgain));
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) =>
-              NotifyDialog(S.of(context).failed, S.of(context).youAreNotAdmin, S.of(context).tryAgain));
+    if (result.type == AddMemberResponseType.added) {
+      showDialog(context: context, builder: (context) => NotifyDialog(S.of(context).success, S.of(context).memberAdded, "OK"))
+          .whenComplete(() {
+        Navigator.of(context).pop(result.member);
+      });
+      return;
     }
+    if (result.type == AddMemberResponseType.existed) {
+      showDialog(
+          context: context,
+          builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).memberExisted, S.of(context).tryAgain));
+      return;
+    }
+    if (result.type == AddMemberResponseType.notExist) {
+      showDialog(
+          context: context,
+          builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).emailNotExist, S.of(context).tryAgain));
+      return;
+    }
+    showDialog(
+        context: context,
+        builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).youAreNotAdmin, S.of(context).tryAgain));
   }
 
   @override

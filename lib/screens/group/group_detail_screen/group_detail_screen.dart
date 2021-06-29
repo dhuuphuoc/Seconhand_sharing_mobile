@@ -35,6 +35,11 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
   Size _imageSize;
 
   @override
+  void setState(VoidCallback fn) {
+    if (this.mounted) super.setState(fn);
+  }
+
+  @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       setState(() {

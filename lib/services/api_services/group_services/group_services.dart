@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/add_member_model/add_member_model.dart';
+import 'package:secondhand_sharing/models/enums/add_member_response_type/add_member_response_type.dart';
 import 'package:secondhand_sharing/models/enums/join_status/join_status.dart';
 import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/group_model/create_group/create_group.dart';
@@ -213,7 +215,7 @@ class GroupServices {
     return response.statusCode == 200;
   }
 
-  static Future<int> inviteMember(int groupId, String email) async {
+  static Future<AddMemberModel> inviteMember(int groupId, String email) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/member");
     var response = await http.post(url,
         headers: {
@@ -222,16 +224,28 @@ class GroupServices {
         },
         body: jsonEncode({"email": email}));
     print(response.body);
-    if (response.statusCode == 200) return 0;
-    String message = jsonDecode(response.body)["Message"];
+    var json = jsonDecode(response.body);
+    var result = AddMemberModel();
+    if (response.statusCode == 200) {
+      result.member = Member.fromJson(json["data"]);
+      if (json["message"] == "Added") {
+        result.type = AddMemberResponseType.added;
+      }
+      if (json["message"] == "Invited") {
+        result.type = AddMemberResponseType.invited;
+      }
+      return result;
+    }
+    String message = json["Message"];
 
     if (message == "Member exist in group.") {
-      return 1;
+      result.type = AddMemberResponseType.existed;
     }
     if (message == "Email does not exist.") {
-      return 2;
+      result.type = AddMemberResponseType.notExist;
     }
-    return 3;
+    result.type = AddMemberResponseType.notAdmin;
+    return result;
   }
 
   static Future<bool> joinGroup(int groupId) async {

@@ -65,7 +65,15 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: ListTile(
             onTap: () {
-              Navigator.pushNamed(context, "/group/invitations", arguments: _invitations);
+              Navigator.pushNamed(context, "/group/invitations", arguments: _invitations).then((value) {
+                if (value != null) {
+                  var acceptedInvitation = value as List<Invitation>;
+                  _myGroups.addAll(acceptedInvitation
+                      .map((invitation) =>
+                          Group(id: invitation.groupId, groupName: invitation.groupName, avatarURL: invitation.avatarUrl))
+                      .toList());
+                }
+              });
             },
             leading: Icon(
               Icons.mail,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/add_member_model/add_member_model.dart';
 import 'package:secondhand_sharing/models/enums/join_status/join_status.dart';
 import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/join_request/join_request.dart';
@@ -41,6 +42,11 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
     loadMembers();
   }
 
+  @override
+  void setState(VoidCallback fn) {
+    if (this.mounted) super.setState(fn);
+  }
+
   Future<void> loadMembers() async {
     setState(() {
       _isLoading = true;
@@ -72,7 +78,14 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
   }
 
   void addMember() {
-    Navigator.pushNamed(context, "/group/add-member", arguments: widget.groupId);
+    Navigator.pushNamed(context, "/group/add-member", arguments: widget.groupId).then((value) {
+      if (value != null) {
+        var member = value as Member;
+        setState(() {
+          _members.add(member);
+        });
+      }
+    });
   }
 
   void joinGroup() {
