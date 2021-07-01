@@ -66,116 +66,113 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
     _receiveRequestsModel = context.watch();
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
-      child: ExpansionPanelList(
-        expandedHeaderPadding: EdgeInsets.all(0),
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            _isRequestsExpanded = !isExpanded;
-          });
-        },
-        children: [
-          ExpansionPanel(
-              headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  leading: Icon(
-                    Icons.app_registration,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: Text(S.of(context).registrations),
-                );
-              },
-              canTapOnHeader: true,
-              body: Column(
-                children: _receiveRequestsModel.requests
-                    .map((request) => InkWell(
-                          onTap: () {
-                            print(request.id);
-                            Navigator.pushNamed(context, "/profile", arguments: request.receiverId);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            child: Row(
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: ExpansionTile(
+          leading: Icon(
+            Icons.app_registration,
+            // color: Theme.of(context).primaryColor,
+          ),
+          title: Text(S.of(context).registrations),
+          trailing: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            child: Text(
+              _receiveRequestsModel.requests.length.toString(),
+              style: TextStyle(color: _receiveRequestsModel.requests.isNotEmpty ? Colors.white : Colors.black54),
+            ),
+            decoration: BoxDecoration(
+              color: _receiveRequestsModel.requests.isNotEmpty
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          children: _receiveRequestsModel.requests
+              .map((request) => InkWell(
+                    onTap: () {
+                      print(request.id);
+                      Navigator.pushNamed(context, "/profile", arguments: request.receiverId);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Avatar(request.receiverAvatarUrl, 20),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Avatar(request.receiverAvatarUrl, 20),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            request.receiverName,
-                                            style: TextStyle(fontWeight: FontWeight.w600),
-                                          ),
-                                          if (request.requestStatus == RequestStatus.receiving)
-                                            Text(
-                                              S.of(context).accepted,
-                                              style: TextStyle(color: Colors.green),
-                                            ),
-                                        ],
-                                      ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      request.receiverName,
+                                      style: TextStyle(fontWeight: FontWeight.w600),
+                                    ),
+                                    if (request.requestStatus == RequestStatus.receiving)
                                       Text(
-                                        TimeAgo.parse(request.createDate,
-                                            locale: Localizations.localeOf(context).languageCode),
-                                        style: Theme.of(context).textTheme.subtitle2,
+                                        S.of(context).accepted,
+                                        style: TextStyle(color: Colors.green),
                                       ),
-                                      SizedBox(
-                                        height: 2,
-                                      ),
-                                      Text(request.receiveReason == null ? "No reason" : request.receiveReason),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton(
-                                          onPressed: _inProcessRequest != null
-                                              ? null
-                                              : () async {
-                                                  if (request.requestStatus == RequestStatus.pending) {
-                                                    if (_receiveRequestsModel.acceptedRequest != null) {
-                                                      await cancelRequest(_receiveRequestsModel.acceptedRequest);
-                                                    }
-                                                    await acceptRequest(request);
-                                                  } else {
-                                                    if (request.requestStatus == RequestStatus.receiving) {
-                                                      await cancelRequest(request);
-                                                    }
-                                                  }
-                                                },
-                                          style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero)),
-                                          child: _inProcessRequest == request
-                                              ? Container(
-                                                  height: 15,
-                                                  width: 15,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                  ),
-                                                )
-                                              : Text(request.requestStatus == RequestStatus.pending
-                                                  ? S.of(context).accept
-                                                  : S.of(context).cancelAccept),
-                                        ),
-                                      ),
-                                      Divider(
-                                        height: 5,
-                                        thickness: 2,
-                                      ),
-                                    ],
+                                  ],
+                                ),
+                                Text(
+                                  TimeAgo.parse(request.createDate, locale: Localizations.localeOf(context).languageCode),
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Text(request.receiveReason == null ? "No reason" : request.receiveReason),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                    onPressed: _inProcessRequest != null
+                                        ? null
+                                        : () async {
+                                            if (request.requestStatus == RequestStatus.pending) {
+                                              if (_receiveRequestsModel.acceptedRequest != null) {
+                                                await cancelRequest(_receiveRequestsModel.acceptedRequest);
+                                              }
+                                              await acceptRequest(request);
+                                            } else {
+                                              if (request.requestStatus == RequestStatus.receiving) {
+                                                await cancelRequest(request);
+                                              }
+                                            }
+                                          },
+                                    style: ButtonStyle(padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero)),
+                                    child: _inProcessRequest == request
+                                        ? Container(
+                                            height: 15,
+                                            width: 15,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(request.requestStatus == RequestStatus.pending
+                                            ? S.of(context).accept
+                                            : S.of(context).cancelAccept),
                                   ),
-                                )
+                                ),
+                                Divider(
+                                  height: 5,
+                                  thickness: 2,
+                                ),
                               ],
                             ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-              isExpanded: _isRequestsExpanded),
-        ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
       ),
     );
   }

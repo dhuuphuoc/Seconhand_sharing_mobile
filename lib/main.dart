@@ -24,6 +24,7 @@ import 'package:secondhand_sharing/screens/group/invitation_screen/invitation_sc
 import 'package:secondhand_sharing/screens/item/address_screen/address_screen.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/item_detail_screen.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
+import 'package:secondhand_sharing/screens/item/search_screen/search_screen.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/main_screen/main_screen.dart';
 import 'package:secondhand_sharing/screens/message/chat_screen/chat_screen.dart';
@@ -136,6 +137,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/group/detail": (context) => GroupDetailScreen(),
         "/group/add-member": (context) => AddMemberScreen(),
         "/group/invitations": (context) => InvitationScreen(),
+        "/item/search": (context) => SearchScreen(),
       },
     );
   }

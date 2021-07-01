@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/glory_tab/glory_tab.dart';
@@ -55,6 +56,20 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                   height: 100,
                 ),
                 actions: [
+                  Card(
+                    shape: CircleBorder(),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: IconButton(
+                      splashRadius: 22,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/item/search");
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: () async {

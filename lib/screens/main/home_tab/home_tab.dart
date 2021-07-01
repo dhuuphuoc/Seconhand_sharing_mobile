@@ -50,7 +50,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       setState(() {
         _isLoading = true;
       });
-      var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
+      var items = await ItemServices.getItems(_categoryModel.selectedId, "", _pageNumber, _pageSize);
       setState(() {
         if (items.length < _pageSize) {
           _isEnd = true;
@@ -105,7 +105,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
                 _items = [];
               });
               _pageNumber = 1;
-              var items = await ItemServices.getItems(_categoryModel.selectedId, _pageNumber, _pageSize);
+              var items = await ItemServices.getItems(_categoryModel.selectedId, "", _pageNumber, _pageSize);
               setState(() {
                 _items = items;
                 if (items.length < _pageSize) {

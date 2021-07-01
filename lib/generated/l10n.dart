@@ -1944,6 +1944,26 @@ class S {
       args: [groupName],
     );
   }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot find items with "{itemName}" keyword`
+  String itemNotFound(Object itemName) {
+    return Intl.message(
+      'Cannot find items with "$itemName" keyword',
+      name: 'itemNotFound',
+      desc: '',
+      args: [itemName],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

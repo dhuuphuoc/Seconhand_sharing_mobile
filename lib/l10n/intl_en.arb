@@ -276,5 +276,16 @@
         "example": "Hội tụ"
       }
     }
+  },
+  "search" : "Search",
+  "itemNotFound" : "Cannot find items with \"{itemName}\" keyword",
+  "@itemNotFound" :
+  {
+    "source_text" : "Cannot find items with \"{itemName}\" keyword",
+    "placeholders":  {
+      "itemName": {
+        "example": "TV"
+      }
+    }
   }
 }

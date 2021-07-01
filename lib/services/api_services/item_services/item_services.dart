@@ -47,7 +47,7 @@ class PostItemForm {
 }
 
 class ItemServices {
-  static Future<List<Item>> getItems(int categoryId, int pageNumber, int pageSize) async {
+  static Future<List<Item>> getItems(int categoryId, String query, int pageNumber, int pageSize) async {
     String path = "Item";
     if (categoryId != -1) {
       path = "Category/$categoryId";
@@ -55,6 +55,7 @@ class ItemServices {
     Uri getItemsUrl = Uri.https(APIService.apiUrl, path, {
       "PageNumber": pageNumber.toString(),
       "PageSize": pageSize.toString(),
+      "query": query,
     });
     print(getItemsUrl);
 
@@ -62,6 +63,7 @@ class ItemServices {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
+    print(response.statusCode);
     print(response.body);
     return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
   }
