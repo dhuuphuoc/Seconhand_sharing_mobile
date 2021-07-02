@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secondhand_sharing/screens/photo_view_screen/photo_view_screen.dart';
 
 class ImagesView extends StatefulWidget {
   final List<String> images;
@@ -44,12 +45,17 @@ class _ImagesViewState extends State<ImagesView> {
             SizedBox(
               height: 10,
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                selectedImage,
-                height: screenSize.height * 0.6,
-                fit: BoxFit.contain,
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhotoViewScreen(selectedImage)));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  selectedImage,
+                  height: screenSize.height * 0.6,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             SizedBox(
@@ -69,9 +75,8 @@ class _ImagesViewState extends State<ImagesView> {
                             margin: EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border: selectedImage == image
-                                    ? Border.all(color: Theme.of(context).primaryColor, width: 2)
-                                    : null),
+                                border:
+                                    selectedImage == image ? Border.all(color: Theme.of(context).primaryColor, width: 2) : null),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.network(

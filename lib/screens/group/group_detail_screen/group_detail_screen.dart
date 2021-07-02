@@ -41,21 +41,26 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      setState(() {
-        _isLoading = true;
-      });
-      GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
-      _imageSize = await calculateAvatarSize(groupDetail.avatarUrl);
-      var role = await GroupServices.getMemberRole(AccessInfo().userInfo.id, _groupDetail.id);
-      setState(() {
-        _role = role;
-        _groupDetail = groupDetail;
-        _isLoading = false;
-      });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      loadGroup();
     });
 
     super.initState();
+  }
+
+  Future<void> loadGroup() async {
+    setState(() {
+      _isLoading = true;
+    });
+    GroupDetail groupDetail = await GroupServices.getGroupDetail(_groupDetail.id);
+    var size = await calculateAvatarSize(groupDetail.avatarUrl);
+    var role = await GroupServices.getMemberRole(AccessInfo().userInfo.id, _groupDetail.id);
+    setState(() {
+      _imageSize = size;
+      _role = role;
+      _groupDetail = groupDetail;
+      _isLoading = false;
+    });
   }
 
   Future<Size> calculateAvatarSize(String avatarUrl) async {
@@ -112,6 +117,14 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   expandedHeight: _imageSize == null ? 0 : _imageSize.height * screenSize.width / _imageSize.width,
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.refresh),
+                      onPressed: () {
+                        loadGroup();
+                      },
+                    )
+                  ],
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: EdgeInsets.only(bottom: kToolbarHeight + 10, left: 20),
                     title: Text(

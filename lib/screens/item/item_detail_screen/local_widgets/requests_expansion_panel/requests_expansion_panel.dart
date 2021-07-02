@@ -16,7 +16,6 @@ class RequestsExpansionPanel extends StatefulWidget {
 }
 
 class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
-  bool _isRequestsExpanded = false;
   ReceiveRequestsModel _receiveRequestsModel;
   ReceiveRequest _inProcessRequest;
 

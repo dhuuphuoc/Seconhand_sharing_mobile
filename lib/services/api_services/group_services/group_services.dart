@@ -62,8 +62,16 @@ class GroupServices {
     return JoinStatus.none;
   }
 
-  static Future<List<Group>> getGroups() async {
-    Uri url = Uri.https(APIService.apiUrl, "/Group");
+  static Future<List<Group>> getGroups(int pageNumber, int pageSize) async {
+    Uri url = Uri.https(
+        APIService.apiUrl,
+        "/Group",
+        pageSize != null && pageNumber != null
+            ? {
+                "PageNumber": pageNumber.toString(),
+                "PageSize": pageSize.toString(),
+              }
+            : null);
     var response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
@@ -262,6 +270,19 @@ class GroupServices {
 
   static Future<bool> kickMember(int groupId, int memberId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/member/$memberId");
+    var response = await http.delete(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      },
+    );
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> leaveGroup(int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/leave");
     var response = await http.delete(
       url,
       headers: {

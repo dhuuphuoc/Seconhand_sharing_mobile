@@ -1964,6 +1964,26 @@ class S {
       args: [itemName],
     );
   }
+
+  /// `Invite`
+  String get invite {
+    return Intl.message(
+      'Invite',
+      name: 'invite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The end`
+  String get end {
+    return Intl.message(
+      'The end',
+      name: 'end',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

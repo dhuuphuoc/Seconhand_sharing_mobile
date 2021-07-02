@@ -102,7 +102,7 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
         context: context,
         builder: (context) => ConfirmDialog(S.of(context).leaveGroup, S.of(context).leaveGroupConfirmation)).then((value) {
       if (value == true) {
-        GroupServices.kickMember(widget.groupId, AccessInfo().userInfo.id).then((result) {
+        GroupServices.leaveGroup(widget.groupId).then((result) {
           if (result) {
             setState(() {
               if (widget.role == MemberRole.admin) {

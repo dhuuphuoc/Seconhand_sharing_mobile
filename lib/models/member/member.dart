@@ -14,7 +14,7 @@ class Member {
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         id: json["userId"],
         fullName: json["fullName"],
-        joinDate: DateTime.parse(json["joinDate"]),
+        joinDate: json["joinDate"] == null ? null : DateTime.parse(json["joinDate"]),
         avatarUrl: json["avatarUrl"],
       );
 

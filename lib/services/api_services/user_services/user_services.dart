@@ -6,6 +6,7 @@ import 'package:secondhand_sharing/models/glory/glory.dart';
 import 'package:secondhand_sharing/models/image_model/image_data.dart';
 import 'package:secondhand_sharing/models/image_upload_model/image_upload_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondhand_sharing/models/member/member.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
@@ -105,12 +106,23 @@ class UserServices {
   }
 
   static Future<List<Glory>> getTopAwards() async {
-    Uri url = Uri.https(APIService.apiUrl, "/User/Award");
+    Uri url = Uri.https(APIService.apiUrl, "/User/award");
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
     print(response.body);
     return List<Glory>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Glory.fromJson(x)));
+  }
+
+  static Future<List<Member>> search(String keyword, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/User/search",
+        {"PageNumber": pageNumber.toString(), "PageSize": pageSize.toString(), "query": keyword});
+    var response = await http.get(url, headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+    });
+    print(response.body);
+    return List<Member>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Member.fromJson(x)));
   }
 }
