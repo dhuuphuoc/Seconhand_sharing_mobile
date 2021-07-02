@@ -2004,6 +2004,36 @@ class S {
       args: [],
     );
   }
+
+  /// `this`
+  String get thisLowerCase {
+    return Intl.message(
+      'this',
+      name: 'thisLowerCase',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You only can leave group when more than one admin`
+  String get leaveGroupError {
+    return Intl.message(
+      'You only can leave group when more than one admin',
+      name: 'leaveGroupError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `week`
+  String get week {
+    return Intl.message(
+      'week',
+      name: 'week',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

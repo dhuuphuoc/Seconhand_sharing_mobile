@@ -5,6 +5,7 @@ import 'package:secondhand_sharing/models/add_member_model/add_member_model.dart
 import 'package:secondhand_sharing/models/enums/add_member_response_type/add_member_response_type.dart';
 import 'package:secondhand_sharing/models/enums/join_status/join_status.dart';
 import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
+import 'package:secondhand_sharing/models/group_event/group_event.dart';
 import 'package:secondhand_sharing/models/group_model/create_group/create_group.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
@@ -78,6 +79,19 @@ class GroupServices {
     });
     print(response.body);
     return List<Group>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Group.fromJson(x)));
+  }
+
+  static Future<List<GroupEvent>> getGroupEvents(int groupId, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/event", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<GroupEvent>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => GroupEvent.fromJson(x)));
   }
 
   static Future<List<Group>> getJoinedGroups() async {

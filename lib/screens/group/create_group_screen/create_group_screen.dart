@@ -16,8 +16,7 @@ class CreateGroupScreen extends StatefulWidget {
   _CreateGroupScreenState createState() => _CreateGroupScreenState();
 }
 
-class _CreateGroupScreenState extends State<CreateGroupScreen>
-    with TickerProviderStateMixin {
+class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -35,17 +34,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
       _isLoading = true;
     });
 
-    Group group = await GroupServices.createGroup(CreateGroupForm(
-        _groupNameController.text,
-        _descriptionController.text,
-        _ruleController.text));
+    Group group = await GroupServices.createGroup(
+        CreateGroupForm(_groupNameController.text, _descriptionController.text, _ruleController.text));
 
     if (group != null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return NotifyDialog(
-              S.of(context).success, S.of(context).createGroupSuccess, "OK");
+          return NotifyDialog(S.of(context).success, S.of(context).createGroupSuccess, "OK");
         },
       ).whenComplete(() {
         Navigator.pushNamed(context, "/group/detail", arguments: group.id);
@@ -55,8 +51,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed,
-              S.of(context).createGroupFail, S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).createGroupFail, S.of(context).tryAgain);
         },
       );
     }
@@ -69,8 +64,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).createGroup,
-            style: Theme.of(context).textTheme.headline2),
+        title: Text(S.of(context).createGroup, style: Theme.of(context).textTheme.headline2),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -88,8 +82,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       labelText: "${S.of(context).groupName}",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 10,
@@ -104,8 +97,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       hintText: "${S.of(context).description}...",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 10,
@@ -120,8 +112,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                       hintText: "${S.of(context).rule}...",
                       filled: true,
                       fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
                 SizedBox(
                   height: 15,
@@ -132,9 +123,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen>
                 ),
                 Container(
                     width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: _isLoading ? null : onSubmit,
-                        child: Text(S.of(context).confirm))),
+                    child: ElevatedButton(onPressed: _isLoading ? null : onSubmit, child: Text(S.of(context).confirm))),
               ],
             ),
           ),

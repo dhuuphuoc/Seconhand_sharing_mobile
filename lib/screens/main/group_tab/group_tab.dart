@@ -15,6 +15,7 @@ import 'package:secondhand_sharing/services/api_services/group_services/group_se
 import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/event_card/event_card.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
@@ -53,6 +54,9 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     var invitations = await GroupServices.getInvitations();
     var events = await EventServices.getEvents(_pageNumber, _pageSize);
     setState(() {
+      if (events.length < _pageSize) {
+        _isEnd = true;
+      }
       _groups.addAll(groups);
       _myGroups.addAll(myGroups);
       _invitations = invitations;
@@ -131,76 +135,16 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
             color: Color(0xFFEB2626),
             size: 28,
           ),
-          title: Text(S.of(context).campaign),
+          title: Text(
+            S.of(context).campaign,
+            style: Theme.of(context).textTheme.headline3,
+          ),
           horizontalTitleGap: 0,
         ),
       ));
 
-      var dateFormat = DateFormat("dd/MM/yyyy");
-
       _events.forEach((event) {
-        listViewWidget.add(
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GroupAvatar(event.groupAvatar, 28),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              event.groupName,
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                            Text(
-                              "${TimeAgo.parse(event.startDate, locale: Localizations.localeOf(context).languageCode)}",
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Text("${S.of(context).remaining}: 2 ngày"),
-                          Text(""),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  Text(
-                    event.eventName,
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      AppIcons.calendar,
-                      color: Color(0xFFEB2626),
-                    ),
-                    horizontalTitleGap: 0,
-                    contentPadding: EdgeInsets.only(),
-                    title: Text("${dateFormat.format(event.startDate)} - ${dateFormat.format(event.endDate)}"),
-                  ),
-                  Text(event.content),
-                  SizedBox(height: 10),
-                  Container(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: Text(S.of(context).donate)))
-                ],
-              ),
-            ),
-          ),
-        );
+        listViewWidget.add(EventCard(event));
       });
       listViewWidget.add(SizedBox(height: 5));
 
@@ -212,7 +156,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
           ),
         ));
       }
-      if (!_isEnd) {
+      if (_isEnd) {
         listViewWidget.add(NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent));
       }
     }
@@ -220,6 +164,9 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     return NotificationListener(
       onNotification: (notification) {
         ScrollAbsorber.absorbScrollNotification(notification, ScreenType.main);
+        if (notification is ScrollEndNotification) {
+          loadMoreEvents();
+        }
         return true;
       },
       child: RefreshIndicator(

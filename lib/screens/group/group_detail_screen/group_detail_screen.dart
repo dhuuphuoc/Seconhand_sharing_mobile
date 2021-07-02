@@ -16,6 +16,7 @@ import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
+import 'package:secondhand_sharing/screens/group/group_detail_screen/post_tab/post_tab.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/widgets/images_picker/images_picker.dart';
@@ -197,7 +198,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                   child: MiniIndicator(),
                 )
               : TabBarView(children: [
-                  Container(),
+                  PostTab(_groupDetail, _role),
                   DescriptionTab(_groupDetail.description),
                   MemberTab(_groupDetail.id, _role, changeRole),
                 ]),

@@ -10,6 +10,7 @@ import 'package:secondhand_sharing/services/api_services/group_services/group_se
 import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 enum MemberActions {
@@ -112,6 +113,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
               }
             });
             widget.changeRole(null);
+          } else {
+            showDialog(
+                context: context, builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).leaveGroupError, "OK"));
           }
         });
       }
@@ -227,15 +231,78 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                       ),
                     ),
                   if (widget.role == null)
-                    Card(
+                    if (_joinStatus != JoinStatus.invited)
+                      Card(
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: ElevatedButton(
-                              onPressed: _joinStatus == JoinStatus.requested ? null : joinGroup,
-                              child:
-                                  Text(_joinStatus == JoinStatus.requested ? S.of(context).requested : S.of(context).joinGroup),
-                            ))),
+                          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: ElevatedButton(
+                            onPressed: _joinStatus == JoinStatus.requested ? null : joinGroup,
+                            child: Text(_joinStatus == JoinStatus.requested ? S.of(context).requested : S.of(context).joinGroup),
+                          ),
+                        ),
+                      )
+                    else
+                      Card(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                          child: Column(
+                            children: [
+                              Text("Bạn nhận được lời mời từ nhóm"),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        GroupServices.acceptInvitation(widget.groupId).then((value) {
+                                          if (value) {
+                                            setState(() {
+                                              widget.changeRole(MemberRole.member);
+                                              var userInfo = AccessInfo().userInfo;
+                                              _members.add(Member(
+                                                  id: userInfo.id,
+                                                  fullName: userInfo.fullName,
+                                                  joinDate: DateTime.now(),
+                                                  avatarUrl: userInfo.avatarUrl));
+                                            });
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) => NotifyDialog(S.of(context).success,
+                                                    S.of(context).youAreMemberOfGroup(S.of(context).thisLowerCase), "OK"));
+                                          }
+                                        });
+                                      },
+                                      child: Text(S.of(context).accept),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        GroupServices.declineInvitation(widget.groupId).then((value) {
+                                          if (value) {
+                                            setState(() {
+                                              _joinStatus = JoinStatus.none;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor)),
+                                      child: Text(
+                                        S.of(context).decline,
+                                        style: Theme.of(context).textTheme.headline4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                   SizedBox(height: 10),
                   Card(
                     margin: EdgeInsets.symmetric(horizontal: 10),
@@ -271,6 +338,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                           ),
                           ..._admins
                               .map((admin) => ListTile(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, "/profile", arguments: admin.id);
+                                    },
                                     leading: Avatar(admin.avatarUrl, 18),
                                     title: Text("${admin.fullName}", style: Theme.of(context).textTheme.headline3),
                                     subtitle: Text(S.of(context).admin),
@@ -320,6 +390,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                               .toList(),
                           ..._members
                               .map((member) => ListTile(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, "/profile", arguments: member.id);
+                                    },
                                     leading: Avatar(member.avatarUrl, 18),
                                     title: Text("${member.fullName}", style: Theme.of(context).textTheme.headline3),
                                     subtitle: Text(S.of(context).member),
