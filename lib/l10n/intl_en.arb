@@ -289,5 +289,7 @@
     }
   },
   "invite" : "Invite",
-  "end" : "The end"
+  "end" : "The end",
+  "remaining" : "Còn lại",
+  "campaign" : "Volunteer campaigns"
 }

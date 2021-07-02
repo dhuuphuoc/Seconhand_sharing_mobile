@@ -1984,6 +1984,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Còn lại`
+  String get remaining {
+    return Intl.message(
+      'Còn lại',
+      name: 'remaining',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Volunteer campaigns`
+  String get campaign {
+    return Intl.message(
+      'Volunteer campaigns',
+      name: 'campaign',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -289,5 +289,7 @@
     }
   },
   "invite" : "Mời",
-  "end" : "Hết"
+  "end" : "Hết",
+  "remaining" : "Còn lại",
+  "campaign" : "Chiến dịch tình nguyện"
 }

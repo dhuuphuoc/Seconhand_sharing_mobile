@@ -37,10 +37,11 @@ class AppIcons {
   static const _kFontFam = 'AppIcons';
   static const String _kFontPkg = null;
 
-  static const IconData bullhorn = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData stars = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData calendar = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData stars = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData campaign = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData birthday = IconData(0xf1fd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData facebook_messenger = IconData(0xf39f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData hands_helping = IconData(0xf4c4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData calendar_day = IconData(0xf783, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData facebook_messenger = IconData(0xf39f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

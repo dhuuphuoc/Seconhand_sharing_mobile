@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/group_event/group_event.dart';
 import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/invitation/invitation.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/create_group_card/create_group_card.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/group_avatar/group_avatar.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/group_widget/group_widget.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/my_groups/my_groups.dart';
 import 'package:secondhand_sharing/services/api_services/event_services/event_services.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
+import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
+import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/group_card/group_card.dart';
+import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
 
@@ -117,9 +122,87 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
         ));
       listViewWidget.add(Container(margin: EdgeInsets.all(10), child: CreateGroupCard(_groups)));
       listViewWidget.add(Container(margin: EdgeInsets.all(10), child: MyGroups(_myGroups)));
+      listViewWidget.add(Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: ListTile(
+          leading: Icon(
+            AppIcons.campaign,
+            color: Color(0xFFEB2626),
+            size: 28,
+          ),
+          title: Text(S.of(context).campaign),
+          horizontalTitleGap: 0,
+        ),
+      ));
+
+      var dateFormat = DateFormat("dd/MM/yyyy");
+
       _events.forEach((event) {
-        // listViewWidget.add();
+        listViewWidget.add(
+          Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GroupAvatar(event.groupAvatar, 28),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              event.groupName,
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            Text(
+                              "${TimeAgo.parse(event.startDate, locale: Localizations.localeOf(context).languageCode)}",
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text("${S.of(context).remaining}: 2 ngày"),
+                          Text(""),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  Text(
+                    event.eventName,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      AppIcons.calendar,
+                      color: Color(0xFFEB2626),
+                    ),
+                    horizontalTitleGap: 0,
+                    contentPadding: EdgeInsets.only(),
+                    title: Text("${dateFormat.format(event.startDate)} - ${dateFormat.format(event.endDate)}"),
+                  ),
+                  Text(event.content),
+                  SizedBox(height: 10),
+                  Container(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: Text(S.of(context).donate)))
+                ],
+              ),
+            ),
+          ),
+        );
       });
+      listViewWidget.add(SizedBox(height: 5));
 
       if (_isLoadingMore) {
         listViewWidget.add(Container(

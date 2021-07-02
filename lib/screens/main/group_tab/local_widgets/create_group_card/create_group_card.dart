@@ -49,7 +49,6 @@ class _CreateGroupCardState extends State<CreateGroupCard> {
     Size screenSize = MediaQuery.of(context).size;
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      elevation: 10,
       child: Column(
         children: [
           SizedBox(

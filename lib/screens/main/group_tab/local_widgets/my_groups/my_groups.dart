@@ -48,7 +48,6 @@ class _MyGroupsState extends State<MyGroups> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      elevation: 10,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
