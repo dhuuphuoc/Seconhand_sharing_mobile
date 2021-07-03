@@ -104,7 +104,6 @@ class ItemServices {
           HttpHeaders.contentTypeHeader: ContentType.json.value,
         },
         body: jsonEncode(postItemForm.toJson()));
-    print(postItemForm.toJson());
     print(response.body);
     if (response.statusCode == 200)
       return ImagesUploadModel.fromJson(jsonDecode(response.body)["data"]);

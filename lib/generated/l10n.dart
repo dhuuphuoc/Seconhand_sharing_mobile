@@ -2034,6 +2034,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Create event`
+  String get createEvent {
+    return Intl.message(
+      'Create event',
+      name: 'createEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event name`
+  String get eventName {
+    return Intl.message(
+      'Event name',
+      name: 'eventName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start date`
+  String get startDate {
+    return Intl.message(
+      'Start date',
+      name: 'startDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End date`
+  String get endDate {
+    return Intl.message(
+      'End date',
+      name: 'endDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Content`
+  String get content {
+    return Intl.message(
+      'Content',
+      name: 'content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message(
+      'Create',
+      name: 'create',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event name can't be empty!`
+  String get eventNameEmptyError {
+    return Intl.message(
+      'Event name can\'t be empty!',
+      name: 'eventNameEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start date can't be empty!`
+  String get startDateEmptyError {
+    return Intl.message(
+      'Start date can\'t be empty!',
+      name: 'startDateEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End date can't be empty!`
+  String get endDateEmptyError {
+    return Intl.message(
+      'End date can\'t be empty!',
+      name: 'endDateEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Content can't be empty!`
+  String get contentEmptyError {
+    return Intl.message(
+      'Content can\'t be empty!',
+      name: 'contentEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event have been posted. Please check donating items frequently!`
+  String get eventPosted {
+    return Intl.message(
+      'Event have been posted. Please check donating items frequently!',
+      name: 'eventPosted',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

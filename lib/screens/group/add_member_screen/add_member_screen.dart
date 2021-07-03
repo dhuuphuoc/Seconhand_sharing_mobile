@@ -25,8 +25,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   List<Member> _addedUser = [];
   bool _isSearching = false;
 
-  Future<void> invite() async {
-    var result = await GroupServices.inviteMember(_groupId, _searchTextEditingController.text);
+  Future<void> invite(int userId) async {
+    var result = await GroupServices.inviteMember(_groupId, userId);
     if (result.type == AddMemberResponseType.invited) {
       showDialog(
           context: context,
@@ -35,7 +35,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     }
     if (result.type == AddMemberResponseType.added) {
       showDialog(context: context, builder: (context) => NotifyDialog(S.of(context).success, S.of(context).memberAdded, "OK"))
-          .whenComplete(() {});
+          .whenComplete(() {
+        _addedUser.add(result.member);
+      });
       return;
     }
     if (result.type == AddMemberResponseType.existed) {
@@ -73,7 +75,6 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   @override
   void initState() {
     super.initState();
-    query("");
   }
 
   @override
@@ -117,7 +118,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   trailing: ElevatedButton(
-                    onPressed: invite,
+                    onPressed: () {
+                      invite(user.id);
+                    },
                     child: Text(S.of(context).invite),
                   ),
                 ),

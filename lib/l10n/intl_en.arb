@@ -294,5 +294,16 @@
   "campaign" : "Volunteer campaigns",
   "thisLowerCase": "this",
   "leaveGroupError" : "You only can leave group when more than one admin",
-  "week" : "week"
+  "week" : "week",
+  "createEvent" : "Create event",
+  "eventName" : "Event name",
+  "startDate": "Start date",
+  "endDate" : "End date",
+  "content" : "Content",
+  "create" : "Create",
+  "eventNameEmptyError" : "Event name can't be empty!",
+  "startDateEmptyError" : "Start date can't be empty!",
+  "endDateEmptyError" : "End date can't be empty!",
+  "contentEmptyError" : "Content can't be empty!",
+  "eventPosted" : "Event have been posted. Please check donating items frequently!"
 }

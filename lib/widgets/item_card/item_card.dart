@@ -27,9 +27,21 @@ class ItemCard extends StatelessWidget {
             children: [
               ListTile(
                 leading: Avatar(item.avatarUrl, 20),
-                title: Text(
-                  item.donateAccountName,
-                  style: Theme.of(context).textTheme.headline3,
+                title: Row(
+                  children: [
+                    Text(
+                      item.donateAccountName,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    if (item.eventName != null) Icon(Icons.arrow_right),
+                    if (item.eventName != null)
+                      Expanded(
+                          child: Text(
+                        item.eventName,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline3,
+                      ))
+                  ],
                 ),
                 subtitle: Text(
                   "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}",

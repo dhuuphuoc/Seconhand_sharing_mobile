@@ -61,35 +61,66 @@ class _PostTabState extends State<PostTab> with AutomaticKeepAliveClientMixin<Po
         }
         return true;
       },
-      child: CustomScrollView(
-        controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
-        cacheExtent: double.infinity,
-        slivers: [
-          SliverOverlapInjector(
-            // This is the flip side of the SliverOverlapAbsorber
-            // above.
-            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-          ),
-          SliverList(
-              delegate: SliverChildListDelegate([
-            SizedBox(height: 10),
-            ..._events.map((event) {
-              event.groupName = widget.group.groupName;
-              event.groupAvatar = widget.group.avatarUrl;
-              return EventCard(event);
-            }),
-            SizedBox(height: 10),
-            if (_isLoading)
-              Container(
-                height: screenSize.height * 0.2,
-                child: Center(
-                  child: MiniIndicator(),
+      child: RefreshIndicator(
+        edgeOffset: screenSize.height * 0.2,
+        onRefresh: () async {
+          _events = [];
+          _pageNumber = 1;
+          _isEnd = false;
+          await loadData();
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          cacheExtent: double.infinity,
+          slivers: [
+            SliverOverlapInjector(
+              // This is the flip side of the SliverOverlapAbsorber
+              // above.
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              SizedBox(height: 20),
+              if (widget.role == MemberRole.admin)
+                Card(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/create-event", arguments: widget.group.id).then((value) {
+                          if (value != null) {
+                            var event = value as GroupEvent;
+                            setState(() {
+                              _events.insert(0, event);
+                            });
+                          }
+                        });
+                      },
+                      child: Text(S.of(context).createEvent),
+                    ),
+                  ),
                 ),
-              ),
-            if (_isEnd) NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent),
-          ])),
-        ],
+              SizedBox(height: 10),
+              ..._events.map((event) {
+                event.groupName = widget.group.groupName;
+                event.groupAvatar = widget.group.avatarUrl;
+                return EventCard(event);
+              }),
+              SizedBox(height: 10),
+              if (_isLoading)
+                Container(
+                  height: screenSize.height * 0.2,
+                  child: Center(
+                    child: MiniIndicator(),
+                  ),
+                ),
+              if (_isEnd) NotificationCard(Icons.check_circle_outline, S.of(context).noMoreEvent),
+              SizedBox(height: 20),
+            ])),
+          ],
+        ),
       ),
     );
   }

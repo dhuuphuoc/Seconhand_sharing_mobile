@@ -9,7 +9,9 @@ class Item {
       this.description,
       this.imageUrl,
       this.donateAccountName,
-      this.avatarUrl});
+      this.avatarUrl,
+      this.eventName,
+      this.eventId});
 
   int id;
   String itemName;
@@ -19,16 +21,21 @@ class Item {
   String imageUrl;
   String donateAccountName;
   String avatarUrl;
+  int eventId;
+  String eventName;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-      id: json["id"],
-      itemName: json["itemName"],
-      receiveAddress: AddressModel.fromJson(json["address"]),
-      postTime: DateTime.parse(json["postTime"]),
-      description: json["description"],
-      imageUrl: json["imageUrl"],
-      donateAccountName: json["donateAccountName"],
-      avatarUrl: json["avatarUrl"]);
+        id: json["id"],
+        itemName: json["itemName"],
+        receiveAddress: AddressModel.fromJson(json["address"]),
+        postTime: DateTime.parse(json["postTime"]),
+        description: json["description"],
+        imageUrl: json["imageUrl"],
+        donateAccountName: json["donateAccountName"],
+        avatarUrl: json["avatarUrl"],
+        eventId: json["eventId"],
+        eventName: json["eventName"],
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,

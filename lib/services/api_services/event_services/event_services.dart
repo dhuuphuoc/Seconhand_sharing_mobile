@@ -1,10 +1,45 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:secondhand_sharing/models/group_event/group_event.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondhand_sharing/models/image_upload_model/images_upload_model.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
+import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/response_deserializer/response_deserializer.dart';
+
+class EventForm {
+  EventForm({
+    this.eventName,
+    this.startDate,
+    this.endDate,
+    this.content,
+    this.groupId,
+  });
+
+  String eventName;
+  DateTime startDate;
+  DateTime endDate;
+  String content;
+  int groupId;
+
+  factory EventForm.fromJson(Map<String, dynamic> json) => EventForm(
+        eventName: json["eventName"],
+        startDate: DateTime.parse(json["startDate"]),
+        endDate: DateTime.parse(json["endDate"]),
+        content: json["content"],
+        groupId: json["groupId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "eventName": eventName,
+        "startDate": startDate.toIso8601String(),
+        "endDate": endDate.toIso8601String(),
+        "content": content,
+        "groupId": groupId,
+      };
+}
 
 class EventServices {
   static Future<List<GroupEvent>> getEvents(int pageNumber, int pageSize) async {
@@ -23,5 +58,35 @@ class EventServices {
     });
     print(response.body);
     return List<GroupEvent>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => GroupEvent.fromJson(x)));
+  }
+
+  static Future<ImagesUploadModel> postItem(int eventId, PostItemForm postItemForm) async {
+    Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Event/$eventId/item");
+    var response = await http.post(postItemsUrl,
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
+        },
+        body: jsonEncode(postItemForm.toJson()));
+    print(response.body);
+    if (response.statusCode == 200)
+      return ImagesUploadModel.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
+  }
+
+  static Future<GroupEvent> createEvent(EventForm eventForm) async {
+    Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Event");
+    var response = await http.post(postItemsUrl,
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
+        },
+        body: jsonEncode(eventForm.toJson()));
+    print(response.body);
+    if (response.statusCode == 200)
+      return GroupEvent.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
   }
 }

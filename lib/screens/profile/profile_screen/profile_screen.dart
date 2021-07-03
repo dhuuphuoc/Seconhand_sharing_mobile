@@ -263,9 +263,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           children: [
                             Avatar(_userInfo.avatarUrl, screenSize.height * 0.07),
                             if (!_isHideIcon && _isMe)
-                              Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: IconButton(onPressed: pickImages, icon: Icon(Icons.camera_alt)))
+                              Container(
+                                width: screenSize.width * 0.33,
+                                child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(onPressed: pickImages, icon: Icon(Icons.camera_alt))),
+                              )
                           ],
                         ),
                       ),
@@ -309,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     Icons.email,
                                     color: Theme.of(context).primaryColor,
                                   ),
-                            title: Text(_userInfo.email == null ? "" : _userInfo.email),
+                            title: Text(_userInfo.email ?? ""),
                             trailing: _isHideIcon || _isMe
                                 ? null
                                 : IconButton(
@@ -372,7 +375,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               ? null
                               : Icon(
                                   AppIcons.birthday,
-                                  color: Colors.deepOrange,
+                                  color: Color(0xFFEB2626),
                                 ),
                           title: Text(_dob == null ? "" : dateFormat.format(_dob)),
                           trailing: !_isMe || _isHideIcon

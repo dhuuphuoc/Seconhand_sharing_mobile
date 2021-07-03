@@ -237,14 +237,14 @@ class GroupServices {
     return response.statusCode == 200;
   }
 
-  static Future<AddMemberModel> inviteMember(int groupId, String email) async {
+  static Future<AddMemberModel> inviteMember(int groupId, int userId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/member");
     var response = await http.post(url,
         headers: {
           HttpHeaders.contentTypeHeader: ContentType.json.value,
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
         },
-        body: jsonEncode({"email": email}));
+        body: jsonEncode({"userId": userId}));
     print(response.body);
     var json = jsonDecode(response.body);
     var result = AddMemberModel();

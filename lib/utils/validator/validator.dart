@@ -62,4 +62,20 @@ class Validator {
   static String matchPassword(String confirmPassword, String password) {
     return (confirmPassword == password) ? null : S.current.matchPassword;
   }
+
+  static String validateEventName(String value) {
+    return value.length == 0 ? S.current.eventNameEmptyError : null;
+  }
+
+  static String validateStartDate(String value) {
+    return value.length == 0 ? S.current.startDateEmptyError : null;
+  }
+
+  static String validateEndDate(String value) {
+    return value.length == 0 ? S.current.endDateEmptyError : null;
+  }
+
+  static String validateContent(String value) {
+    return value.length == 0 ? S.current.contentEmptyError : null;
+  }
 }

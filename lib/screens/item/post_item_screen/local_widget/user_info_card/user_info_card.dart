@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 
 class UserInfoCard extends StatefulWidget {
-  final Function onMapPress;
+  final String eventName;
 
-  UserInfoCard(this.onMapPress);
+  UserInfoCard(this.eventName);
 
   @override
   _UserInfoCardState createState() => _UserInfoCardState();
@@ -28,9 +28,22 @@ class _UserInfoCardState extends State<UserInfoCard> {
                   : NetworkImage(AccessInfo().userInfo.avatarUrl),
               backgroundColor: Theme.of(context).backgroundColor,
             ),
-            title: Text(
-              AccessInfo().userInfo.fullName,
-              style: Theme.of(context).textTheme.headline3,
+            title: Row(
+              children: [
+                Text(
+                  AccessInfo().userInfo.fullName,
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                if (widget.eventName != null) Icon(Icons.arrow_right),
+                if (widget.eventName != null)
+                  Expanded(
+                    child: Text(
+                      widget.eventName,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+              ],
             ),
             subtitle: Text(
               AccessInfo().userInfo.email,

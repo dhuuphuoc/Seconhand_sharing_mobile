@@ -294,5 +294,17 @@
   "campaign" : "Chiến dịch tình nguyện",
   "thisLowerCase": "này",
   "leaveGroupError" : "Bạn chỉ có thể rời khỏi nhóm khi nhóm có trên 2 admin",
-  "week" : "tuần"
+  "week" : "tuần",
+  "createEvent" : "Tạo sự kiện",
+  "eventName" : "Tên sự kiện",
+  "startDate": "Ngày bắt đầu",
+  "endDate" : "Ngày kết thúc",
+  "content" : "Nội dung",
+  "create" : "Tạo",
+  "eventNameEmptyError" : "Tên sự kiện không được bỏ trống!",
+  "startDateEmptyError" : "Ngày bắt đầu không được bỏ trống!",
+  "endDateEmptyError" : "Ngày kết thúc không được bỏ trống!",
+  "contentEmptyError" : "Nội dung không được bỏ trống!",
+  "eventPosted" : "Sự kiện quyên góp đã được đăng tải. Hãy kiểm tra vật phẩm được quyên góp thường xuyên nhé!"
+
 }

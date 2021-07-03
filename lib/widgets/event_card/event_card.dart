@@ -70,7 +70,13 @@ class EventCard extends StatelessWidget {
             ),
             Text(_event.content),
             SizedBox(height: 10),
-            Container(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: Text(S.of(context).donate)))
+            Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/post-item", arguments: _event);
+                    },
+                    child: Text(S.of(context).donate)))
           ],
         ),
       ),
