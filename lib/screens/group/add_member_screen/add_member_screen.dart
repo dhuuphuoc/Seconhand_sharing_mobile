@@ -46,10 +46,16 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
           builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).memberExisted, S.of(context).tryAgain));
       return;
     }
+    if (result.type == AddMemberResponseType.alreadyInvited) {
+      showDialog(
+          context: context,
+          builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).userAlreadyInvited, S.of(context).tryAgain));
+      return;
+    }
     if (result.type == AddMemberResponseType.notExist) {
       showDialog(
           context: context,
-          builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).emailNotExist, S.of(context).tryAgain));
+          builder: (context) => NotifyDialog(S.of(context).failed, S.of(context).userNotExist, S.of(context).tryAgain));
       return;
     }
     showDialog(
@@ -81,51 +87,57 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   Widget build(BuildContext context) {
     _groupId = ModalRoute.of(context).settings.arguments;
     var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        title: Text(
-          S.of(context).addMember,
-          style: Theme.of(context).textTheme.headline2,
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, _addedUser);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 2,
+          title: Text(
+            S.of(context).addMember,
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          centerTitle: true,
+          titleSpacing: 0,
         ),
-        centerTitle: true,
-        titleSpacing: 0,
-      ),
-      body: ListView(
-        children: [
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              color: Colors.white,
-              child: CupertinoSearchTextField(
-                controller: _searchTextEditingController,
-                onSubmitted: query,
-                prefixInsets: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-              )),
-          if (_isSearching)
+        body: ListView(
+          children: [
             Container(
-              height: screenSize.height * 0.2,
-              child: Center(
-                child: MiniIndicator(),
-              ),
-            ),
-          SizedBox(height: 5),
-          ..._users.map((user) => Card(
-                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: ListTile(
-                  leading: Avatar(user.avatarUrl, 20),
-                  title: Text(
-                    user.fullName,
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      invite(user.id);
-                    },
-                    child: Text(S.of(context).invite),
-                  ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                color: Colors.white,
+                child: CupertinoSearchTextField(
+                  controller: _searchTextEditingController,
+                  onSubmitted: query,
+                  prefixInsets: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                )),
+            if (_isSearching)
+              Container(
+                height: screenSize.height * 0.2,
+                child: Center(
+                  child: MiniIndicator(),
                 ),
-              ))
-        ],
+              ),
+            SizedBox(height: 5),
+            ..._users.map((user) => Card(
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: ListTile(
+                    leading: Avatar(user.avatarUrl, 20),
+                    title: Text(
+                      user.fullName,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        invite(user.id);
+                      },
+                      child: Text(S.of(context).invite),
+                    ),
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }

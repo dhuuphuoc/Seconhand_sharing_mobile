@@ -1,1 +1,1 @@
-enum AddMemberResponseType { invited, added, existed, notExist, notAdmin }
+enum AddMemberResponseType { invited, alreadyInvited, added, existed, notExist, notAdmin }

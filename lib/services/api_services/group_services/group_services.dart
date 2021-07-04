@@ -258,14 +258,14 @@ class GroupServices {
       return result;
     }
     String message = json["Message"];
-
-    if (message == "Member exist in group.") {
+    if (message == "Member already invited") {
+      result.type = AddMemberResponseType.alreadyInvited;
+    } else if (message == "Member exist in group.") {
       result.type = AddMemberResponseType.existed;
-    }
-    if (message == "Email does not exist.") {
+    } else if (message == "UserId not exist.") {
       result.type = AddMemberResponseType.notExist;
-    }
-    result.type = AddMemberResponseType.notAdmin;
+    } else
+      result.type = AddMemberResponseType.notAdmin;
     return result;
   }
 

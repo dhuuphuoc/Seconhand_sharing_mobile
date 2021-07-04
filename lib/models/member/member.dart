@@ -12,7 +12,7 @@ class Member {
   String avatarUrl;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
-        id: json["userId"],
+        id: json["userId"] ?? json["id"],
         fullName: json["fullName"],
         joinDate: json["joinDate"] == null ? null : DateTime.parse(json["joinDate"]),
         avatarUrl: json["avatarUrl"],

@@ -1775,11 +1775,21 @@ class S {
     );
   }
 
-  /// `Email not exists`
-  String get emailNotExist {
+  /// `User not exists`
+  String get userNotExist {
     return Intl.message(
-      'Email not exists',
-      name: 'emailNotExist',
+      'User not exists',
+      name: 'userNotExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User already invited`
+  String get userAlreadyInvited {
+    return Intl.message(
+      'User already invited',
+      name: 'userAlreadyInvited',
       desc: '',
       args: [],
     );
