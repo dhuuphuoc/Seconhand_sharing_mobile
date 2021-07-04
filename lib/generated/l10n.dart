@@ -2154,6 +2154,86 @@ class S {
       args: [],
     );
   }
+
+  /// `There is no any invitations`
+  String get noAnyInvitations {
+    return Intl.message(
+      'There is no any invitations',
+      name: 'noAnyInvitations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assign`
+  String get assign {
+    return Intl.message(
+      'Assign',
+      name: 'assign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reject`
+  String get reject {
+    return Intl.message(
+      'Reject',
+      name: 'reject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See more`
+  String get seeMore {
+    return Intl.message(
+      'See more',
+      name: 'seeMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My donations`
+  String get myDonation {
+    return Intl.message(
+      'My donations',
+      name: 'myDonation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You only can delete item when there is no any accepted registration.`
+  String get deleteItemFailedMessage {
+    return Intl.message(
+      'You only can delete item when there is no any accepted registration.',
+      name: 'deleteItemFailedMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

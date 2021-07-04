@@ -306,6 +306,14 @@
   "startDateEmptyError" : "Ngày bắt đầu không được bỏ trống!",
   "endDateEmptyError" : "Ngày kết thúc không được bỏ trống!",
   "contentEmptyError" : "Nội dung không được bỏ trống!",
-  "eventPosted" : "Sự kiện quyên góp đã được đăng tải. Hãy kiểm tra vật phẩm được quyên góp thường xuyên nhé!"
+  "eventPosted" : "Sự kiện quyên góp đã được đăng tải. Hãy kiểm tra vật phẩm được quyên góp thường xuyên nhé!",
+  "noAnyInvitations": "Không có lời mời nào cả",
+  "assign" : "Phân công",
+  "reject" : "Không nhận",
+  "seeMore": "Xem thêm",
+  "edit": "Chỉnh sửa",
+  "delete" : "Xóa",
+  "myDonation" : "Quyên góp của tôi",
+  "deleteItemFailedMessage": "Bạn chỉ có thể xóa vật phẩm chưa cho ai"
 
 }

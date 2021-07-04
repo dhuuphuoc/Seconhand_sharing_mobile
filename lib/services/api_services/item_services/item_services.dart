@@ -121,6 +121,16 @@ class ItemServices {
     return response.statusCode == 200;
   }
 
+  static Future<bool> deleteItem(int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId");
+    var response = await http.delete(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}"
+    });
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
   static Future<UserInfo> getReceivedUserInfo(int itemId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Item/$itemId/received-user");
     var response = await http.get(url, headers: {

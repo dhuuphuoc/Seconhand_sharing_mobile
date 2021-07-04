@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
@@ -24,6 +26,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   List<Member> _users = [];
   List<Member> _addedUser = [];
   bool _isSearching = false;
+  Timer _timer;
 
   Future<void> invite(int userId) async {
     var result = await GroupServices.inviteMember(_groupId, userId);
@@ -64,6 +67,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   }
 
   Future<void> query(String value) async {
+    _timer?.cancel();
     setState(() {
       _isSearching = true;
     });
@@ -109,6 +113,12 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                 color: Colors.white,
                 child: CupertinoSearchTextField(
                   controller: _searchTextEditingController,
+                  onChanged: (value) {
+                    _timer?.cancel();
+                    _timer = Timer(Duration(milliseconds: 700), () {
+                      query(value);
+                    });
+                  },
                   onSubmitted: query,
                   prefixInsets: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 )),
@@ -123,6 +133,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
             ..._users.map((user) => Card(
                   margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/profile", arguments: user.id);
+                    },
                     leading: Avatar(user.avatarUrl, 20),
                     title: Text(
                       user.fullName,

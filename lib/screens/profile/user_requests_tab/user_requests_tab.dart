@@ -29,8 +29,7 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _postsScrollController.addListener(() {
-        if (_postsScrollController.position.maxScrollExtent ==
-            _postsScrollController.offset) {
+        if (_postsScrollController.position.maxScrollExtent == _postsScrollController.offset) {
           if (!_isEnd && !_isLoading) {
             _pageNumber++;
             fetchItems();
@@ -56,8 +55,7 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     setState(() {
       _isLoading = true;
     });
-    var items = await ReceiveServices.getRequestedItems(
-        widget.userId, _pageNumber, _pageSize);
+    var items = await ReceiveServices.getRequestedItems(widget.userId, _pageNumber, _pageSize);
     if (items.isEmpty) {
       setState(() {
         _isEnd = true;
@@ -79,7 +77,7 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
     var listViewWidgets = <Widget>[];
 
     _items.forEach((item) {
-      listViewWidgets.add(ItemCard(item));
+      listViewWidgets.add(ItemCard(item, null));
     });
     listViewWidgets.add(_isLoading
         ? Container(
@@ -92,13 +90,10 @@ class _UserRequestsTabState extends State<UserRequestsTab> {
             height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
-      listViewWidgets.add(NotificationCard(
-          Icons.check_circle_outline, S.of(context).endNotifyMessage));
+      listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
       listViewWidgets.add(SizedBox(height: 10));
     }
 
-    return CustomScrollView(slivers: [
-      SliverList(delegate: SliverChildListDelegate(listViewWidgets))
-    ]);
+    return CustomScrollView(slivers: [SliverList(delegate: SliverChildListDelegate(listViewWidgets))]);
   }
 }

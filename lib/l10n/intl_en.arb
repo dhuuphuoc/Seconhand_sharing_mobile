@@ -306,5 +306,13 @@
   "startDateEmptyError" : "Start date can't be empty!",
   "endDateEmptyError" : "End date can't be empty!",
   "contentEmptyError" : "Content can't be empty!",
-  "eventPosted" : "Event have been posted. Please check donating items frequently!"
+  "eventPosted" : "Event have been posted. Please check donating items frequently!",
+  "noAnyInvitations": "There is no any invitations",
+  "assign" : "Assign",
+  "reject" : "Reject",
+  "seeMore": "See more",
+  "edit": "Edit",
+  "delete" : "Delete",
+  "myDonation" : "My donations",
+  "deleteItemFailedMessage": "You only can delete item when there is no any accepted registration."
 }

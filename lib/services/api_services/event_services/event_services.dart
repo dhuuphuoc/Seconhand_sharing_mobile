@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:secondhand_sharing/models/group_event/group_event.dart';
 import 'package:http/http.dart' as http;
 import 'package:secondhand_sharing/models/image_upload_model/images_upload_model.dart';
+import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
@@ -76,13 +77,42 @@ class EventServices {
   }
 
   static Future<GroupEvent> createEvent(EventForm eventForm) async {
-    Uri postItemsUrl = Uri.https(APIService.apiUrl, "/Event");
-    var response = await http.post(postItemsUrl,
+    Uri url = Uri.https(APIService.apiUrl, "/Event");
+    var response = await http.post(url,
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
           HttpHeaders.contentTypeHeader: ContentType.json.value,
         },
         body: jsonEncode(eventForm.toJson()));
+    print(response.body);
+    if (response.statusCode == 200)
+      return GroupEvent.fromJson(jsonDecode(response.body)["data"]);
+    else
+      return null;
+  }
+
+  static Future<List<Item>> getItems(int eventId, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId/item", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
+  }
+
+  static Future<GroupEvent> getEventDetail(int eventId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId");
+    var response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+      },
+    );
     print(response.body);
     if (response.statusCode == 200)
       return GroupEvent.fromJson(jsonDecode(response.body)["data"]);

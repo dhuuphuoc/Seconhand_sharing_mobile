@@ -50,7 +50,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
       setState(() {
         _isLoading = true;
       });
-      var items = await ItemServices.getItems(_categoryModel.selectedId, "", _pageNumber, _pageSize);
+      var items = await ItemServices.getItems(_categoryModel.selectedId, null, _pageNumber, _pageSize);
       setState(() {
         if (items.length < _pageSize) {
           _isEnd = true;
@@ -124,7 +124,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
 
     if (_runningTasks == 0)
       _items.forEach((item) {
-        listViewWidgets.add(ItemCard(item));
+        listViewWidgets.add(ItemCard(item, () {
+          setState(() {
+            _items.remove(item);
+          });
+        }));
       });
     listViewWidgets.add(Container(
       height: _isEnd ? 0 : screenSize.height * 0.2,

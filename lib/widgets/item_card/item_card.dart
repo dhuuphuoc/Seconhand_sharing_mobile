@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/item/item.dart';
+import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
+import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
+
+enum ItemAction { edit, delete }
 
 class ItemCard extends StatelessWidget {
   final Item item;
+  final Function onDelete;
 
-  ItemCard(this.item);
+  ItemCard(this.item, this.onDelete);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +49,52 @@ class ItemCard extends StatelessWidget {
                       ))
                   ],
                 ),
+                trailing: item.donateAccountId == AccessInfo().userInfo.id
+                    ? PopupMenuButton<ItemAction>(
+                        onSelected: (action) {
+                          if (action == ItemAction.delete) {
+                            ItemServices.deleteItem(item.id).then((value) {
+                              if (value) {
+                                onDelete();
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        NotifyDialog(S.of(context).failed, S.of(context).deleteItemFailedMessage, "OK"));
+                              }
+                            });
+                          }
+                        },
+                        itemBuilder: (context) => <PopupMenuEntry<ItemAction>>[
+                          PopupMenuItem<ItemAction>(
+                            value: ItemAction.edit,
+                            child: ListTile(
+                                leading: Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                title: Text(
+                                  S.of(context).edit,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                )),
+                          ),
+                          PopupMenuItem<ItemAction>(
+                            value: ItemAction.delete,
+                            child: ListTile(
+                                leading: Icon(
+                                  Icons.delete,
+                                  color: Color(0xFFEB2626),
+                                ),
+                                title: Text(
+                                  S.of(context).delete,
+                                  style: TextStyle(color: Color(0xFFEB2626)),
+                                )),
+                          ),
+                        ],
+                      )
+                    : null,
                 subtitle: Text(
                   "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}",
                   style: Theme.of(context).textTheme.subtitle2,

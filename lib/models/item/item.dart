@@ -8,6 +8,7 @@ class Item {
       this.postTime,
       this.description,
       this.imageUrl,
+      this.donateAccountId,
       this.donateAccountName,
       this.avatarUrl,
       this.eventName,
@@ -19,6 +20,7 @@ class Item {
   DateTime postTime;
   String description;
   String imageUrl;
+  int donateAccountId;
   String donateAccountName;
   String avatarUrl;
   int eventId;
@@ -32,6 +34,7 @@ class Item {
         description: json["description"],
         imageUrl: json["imageUrl"],
         donateAccountName: json["donateAccountName"],
+        donateAccountId: json["donateAccountId"],
         avatarUrl: json["avatarUrl"],
         eventId: json["eventId"],
         eventName: json["eventName"],

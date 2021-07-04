@@ -81,9 +81,9 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
   void addMember() {
     Navigator.pushNamed(context, "/group/add-member", arguments: widget.groupId).then((value) {
       if (value != null) {
-        var member = value as Member;
+        var members = value as List<Member>;
         setState(() {
-          _members.add(member);
+          _members.addAll(members);
         });
       }
     });

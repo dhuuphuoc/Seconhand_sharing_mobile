@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
+import 'package:secondhand_sharing/widgets/number_badge/number_badge.dart';
 
 class RequestsExpansionPanel extends StatefulWidget {
   @override
@@ -73,19 +74,7 @@ class _RequestsExpansionPanelState extends State<RequestsExpansionPanel> {
             // color: Theme.of(context).primaryColor,
           ),
           title: Text(S.of(context).registrations),
-          trailing: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            child: Text(
-              _receiveRequestsModel.requests.length.toString(),
-              style: TextStyle(color: _receiveRequestsModel.requests.isNotEmpty ? Colors.white : Colors.black54),
-            ),
-            decoration: BoxDecoration(
-              color: _receiveRequestsModel.requests.isNotEmpty
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
+          trailing: NumberBadge(_receiveRequestsModel.requests.length),
           children: _receiveRequestsModel.requests
               .map((request) => InkWell(
                     onTap: () {

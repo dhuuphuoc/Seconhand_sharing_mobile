@@ -18,6 +18,7 @@ import 'package:secondhand_sharing/screens/authentication/login/login_screen.dar
 import 'package:secondhand_sharing/screens/authentication/reset_password/reset_password_screen.dart';
 import 'package:secondhand_sharing/screens/authentication/sign_up/sign_up_screen.dart';
 import 'package:secondhand_sharing/screens/event/create_event_screen/create_event_screen.dart';
+import 'package:secondhand_sharing/screens/event/event_detail_screen/event_detail_screen.dart';
 import 'package:secondhand_sharing/screens/group/add_member_screen/add_member_screen.dart';
 import 'package:secondhand_sharing/screens/group/create_group_screen/create_group_screen.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/group_detail_screen.dart';
@@ -140,7 +141,8 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/group/add-member": (context) => AddMemberScreen(),
         "/group/invitations": (context) => InvitationScreen(),
         "/item/search": (context) => SearchScreen(),
-        "/create-event": (context) => CreateEventScreen()
+        "/create-event": (context) => CreateEventScreen(),
+        "/event/detail": (context) => EventDetailScreen(),
       },
     );
   }

@@ -46,6 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> query() async {
+    _timer?.cancel();
     setState(() {
       _isSearching = true;
     });
