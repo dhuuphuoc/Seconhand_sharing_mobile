@@ -104,6 +104,19 @@ class EventServices {
     return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
   }
 
+  static Future<List<Item>> getMyDonations(int eventId, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId/my-donations", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Item>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Item.fromJson(x)));
+  }
+
   static Future<GroupEvent> getEventDetail(int eventId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId");
     var response = await http.get(
@@ -118,5 +131,44 @@ class EventServices {
       return GroupEvent.fromJson(jsonDecode(response.body)["data"]);
     else
       return null;
+  }
+
+  static Future<bool> acceptItem(int eventId, int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId/accept-item/$itemId");
+    var response = await http.put(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+      },
+    );
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> cancelAccept(int eventId, int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId/cancel-accept/$itemId");
+    var response = await http.put(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+      },
+    );
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> rejectItem(int eventId, int itemId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event/$eventId/reject-item/$itemId");
+    var response = await http.delete(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+      },
+    );
+    print(response.body);
+    return response.statusCode == 200;
   }
 }

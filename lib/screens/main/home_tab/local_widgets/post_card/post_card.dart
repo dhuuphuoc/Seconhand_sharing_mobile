@@ -19,7 +19,7 @@ class PostCard extends StatelessWidget {
             flex: 1,
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 7),
-              child: Avatar(AccessInfo().userInfo.avatarUrl, 20),
+              child: Avatar(AccessInfo().userInfo.avatarUrl, 26),
             ),
           ),
           Expanded(

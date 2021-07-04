@@ -314,6 +314,10 @@
   "edit": "Chỉnh sửa",
   "delete" : "Xóa",
   "myDonation" : "Quyên góp của tôi",
-  "deleteItemFailedMessage": "Bạn chỉ có thể xóa vật phẩm chưa cho ai"
+  "deleteItemFailedMessage": "Bạn chỉ có thể xóa vật phẩm chưa cho ai",
+  "took" : "Đã lấy",
+  "cancelAcceptEventItemConfirmation" : "Bạn có muốn hủy chấp nhận vật phẩm này không?",
+  "rejectItemConfirmation" : "Bạn có chắc rằng bạn không nhận vật phẩm này không?",
+  "groupAcceptedYourItem" : "Nhóm đã chấp nhận vật phẩm của bạn"
 
 }

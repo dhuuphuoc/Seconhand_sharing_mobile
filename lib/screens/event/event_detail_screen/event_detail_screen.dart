@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/enums/item_status/item_status.dart';
 import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/group_event/group_event.dart';
 import 'package:secondhand_sharing/models/item/item.dart';
@@ -9,15 +10,17 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/group_avatar/group_avatar.dart';
 import 'package:secondhand_sharing/services/api_services/event_services/event_services.dart';
 import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
+import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/utils/time_remainder/time_remainder.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
+import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
+import 'package:secondhand_sharing/widgets/dialog/notify_dialog/notify_dialog.dart';
 import 'package:secondhand_sharing/widgets/event_card/event_card.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
+import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/number_badge/number_badge.dart';
-
-enum ItemAction { reject, accept }
 
 class EventDetailScreen extends StatefulWidget {
   const EventDetailScreen({Key key}) : super(key: key);
@@ -55,6 +58,12 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       var items = await EventServices.getItems(_event.id, _pageNumber, _pageSize);
       setState(() {
         if (items.length < _pageSize) _isEnd = true;
+        _items.addAll(items);
+      });
+    } else {
+      var items = await EventServices.getMyDonations(_event.id, _pageNumber, _pageSize);
+      setState(() {
+        _isEnd = true;
         _items.addAll(items);
       });
     }
@@ -187,18 +196,61 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                           ))
                                       ],
                                     ),
-                                    trailing: PopupMenuButton<ItemAction>(
-                                      itemBuilder: (context) => <PopupMenuEntry<ItemAction>>[
-                                        PopupMenuItem<ItemAction>(
-                                          value: ItemAction.accept,
-                                          child: Text(S.of(context).accept),
-                                        ),
-                                        PopupMenuItem<ItemAction>(
-                                          value: ItemAction.reject,
-                                          child: Text(S.of(context).reject),
-                                        ),
-                                      ],
-                                    ),
+                                    trailing: _role != null
+                                        ? Text(
+                                            item.status == ItemStatus.accepted
+                                                ? S.of(context).accepted
+                                                : item.status == ItemStatus.success
+                                                    ? S.of(context).took
+                                                    : "",
+                                            style: TextStyle(color: Colors.green),
+                                          )
+                                        : PopupMenuButton<ItemAction>(
+                                            onSelected: (action) {
+                                              if (action == ItemAction.delete) {
+                                                ItemServices.deleteItem(item.id).then((value) {
+                                                  if (value) {
+                                                    setState(() {
+                                                      _items.remove(item);
+                                                    });
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) => NotifyDialog(
+                                                            S.of(context).failed, S.of(context).deleteItemFailedMessage, "OK"));
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            itemBuilder: (context) => <PopupMenuEntry<ItemAction>>[
+                                              PopupMenuItem<ItemAction>(
+                                                value: ItemAction.edit,
+                                                child: ListTile(
+                                                    leading: Icon(
+                                                      Icons.edit,
+                                                      color: Theme.of(context).primaryColor,
+                                                    ),
+                                                    title: Text(
+                                                      S.of(context).edit,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context).primaryColor,
+                                                      ),
+                                                    )),
+                                              ),
+                                              PopupMenuItem<ItemAction>(
+                                                value: ItemAction.delete,
+                                                child: ListTile(
+                                                    leading: Icon(
+                                                      Icons.delete,
+                                                      color: Color(0xFFEB2626),
+                                                    ),
+                                                    title: Text(
+                                                      S.of(context).delete,
+                                                      style: TextStyle(color: Color(0xFFEB2626)),
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
                                     subtitle: Text(
                                       "${TimeAgo.parse(item.postTime, locale: Localizations.localeOf(context).languageCode)}",
                                       style: Theme.of(context).textTheme.subtitle2,
@@ -254,6 +306,69 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                       ],
                                     ),
                                   ),
+                                  if (item.status != ItemStatus.success && _role == MemberRole.admin)
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) => ConfirmDialog(
+                                                      S.of(context).reject, S.of(context).rejectItemConfirmation)).then((result) {
+                                                if (result == true) {
+                                                  EventServices.rejectItem(_event.id, item.id).then((value) {
+                                                    if (value) {
+                                                      setState(() {
+                                                        _items.remove(item);
+                                                      });
+                                                    }
+                                                  });
+                                                }
+                                              });
+                                            },
+                                            child: Text(
+                                              S.of(context).reject,
+                                              style: TextStyle(color: Colors.black54),
+                                            )),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        item.status == ItemStatus.notYet
+                                            ? TextButton(
+                                                onPressed: () {
+                                                  EventServices.acceptItem(_event.id, item.id).then((value) {
+                                                    if (value) {
+                                                      setState(() {
+                                                        item.status = ItemStatus.accepted;
+                                                      });
+                                                    }
+                                                  });
+                                                },
+                                                child: Text(S.of(context).accept))
+                                            : TextButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) => ConfirmDialog(S.of(context).cancelAccept,
+                                                          S.of(context).cancelAcceptEventItemConfirmation)).then((result) {
+                                                    if (result == true) {
+                                                      EventServices.cancelAccept(_event.id, item.id).then((value) {
+                                                        if (value) {
+                                                          setState(() {
+                                                            item.status = ItemStatus.notYet;
+                                                          });
+                                                        }
+                                                      });
+                                                    }
+                                                  });
+                                                },
+                                                child: Text(S.of(context).cancelAccept)),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                      ],
+                                    ),
                                   Divider(
                                     thickness: 2,
                                   ),

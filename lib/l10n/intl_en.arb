@@ -314,5 +314,9 @@
   "edit": "Edit",
   "delete" : "Delete",
   "myDonation" : "My donations",
-  "deleteItemFailedMessage": "You only can delete item when there is no any accepted registration."
+  "deleteItemFailedMessage": "You only can delete item when there is no any accepted registration.",
+  "took" : "Took",
+  "cancelAcceptEventItemConfirmation" : "Do you want to cancel accept this item?",
+  "rejectItemConfirmation" : "Are you sure you don't want this item?",
+  "groupAcceptedYourItem" : "Group was accepted your item"
 }

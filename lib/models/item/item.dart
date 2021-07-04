@@ -1,18 +1,21 @@
 import 'package:secondhand_sharing/models/address_model/address_model.dart';
+import 'package:secondhand_sharing/models/enums/item_status/item_status.dart';
 
 class Item {
-  Item(
-      {this.id,
-      this.itemName,
-      this.receiveAddress,
-      this.postTime,
-      this.description,
-      this.imageUrl,
-      this.donateAccountId,
-      this.donateAccountName,
-      this.avatarUrl,
-      this.eventName,
-      this.eventId});
+  Item({
+    this.id,
+    this.itemName,
+    this.receiveAddress,
+    this.postTime,
+    this.description,
+    this.imageUrl,
+    this.donateAccountId,
+    this.donateAccountName,
+    this.avatarUrl,
+    this.eventName,
+    this.eventId,
+    this.status,
+  });
 
   int id;
   String itemName;
@@ -25,6 +28,7 @@ class Item {
   String avatarUrl;
   int eventId;
   String eventName;
+  ItemStatus status;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["id"],
@@ -38,6 +42,7 @@ class Item {
         avatarUrl: json["avatarUrl"],
         eventId: json["eventId"],
         eventName: json["eventName"],
+        status: ItemStatus.values[json["status"] ?? 0],
       );
 
   Map<String, dynamic> toJson() => {

@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/enums/donate_type/donate_type.dart';
 import 'package:secondhand_sharing/models/enums/item_status/item_status.dart';
+import 'package:secondhand_sharing/models/enums/member_role/member_role.dart';
 import 'package:secondhand_sharing/models/item_detail/item_detail.dart';
 import 'package:secondhand_sharing/models/enums/request_status/request_status.dart';
 import 'package:secondhand_sharing/models/notification/cancel_request_model/cancel_request_model.dart';
@@ -23,6 +25,7 @@ import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/send_thanks_form/send_thanks_form.dart';
+import 'package:secondhand_sharing/services/api_services/group_services/group_services.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/services/api_services/receive_services/receive_services.dart';
 import 'package:secondhand_sharing/widgets/dialog/confirm_dialog/confirm_dialog.dart';
@@ -60,11 +63,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       _isLoading = true;
     });
     ItemDetail itemDetail = await ItemServices.getItemDetail(_itemDetail.id);
-    if (itemDetail != null) {
+    if (itemDetail != null)
       setState(() {
         _isOwn = AccessInfo().userInfo.id == itemDetail.donateAccountId;
         _itemDetail = itemDetail;
       });
+    if (itemDetail.donateType == DonateType.all) {
       if (_isOwn && _itemDetail.status != ItemStatus.success) {
         var requests = await ReceiveServices.getItemRequests(itemDetail.id);
         if (requests != null) {
@@ -89,6 +93,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       }
       _subscription = FirebaseMessaging.onMessage.listen(handleRequestEvent);
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -171,7 +176,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
     Application().watchingItemId = null;
     super.dispose();
   }
@@ -226,16 +231,24 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           if (value) {
             setState(() {
               _itemDetail.status = ItemStatus.success;
-              _receivedUserInfo = UserInfo(
-                  id: _receiveRequestsModel.acceptedRequest.receiverId,
-                  fullName: _receiveRequestsModel.acceptedRequest.receiverName);
+              if (_itemDetail.donateType == DonateType.all)
+                _receivedUserInfo = UserInfo(
+                    id: _receiveRequestsModel.acceptedRequest.receiverId,
+                    fullName: _receiveRequestsModel.acceptedRequest.receiverName);
             });
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return NotifyDialog(S.of(context).notification,
-                      S.of(context).confirmSentSuccess(_receiveRequestsModel.acceptedRequest.receiverName), "Ok");
-                });
+            if (_itemDetail.donateType == DonateType.all)
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return NotifyDialog(S.of(context).notification,
+                        S.of(context).confirmSentSuccess(_receiveRequestsModel.acceptedRequest.receiverName), "Ok");
+                  });
+            else
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return NotifyDialog(S.of(context).notification, S.of(context).confirmSentSuccess(S.of(context).event), "Ok");
+                  });
           }
         });
       }
@@ -329,65 +342,77 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         itemName: _itemDetail.itemName,
                         description: _itemDetail.description,
                       ),
-                      if (_itemDetail.userRequestId != 0 || _isOwn)
-                        SizedBox(
-                          height: 10,
-                        ),
-                      if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
-                      if (_itemDetail.status == ItemStatus.success)
-                        InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
-                            },
-                            child: NotificationCard(
-                                Icons.check_circle_outline,
-                                S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
-                                    ? S.of(context).you
-                                    : _receivedUserInfo.fullName))),
-                      if (!_isOwn && _requestStatus == RequestStatus.receiving && _itemDetail.status != ItemStatus.success)
-                        NotificationCard(
-                            Icons.fact_check_outlined, "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
-                      if (!_isOwn &&
-                          _itemDetail.userRequestId != 0 &&
-                          _requestStatus == RequestStatus.pending &&
-                          _itemDetail.status != ItemStatus.success)
-                        NotificationCard(Icons.app_registration, "${S.of(context).registeredNotification}"),
-                      if (_isCanceling)
-                        SizedBox(
-                          height: 15,
-                        ),
-                      if (_isCanceling)
-                        Container(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 3,
+                      if (_itemDetail.donateType == DonateType.all) ...{
+                        if (_itemDetail.userRequestId != 0 || _isOwn)
+                          SizedBox(
+                            height: 10,
                           ),
+                        if (_isOwn && _itemDetail.status != ItemStatus.success) RequestsExpansionPanel(),
+                        if (_itemDetail.status == ItemStatus.success)
+                          InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/profile", arguments: _receivedUserInfo.id);
+                              },
+                              child: NotificationCard(
+                                  Icons.check_circle_outline,
+                                  S.of(context).sentNotification(_receivedUserInfo.id == AccessInfo().userInfo.id
+                                      ? S.of(context).you
+                                      : _receivedUserInfo.fullName))),
+                        if (!_isOwn && _requestStatus == RequestStatus.receiving && _itemDetail.status != ItemStatus.success)
+                          NotificationCard(Icons.fact_check_outlined,
+                              "${S.of(context).yourRegistrationWas} ${S.of(context).acceptedLowerCase}"),
+                        if (!_isOwn &&
+                            _itemDetail.userRequestId != 0 &&
+                            _requestStatus == RequestStatus.pending &&
+                            _itemDetail.status != ItemStatus.success)
+                          NotificationCard(Icons.app_registration, "${S.of(context).registeredNotification}"),
+                        if (_isCanceling)
+                          SizedBox(
+                            height: 15,
+                          ),
+                        if (_isCanceling)
+                          Container(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          width: double.infinity,
+                          child: _isOwn
+                              ? _itemDetail.status != ItemStatus.success
+                                  ? ElevatedButton(
+                                      onPressed:
+                                          context.watch<ReceiveRequestsModel>().acceptedRequest != null ? _confirmSent : null,
+                                      child: Text(S.of(context).confirmSent))
+                                  : null
+                              : _itemDetail.status == ItemStatus.success
+                                  ? ElevatedButton(
+                                      onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
+                                      child: Text(S.of(context).sendThanks))
+                                  : ElevatedButton(
+                                      onPressed: _itemDetail.userRequestId != 0
+                                          ? _isCanceling
+                                              ? null
+                                              : _cancelRegistration
+                                          : _registerToReceive,
+                                      child: Text(_itemDetail.userRequestId != 0
+                                          ? S.of(context).cancelRegister
+                                          : S.of(context).registerToReceive)),
                         ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        width: double.infinity,
-                        child: _isOwn
-                            ? _itemDetail.status != ItemStatus.success
-                                ? ElevatedButton(
-                                    onPressed:
-                                        context.watch<ReceiveRequestsModel>().acceptedRequest != null ? _confirmSent : null,
-                                    child: Text(S.of(context).confirmSent))
-                                : null
-                            : _itemDetail.status == ItemStatus.success
-                                ? ElevatedButton(
-                                    onPressed: _itemDetail.userRequestId != 0 ? sendThanks : null,
-                                    child: Text(S.of(context).sendThanks))
-                                : ElevatedButton(
-                                    onPressed: _itemDetail.userRequestId != 0
-                                        ? _isCanceling
-                                            ? null
-                                            : _cancelRegistration
-                                        : _registerToReceive,
-                                    child: Text(_itemDetail.userRequestId != 0
-                                        ? S.of(context).cancelRegister
-                                        : S.of(context).registerToReceive)),
-                      ),
+                      } else ...{
+                        if (_itemDetail.status == ItemStatus.accepted)
+                          NotificationCard(Icons.check_circle_outline, S.of(context).groupAcceptedYourItem),
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _itemDetail.status == ItemStatus.accepted ? _confirmSent : null,
+                              child: Text(S.of(context).confirmSent),
+                            ))
+                      },
                     ],
                   ),
                 ),

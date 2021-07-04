@@ -2234,6 +2234,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Took`
+  String get took {
+    return Intl.message(
+      'Took',
+      name: 'took',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to cancel accept this item?`
+  String get cancelAcceptEventItemConfirmation {
+    return Intl.message(
+      'Do you want to cancel accept this item?',
+      name: 'cancelAcceptEventItemConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you don't want this item?`
+  String get rejectItemConfirmation {
+    return Intl.message(
+      'Are you sure you don\'t want this item?',
+      name: 'rejectItemConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group was accepted your item`
+  String get groupAcceptedYourItem {
+    return Intl.message(
+      'Group was accepted your item',
+      name: 'groupAcceptedYourItem',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
