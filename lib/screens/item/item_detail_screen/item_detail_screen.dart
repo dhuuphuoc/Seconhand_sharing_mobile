@@ -21,7 +21,7 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/models/user/user_info/user_info.dart';
 import 'package:secondhand_sharing/screens/application/application.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/contact_card/contact_card.dart';
-import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/images_view/images_view.dart';
+import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/item_detail_card/item_detail_card.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/register_form/register_form.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/requests_expansion_panel/requests_expansion_panel.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/local_widgets/send_thanks_form/send_thanks_form.dart';
@@ -247,7 +247,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return NotifyDialog(S.of(context).notification, S.of(context).confirmSentSuccess(S.of(context).event), "Ok");
+                    return NotifyDialog(
+                        S.of(context).notification, S.of(context).confirmSentSuccess(S.of(context).event.toLowerCase()), "Ok");
                   });
           }
         });
@@ -337,7 +338,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       ContactCard(
                           _itemDetail.donateAccountName, _itemDetail.avatarUrl, _itemDetail.receiveAddress, showUserProfile),
                       SizedBox(height: 10),
-                      ImagesView(
+                      ItemDetailCard(
                         images: _itemDetail.imageUrl,
                         itemName: _itemDetail.itemName,
                         description: _itemDetail.description,
@@ -404,14 +405,24 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                         ),
                       } else ...{
                         if (_itemDetail.status == ItemStatus.accepted)
-                          NotificationCard(Icons.check_circle_outline, S.of(context).groupAcceptedYourItem),
-                        Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: _itemDetail.status == ItemStatus.accepted ? _confirmSent : null,
-                              child: Text(S.of(context).confirmSent),
-                            ))
+                          Container(
+                            child: NotificationCard(Icons.check_circle_outline, S.of(context).groupAcceptedYourItem),
+                            margin: EdgeInsets.only(top: 15),
+                          ),
+                        if (_itemDetail.status != ItemStatus.success)
+                          Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: _itemDetail.status == ItemStatus.accepted ? _confirmSent : null,
+                                child: Text(S.of(context).confirmSent),
+                              ))
+                        else
+                          Container(
+                            child: NotificationCard(
+                                Icons.check_circle_outline, S.of(context).sentNotification(S.of(context).event.toLowerCase())),
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                          ),
                       },
                     ],
                   ),

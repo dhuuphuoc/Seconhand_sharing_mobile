@@ -2274,6 +2274,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Comment`
+  String get comment {
+    return Intl.message(
+      'Comment',
+      name: 'comment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There is no more post`
+  String get noMorePost {
+    return Intl.message(
+      'There is no more post',
+      name: 'noMorePost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The post was published in group`
+  String get groupPosted {
+    return Intl.message(
+      'The post was published in group',
+      name: 'groupPosted',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -15,6 +15,7 @@ import 'package:secondhand_sharing/models/group_model/group/group.dart';
 import 'package:secondhand_sharing/models/group_model/group_detail/group_detail.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/description_tab/description_tab.dart';
+import 'package:secondhand_sharing/screens/group/group_detail_screen/event_tab/event_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/member_tab/member_tab.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/post_tab/post_tab.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
@@ -107,7 +108,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
     var screenSize = MediaQuery.of(context).size;
     _groupDetail.id = ModalRoute.of(context).settings.arguments;
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         body: NestedScrollView(
           key: Keys.groupScreenNestedScrollViewKey,
@@ -185,6 +186,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                     labelPadding: EdgeInsets.zero,
                     tabs: [
                       Tab(text: S.of(context).posts),
+                      Tab(text: S.of(context).event),
                       Tab(text: S.of(context).description),
                       Tab(text: S.of(context).member),
                     ],
@@ -199,6 +201,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> with SingleTicker
                 )
               : TabBarView(children: [
                   PostTab(_groupDetail, _role),
+                  EventTab(_groupDetail, _role),
                   DescriptionTab(_groupDetail.description),
                   MemberTab(_groupDetail.id, _role, changeRole),
                 ]),

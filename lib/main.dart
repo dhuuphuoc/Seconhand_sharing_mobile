@@ -23,6 +23,7 @@ import 'package:secondhand_sharing/screens/group/add_member_screen/add_member_sc
 import 'package:secondhand_sharing/screens/group/create_group_screen/create_group_screen.dart';
 import 'package:secondhand_sharing/screens/group/group_detail_screen/group_detail_screen.dart';
 import 'package:secondhand_sharing/screens/group/invitation_screen/invitation_screen.dart';
+import 'package:secondhand_sharing/screens/group/post_screen/post_screen.dart';
 import 'package:secondhand_sharing/screens/item/address_screen/address_screen.dart';
 import 'package:secondhand_sharing/screens/item/item_detail_screen/item_detail_screen.dart';
 import 'package:secondhand_sharing/screens/item/post_item_screen/post_item_screen.dart';
@@ -50,7 +51,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) as
 }
 
 Future<void> main() async {
-  // HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
   await FirebaseServices.initFirebase();
@@ -143,6 +144,7 @@ class _TwoHandShareAppState extends State<TwoHandShareApp> {
         "/item/search": (context) => SearchScreen(),
         "/create-event": (context) => CreateEventScreen(),
         "/event/detail": (context) => EventDetailScreen(),
+        "/post": (context) => PostScreen(),
       },
     );
   }

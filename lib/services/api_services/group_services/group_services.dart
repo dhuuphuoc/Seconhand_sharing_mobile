@@ -14,6 +14,7 @@ import 'package:secondhand_sharing/models/image_upload_model/image_upload_model.
 import 'package:secondhand_sharing/models/invitation/invitation.dart';
 import 'package:secondhand_sharing/models/join_request/join_request.dart';
 import 'package:secondhand_sharing/models/member/member.dart';
+import 'package:secondhand_sharing/models/post/post.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/services/api_services/api_services.dart';
 import 'package:http/http.dart' as http;

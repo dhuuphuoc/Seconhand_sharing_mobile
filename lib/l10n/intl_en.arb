@@ -318,5 +318,8 @@
   "took" : "Took",
   "cancelAcceptEventItemConfirmation" : "Do you want to cancel accept this item?",
   "rejectItemConfirmation" : "Are you sure you don't want this item?",
-  "groupAcceptedYourItem" : "Group was accepted your item"
+  "groupAcceptedYourItem" : "Group was accepted your item",
+  "comment": "Comment",
+  "noMorePost" : "There is no more post",
+  "groupPosted" : "The post was published in group"
 }

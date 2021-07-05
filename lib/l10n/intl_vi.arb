@@ -318,6 +318,9 @@
   "took" : "Đã lấy",
   "cancelAcceptEventItemConfirmation" : "Bạn có muốn hủy chấp nhận vật phẩm này không?",
   "rejectItemConfirmation" : "Bạn có chắc rằng bạn không nhận vật phẩm này không?",
-  "groupAcceptedYourItem" : "Nhóm đã chấp nhận vật phẩm của bạn"
+  "groupAcceptedYourItem" : "Nhóm đã chấp nhận vật phẩm của bạn",
+  "comment": "Bình luận",
+  "noMorePost" : "Không còn bài đăng nào nữa",
+  "groupPosted" : "Bài viết đã được đăng trong nhóm"
 
 }
