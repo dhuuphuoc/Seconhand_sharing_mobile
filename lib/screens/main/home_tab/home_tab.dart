@@ -6,11 +6,12 @@ import 'package:secondhand_sharing/models/item/item.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/utils/scroll_absorber/scroll_absorber.dart';
 import 'package:secondhand_sharing/widgets/item_card/item_card.dart';
-import 'package:secondhand_sharing/screens/main/home_tab/local_widgets/post_card/post_card.dart';
 import 'package:secondhand_sharing/services/api_services/item_services/item_services.dart';
 import 'package:secondhand_sharing/widgets/category_tab/category_tab.dart';
 import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:secondhand_sharing/widgets/notification_card/notification_card.dart';
+
+import 'local_widgets/post_item_card/post_item_card.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -77,7 +78,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin<Ho
     var listViewWidgets = <Widget>[
       Container(
           margin: EdgeInsets.all(10),
-          child: PostCard(
+          child: PostItemCard(
             () {
               Navigator.pushNamed(context, "/post-item").then((value) {
                 if (value == true) {

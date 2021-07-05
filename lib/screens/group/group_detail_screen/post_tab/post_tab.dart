@@ -40,12 +40,16 @@ class _PostTabState extends State<PostTab> with AutomaticKeepAliveClientMixin<Po
     setState(() {
       _isLoading = true;
     });
-    var posts = await PostServices.getPosts(widget.group.id, _pageNumber, _pageSize);
+    if (widget.role != null) {
+      var posts = await PostServices.getPosts(widget.group.id, _pageNumber, _pageSize);
+      setState(() {
+        if (posts.length < _pageSize) {
+          _isEnd = true;
+        }
+        _posts.addAll(posts);
+      });
+    }
     setState(() {
-      if (posts.length < _pageSize) {
-        _isEnd = true;
-      }
-      _posts.addAll(posts);
       _isLoading = false;
     });
   }
@@ -93,7 +97,7 @@ class _PostTabState extends State<PostTab> with AutomaticKeepAliveClientMixin<Po
             SliverList(
                 delegate: SliverChildListDelegate([
               SizedBox(height: 20),
-              if (widget.role != null)
+              if (widget.role != null) ...{
                 Card(
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
@@ -129,18 +133,28 @@ class _PostTabState extends State<PostTab> with AutomaticKeepAliveClientMixin<Po
                     ),
                   ),
                 ),
-              SizedBox(height: 10),
-              ..._posts.map((post) => PostCard(post)),
-              SizedBox(height: 10),
-              if (_isLoading)
+                SizedBox(height: 10),
+                ..._posts.map((post) => PostCard(post)),
+                SizedBox(height: 10),
+                if (_isLoading)
+                  Container(
+                    height: screenSize.height * 0.2,
+                    child: Center(
+                      child: MiniIndicator(),
+                    ),
+                  ),
+                if (_isEnd) NotificationCard(Icons.check_circle_outline, S.of(context).noMorePost),
+                SizedBox(height: 20),
+              } else
                 Container(
                   height: screenSize.height * 0.2,
                   child: Center(
-                    child: MiniIndicator(),
+                    child: Text(
+                      S.of(context).notMemberNotification,
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
                   ),
-                ),
-              if (_isEnd) NotificationCard(Icons.check_circle_outline, S.of(context).noMorePost),
-              SizedBox(height: 20),
+                )
             ])),
           ],
         ),

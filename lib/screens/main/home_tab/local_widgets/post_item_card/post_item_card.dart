@@ -3,10 +3,10 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
-class PostCard extends StatelessWidget {
+class PostItemCard extends StatelessWidget {
   final Function onPostItem;
 
-  PostCard(this.onPostItem);
+  PostItemCard(this.onPostItem);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class PostCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onPostItem,
                 child: Text(
-                  S.of(context).postItem,
+                  S.of(context).donate,
                 ),
               ),
             ),

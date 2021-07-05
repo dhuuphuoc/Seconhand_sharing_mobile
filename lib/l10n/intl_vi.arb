@@ -321,6 +321,9 @@
   "groupAcceptedYourItem" : "Nhóm đã chấp nhận vật phẩm của bạn",
   "comment": "Bình luận",
   "noMorePost" : "Không còn bài đăng nào nữa",
-  "groupPosted" : "Bài viết đã được đăng trong nhóm"
+  "groupPosted" : "Bài viết đã được đăng trong nhóm",
+  "noAnyComments" : "Chưa có bình luận trong bài viết này",
+  "notMemberNotification" : "Bạn không phải là thành viên của nhóm",
+  "ago" : "trước"
 
 }

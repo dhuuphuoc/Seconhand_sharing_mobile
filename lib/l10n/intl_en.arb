@@ -321,5 +321,7 @@
   "groupAcceptedYourItem" : "Group was accepted your item",
   "comment": "Comment",
   "noMorePost" : "There is no more post",
-  "groupPosted" : "The post was published in group"
+  "groupPosted" : "The post was published in group",
+  "noAnyComments" : "There are no comments for this post yet",
+  "notMemberNotification" : "You are not a member in this group"
 }

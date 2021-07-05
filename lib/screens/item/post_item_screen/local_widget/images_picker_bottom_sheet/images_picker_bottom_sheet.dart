@@ -10,8 +10,7 @@ import 'package:secondhand_sharing/screens/item/post_item_screen/local_widget/se
 
 class ImagesPickerBottomSheet extends StatefulWidget {
   @override
-  _ImagesPickerBottomSheetState createState() =>
-      _ImagesPickerBottomSheetState();
+  _ImagesPickerBottomSheetState createState() => _ImagesPickerBottomSheetState();
 }
 
 class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
@@ -56,8 +55,9 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Container(
-      height: 300,
+      height: screenSize.height * 0.45,
       child: _isPermissionGrant
           ? Column(
               children: [
@@ -66,8 +66,7 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                     onPressed: () {
                       getImage().then((image) {
                         setState(() {
-                          _imagesInGallery.insert(0,
-                              ImageData(image.readAsBytesSync(), image.path));
+                          _imagesInGallery.insert(0, ImageData(image.readAsBytesSync(), image.path));
                         });
                       });
                     },
@@ -129,9 +128,7 @@ class _ImagesPickerBottomSheetState extends State<ImagesPickerBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: requestStoragePermission,
-                        child: Text(S.of(context).allowAccess))
+                    ElevatedButton(onPressed: requestStoragePermission, child: Text(S.of(context).allowAccess))
                   ],
                 ),
               ),

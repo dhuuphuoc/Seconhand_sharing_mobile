@@ -2304,6 +2304,26 @@ class S {
       args: [],
     );
   }
+
+  /// `There are no comments for this post yet`
+  String get noAnyComments {
+    return Intl.message(
+      'There are no comments for this post yet',
+      name: 'noAnyComments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are not a member in this group`
+  String get notMemberNotification {
+    return Intl.message(
+      'You are not a member in this group',
+      name: 'notMemberNotification',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:secondhand_sharing/models/comment/comment.dart';
 import 'package:secondhand_sharing/models/image_upload_model/images_upload_model.dart';
 import 'package:secondhand_sharing/models/post/post.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
@@ -49,6 +50,32 @@ class PostServices {
     });
     print(response.body);
     return List<Post>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Post.fromJson(x)));
+  }
+
+  static Future<List<Comment>> getComments(int postId, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/GroupPost/$postId/comment", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: ContentType.json.value,
+      HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+    });
+    print(response.body);
+    return List<Comment>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => Comment.fromJson(x)));
+  }
+
+  static Future<Comment> postComment(int postId, String content) async {
+    Uri url = Uri.https(APIService.apiUrl, "/GroupPost/$postId/comment");
+    var response = await http.post(url,
+        headers: {
+          HttpHeaders.contentTypeHeader: ContentType.json.value,
+          HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+        },
+        body: jsonEncode({"content": content}));
+    print(response.body);
+    if (response.statusCode == 200) return Comment.fromJson(jsonDecode(response.body)["data"]);
+    return null;
   }
 
   static Future<ImagesUploadModel> post(PostForm postForm) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/post/post.dart';
+import 'package:secondhand_sharing/screens/group/group_detail_screen/post_tab/local_widget/comment_bottom_sheet/comment_bottom_sheet.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 import 'package:secondhand_sharing/widgets/images_view/images_view.dart';
@@ -19,6 +20,9 @@ class PostCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "/profile", arguments: _post.postByAccountId);
+            },
             leading: Avatar(_post.avatarUrl, 20),
             title: Text(
               _post.postByAccountName,
@@ -53,7 +57,10 @@ class PostCard extends StatelessWidget {
             children: [
               Expanded(
                   child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context, builder: (context) => CommentBottomSheet(_post.id), isScrollControlled: true);
+                },
                 child: Container(
                   height: 45,
                   child: Row(
