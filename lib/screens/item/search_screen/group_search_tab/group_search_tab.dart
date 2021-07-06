@@ -19,7 +19,7 @@ class GroupSearchTab extends StatefulWidget {
 class _EventSearchTabState extends State<GroupSearchTab> with AutomaticKeepAliveClientMixin<GroupSearchTab> {
   ScrollController _scrollController = ScrollController();
   int _pageNumber = 1;
-  int _pageSize = 8;
+  int _pageSize = 20;
   List<Group> _groups = [];
   bool _isLoading = true;
   bool _isEnd = false;
@@ -63,7 +63,6 @@ class _EventSearchTabState extends State<GroupSearchTab> with AutomaticKeepAlive
     _groups.forEach((group) {
       listViewWidget.add(GroupWidget(group));
     });
-    listViewWidget.add(SizedBox(height: 5));
     listViewWidget.add(Container(
       height: screenSize.height * 0.2,
       child: Center(
