@@ -60,17 +60,22 @@ class _EventSearchTabState extends State<UserSearchTab> with AutomaticKeepAliveC
     List<Widget> listViewWidget = [];
 
     _users.forEach((user) {
-      listViewWidget.add(ListTile(
-        leading: Avatar(user.avatarUrl, 20),
-        title: Text(
-          user.fullName,
-          style: Theme.of(context).textTheme.headline3,
+      listViewWidget.add(Card(
+        child: ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, "/profile", arguments: user.id);
+          },
+          leading: Avatar(user.avatarUrl, 20),
+          title: Text(
+            user.fullName,
+            style: Theme.of(context).textTheme.headline3,
+          ),
         ),
       ));
     });
     listViewWidget.add(SizedBox(height: 5));
     listViewWidget.add(Container(
-      height: screenSize.height * 0.2,
+      height: screenSize.height * 0.1,
       child: Center(
         child: _isLoading
             ? MiniIndicator()
@@ -96,13 +101,11 @@ class _EventSearchTabState extends State<UserSearchTab> with AutomaticKeepAliveC
               }
               return true;
             },
-            child: GridView.count(
+            child: ListView(
                 controller: _scrollController,
                 cacheExtent: 5000,
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                mainAxisSpacing: 10,
-                crossAxisCount: 3,
                 children: listViewWidget),
           );
   }
