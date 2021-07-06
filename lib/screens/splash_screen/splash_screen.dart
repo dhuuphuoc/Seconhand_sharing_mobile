@@ -11,6 +11,7 @@ import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
 import 'package:secondhand_sharing/services/api_services/user_services/user_services.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -123,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Center(
               child: Image.asset("assets/images/login_icon.png"),
             ),
-            Align(alignment: Alignment.bottomCenter, child: CircularProgressIndicator()),
+            Align(alignment: Alignment.bottomCenter, child: MiniIndicator()),
           ],
         ),
       ),

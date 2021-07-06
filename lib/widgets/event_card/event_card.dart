@@ -28,43 +28,44 @@ class EventCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, "/group/detail", arguments: _event.groupId);
-                },
-                child: Row(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GroupAvatar(_event.groupAvatar, 28),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _event.groupName,
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          Text(
-                            "${TimeAgo.parse(_event.startDate, locale: Localizations.localeOf(context).languageCode)}",
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
+              Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(90),
+                    onTap: () {
+                      Navigator.pushNamed(context, "/group/detail", arguments: _event.groupId);
+                    },
+                    child: GroupAvatar(_event.groupAvatar, 28),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          timeReminder == null ? S.of(context).eventEnded : "${S.of(context).remaining}: $timeReminder",
-                          style: TextStyle(
-                              color:
-                                  timeReminder == null ? Theme.of(context).errorColor : DefaultTextStyle.of(context).style.color),
+                          _event.groupName,
+                          style: Theme.of(context).textTheme.headline3,
                         ),
-                        Text(""),
+                        Text(
+                          "${TimeAgo.parse(_event.startDate, locale: Localizations.localeOf(context).languageCode)}",
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        timeReminder == null ? S.of(context).eventEnded : "${S.of(context).remaining}: $timeReminder",
+                        style: TextStyle(
+                            color:
+                                timeReminder == null ? Theme.of(context).errorColor : DefaultTextStyle.of(context).style.color),
+                      ),
+                      Text(""),
+                    ],
+                  ),
+                ],
               ),
               Divider(
                 color: Colors.black,
