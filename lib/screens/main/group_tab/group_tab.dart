@@ -66,7 +66,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   }
 
   Future<void> loadMoreEvents() async {
-    if (_isEnd && _isLoading) return;
+    if (_isEnd || _isLoading) return;
     setState(() {
       _isLoadingMore = true;
     });
