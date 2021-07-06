@@ -25,7 +25,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
   final _formKey = GlobalKey<FormState>();
   final _groupNameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _ruleController = TextEditingController();
   bool _isLoading = false;
 
   void onSubmit() async {
@@ -34,8 +33,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
       _isLoading = true;
     });
 
-    Group group = await GroupServices.createGroup(
-        CreateGroupForm(_groupNameController.text, _descriptionController.text, _ruleController.text));
+    Group group =
+        await GroupServices.createGroup(CreateGroupForm(_groupNameController.text, _descriptionController.text, "rules"));
 
     if (group != null) {
       showDialog(
@@ -99,28 +98,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> with TickerProvid
                       fillColor: Theme.of(context).backgroundColor,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  minLines: 4,
-                  maxLines: 15,
-                  controller: _ruleController,
-                  validator: Validator.validateRule,
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                      hintText: "${S.of(context).rule}...",
-                      filled: true,
-                      fillColor: Theme.of(context).backgroundColor,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                _isLoading ? Align(child: MiniIndicator()) : SizedBox(),
-                SizedBox(
-                  height: 15,
-                ),
+                if (_isLoading)
+                  Container(margin: EdgeInsets.symmetric(vertical: 10), child: Center(child: MiniIndicator()))
+                else
+                  SizedBox(
+                    height: 10,
+                  ),
                 Container(
                     width: double.infinity,
                     child: ElevatedButton(onPressed: _isLoading ? null : onSubmit, child: Text(S.of(context).confirm))),

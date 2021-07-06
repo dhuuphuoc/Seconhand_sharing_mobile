@@ -15,6 +15,7 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var dateFormat = DateFormat("dd/MM/yyyy");
+    String timeReminder = TimeRemainder.parse(_event.endDate, context);
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, "/event/detail", arguments: _event.id);
@@ -27,33 +28,43 @@ class EventCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GroupAvatar(_event.groupAvatar, 28),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, "/group/detail", arguments: _event.groupId);
+                },
+                child: Row(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GroupAvatar(_event.groupAvatar, 28),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _event.groupName,
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                          Text(
+                            "${TimeAgo.parse(_event.startDate, locale: Localizations.localeOf(context).languageCode)}",
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
                       children: [
                         Text(
-                          _event.groupName,
-                          style: Theme.of(context).textTheme.headline3,
+                          timeReminder == null ? S.of(context).eventEnded : "${S.of(context).remaining}: $timeReminder",
+                          style: TextStyle(
+                              color:
+                                  timeReminder == null ? Theme.of(context).errorColor : DefaultTextStyle.of(context).style.color),
                         ),
-                        Text(
-                          "${TimeAgo.parse(_event.startDate, locale: Localizations.localeOf(context).languageCode)}",
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
+                        Text(""),
                       ],
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Text("${S.of(context).remaining}: ${TimeRemainder.parse(_event.endDate, context)}"),
-                      Text(""),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
               Divider(
                 color: Colors.black,
@@ -74,13 +85,14 @@ class EventCard extends StatelessWidget {
               ),
               Text(_event.content),
               SizedBox(height: 10),
-              Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/post-item", arguments: _event);
-                      },
-                      child: Text(S.of(context).donate)))
+              if (timeReminder != null)
+                Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/post-item", arguments: _event);
+                        },
+                        child: Text(S.of(context).donate)))
             ],
           ),
         ),

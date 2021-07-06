@@ -4,7 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 class TimeRemainder {
   static String parse(DateTime dateTime, BuildContext context) {
     DateTime now = DateTime.now();
-    if (dateTime.compareTo(now) <= 0) return "0 " + S.of(context).second;
+    if (dateTime.compareTo(now) <= 0) return null;
     var duration = dateTime.difference(now);
     if (duration.inDays ~/ 365.25 > 0) {
       return "${duration.inDays ~/ 365.25} ${S.of(context).year}";

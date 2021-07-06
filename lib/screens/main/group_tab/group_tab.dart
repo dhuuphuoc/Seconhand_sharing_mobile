@@ -49,10 +49,10 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
     setState(() {
       _isLoading = true;
     });
-    var groups = await GroupServices.getGroups(null, null);
-    var myGroups = await GroupServices.getJoinedGroups();
+    var groups = await GroupServices.getGroups("", 1, 10);
+    var myGroups = await GroupServices.getJoinedGroups(1, 10);
     var invitations = await GroupServices.getInvitations();
-    var events = await EventServices.getEvents(_pageNumber, _pageSize);
+    var events = await EventServices.getEvents("", _pageNumber, _pageSize);
     setState(() {
       if (events.length < _pageSize) {
         _isEnd = true;
@@ -66,12 +66,12 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   }
 
   Future<void> loadMoreEvents() async {
-    if (_isEnd) return;
+    if (_isEnd && _isLoading) return;
     setState(() {
       _isLoadingMore = true;
     });
     _pageNumber++;
-    var events = await EventServices.getEvents(_pageNumber, _pageSize);
+    var events = await EventServices.getEvents("", _pageNumber, _pageSize);
     setState(() {
       if (events.length < _pageSize) {
         _isEnd = true;

@@ -262,7 +262,7 @@
   "downToMember": "Giáng xuống thành viên",
   "emptyJoinRequests": "Không có yêu cầu tham gia nào",
   "joinGroup" : "Tham gia nhóm",
-  "requested" : "Đã gửi yêu cầu",
+  "requested" : "Bạn đã gửi yêu cầu tham gia tới nhóm",
   "leaveGroup" : "Rời khỏi nhóm",
   "leaveGroupConfirmation" : "Bạn có muốn rời khỏi nhóm không?",
   "groupInvitation": "Lời mời gia nhập nhóm",
@@ -285,6 +285,16 @@
     "source_text" : "Không tìm thấy vật phẩm với từ khóa \"{itemName}\"",
     "placeholders":  {
       "itemName": {
+        "example": "TV"
+      }
+    }
+  },
+  "eventNotFound" : "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
+  "@eventNotFound" :
+  {
+    "source_text" : "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
+    "placeholders":  {
+      "eventName": {
         "example": "TV"
       }
     }
@@ -324,6 +334,12 @@
   "groupPosted" : "Bài viết đã được đăng trong nhóm",
   "noAnyComments" : "Chưa có bình luận trong bài viết này",
   "notMemberNotification" : "Bạn không phải là thành viên của nhóm",
-  "ago" : "trước"
+  "ago" : "trước",
+  "cancelRequest": "Hủy yêu cầu",
+  "eventEnded" : "Sự kiện đã kết thúc",
+  "youReceivedInvitation": "Bạn nhận được lời mời từ nhóm",
+  "item" : "Vật phẩm",
+  "user" : "Người dùng"
+
 
 }

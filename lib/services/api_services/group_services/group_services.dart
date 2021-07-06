@@ -64,7 +64,7 @@ class GroupServices {
     return JoinStatus.none;
   }
 
-  static Future<List<Group>> getGroups(int pageNumber, int pageSize) async {
+  static Future<List<Group>> getGroups(String keyword, int pageNumber, int pageSize) async {
     Uri url = Uri.https(
         APIService.apiUrl,
         "/Group",
@@ -72,6 +72,7 @@ class GroupServices {
             ? {
                 "PageNumber": pageNumber.toString(),
                 "PageSize": pageSize.toString(),
+                "query": keyword,
               }
             : null);
     var response = await http.get(url, headers: {
@@ -95,8 +96,11 @@ class GroupServices {
     return List<GroupEvent>.from(ResponseDeserializer.deserializeResponseToList(response).map((x) => GroupEvent.fromJson(x)));
   }
 
-  static Future<List<Group>> getJoinedGroups() async {
-    Uri url = Uri.https(APIService.apiUrl, "/Group/joined-group");
+  static Future<List<Group>> getJoinedGroups(int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/joined-group", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+    });
     var response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
@@ -285,6 +289,19 @@ class GroupServices {
 
   static Future<bool> kickMember(int groupId, int memberId) async {
     Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/member/$memberId");
+    var response = await http.delete(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+        HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
+      },
+    );
+    print(response.body);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> cancelJoinRequest(int groupId) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Group/$groupId/join-request");
     var response = await http.delete(
       url,
       headers: {

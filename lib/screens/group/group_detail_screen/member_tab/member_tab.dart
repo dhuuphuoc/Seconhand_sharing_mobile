@@ -98,6 +98,14 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
     });
   }
 
+  void cancelRequest() {
+    GroupServices.cancelJoinRequest(widget.groupId).then((value) {
+      setState(() {
+        _joinStatus = JoinStatus.none;
+      });
+    });
+  }
+
   void leaveGroup() {
     showDialog(
         context: context,
@@ -244,10 +252,20 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: ElevatedButton(
-                              onPressed: _joinStatus == JoinStatus.requested ? null : joinGroup,
-                              child:
-                                  Text(_joinStatus == JoinStatus.requested ? S.of(context).requested : S.of(context).joinGroup),
+                            child: Column(
+                              children: [
+                                if (_joinStatus == JoinStatus.requested)
+                                  Container(margin: EdgeInsets.symmetric(vertical: 10), child: Text(S.of(context).requested)),
+                                Container(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: _joinStatus == JoinStatus.requested ? cancelRequest : joinGroup,
+                                    child: Text(_joinStatus == JoinStatus.requested
+                                        ? S.of(context).cancelRequest
+                                        : S.of(context).joinGroup),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         )
@@ -258,7 +276,7 @@ class _MemberTabState extends State<MemberTab> with AutomaticKeepAliveClientMixi
                             margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                             child: Column(
                               children: [
-                                Text("Bạn nhận được lời mời từ nhóm"),
+                                Text(S.of(context).youReceivedInvitation),
                                 SizedBox(height: 10),
                                 Row(
                                   children: [

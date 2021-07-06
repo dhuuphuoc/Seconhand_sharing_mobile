@@ -34,7 +34,7 @@ class _MyGroupsState extends State<MyGroups> {
       _isLoading = true;
     });
     _pageNumber++;
-    var groups = await GroupServices.getGroups(_pageNumber, _pageSize);
+    var groups = await GroupServices.getJoinedGroups(_pageNumber, _pageSize);
     setState(() {
       if (groups.length < _pageSize) {
         _isEnd = true;

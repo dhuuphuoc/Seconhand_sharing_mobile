@@ -4,6 +4,7 @@ import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/services/api_services/event_services/event_services.dart';
 import 'package:secondhand_sharing/utils/validator/validator.dart';
 import 'package:secondhand_sharing/widgets/icons/app_icons.dart';
+import 'package:secondhand_sharing/widgets/mini_indicator/mini_indicator.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({Key key}) : super(key: key);
@@ -16,13 +17,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   int _groupId;
 
   var _eventNameController = TextEditingController();
-  var _startDateController = TextEditingController();
   var _endDateController = TextEditingController();
   var _contentController = TextEditingController();
   var _formKey = GlobalKey<FormState>();
-  DateTime _startDate;
   DateTime _endDate;
   DateFormat _dateFormat = DateFormat("dd/MM/yyyy");
+
+  bool _isPosting = false;
 
   @override
   void initState() {
@@ -60,17 +61,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             ),
             TextFormField(
               validator: Validator.validateStartDate,
-              onTap: () {
-                showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2200))
-                    .then((value) {
-                  if (value != null)
-                    setState(() {
-                      _startDate = value;
-                      _startDateController.text = _dateFormat.format(value);
-                    });
-                });
-              },
-              controller: _startDateController,
+              initialValue: _dateFormat.format(DateTime.now()),
               readOnly: true,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
@@ -123,12 +114,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             SizedBox(
               height: 10,
             ),
+            if (_isPosting)
+              Container(
+                height: 40,
+                child: Center(
+                  child: MiniIndicator(),
+                ),
+              ),
             ElevatedButton(
                 onPressed: () {
                   if (!_formKey.currentState.validate()) return;
+                  setState(() {
+                    _isPosting = true;
+                  });
                   EventForm eventForm = EventForm(
                       eventName: _eventNameController.text,
-                      startDate: _startDate,
                       endDate: _endDate,
                       content: _contentController.text,
                       groupId: _groupId);
@@ -141,6 +141,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         ),
                       );
                     }
+                  });
+                  setState(() {
+                    _isPosting = false;
                   });
                 },
                 child: Text(S.of(context).create))

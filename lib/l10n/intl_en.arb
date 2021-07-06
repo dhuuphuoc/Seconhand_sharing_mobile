@@ -262,7 +262,7 @@
   "downToMember": "Down to member",
   "emptyJoinRequests": "There are no join requests",
   "joinGroup" : "Join group",
-  "requested" : "Requested",
+  "requested" : "Your request have been sent to group",
   "leaveGroup" : "Leave group",
   "leaveGroupConfirmation" : "Do you want to leave this group?",
   "groupInvitation": "Group invitations",
@@ -279,12 +279,22 @@
     }
   },
   "search" : "Search",
-  "itemNotFound" : "Cannot find items with \"{itemName}\" keyword",
+  "itemNotFound" : "Cannot find item with \"{itemName}\" keyword",
   "@itemNotFound" :
   {
-    "source_text" : "Cannot find items with \"{itemName}\" keyword",
+    "source_text" : "Cannot find item with \"{itemName}\" keyword",
     "placeholders":  {
       "itemName": {
+        "example": "TV"
+      }
+    }
+  },
+  "eventNotFound" : "Cannot find event with \"{eventName}\" keyword",
+  "@eventNotFound" :
+  {
+    "source_text" : "Cannot find event with \"{eventName}\" keyword",
+    "placeholders":  {
+      "eventName": {
         "example": "TV"
       }
     }
@@ -323,5 +333,10 @@
   "noMorePost" : "There is no more post",
   "groupPosted" : "The post was published in group",
   "noAnyComments" : "There are no comments for this post yet",
-  "notMemberNotification" : "You are not a member in this group"
+  "notMemberNotification" : "You are not a member in this group",
+  "cancelRequest": "Cancel request",
+  "eventEnded" : "Event ended",
+  "youReceivedInvitation": "You received an invitation from group",
+  "item" : "Item",
+  "user" : "User"
 }

@@ -1885,10 +1885,10 @@ class S {
     );
   }
 
-  /// `Requested`
+  /// `Your request have been sent to group`
   String get requested {
     return Intl.message(
-      'Requested',
+      'Your request have been sent to group',
       name: 'requested',
       desc: '',
       args: [],
@@ -1965,13 +1965,23 @@ class S {
     );
   }
 
-  /// `Cannot find items with "{itemName}" keyword`
+  /// `Cannot find item with "{itemName}" keyword`
   String itemNotFound(Object itemName) {
     return Intl.message(
-      'Cannot find items with "$itemName" keyword',
+      'Cannot find item with "$itemName" keyword',
       name: 'itemNotFound',
       desc: '',
       args: [itemName],
+    );
+  }
+
+  /// `Cannot find event with "{eventName}" keyword`
+  String eventNotFound(Object eventName) {
+    return Intl.message(
+      'Cannot find event with "$eventName" keyword',
+      name: 'eventNotFound',
+      desc: '',
+      args: [eventName],
     );
   }
 
@@ -2320,6 +2330,56 @@ class S {
     return Intl.message(
       'You are not a member in this group',
       name: 'notMemberNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel request`
+  String get cancelRequest {
+    return Intl.message(
+      'Cancel request',
+      name: 'cancelRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event ended`
+  String get eventEnded {
+    return Intl.message(
+      'Event ended',
+      name: 'eventEnded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You received an invitation from group`
+  String get youReceivedInvitation {
+    return Intl.message(
+      'You received an invitation from group',
+      name: 'youReceivedInvitation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item`
+  String get item {
+    return Intl.message(
+      'Item',
+      name: 'item',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get user {
+    return Intl.message(
+      'User',
+      name: 'user',
       desc: '',
       args: [],
     );

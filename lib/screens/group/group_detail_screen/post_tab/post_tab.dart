@@ -55,6 +55,11 @@ class _PostTabState extends State<PostTab> with AutomaticKeepAliveClientMixin<Po
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (this.mounted) super.setState(fn);
+  }
+
+  @override
   void initState() {
     loadData();
     super.initState();

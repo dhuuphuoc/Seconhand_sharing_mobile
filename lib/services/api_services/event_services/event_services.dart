@@ -13,21 +13,18 @@ import 'package:secondhand_sharing/utils/response_deserializer/response_deserial
 class EventForm {
   EventForm({
     this.eventName,
-    this.startDate,
     this.endDate,
     this.content,
     this.groupId,
   });
 
   String eventName;
-  DateTime startDate;
   DateTime endDate;
   String content;
   int groupId;
 
   factory EventForm.fromJson(Map<String, dynamic> json) => EventForm(
         eventName: json["eventName"],
-        startDate: DateTime.parse(json["startDate"]),
         endDate: DateTime.parse(json["endDate"]),
         content: json["content"],
         groupId: json["groupId"],
@@ -35,7 +32,6 @@ class EventForm {
 
   Map<String, dynamic> toJson() => {
         "eventName": eventName,
-        "startDate": startDate.toIso8601String(),
         "endDate": endDate.toIso8601String(),
         "content": content,
         "groupId": groupId,
@@ -43,16 +39,12 @@ class EventForm {
 }
 
 class EventServices {
-  static Future<List<GroupEvent>> getEvents(int pageNumber, int pageSize) async {
-    Uri url = Uri.https(
-        APIService.apiUrl,
-        "/Event",
-        pageSize != null && pageNumber != null
-            ? {
-                "PageNumber": pageNumber.toString(),
-                "PageSize": pageSize.toString(),
-              }
-            : null);
+  static Future<List<GroupEvent>> getEvents(String keyword, int pageNumber, int pageSize) async {
+    Uri url = Uri.https(APIService.apiUrl, "/Event", {
+      "PageNumber": pageNumber.toString(),
+      "PageSize": pageSize.toString(),
+      "query": keyword,
+    });
     var response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
       HttpHeaders.authorizationHeader: "Bearer ${AccessInfo().token}",
