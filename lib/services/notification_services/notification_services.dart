@@ -228,7 +228,7 @@ class NotificationService {
     S i18n = await loadI18n();
     AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareGroupNotificationDetails(
         Group(id: joinRequestModel.groupId, groupName: joinRequestModel.groupName, avatarURL: joinRequestModel.avatarUrl),
-        i18n.newMemberNotification);
+        "<b>${joinRequestModel.fullName}</b> ${i18n.joinRequestNotification}");
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         joinRequestModel.groupId, "<strong>${joinRequestModel.groupName}</strong>", null, platformChannelSpecifics,

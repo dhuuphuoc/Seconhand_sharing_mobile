@@ -13,31 +13,28 @@ class PostItemCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       elevation: 10,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 7),
-              child: Avatar(AccessInfo().userInfo.avatarUrl, 26),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Row(
+          children: [
+            Avatar(AccessInfo().userInfo.avatarUrl, 24),
+            SizedBox(
+              width: 10,
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
-              height: 38,
-              child: ElevatedButton(
-                onPressed: onPostItem,
-                child: Text(
-                  S.of(context).donate,
+            Expanded(
+              flex: 3,
+              child: Container(
+                height: 38,
+                child: ElevatedButton(
+                  onPressed: onPostItem,
+                  child: Text(
+                    S.of(context).donate,
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 10,
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -32,16 +32,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   DateTime selectedDate = DateTime.now();
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1900, 8),
-        lastDate: DateTime(2100));
+    final DateTime picked =
+        await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1900, 8), lastDate: DateTime(2100));
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        _dateOfBirthController.value = TextEditingValue(
-            text: DateFormat("yyyy-MM-dd").format(picked).toString());
+        _dateOfBirthController.value = TextEditingValue(text: DateFormat("yyyy-MM-dd").format(picked).toString());
       });
   }
 
@@ -51,32 +47,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    bool result = await AuthenticationService.register(RegisterForm(
-        _fullNameTextController.text,
-        _emailTextController.text,
-        _passwordTextController.text,
-        _dateOfBirthController.text,
-        _phoneNumberController.text));
+    bool result = await AuthenticationService.register(RegisterForm(_fullNameTextController.text, _emailTextController.text,
+        _passwordTextController.text, _dateOfBirthController.text, _phoneNumberController.text));
 
     if (result) {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(
-              S.of(context).success, S.of(context).registerSuccess, "OK");
+          return NotifyDialog(S.of(context).success, S.of(context).registerSuccess, "OK");
         },
       ).whenComplete(() {
         Navigator.pop(context);
-        Navigator.pushNamed(context, "/");
       });
     } else {
       showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return NotifyDialog(S.of(context).failed, S.of(context).notExistEmail,
-              S.of(context).tryAgain);
+          return NotifyDialog(S.of(context).failed, S.of(context).existEmail, S.of(context).tryAgain);
         },
       );
     }
@@ -120,9 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.text,
                   controller: _fullNameTextController,
                   validator: (value) {
-                    return value.isEmpty
-                        ? S.of(context).emptyFullNameError
-                        : null;
+                    return value.isEmpty ? S.of(context).emptyFullNameError : null;
                   },
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(

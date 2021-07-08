@@ -115,6 +115,7 @@ class AuthenticationService {
     var response = await http.post(url, body: jsonEncode(registerForm.toJson()), headers: {
       HttpHeaders.contentTypeHeader: ContentType.json.value,
     });
+    print(response.body);
     return response.statusCode == 200;
   }
 
@@ -136,8 +137,8 @@ class AuthenticationService {
 
   static Future<bool> confirmEmail(ConfirmEmailForm confirmEmailForm) async {
     Uri url = Uri.https(APIService.apiUrl, "/Identity/confirm-email");
-    var response = await http.post(url,
-        body: jsonEncode(confirmEmailForm.toJson()), headers: {HttpHeaders.contentTypeHeader: "application/json"});
+    var response = await http
+        .post(url, body: jsonEncode(confirmEmailForm.toJson()), headers: {HttpHeaders.contentTypeHeader: "application/json"});
     return response.statusCode == 200;
   }
 }

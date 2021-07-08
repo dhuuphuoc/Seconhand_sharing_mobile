@@ -865,6 +865,16 @@ class S {
     );
   }
 
+  /// `This email was registered`
+  String get existEmail {
+    return Intl.message(
+      'This email was registered',
+      name: 'existEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your have seen all posts`
   String get endNotifyMessage {
     return Intl.message(

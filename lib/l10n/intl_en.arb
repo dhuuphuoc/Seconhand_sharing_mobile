@@ -82,6 +82,7 @@
   "resetPassword": "Reset password",
   "resetPasswordHint": "Insert your new password to change",
   "notExistEmail": "Your email does not exist",
+  "existEmail": "This email was registered",
   "endNotifyMessage" : "Your have seen all posts",
   "error" : "Error",
   "grantStoragePermission" : "Allow 2Hand-Sharing access device's storage",

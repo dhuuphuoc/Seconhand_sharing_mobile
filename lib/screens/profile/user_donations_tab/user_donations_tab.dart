@@ -94,6 +94,7 @@ class _UserRequestsTabState extends State<UserDonationsTab> {
             height: _isEnd ? 0 : screenSize.height * 0.2,
           ));
     if (_isEnd) {
+      listViewWidgets.add(SizedBox(height: 10));
       listViewWidgets.add(NotificationCard(Icons.check_circle_outline, S.of(context).endNotifyMessage));
       listViewWidgets.add(SizedBox(height: 10));
     }

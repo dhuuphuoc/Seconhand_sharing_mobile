@@ -25,25 +25,21 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
       _isLoading = true;
     });
 
-    bool result = await AuthenticationService.confirmEmail(
-        ConfirmEmailForm(_userId, _code));
+    bool result = await AuthenticationService.confirmEmail(ConfirmEmailForm(_userId, _code));
 
     if (!result) {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(
-                S.of(context).failed, S.of(context).confirmEmailFail, "OK");
+            return NotifyDialog(S.of(context).failed, S.of(context).confirmEmailFail, "OK");
           });
     } else {
       showDialog(
           context: context,
           builder: (context) {
-            return NotifyDialog(
-                S.of(context).success, S.of(context).confirmEmailSuccess, "OK");
+            return NotifyDialog(S.of(context).success, S.of(context).confirmEmailSuccess, "OK");
           }).whenComplete(() {
         Navigator.pop(context);
-        Navigator.pushNamed(context, "/login");
       });
     }
     setState(() {
