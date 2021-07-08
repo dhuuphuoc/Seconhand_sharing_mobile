@@ -135,7 +135,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               ),
                               Column(
                                 children: [
-                                  Text("${S.of(context).remaining}: ${TimeRemainder.parse(_event.endDate, context)}"),
+                                  Text("${S.of(context).remaining(TimeRemainder.parse(_event.endDate, context))}"),
                                   Text(""),
                                 ],
                               ),

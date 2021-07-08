@@ -88,30 +88,29 @@ class _EventTabState extends State<EventTab> with AutomaticKeepAliveClientMixin<
             SliverList(
                 delegate: SliverChildListDelegate([
               SizedBox(height: 20),
-              if (widget.role != null)
+              if (widget.role == MemberRole.admin)
                 Card(
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: Column(
                       children: [
-                        if (widget.role == MemberRole.admin)
-                          Container(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, "/create-event", arguments: widget.group.id).then((value) {
-                                  if (value != null) {
-                                    var event = value as GroupEvent;
-                                    setState(() {
-                                      _events.insert(0, event);
-                                    });
-                                  }
-                                });
-                              },
-                              child: Text(S.of(context).createEvent),
-                            ),
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/create-event", arguments: widget.group.id).then((value) {
+                                if (value != null) {
+                                  var event = value as GroupEvent;
+                                  setState(() {
+                                    _events.insert(0, event);
+                                  });
+                                }
+                              });
+                            },
+                            child: Text(S.of(context).createEvent),
                           ),
+                        ),
                       ],
                     ),
                   ),
