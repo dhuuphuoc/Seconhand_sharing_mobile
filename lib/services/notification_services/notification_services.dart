@@ -105,8 +105,7 @@ class NotificationService {
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
-      largeIcon:
-          receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
+      largeIcon: receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person") : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
       setAsGroupSummary: true,
     ));
@@ -120,8 +119,7 @@ class NotificationService {
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
-      largeIcon:
-          receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
+      largeIcon: receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person") : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
     );
   }
@@ -142,7 +140,7 @@ class NotificationService {
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
-      largeIcon: group.avatarURL == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
+      largeIcon: group.avatarURL == null ? DrawableResourceAndroidBitmap("group") : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
     );
   }
@@ -210,7 +208,8 @@ class NotificationService {
         Group(id: invitation.groupId, groupName: invitation.groupName, avatarURL: invitation.avatarUrl),
         i18n.receivedInvitationNotification);
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(invitation.groupId, null, null, platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin.show(
+        invitation.groupId, "<strong>${invitation.groupName}</strong>", null, platformChannelSpecifics,
         payload: jsonEncode({"type": "7", "message": invitation.toJson()}));
   }
 
@@ -218,9 +217,10 @@ class NotificationService {
     S i18n = await loadI18n();
     AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareGroupNotificationDetails(
         Group(id: invitation.groupId, groupName: invitation.groupName, avatarURL: invitation.avatarUrl),
-        i18n.newMemberNotification);
+        "<b>${invitation.fullName}</b> ${i18n.newMemberNotification}");
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(invitation.groupId, null, null, platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin.show(
+        invitation.groupId, "<strong>${invitation.groupName}</strong>", null, platformChannelSpecifics,
         payload: jsonEncode({"type": "8", "message": invitation.toJson()}));
   }
 
@@ -230,7 +230,8 @@ class NotificationService {
         Group(id: joinRequestModel.groupId, groupName: joinRequestModel.groupName, avatarURL: joinRequestModel.avatarUrl),
         i18n.newMemberNotification);
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(joinRequestModel.groupId, null, null, platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin.show(
+        joinRequestModel.groupId, "<strong>${joinRequestModel.groupName}</strong>", null, platformChannelSpecifics,
         payload: jsonEncode({"type": "9", "message": joinRequestModel.toJson()}));
   }
 

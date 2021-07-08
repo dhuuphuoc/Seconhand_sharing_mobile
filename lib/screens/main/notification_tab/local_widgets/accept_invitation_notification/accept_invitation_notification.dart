@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/notification/accep_invitation_model/accept_invitation_model.dart';
 import 'package:secondhand_sharing/models/notification/notification.dart';
+import 'package:secondhand_sharing/screens/main/group_tab/local_widgets/group_avatar/group_avatar.dart';
 import 'package:secondhand_sharing/utils/time_ago/time_ago.dart';
 import 'package:secondhand_sharing/widgets/avatar/avatar.dart';
 
@@ -35,7 +36,7 @@ class _ConfirmSentNotificationState extends State<AcceptInvitationNotification> 
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: ListTile(
           minVerticalPadding: 10,
-          leading: Avatar(_acceptInvitationModel.avatarUrl, 20),
+          leading: GroupAvatar(_acceptInvitationModel.avatarUrl, 20),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
