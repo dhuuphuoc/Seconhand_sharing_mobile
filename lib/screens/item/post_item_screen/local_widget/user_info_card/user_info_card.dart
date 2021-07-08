@@ -15,7 +15,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.zero,
-        elevation: 3,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           child: ListTile(

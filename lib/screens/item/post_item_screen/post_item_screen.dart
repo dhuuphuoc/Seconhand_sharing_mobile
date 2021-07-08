@@ -195,11 +195,14 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                 controller: _titleController,
                 validator: Validator.validateTitle,
                 decoration: InputDecoration(
-                    hintText: "${S.of(context).itemName}...",
-                    labelText: "${S.of(context).itemName}",
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 0.5))),
+                  hintText: "${S.of(context).itemName}...",
+                  labelText: "${S.of(context).itemName}",
+                  filled: true,
+                  fillColor: Theme.of(context).backgroundColor,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 0.5)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.transparent)),
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -232,10 +235,13 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                 controller: _descriptionController,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
-                    hintText: "${S.of(context).description}...",
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                  hintText: "${S.of(context).description}...",
+                  filled: true,
+                  fillColor: Theme.of(context).backgroundColor,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.transparent)),
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -284,11 +290,14 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                   });
                 },
                 decoration: InputDecoration(
-                    labelText: "${S.of(context).phoneNumber}",
-                    suffixIcon: Icon(Icons.edit),
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                  labelText: "${S.of(context).phoneNumber}",
+                  suffixIcon: Icon(Icons.edit),
+                  filled: true,
+                  fillColor: Theme.of(context).backgroundColor,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.transparent)),
+                ),
               ),
 
               SizedBox(
