@@ -6,4 +6,7 @@ enum NotificationType {
   requestStatus,
   sendThanks,
   confirmSent,
+  inviteMember,
+  acceptInvitation,
+  joinRequest,
 }

@@ -57,7 +57,7 @@ class EventCard extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        timeReminder == null ? S.of(context).eventEnded : "${S.of(context).remaining}: $timeReminder",
+                        timeReminder == null ? S.of(context).eventEnded : "${S.of(context).remaining(timeReminder)}",
                         style: TextStyle(
                             color:
                                 timeReminder == null ? Theme.of(context).errorColor : DefaultTextStyle.of(context).style.color),

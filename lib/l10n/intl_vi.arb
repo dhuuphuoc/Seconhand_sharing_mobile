@@ -31,10 +31,10 @@
   "phoneNumber": "Số điện thoại",
   "description": "Mô tả",
   "post": "Đăng",
-  "tryAgain" : "Thử lại",
-  "failed" : "Thất bại",
-  "postFailed" : "Có lỗi trong quá trình đăng bài!",
-  "loginFailedNotification" : "Tên tài khoản hoặc mật khẩu không đúng.",
+  "tryAgain": "Thử lại",
+  "failed": "Thất bại",
+  "postFailed": "Có lỗi trong quá trình đăng bài!",
+  "loginFailedNotification": "Tên tài khoản hoặc mật khẩu không đúng.",
   "addPhotos": "Thêm ảnh",
   "success": "Thành công",
   "registerSuccess": "Đăng ký thành công. Kiểm tra email xác nhận của bạn",
@@ -42,105 +42,103 @@
   "emptyFullNameError": "Tên không được bỏ trống ",
   "addPhoto": "Thêm ảnh",
   "chooseImage": "Chọn ảnh",
-  "postItem" : "Đăng bài viết",
-  "all" : "Tất cả",
+  "postItem": "Đăng bài viết",
+  "all": "Tất cả",
   "clothes": "Quần áo",
-  "sport" : "Thể thao",
-  "study" : "Học tập",
+  "sport": "Thể thao",
+  "study": "Học tập",
   "houseware": "Đồ\n gia dụng",
   "electronic": "Điện tử",
   "furniture": "Nội thất",
-  "other" : "Khác",
-  "day" : "ngày",
-  "month" : "tháng",
-  "year" : "năm",
-  "hour" : "giờ",
-  "minute" : "phút",
-  "second" : "giây",
-  "address" : "Địa chỉ",
-  "addressHint" : "Số nhà, tên đường",
-  "ward" : "Phường xã",
-  "district" : "Quận huyện",
-  "province" : "Tỉnh thành",
-  "vietNam" : "Việt Nam",
-  "receiveAddress" : "Địa chỉ nhận",
-  "provinceEmptyError" : "Tỉnh thành không được trống!",
-  "districtEmptyError" : "Quận huyện không được trống!",
-  "wardEmptyError" : "Phường xã không được trống!",
-  "addressEmptyError" : "Số nhà, tên đường không được bỏ trống",
-  "addressError" : "Địa chỉ cần phải điền hoàn chỉnh",
-  "invalidPhoneNumber" : "Số điện thoại không hợp lệ!",
-  "titleEmptyError" : "Tiêu đề không được bỏ trống!",
-  "descriptionEmptyError" : "Phần mô tả không được bỏ trống!",
-  "notEnoughImages" : "Phải có ít nhất một hình ảnh của đồ vật!",
-  "images" : "Hình ảnh",
-  "posted" : "Đã đăng",
-  "postedNotification" : "Vật dụng của bạn đã được đăng! Cảm ơn bạn rất nhiều!",
-  "postError" : "Có lỗi trong quá trình đăng bài",
-  "posts" : "Bài đăng",
-  "error" : "Lỗi",
+  "other": "Khác",
+  "day": "ngày",
+  "month": "tháng",
+  "year": "năm",
+  "hour": "giờ",
+  "minute": "phút",
+  "second": "giây",
+  "address": "Địa chỉ",
+  "addressHint": "Số nhà, tên đường",
+  "ward": "Phường xã",
+  "district": "Quận huyện",
+  "province": "Tỉnh thành",
+  "vietNam": "Việt Nam",
+  "receiveAddress": "Địa chỉ nhận",
+  "provinceEmptyError": "Tỉnh thành không được trống!",
+  "districtEmptyError": "Quận huyện không được trống!",
+  "wardEmptyError": "Phường xã không được trống!",
+  "addressEmptyError": "Số nhà, tên đường không được bỏ trống",
+  "addressError": "Địa chỉ cần phải điền hoàn chỉnh",
+  "invalidPhoneNumber": "Số điện thoại không hợp lệ!",
+  "titleEmptyError": "Tiêu đề không được bỏ trống!",
+  "descriptionEmptyError": "Phần mô tả không được bỏ trống!",
+  "notEnoughImages": "Phải có ít nhất một hình ảnh của đồ vật!",
+  "images": "Hình ảnh",
+  "posted": "Đã đăng",
+  "postedNotification": "Vật dụng của bạn đã được đăng! Cảm ơn bạn rất nhiều!",
+  "postError": "Có lỗi trong quá trình đăng bài",
+  "posts": "Bài đăng",
+  "error": "Lỗi",
   "checkMailForgotPassword": "Kiểm tra email của bạn",
   "notExistEmail": "Email của bạn không tồn tại",
-  "grantStoragePermission" : "Cho phép 2Hand-Sharing truy cập vào bộ nhớ",
-  "grantStoragePermissionHint" : "Cấp quyền truy cập trong cài đặt để gửi hình ảnh đồ vật bạn muốn cho",
-  "allowAccess" : "Cho phép truy cập",
+  "grantStoragePermission": "Cho phép 2Hand-Sharing truy cập vào bộ nhớ",
+  "grantStoragePermissionHint": "Cấp quyền truy cập trong cài đặt để gửi hình ảnh đồ vật bạn muốn cho",
+  "allowAccess": "Cho phép truy cập",
   "resetPassword": "Thay đổi mật khẩu",
   "resetPasswordHint": "Nhập vào mật khẩu mới của bạn để thay đổi",
-  "endNotifyMessage" : "Bạn đã xem tất cả các bài viết",
-  "detail" : "Thông tin chi tiết",
+  "endNotifyMessage": "Bạn đã xem tất cả các bài viết",
+  "detail": "Thông tin chi tiết",
   "registerToReceive": "Đăng ký nhận",
-  "resetPasswordSuccess" : "Mật khẩu của bạn đã được đặt lại",
-  "resetPasswordFailed" : "Đường dẫn khôi phục đã hết hạn",
-  "yes" : "Có",
+  "resetPasswordSuccess": "Mật khẩu của bạn đã được đặt lại",
+  "resetPasswordFailed": "Đường dẫn khôi phục đã hết hạn",
+  "yes": "Có",
   "no": "Không",
-  "message" : "Lời nhắn",
-  "registered" : "Đã đăng ký",
+  "message": "Lời nhắn",
+  "registered": "Đã đăng ký",
   "cancelRegister": "Hủy đăng ký",
   "pending": "Đã đăng ký",
-  "accepted" : "Đã chấp nhận",
-  "unregistered" : "Chưa đăng ký",
-  "registrations" : "Lượt đăng ký",
-  "accept" : "Chấp nhận",
-  "cancel" : "Hủy",
+  "accepted": "Đã chấp nhận",
+  "unregistered": "Chưa đăng ký",
+  "registrations": "Lượt đăng ký",
+  "accept": "Chấp nhận",
+  "cancel": "Hủy",
   "confirmSent": "Xác nhận đã cho",
-  "complete" : "Hoàn thành",
-  "messageEmptyError" : "Lời nhắn không thể bỏ trống",
-  "contact" : "Liên hệ",
+  "complete": "Hoàn thành",
+  "messageEmptyError": "Lời nhắn không thể bỏ trống",
+  "contact": "Liên hệ",
   "dateOfBirth": "Ngày sinh",
   "emptyPhoneError": "Số điện thoại không được bỏ trống",
-  "contactDenied" : "Đăng ký nhận của bạn chưa được chấp nhận",
-  "close" : "Đóng",
-  "sendThanks" : "Gửi lời cảm ơn",
-  "thanks" : "Cảm ơn bạn rất nhiều!",
-  "send" : "Gửi",
-  "thanksMessage" : "Lời cảm ơn",
+  "contactDenied": "Đăng ký nhận của bạn chưa được chấp nhận",
+  "close": "Đóng",
+  "sendThanks": "Gửi lời cảm ơn",
+  "thanks": "Cảm ơn bạn rất nhiều!",
+  "send": "Gửi",
+  "thanksMessage": "Lời cảm ơn",
   "thanksSent": "Lời cảm ơn của bạn đã được gửi đi",
-  "profile" : "Thông tin cá nhân",
+  "profile": "Thông tin cá nhân",
   "donation": "Quyên góp",
-  "save" : "Lưu",
+  "save": "Lưu",
   "confirmEmail": "Xác nhận email",
   "confirmEmailFail": "Xác nhận email của bạn không . Vui lòng kiểm tra lại email",
   "confirmEmailHint": "Bấm nút XÁC NHẬN để hoàn tất quy trình đăng ký tài khoản trên hệ thống",
-  "category" : "Phân loại",
-  "categoryUnselectedError" : "Bạn chưa phân loại cho vật phẩm",
-  "sendMessage" : "Nhắn tin",
-  "cancelAccept" : "Hủy chấp nhận",
-  "cancelAlert" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
-  "@cancelAlert" :
-  {
-    "source_text" :  "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
-    "placeholders":  {
-    "fullName": {
-      "example": "Hữu Dũng"
+  "category": "Phân loại",
+  "categoryUnselectedError": "Bạn chưa phân loại cho vật phẩm",
+  "sendMessage": "Nhắn tin",
+  "cancelAccept": "Hủy chấp nhận",
+  "cancelAlert": "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+  "@cancelAlert": {
+    "source_text": "Bạn có muốn hủy chấp nhận đăng ký của {fullName}?",
+    "placeholders": {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
     }
-  }
   },
-  "confirmationSentMessage" : "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
-  "incomingReceiveRequest" :  "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
-  "@incomingReceiveRequest" :
-  {
-    "source_text" :  "{fullName}đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
-    "placeholders":  {
+  "confirmationSentMessage": "Bạn chắc chứ? Chỉ xác nhận khi vật phẩm đã được gửi đi, vật phẩm sẽ đóng lại sau khi xác nhận!",
+  "incomingReceiveRequest": "{fullName} đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+  "@incomingReceiveRequest": {
+    "source_text": "{fullName}đã đăng ký nhận vật phẩm {itemName} của bạn với lời nhắn: {message}",
+    "placeholders": {
       "fullName": {
         "example": "Hữu Dũng"
       },
@@ -155,72 +153,65 @@
   "registeredItem": "đã đăng ký nhận vật phẩm",
   "withMessage": "của bạn với lời nhắn:",
   "back": "Quay lại",
-  "sentNotification" : "Vật phẩm này đã được tặng cho {fullName}",
-  "@sentNotification" :
-  {
-    "source_text" :  "Vật phẩm này đã được tặng cho {fullName}",
-    "placeholders":  {
+  "sentNotification": "Vật phẩm này đã được tặng cho {fullName}",
+  "@sentNotification": {
+    "source_text": "Vật phẩm này đã được tặng cho {fullName}",
+    "placeholders": {
       "fullName": {
         "example": "Hữu Dũng"
       }
     }
   },
-  "incomingReceiveRequestSnackBar" : "{fullName} đã đăng ký nhận vật phẩm",
-  "@incomingReceiveRequestSnackBar" :
-  {
-    "source_text" :  "{fullName} đã đăng ký nhận vật phẩm",
-    "placeholders":  {
-      "fullName": {
-        "example": "Hữu Dũng"
-      }
-
-    }
-  },
-  "cancelReceiveRequestSnackBar" : "{fullName} đã hủy đăng ký",
-  "@cancelReceiveRequestSnackBar" :
-  {
-    "source_text" :  "{fullName} đã hủy đăng ký",
-    "placeholders":  {
+  "incomingReceiveRequestSnackBar": "{fullName} đã đăng ký nhận vật phẩm",
+  "@incomingReceiveRequestSnackBar": {
+    "source_text": "{fullName} đã đăng ký nhận vật phẩm",
+    "placeholders": {
       "fullName": {
         "example": "Hữu Dũng"
       }
     }
   },
-  "yourRegistrationWas" : "Đăng ký nhận của bạn đã được",
-  "yourAcceptedRegistrationWas" : "Đăng ký nhận của bạn đã bị",
-  "acceptedLowerCase" : "chấp nhận",
-  "canceledLowerCase" : "hủy chấp nhận",
-  "cancelRegistrationMessage" : "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
+  "cancelReceiveRequestSnackBar": "{fullName} đã hủy đăng ký",
+  "@cancelReceiveRequestSnackBar": {
+    "source_text": "{fullName} đã hủy đăng ký",
+    "placeholders": {
+      "fullName": {
+        "example": "Hữu Dũng"
+      }
+    }
+  },
+  "yourRegistrationWas": "Đăng ký nhận của bạn đã được",
+  "yourAcceptedRegistrationWas": "Đăng ký nhận của bạn đã bị",
+  "acceptedLowerCase": "chấp nhận",
+  "canceledLowerCase": "hủy chấp nhận",
+  "cancelRegistrationMessage": "Bạn có muốn hủy đăng ký nhận vật phẩm này không?",
   "you": "bạn",
-  "youUpperCase" : "Bạn",
-  "thanksNotification" : "Lời cảm ơn: {content}",
-  "@thanksNotification" :
-  {
-    "source_text" :  "Lời cảm ơn: {content}",
-    "placeholders":  {
+  "youUpperCase": "Bạn",
+  "thanksNotification": "Lời cảm ơn: {content}",
+  "@thanksNotification": {
+    "source_text": "Lời cảm ơn: {content}",
+    "placeholders": {
       "content": {
         "example": "Cảm ơn bạn rất nhiều!"
       }
     }
   },
-  "sentThanksToYou" : "đã gửi lời cảm ơn đến bạn:",
-  "confirmSentNotification" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho {receiver}",
-  "@confirmSentNotification" :
-  {
-    "source_text" :  "Chủ sở hữu đã tặng cho {receiver}",
-    "placeholders":  {
+  "sentThanksToYou": "đã gửi lời cảm ơn đến bạn:",
+  "confirmSentNotification": "Chủ sở hữu đã xác nhận tặng vật phẩm cho {receiver}",
+  "@confirmSentNotification": {
+    "source_text": "Chủ sở hữu đã tặng cho {receiver}",
+    "placeholders": {
       "receiver": {
         "example": "Dũng nguyễn"
       }
     }
   },
-  "confirmSentTo" : "Chủ sở hữu đã xác nhận tặng vật phẩm cho",
+  "confirmSentTo": "Chủ sở hữu đã xác nhận tặng vật phẩm cho",
   "notification": "Thông báo",
-  "confirmSentSuccess" : "Bạn đã xác nhận tặng cho {receiver}",
-  "@confirmSentSuccess" :
-  {
-    "source_text" : "Bạn đã xác nhận tặng cho {receiver}",
-    "placeholders":  {
+  "confirmSentSuccess": "Bạn đã xác nhận tặng cho {receiver}",
+  "@confirmSentSuccess": {
+    "source_text": "Bạn đã xác nhận tặng cho {receiver}",
+    "placeholders": {
       "receiver": {
         "example": "Dũng nguyễn"
       }
@@ -235,111 +226,109 @@
   "createGroupSuccess": "Tạo nhóm thành công",
   "createGroupFail": "Tạo nhóm thất bại. Vui lòng thử lại",
   "groupDetail": "Chi tiết nhóm",
-  "notificationEnded" : "Không còn thông báo nào nữa",
-  "messagesEnded" : "Không còn tin nhắn nào nữa",
-  "messageBox" : "Hộp thoại",
+  "notificationEnded": "Không còn thông báo nào nữa",
+  "messagesEnded": "Không còn tin nhắn nào nữa",
+  "messageBox": "Hộp thoại",
   "member": "Thành viên",
   "homeAddress": "Địa chỉ nhà",
-  "avatarChangeConfirmation" : "Ảnh đại diện của bạn sẽ được đổi thành ảnh đã chọn!",
-  "areYouSure" : "Bạn chắc chứ?",
+  "avatarChangeConfirmation": "Ảnh đại diện của bạn sẽ được đổi thành ảnh đã chọn!",
+  "areYouSure": "Bạn chắc chứ?",
   "registeredNotification": "Bạn đã đăng ký nhận vật phẩm này và đang chờ chủ sở hữu chấp nhận ...",
-  "noMoreEvent" : "Không còn sự kiện nào nữa",
-  "event" : "Sự kiện",
-  "joinedGroup" : "Nhóm đã tham gia",
-  "requestToJoin" : "Yêu cầu tham gia",
-  "kick" : "Khai trừ",
-  "addAsAdmin" : "Thêm làm quản trị viên",
-  "addMember" : "Thêm thành viên",
+  "noMoreEvent": "Không còn sự kiện nào nữa",
+  "event": "Sự kiện",
+  "joinedGroup": "Nhóm đã tham gia",
+  "requestToJoin": "Yêu cầu tham gia",
+  "kick": "Khai trừ",
+  "addAsAdmin": "Thêm làm quản trị viên",
+  "addMember": "Thêm thành viên",
   "invitationWasSent": "Lời mời đã được gửi đi",
-  "userNotExist" : "Người dùng không tồn tại",
-  "userAlreadyInvited" : "Người dùng đã được mời rồi",
-  "memberExisted" : "Người này đã là thành viên của nhóm",
-  "youAreNotAdmin" : "Bạn không phải là quản trị viên của nhóm",
-  "glory" : "Vinh danh",
-  "emptyJoinedGroup" : "Bạn chưa tham gia nhóm nào cả",
-  "emptyGroup" : "Chưa có nhóm nào được thành lập",
-  "admin" : "Quản trị viên",
+  "userNotExist": "Người dùng không tồn tại",
+  "userAlreadyInvited": "Người dùng đã được mời rồi",
+  "memberExisted": "Người này đã là thành viên của nhóm",
+  "youAreNotAdmin": "Bạn không phải là quản trị viên của nhóm",
+  "glory": "Vinh danh",
+  "emptyJoinedGroup": "Bạn chưa tham gia nhóm nào cả",
+  "emptyGroup": "Chưa có nhóm nào được thành lập",
+  "admin": "Quản trị viên",
   "downToMember": "Giáng xuống thành viên",
   "emptyJoinRequests": "Không có yêu cầu tham gia nào",
-  "joinGroup" : "Tham gia nhóm",
-  "requested" : "Bạn đã gửi yêu cầu tham gia tới nhóm",
-  "leaveGroup" : "Rời khỏi nhóm",
-  "leaveGroupConfirmation" : "Bạn có muốn rời khỏi nhóm không?",
+  "joinGroup": "Tham gia nhóm",
+  "requested": "Bạn đã gửi yêu cầu tham gia tới nhóm",
+  "leaveGroup": "Rời khỏi nhóm",
+  "leaveGroupConfirmation": "Bạn có muốn rời khỏi nhóm không?",
   "groupInvitation": "Lời mời gia nhập nhóm",
   "decline": "Từ chối",
-  "memberAdded" : "Thành viên mới đã được thêm vào!",
-  "youAreMemberOfGroup" : "Bạn đã là thành viên của nhóm {groupName}",
-  "@youAreMemberOfGroup" :
-  {
-    "source_text" : "Bạn đã là thành viên của nhóm {groupName}",
-    "placeholders":  {
+  "memberAdded": "Thành viên mới đã được thêm vào!",
+  "youAreMemberOfGroup": "Bạn đã là thành viên của nhóm {groupName}",
+  "@youAreMemberOfGroup": {
+    "source_text": "Bạn đã là thành viên của nhóm {groupName}",
+    "placeholders": {
       "groupName": {
         "example": "Hội tụ"
       }
     }
   },
-  "search" : "Tìm kiếm",
-  "itemNotFound" : "Không tìm thấy vật phẩm với từ khóa \"{itemName}\"",
-  "@itemNotFound" :
-  {
-    "source_text" : "Không tìm thấy vật phẩm với từ khóa \"{itemName}\"",
-    "placeholders":  {
+  "search": "Tìm kiếm",
+  "itemNotFound": "Không tìm thấy vật phẩm với từ khóa \"{itemName}\"",
+  "@itemNotFound": {
+    "source_text": "Không tìm thấy vật phẩm với từ khóa \"{itemName}\"",
+    "placeholders": {
       "itemName": {
         "example": "TV"
       }
     }
   },
-  "eventNotFound" : "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
-  "@eventNotFound" :
-  {
-    "source_text" : "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
-    "placeholders":  {
+  "eventNotFound": "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
+  "@eventNotFound": {
+    "source_text": "Không tìm thấy sự kiện với từ khóa \"{eventName}\"",
+    "placeholders": {
       "eventName": {
         "example": "TV"
       }
     }
   },
-  "invite" : "Mời",
-  "end" : "Hết",
-  "remaining" : "Còn lại",
-  "campaign" : "Chiến dịch tình nguyện",
+  "invite": "Mời",
+  "end": "Hết",
+  "remaining": "Còn lại: {duration}",
+  "campaign": "Chiến dịch tình nguyện",
   "thisLowerCase": "này",
-  "leaveGroupError" : "Bạn chỉ có thể rời khỏi nhóm khi nhóm có trên 2 admin",
-  "week" : "tuần",
-  "createEvent" : "Tạo sự kiện",
-  "eventName" : "Tên sự kiện",
+  "leaveGroupError": "Bạn chỉ có thể rời khỏi nhóm khi nhóm có trên 2 admin",
+  "week": "tuần",
+  "createEvent": "Tạo sự kiện",
+  "eventName": "Tên sự kiện",
   "startDate": "Ngày bắt đầu",
-  "endDate" : "Ngày kết thúc",
-  "content" : "Nội dung",
-  "create" : "Tạo",
-  "eventNameEmptyError" : "Tên sự kiện không được bỏ trống!",
-  "startDateEmptyError" : "Ngày bắt đầu không được bỏ trống!",
-  "endDateEmptyError" : "Ngày kết thúc không được bỏ trống!",
-  "contentEmptyError" : "Nội dung không được bỏ trống!",
-  "eventPosted" : "Sự kiện quyên góp đã được đăng tải. Hãy kiểm tra vật phẩm được quyên góp thường xuyên nhé!",
+  "endDate": "Ngày kết thúc",
+  "content": "Nội dung",
+  "create": "Tạo",
+  "eventNameEmptyError": "Tên sự kiện không được bỏ trống!",
+  "startDateEmptyError": "Ngày bắt đầu không được bỏ trống!",
+  "endDateEmptyError": "Ngày kết thúc không được bỏ trống!",
+  "contentEmptyError": "Nội dung không được bỏ trống!",
+  "eventPosted": "Sự kiện quyên góp đã được đăng tải. Hãy kiểm tra vật phẩm được quyên góp thường xuyên nhé!",
   "noAnyInvitations": "Không có lời mời nào cả",
-  "assign" : "Phân công",
-  "reject" : "Không nhận",
+  "assign": "Phân công",
+  "reject": "Không nhận",
   "seeMore": "Xem thêm",
   "edit": "Chỉnh sửa",
-  "delete" : "Xóa",
-  "myDonation" : "Quyên góp của tôi",
+  "delete": "Xóa",
+  "myDonation": "Quyên góp của tôi",
   "deleteItemFailedMessage": "Bạn chỉ có thể xóa vật phẩm chưa cho ai",
-  "took" : "Đã lấy",
-  "cancelAcceptEventItemConfirmation" : "Bạn có muốn hủy chấp nhận vật phẩm này không?",
-  "rejectItemConfirmation" : "Bạn có chắc rằng bạn không nhận vật phẩm này không?",
-  "groupAcceptedYourItem" : "Nhóm đã chấp nhận vật phẩm của bạn",
+  "took": "Đã lấy",
+  "cancelAcceptEventItemConfirmation": "Bạn có muốn hủy chấp nhận vật phẩm này không?",
+  "rejectItemConfirmation": "Bạn có chắc rằng bạn không nhận vật phẩm này không?",
+  "groupAcceptedYourItem": "Nhóm đã chấp nhận vật phẩm của bạn",
   "comment": "Bình luận",
-  "noMorePost" : "Không còn bài đăng nào nữa",
-  "groupPosted" : "Bài viết đã được đăng trong nhóm",
-  "noAnyComments" : "Chưa có bình luận trong bài viết này",
-  "notMemberNotification" : "Bạn không phải là thành viên của nhóm",
-  "ago" : "trước",
+  "noMorePost": "Không còn bài đăng nào nữa",
+  "groupPosted": "Bài viết đã được đăng trong nhóm",
+  "noAnyComments": "Chưa có bình luận trong bài viết này",
+  "notMemberNotification": "Bạn không phải là thành viên của nhóm",
+  "ago": "trước",
   "cancelRequest": "Hủy yêu cầu",
-  "eventEnded" : "Sự kiện đã kết thúc",
+  "eventEnded": "Sự kiện đã kết thúc",
   "youReceivedInvitation": "Bạn nhận được lời mời từ nhóm",
-  "item" : "Vật phẩm",
-  "user" : "Người dùng"
-
-
+  "item": "Vật phẩm",
+  "user": "Người dùng",
+  "receivedInvitationNotification": "Bạn nhận được lời mời tham gia từ nhóm",
+  "newMemberNotification" : "đã trở thành thành nhiên mới của nhóm",
+  "joinRequestNotification" : "đang xin gia nhập nhóm"
 }

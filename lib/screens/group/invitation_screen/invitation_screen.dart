@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
 import 'package:secondhand_sharing/models/invitation/invitation.dart';
@@ -16,6 +20,24 @@ class InvitationScreen extends StatefulWidget {
 class _InvitationScreenState extends State<InvitationScreen> {
   List<Invitation> _invitations;
   List<Invitation> _acceptedInvitations = [];
+  StreamSubscription<RemoteMessage> _subscription;
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _subscription = FirebaseMessaging.onMessage.listen((message) {
+      if (message.data["type"] == "7") {
+        setState(() {
+          _invitations = ModalRoute.of(context).settings.arguments;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,82 +67,87 @@ class _InvitationScreenState extends State<InvitationScreen> {
             : ListView(
                 children: _invitations
                     .map(
-                      (invitation) => Card(
-                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Avatar(invitation.avatarUrl, 40),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      invitation.groupName,
-                                      style: TextStyle(fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      TimeAgo.parse(invitation.invitationTime,
-                                          locale: Localizations.localeOf(context).languageCode),
-                                      style: Theme.of(context).textTheme.subtitle2,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Expanded(
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              GroupServices.declineInvitation(invitation.groupId).then((value) {
-                                                if (value) {
-                                                  setState(() {
-                                                    _invitations.remove(invitation);
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Text(
-                                              S.of(context).decline,
-                                              style: Theme.of(context).textTheme.headline4,
-                                            ),
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor)),
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        Expanded(
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              GroupServices.acceptInvitation(invitation.groupId).then((value) {
-                                                if (value) {
-                                                  setState(() {
-                                                    _invitations.remove(invitation);
-                                                    _acceptedInvitations.add(invitation);
-                                                  });
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) => NotifyDialog(S.of(context).success,
-                                                          S.of(context).youAreMemberOfGroup(invitation.groupName), "OK"));
-                                                }
-                                              });
-                                            },
-                                            child: Text(S.of(context).accept),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                      (invitation) => InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/group/detail", arguments: invitation.groupId);
+                        },
+                        child: Card(
+                          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Avatar(invitation.avatarUrl, 40),
+                                SizedBox(
+                                  width: 15,
                                 ),
-                              )
-                            ],
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        invitation.groupName,
+                                        style: TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        TimeAgo.parse(invitation.invitationTime,
+                                            locale: Localizations.localeOf(context).languageCode),
+                                        style: Theme.of(context).textTheme.subtitle2,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                GroupServices.declineInvitation(invitation.groupId).then((value) {
+                                                  if (value) {
+                                                    setState(() {
+                                                      _invitations.remove(invitation);
+                                                    });
+                                                  }
+                                                });
+                                              },
+                                              child: Text(
+                                                S.of(context).decline,
+                                                style: Theme.of(context).textTheme.headline4,
+                                              ),
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor)),
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                GroupServices.acceptInvitation(invitation.groupId).then((value) {
+                                                  if (value) {
+                                                    setState(() {
+                                                      _invitations.remove(invitation);
+                                                      _acceptedInvitations.add(invitation);
+                                                    });
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) => NotifyDialog(S.of(context).success,
+                                                            S.of(context).youAreMemberOfGroup(invitation.groupName), "OK"));
+                                                  }
+                                                });
+                                              },
+                                              child: Text(S.of(context).accept),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

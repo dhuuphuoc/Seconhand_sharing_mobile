@@ -25,6 +25,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   int _pageNumber = 1;
   List<Member> _users = [];
   List<Member> _addedUser = [];
+  Member _invitingMember;
   bool _isSearching = false;
   Timer _timer;
 
@@ -142,10 +143,25 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                       style: Theme.of(context).textTheme.headline3,
                     ),
                     trailing: ElevatedButton(
-                      onPressed: () {
-                        invite(user.id);
+                      onPressed: () async {
+                        setState(() {
+                          _invitingMember = user;
+                        });
+                        await invite(user.id);
+                        setState(() {
+                          _invitingMember = null;
+                        });
                       },
-                      child: Text(S.of(context).invite),
+                      child: _invitingMember == user
+                          ? Container(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(Colors.white),
+                              ),
+                            )
+                          : Text(S.of(context).invite),
                     ),
                   ),
                 ))

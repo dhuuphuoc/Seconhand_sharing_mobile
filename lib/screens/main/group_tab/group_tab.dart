@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
@@ -39,9 +43,25 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
   bool _isLoading = true;
   bool _isLoadingMore = false;
   bool _isEnd = false;
+  StreamSubscription<RemoteMessage> _subscription;
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    _subscription = FirebaseMessaging.onMessage.listen((message) {
+      if (message.data["type"] == "7") {
+        var invitation = Invitation.fromJson(jsonDecode(message.data["message"]));
+        invitation.invitationTime = message.sentTime;
+        setState(() {
+          _invitations.add(invitation);
+        });
+      }
+    });
     fetchData();
   }
 
@@ -59,7 +79,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
       }
       _groups.addAll(groups);
       _myGroups.addAll(myGroups);
-      _invitations = invitations;
+      _invitations.addAll(invitations);
       _events.addAll(events);
       _isLoading = false;
     });
@@ -175,6 +195,7 @@ class _GroupTabState extends State<GroupTab> with AutomaticKeepAliveClientMixin<
           _groups = [];
           _myGroups = [];
           _events = [];
+          _invitations = [];
           _pageNumber = 1;
           await fetchData();
         },

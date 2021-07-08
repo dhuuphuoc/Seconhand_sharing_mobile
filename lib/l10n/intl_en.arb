@@ -301,7 +301,7 @@
   },
   "invite" : "Invite",
   "end" : "The end",
-  "remaining" : "Còn lại",
+  "remaining" : "{duration} left",
   "campaign" : "Volunteer campaigns",
   "thisLowerCase": "this",
   "leaveGroupError" : "You only can leave group when more than one admin",
@@ -338,5 +338,8 @@
   "eventEnded" : "Event ended",
   "youReceivedInvitation": "You received an invitation from group",
   "item" : "Item",
-  "user" : "User"
+  "user" : "User",
+  "receivedInvitationNotification" : "You received an invitation from group",
+  "newMemberNotification" : "became new member in group",
+  "joinRequestNotification" : "requesting to join group"
 }

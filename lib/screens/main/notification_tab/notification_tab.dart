@@ -10,8 +10,11 @@ import 'package:secondhand_sharing/models/enums/notification_type/notification_t
 import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
 import 'package:secondhand_sharing/models/user/access_info/access_info.dart';
 import 'package:secondhand_sharing/screens/keys/keys.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/Join_request_notification/join_request_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/accept_invitation_notification/accept_invitation_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/confirm_sent_notification/confirm_sent_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/incoming_request_notification/incoming_request_notification.dart';
+import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/invitation_notification/invitation_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/request_status_notification/request_status_notification.dart';
 import 'package:secondhand_sharing/screens/main/notification_tab/local_widgets/thanks_notification/thanks_notification.dart';
 import 'package:secondhand_sharing/services/api_services/user_notification_services/user_notification_services.dart';
@@ -133,6 +136,15 @@ class _NotificationTabState extends State<NotificationTab> with AutomaticKeepAli
           break;
         case NotificationType.sendThanks:
           listViewWidgets.add(ThanksNotification(notification));
+          break;
+        case NotificationType.inviteMember:
+          listViewWidgets.add(InvitationNotification(notification));
+          break;
+        case NotificationType.acceptInvitation:
+          listViewWidgets.add(AcceptInvitationNotification(notification));
+          break;
+        case NotificationType.joinRequest:
+          listViewWidgets.add(JoinRequestNotification(notification));
           break;
         default:
           break;

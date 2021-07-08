@@ -36,7 +36,7 @@ import 'package:secondhand_sharing/screens/profile/profile_screen/profile_screen
 import 'package:secondhand_sharing/screens/splash_screen/splash_screen.dart';
 import 'package:secondhand_sharing/services/firebase_services/firebase_services.dart';
 import 'package:secondhand_sharing/services/notification_services/notification_services.dart';
-//
+
 // class MyHttpOverrides extends HttpOverrides {
 //   @override
 //   HttpClient createHttpClient(SecurityContext context) {

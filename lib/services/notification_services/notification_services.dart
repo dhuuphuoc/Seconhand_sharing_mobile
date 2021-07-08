@@ -3,9 +3,13 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:secondhand_sharing/generated/l10n.dart';
+import 'package:secondhand_sharing/models/group_model/group/group.dart';
+import 'package:secondhand_sharing/models/invitation/invitation.dart';
 import 'package:secondhand_sharing/models/message/user_message.dart';
+import 'package:secondhand_sharing/models/notification/accep_invitation_model/accept_invitation_model.dart';
 import 'package:secondhand_sharing/models/notification/cancel_request_model/cancel_request_model.dart';
 import 'package:secondhand_sharing/models/notification/confirm_sent_model/confirm_sent_model.dart';
+import 'package:secondhand_sharing/models/notification/join_request_model/join_request_model.dart';
 import 'package:secondhand_sharing/models/notification/request_status_model/request_status_model.dart';
 import 'package:secondhand_sharing/models/enums/request_status/request_status.dart';
 import 'package:secondhand_sharing/models/receive_request/receive_request.dart';
@@ -50,8 +54,8 @@ class NotificationService {
     Person person = Person(
         name: "${message.sendFromAccountName}",
         important: true,
-        icon: BitmapFilePathAndroidIcon(await APIService.downloadAndSaveFile(
-            message.sendFromAccountAvatarUrl, message.sendFromAccountId.toString())));
+        icon: BitmapFilePathAndroidIcon(
+            await APIService.downloadAndSaveFile(message.sendFromAccountAvatarUrl, message.sendFromAccountId.toString())));
     MessagingStyleInformation messagingStyleInformation = MessagingStyleInformation(
       person,
       messages: [Message(message.content, message.sendDate, person)],
@@ -82,8 +86,7 @@ class NotificationService {
     return await S.load(locale);
   }
 
-  Future<AndroidNotificationDetails> prepareReceiveRequestAndroidNotificationDetails(
-      ReceiveRequest receiveRequest) async {
+  Future<AndroidNotificationDetails> prepareReceiveRequestAndroidNotificationDetails(ReceiveRequest receiveRequest) async {
     S i18n = await loadI18n();
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
         "${i18n.incomingReceiveRequest("<b>${receiveRequest.receiverName}</b>", "<b>${receiveRequest.itemName}</b>", "<b>${receiveRequest.receiveReason}</b>")}",
@@ -92,8 +95,7 @@ class NotificationService {
         htmlFormatTitle: true,
         htmlFormatBigText: true,
         htmlFormatContentTitle: true);
-    String path =
-        await APIService.downloadAndSaveFile(receiveRequest.receiverAvatarUrl, receiveRequest.receiverId.toString());
+    String path = await APIService.downloadAndSaveFile(receiveRequest.receiverAvatarUrl, receiveRequest.receiverId.toString());
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: AndroidNotificationDetails(
       receiveRequest.itemId.toString(),
@@ -103,14 +105,12 @@ class NotificationService {
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
-      largeIcon: receiveRequest.receiverAvatarUrl == null
-          ? DrawableResourceAndroidBitmap("person.png")
-          : FilePathAndroidBitmap(path),
+      largeIcon:
+          receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
       setAsGroupSummary: true,
     ));
-    flutterLocalNotificationsPlugin.show(
-        0, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics);
+    flutterLocalNotificationsPlugin.show(0, "<strong>${receiveRequest.itemName}</strong>", null, platformChannelSpecifics);
 
     return AndroidNotificationDetails(
       receiveRequest.itemId.toString(),
@@ -120,9 +120,29 @@ class NotificationService {
       importance: Importance.max,
       color: Colors.green,
       priority: Priority.high,
-      largeIcon: receiveRequest.receiverAvatarUrl == null
-          ? DrawableResourceAndroidBitmap("person.png")
-          : FilePathAndroidBitmap(path),
+      largeIcon:
+          receiveRequest.receiverAvatarUrl == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
+      styleInformation: bigTextStyleInformation,
+    );
+  }
+
+  Future<AndroidNotificationDetails> prepareGroupNotificationDetails(Group group, String content) async {
+    BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(content,
+        contentTitle: "<strong>${group.groupName}</strong>",
+        htmlFormatContent: true,
+        htmlFormatTitle: true,
+        htmlFormatBigText: true,
+        htmlFormatContentTitle: true);
+    String path = await APIService.downloadAndSaveFile(group.avatarURL, group.id.toString());
+
+    return AndroidNotificationDetails(
+      group.id.toString(),
+      group.groupName,
+      'This channel receive notifications from the server',
+      importance: Importance.max,
+      color: Colors.green,
+      priority: Priority.high,
+      largeIcon: group.avatarURL == null ? DrawableResourceAndroidBitmap("person.png") : FilePathAndroidBitmap(path),
       styleInformation: bigTextStyleInformation,
     );
   }
@@ -169,8 +189,7 @@ class NotificationService {
   }
 
   Future<void> sendInboxNotification(UserMessage message) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        await prepareMessageStyleAndroidNotificationDetails(message);
+    AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareMessageStyleAndroidNotificationDetails(message);
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(message.sendFromAccountId, null, null, platformChannelSpecifics,
         payload: jsonEncode({"type": "1", "message": message.toJson()}));
@@ -185,7 +204,36 @@ class NotificationService {
         payload: jsonEncode({"type": "2", "message": receiveRequest.toJson()}));
   }
 
-  int id = 0;
+  Future<void> sendIncomingInvitation(Invitation invitation) async {
+    S i18n = await loadI18n();
+    AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareGroupNotificationDetails(
+        Group(id: invitation.groupId, groupName: invitation.groupName, avatarURL: invitation.avatarUrl),
+        i18n.receivedInvitationNotification);
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(invitation.groupId, null, null, platformChannelSpecifics,
+        payload: jsonEncode({"type": "7", "message": invitation.toJson()}));
+  }
+
+  Future<void> sendAcceptedInvitation(AcceptInvitationModel invitation) async {
+    S i18n = await loadI18n();
+    AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareGroupNotificationDetails(
+        Group(id: invitation.groupId, groupName: invitation.groupName, avatarURL: invitation.avatarUrl),
+        i18n.newMemberNotification);
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(invitation.groupId, null, null, platformChannelSpecifics,
+        payload: jsonEncode({"type": "8", "message": invitation.toJson()}));
+  }
+
+  Future<void> sendJoinRequestNotification(JoinRequestModel joinRequestModel) async {
+    S i18n = await loadI18n();
+    AndroidNotificationDetails androidPlatformChannelSpecifics = await prepareGroupNotificationDetails(
+        Group(id: joinRequestModel.groupId, groupName: joinRequestModel.groupName, avatarURL: joinRequestModel.avatarUrl),
+        i18n.newMemberNotification);
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(joinRequestModel.groupId, null, null, platformChannelSpecifics,
+        payload: jsonEncode({"type": "9", "message": joinRequestModel.toJson()}));
+  }
+
   Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
     print("wrong");
   }
@@ -197,15 +245,20 @@ class NotificationService {
       case "1":
       case "5":
         var userInfo = await UserServices.getUserInfoById(json["message"]["sendFromAccountId"]);
-        Keys.navigatorKey.currentState.pushNamedAndRemoveUntil(
-            "/chat", (route) => route.settings.name == "/chat" ? false : true,
-            arguments: userInfo);
+        Keys.navigatorKey.currentState
+            .pushNamedAndRemoveUntil("/chat", (route) => route.settings.name == "/chat" ? false : true, arguments: userInfo);
         break;
       case "2":
       case "4":
       case "6":
         var itemId = json["message"]["itemId"];
         Keys.navigatorKey.currentState.pushNamed("/item/detail", arguments: itemId);
+        break;
+      case "7":
+      case "8":
+      case "9":
+        var groupId = json["message"]["groupId"];
+        Keys.navigatorKey.currentState.pushNamed("/group/detail", arguments: groupId);
         break;
     }
   }

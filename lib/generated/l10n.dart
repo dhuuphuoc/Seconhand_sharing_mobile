@@ -2005,13 +2005,13 @@ class S {
     );
   }
 
-  /// `Còn lại`
-  String get remaining {
+  /// `{duration} left`
+  String remaining(Object duration) {
     return Intl.message(
-      'Còn lại',
+      '$duration left',
       name: 'remaining',
       desc: '',
-      args: [],
+      args: [duration],
     );
   }
 
@@ -2380,6 +2380,36 @@ class S {
     return Intl.message(
       'User',
       name: 'user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You received an invitation from group`
+  String get receivedInvitationNotification {
+    return Intl.message(
+      'You received an invitation from group',
+      name: 'receivedInvitationNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `became new member in group`
+  String get newMemberNotification {
+    return Intl.message(
+      'became new member in group',
+      name: 'newMemberNotification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `requesting to join group`
+  String get joinRequestNotification {
+    return Intl.message(
+      'requesting to join group',
+      name: 'joinRequestNotification',
       desc: '',
       args: [],
     );
