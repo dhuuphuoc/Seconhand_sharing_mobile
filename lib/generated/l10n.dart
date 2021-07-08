@@ -315,11 +315,11 @@ class S {
     );
   }
 
-  /// `Title`
-  String get title {
+  /// `Item name`
+  String get itemName {
     return Intl.message(
-      'Title',
-      name: 'title',
+      'Item name',
+      name: 'itemName',
       desc: '',
       args: [],
     );
@@ -915,11 +915,11 @@ class S {
     );
   }
 
-  /// `Detail`
-  String get detail {
+  /// `Item being donated`
+  String get itemBeingDonated {
     return Intl.message(
-      'Detail',
-      name: 'detail',
+      'Item being donated',
+      name: 'itemBeingDonated',
       desc: '',
       args: [],
     );
@@ -1685,10 +1685,10 @@ class S {
     );
   }
 
-  /// `You registered this item and waiting for acceptance ...`
+  /// `You registered this item and waiting for acceptance.`
   String get registeredNotification {
     return Intl.message(
-      'You registered this item and waiting for acceptance ...',
+      'You registered this item and waiting for acceptance.',
       name: 'registeredNotification',
       desc: '',
       args: [],

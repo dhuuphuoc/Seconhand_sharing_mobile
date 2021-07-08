@@ -191,11 +191,55 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
               SizedBox(
                 height: 10,
               ),
-              AddressCard(_addressModel, onMapPress),
+              TextFormField(
+                controller: _titleController,
+                validator: Validator.validateTitle,
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).itemName}...",
+                    labelText: "${S.of(context).itemName}",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(width: 0.5))),
+              ),
               SizedBox(
                 height: 10,
               ),
-
+              //Categories
+              Container(
+                decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
+                height: 130,
+                child: ListView.builder(
+                  itemExtent: 90,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _categoryModel.categories.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Category category = _categoryModel.categories[index];
+                    return CategoryTab(category.id == _categoryModel.selectedId, category, () {
+                      setState(() {
+                        _categoryModel.selectedId = category.id;
+                      });
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                minLines: 8,
+                maxLines: 20,
+                validator: Validator.validateDescription,
+                controller: _descriptionController,
+                textAlignVertical: TextAlignVertical.top,
+                decoration: InputDecoration(
+                    hintText: "${S.of(context).description}...",
+                    filled: true,
+                    fillColor: Theme.of(context).backgroundColor,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               //Add photo
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -222,25 +266,7 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
               SizedBox(
                 height: 10,
               ),
-              //Categories
-              Container(
-                decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(10)),
-                height: 130,
-                child: ListView.builder(
-                  itemExtent: 90,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _categoryModel.categories.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Category category = _categoryModel.categories[index];
-                    return CategoryTab(category.id == _categoryModel.selectedId, category, () {
-                      setState(() {
-                        _categoryModel.selectedId = category.id;
-                      });
-                    });
-                  },
-                ),
-              ),
-
+              AddressCard(_addressModel, onMapPress),
               SizedBox(
                 height: 15,
               ),
@@ -250,55 +276,21 @@ class _PostItemScreenState extends State<PostItemScreen> with TickerProviderStat
                 controller: _phoneNumberController,
                 keyboardType: TextInputType.phone,
                 readOnly: true,
+                onTap: () {
+                  Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo.id).whenComplete(() {
+                    setState(() {
+                      _phoneNumberController.text = AccessInfo().userInfo.phoneNumber;
+                    });
+                  });
+                },
                 decoration: InputDecoration(
                     labelText: "${S.of(context).phoneNumber}",
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/profile", arguments: AccessInfo().userInfo.id).whenComplete(() {
-                          setState(() {
-                            _phoneNumberController.text = AccessInfo().userInfo.phoneNumber;
-                          });
-                        });
-                      },
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              //Phone number
-              TextFormField(
-                controller: _titleController,
-                validator: Validator.validateTitle,
-                decoration: InputDecoration(
-                    hintText: "${S.of(context).title}...",
-                    labelText: "${S.of(context).title}",
+                    suffixIcon: Icon(Icons.edit),
                     filled: true,
                     fillColor: Theme.of(context).backgroundColor,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
               ),
 
-              //Title
-
-              SizedBox(
-                height: 15,
-              ),
-              //Description
-              TextFormField(
-                minLines: 8,
-                maxLines: 20,
-                validator: Validator.validateDescription,
-                controller: _descriptionController,
-                textAlignVertical: TextAlignVertical.top,
-                decoration: InputDecoration(
-                    hintText: "${S.of(context).description}...",
-                    filled: true,
-                    fillColor: Theme.of(context).backgroundColor,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-              ),
               SizedBox(
                 height: 10,
               ),

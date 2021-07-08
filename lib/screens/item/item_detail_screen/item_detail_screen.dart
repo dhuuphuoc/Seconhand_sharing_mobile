@@ -292,7 +292,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          S.of(context).detail,
+          S.of(context).itemBeingDonated,
           style: Theme.of(context).textTheme.headline2,
         ),
         centerTitle: true,
@@ -404,19 +404,22 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                           : S.of(context).registerToReceive)),
                         ),
                       } else ...{
-                        if (_itemDetail.status == ItemStatus.accepted)
+                        if (_itemDetail.status == ItemStatus.accepted && _isOwn)
                           Container(
                             child: NotificationCard(Icons.check_circle_outline, S.of(context).groupAcceptedYourItem),
                             margin: EdgeInsets.only(top: 15),
                           ),
                         if (_itemDetail.status != ItemStatus.success)
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: _itemDetail.status == ItemStatus.accepted ? _confirmSent : null,
-                                child: Text(S.of(context).confirmSent),
-                              ))
+                          if (_isOwn)
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: _itemDetail.status == ItemStatus.accepted ? _confirmSent : null,
+                                  child: Text(S.of(context).confirmSent),
+                                ))
+                          else
+                            SizedBox(height: 20)
                         else
                           Container(
                             child: NotificationCard(

@@ -93,7 +93,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            S.of(context).detail,
+            S.of(context).event,
             style: Theme.of(context).textTheme.headline2,
           ),
           centerTitle: true,
